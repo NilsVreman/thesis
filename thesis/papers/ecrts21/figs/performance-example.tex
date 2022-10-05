@@ -1,0 +1,27 @@
+\begin{tikzpicture}
+    \small
+    \begin{axis}[clip=false,
+        xlabel={Time},
+        ylabel={Normalised Cost},
+        ylabel near ticks,
+        xlabel near ticks,
+        width=12cm, height=4.5cm,
+        ymin=0,
+        ymax=6.25,
+        enlarge x limits=0]
+
+        \fill[red!5] (axis cs:0,0) rectangle (axis cs:3,6.25);
+        \fill[green!5] (axis cs:3,0) rectangle (axis cs:13,6.25);
+        \fill[blue!30] (axis cs:0,0.9) rectangle (axis cs:20.5,1.1);
+        \draw[densely dashed, black!20, step=1.0] (axis cs:0,0) grid (axis cs:20,6.25);
+        \node[rectangle, draw, fill=white, align=center] at (axis cs:15,4.5) {$\strat = KZ$\\\tikz{\fill[white] (0,0) rectangle (1,0.75);\draw[blue, ultra thick] (0,0.25) -- (1,0.25); \fill[blue] (0.5,0.25) circle (0.175);}$\,\,J_{k,\strat}/J_\infty=J_{k,KZ}/J_\infty$};
+        \draw[black] (0,0) rectangle (20,6.25);
+        \node[clip=false, anchor=west] at (axis cs:20.55,1) {$2\,\varepsilon$ band};
+        \addplot table [col sep=comma, x=T, y=J] {\figdir/data/definitions.csv};
+        \draw[dashed, black] (axis cs:0,5.4692) -- (axis cs:5,5.4692) node[right, xshift=1mm, blue] {$J_{M,\strat} = J_{M,KZ}$};
+
+        \draw[<->, blue, thick] (5,0) -- (5,5.4692);
+        \draw[<->, red, thick] (0,3) -- node[above] {$\nummisses$} (3,3);
+        \draw[<->, green!80!black, thick] (3,3) -- node[above] {$\recoverylengthinterval_{\strat} = \recoverylengthinterval_{KZ}$} (13,3);
+    \end{axis}
+\end{tikzpicture}

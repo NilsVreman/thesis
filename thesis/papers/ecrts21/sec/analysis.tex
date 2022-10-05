@@ -4,65 +4,30 @@ Section~\ref{sec:fault} introduces the fault model, Section~\ref{sec:derivation}
 \subsection{Fault Model}%
 \label{sec:fault}
 
-Faults can happen during the normal execution of tasks on a
-platform. Informally, as a result of a fault, tasks miss their
-deadlines. When the fault is resolved, then the original
-situation is recovered (possibly after a transient initial
-phase).
+Faults can happen during the normal execution of tasks on a platform.
+Informally, as a result of a fault, tasks miss their deadlines.
+When the fault is resolved, then the original situation is recovered (possibly after a transient initial phase).
 
-Specifically, given a system $\system$, we define a \emph{burst
-interval} $\miss$ as an interval of controller activations in
-which the control task executing $\controller$ consecutively misses
-$\nummisses$ deadlines, regardless of the strategy
-used to handle the misses. We assume that the burst interval
-$\miss$ is followed by a \emph{recovery interval} $\recovery$,
-defined as an interval in which the control task consecutively
-hits $\numhits$ deadlines.
+Specifically, given a system $\system$, we define a \emph{burst interval} $\miss$ as an interval of controller activations in which the control task executing $\controller$ consecutively misses $\nummisses$ deadlines, regardless of the strategy used to handle the misses.
+We assume that the burst interval $\miss$ is followed by a \emph{recovery interval} $\recovery$, defined as an interval in which the control task consecutively hits $\numhits$ deadlines.
 
-During the burst interval, the deadline misses of the control
-task are handled using a \emph{deadline handling strategy}
-$\dstrat$ (Kill, $K$, or Skip-Next, $S$). The control signal $u_k$
-is selected in accordance with the \emph{actuation strategy}
-$\hstrat$ (Zero, $Z$, or Hold, $H$). We denote the combination of
-$\dstrat$ and $\hstrat$ with~$\strat =
-\left(\dstrat,\hstrat\right)$. For example $\strat$ could be $SZ$
-to indicate that the Skip-Next deadline handling strategy is
-paired with the Zero actuation strategy.  The system
-\emph{recovers} once it operates close to steady-state.
-
-%%%%%%%%%%%%%%% Old Version %%%%%%%%%%%%%%%
-%From an industrial viewpoint, the proposed fault model is highly
-%relevant. The common approach is to treat the faults as
-%stochastic~\cite{reliabook,montgomery2009introduction, Teich:2017}\anton{Process this paragraph to say "our model stands out from the rest, due to how we analyze consecutive misses in ONE burst"}. 
-%However, during the operation of a control system, faults can be 
-%caused by events like network connection problems (cutting the 
-%connection between the sensor and the controller). This is not 
-%a stochastic event\anton{Again I'm not sure what you mean here}, and in particular deadlines are not missed 
-%independently. The controller does not execute correctly until 
-%the connection is restored. The analysis methods we propose allows 
-%us to address realistic situations like connection problems, 
-%and provide tighter and more realistic bounds on the stability 
-%and performance of control systems in the presence of faults.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+During the burst interval, the deadline misses of the control task are handled using a \emph{deadline handling strategy} $\dstrat$ (Kill, $K$, or Skip-Next, $S$).
+The control signal $u_k$ is selected in accordance with the \emph{actuation strategy} $\hstrat$ (Zero, $Z$, or Hold, $H$).
+We denote the combination of $\dstrat$ and $\hstrat$ with~$\strat = \left(\dstrat,\hstrat\right)$.
+For example $\strat$ could be $SZ$ to indicate that the Skip-Next deadline handling strategy is paired with the Zero actuation strategy.
+The system \emph{recovers} once it operates close to steady-state.
 
 %%%%%%%%%%%%%%% Nils' Version %%%%%%%%%%%%%%%
-From an industrial viewpoint, the proposed fault model is highly
-relevant. The common approach is to treat faults as pseudo-independent 
-events adhering to predefined constraints on their incidence 
-rate~\cite{reliabook,montgomery2009introduction, Teich:2017}. However, during the operation of a control system, faults can be 
-caused by events like network connection problems (e.g., cutting the
-connection between the sensor and the controller), security attacks, contention on resources. Studies in the automotive sector, for example, indicate that deadline misses can occur in bursts~\cite{Quinton:2014,Xu:2015}. In these cases, the controller does not 
-execute properly for a given amount of time (e.g., until the connection is restored, the attack is terminated, or the resource contention is reduced). The analysis 
-methods we propose allow us to address such situations and
-to provide tighter bounds on the closed-loop stability and performance 
-than under the previously proposed weakly hard models. Moreover,
-following a burst interval, we are interested in analysing the 
-length of the recovery interval $\recovery$ that is needed to return 
-to normal operation under each implementation strategy $\strat$. 
-Hence, we here extend the weakly hard models of computation with a 
-fifth alternative and then devote the remainder of the paper to its analysis.
+From an industrial viewpoint, the proposed fault model is highly relevant.
+The common approach is to treat faults as pseudo-independent events adhering to predefined constraints on their incidence rate~\cite{reliabook,montgomery2009introduction, Teich:2017}.
+However, during the operation of a control system, faults can be caused by events like network connection problems (e.g., cutting the connection between the sensor and the controller), security attacks, contention on resources.
+Studies in the automotive sector, for example, indicate that deadline misses can occur in bursts~\cite{Quinton:2014,Xu:2015}.
+In these cases, the controller does not execute properly for a given amount of time (e.g., until the connection is restored, the attack is terminated, or the resource contention is reduced).
+The analysis methods we propose allow us to address such situations and to provide tighter bounds on the closed-loop stability and performance than under the previously proposed weakly hard models.
+Moreover, following a burst interval, we are interested in analysing the length of the recovery interval $\recovery$ that is needed to return to normal operation under each implementation strategy $\strat$.
+Hence, we here extend the weakly hard models of computation with a fifth alternative and then devote the remainder of the paper to its analysis.
  
-\begin{definition}[\titlecap{Weakly Hard fault model with burst of misses}]
+\begin{definition}[Weakly Hard Fault Model with Burst of Misses]
     \label{def:task-model}
     A real-time task $\tau$ may satisfy the weakly hard task model
     \begin{enumerate}[label=(\roman*)]
@@ -70,55 +35,30 @@ fifth alternative and then devote the remainder of the paper to its analysis.
         \item $\tau \vdash \genfrac{\{}{\}}{0pt}{}{\nummisses}{\numtotalanalysed}$: there are at most $m$ consecutive misses, followed by $\numtotalanalysed-m$ consecutive hits for every $\numtotalanalysed$ jobs.
     \end{enumerate}
     This means that a real-time task $\tau$ behaves according to the model
-%
-$
-\tau \vdash
-\genfrac{\{}{\}}{0pt}{}{\nummisses}{\numtotalanalysed},
-$
-%
-if, whenever $\tau$ experiences a burst interval $\miss$ consisting of $\nummisses$
-consecutive deadline misses, it is always followed by a recovery interval
-$\recovery$ consisting of $\numhits=\numtotalanalysed-\nummisses$ consecutive deadline
-hits.
+    %
+    $
+        \tau \vdash
+        \genfrac{\{}{\}}{0pt}{}{\nummisses}{\numtotalanalysed},
+    $
+    %
+    if, whenever $\tau$ experiences a burst interval $\miss$ consisting of $\nummisses$ consecutive deadline misses, it is always followed by a recovery interval $\recovery$ consisting of $\numhits=\numtotalanalysed-\nummisses$ consecutive deadline hits.
 \end{definition}
 
 \subsection{Closed-Loop System Dynamics}%
 \label{sec:derivation}
 In this section we derive the system dynamics for a closed-loop control system under the assumption that we enter a burst interval of length $\nummisses$ after time instant $k$, and after $\nummisses$ deadline misses we start completing the control job in time.
 
-% The analysis is exact for \textcolor{red}{cyclic patterns} of misses and hits. 
-% We compare this exact analysis with the state of the art,
-% discussing similarities and differences. This analysis holds for
-% a given number of misses $\nummisses$ followed by a recovery
-% interval of hits. However, we would like it to hold for any number of
-% consecutive misses up to $\nummisses$ followed by a recovery interval. 
-% In order to address this additional requirement, we conclude
-% the section by proposing a stability analysis that combines the exact
-% analysis with the principle behind the switching-system analysis
-% presented in~\cite{Maggio:2020}.
-
 \textbf{Normal Operation: }%
-Under \emph{normal operating conditions} the system is not
-experiencing any deadline misses. In other words, the system
-evolves according to the closed-loop system
-dynamics~\eqref{eq:feedback-basic}.
+Under \emph{normal operating conditions} the system is not experiencing any deadline misses.
+In other words, the system evolves according to the closed-loop system dynamics~\eqref{eq:feedback-basic}.
 
 \textbf{Kill\&Zero: }%
 %
-If a control task deadline miss occurs at time instant $k$, the
-plant states $x_k$ still evolve as normal. However, the controller
-terminates its execution prematurely by killing the job, thus not
-updating its states ($z_{k+1} = z_k$). The controller
-output is determined by the actuation strategy and is here
-zero ($u_{k+1} = 0$). Now, consider a burst
-interval of length $\nummisses$ after time instant $k$. Recalling
-that $\tilde{x}_k = \left[ {x_k}^T {z_k}^T {u_k}^T \right]^T$, we
-can write the evolution of the closed-loop system for the
-sequence of $m$ deadline misses followed by a single deadline hit
-as the product of a matrix representing the behaviour of the
-system for a hit and a matrix representing the behaviour in case
-of miss elevated to the power of $m$ to indicate $m$ steps of the
-system evolution.
+If a control task deadline miss occurs at time instant $k$, the plant states $x_k$ still evolve as normal.
+However, the controller terminates its execution prematurely by killing the job, thus not updating its states ($z_{k+1} = z_k$).
+The controller output is determined by the actuation strategy and is here zero ($u_{k+1} = 0$).
+Now, consider a burst interval of length $\nummisses$ after time instant $k$.
+Recalling that $\tilde{x}_k = \left[ {x_k}^T {z_k}^T {u_k}^T \right]^T$, we can write the evolution of the closed-loop system for the sequence of $m$ deadline misses followed by a single deadline hit as the product of a matrix representing the behaviour of the system for a hit and a matrix representing the behaviour in case of miss elevated to the power of $m$ to indicate $m$ steps of the system evolution.
 
 The resulting closed-loop system in state-space form is
 %
@@ -142,27 +82,15 @@ The resulting closed-loop system in state-space form is
     \end{bmatrix},
 \end{equation}
 %
-where $A_{KZ}\funof{\nummisses}$ represents the system matrix for
-$\nummisses$ misses under the Kill\&Zero strategy, followed by
-a single hit (the matrix $A$ that is multiplied to the left of
-the equation).  The matrix $A$ is the same specified 
-in~\eqref{eq:matrixA}, and represents the first hit that
-follows the $\nummisses$ misses, hence, we determine how
-$\tilde{x}_k$ influences $\tilde{x}_{k+m+1}$ ($\nummisses$ misses
-and one hit).
+where $A_{KZ}\funof{\nummisses}$ represents the system matrix for $\nummisses$ misses under the Kill\&Zero strategy, followed by a single hit (the matrix $A$ that is multiplied to the left of the equation).
+The matrix $A$ is the same specified in~\eqref{eq:matrixA}, and represents the first hit that follows the $\nummisses$ misses, hence, we determine how $\tilde{x}_k$ influences $\tilde{x}_{k+m+1}$ ($\nummisses$ misses and one hit).
 
 \textbf{Kill\&Hold: }%
 %
-Changing the actuation strategy to Hold, slightly alters the 
-system matrix we derived for the Kill\&Zero case. The plant states
-$x_k$ evolve as normal and the control states $z_k$ are still not
-updated ($z_{k+1} = z_k$). However, due to the change in
-actuation strategy, the last actuated value is instead
-held ($u_{k+1} = u_k$). The resulting closed-loop state-space
-form can be seen in~\eqref{eq:KH}, where
-$A_{KH}\funof{\nummisses}$ is used to represent the system matrix
-for $\nummisses$ misses under the Kill\&Hold strategy and
-matrix $A$ is specified in~\eqref{eq:matrixA}.
+Changing the actuation strategy to Hold, slightly alters the system matrix we derived for the Kill\&Zero case.
+The plant states $x_k$ evolve as normal and the control states $z_k$ are still not updated ($z_{k+1} = z_k$).
+However, due to the change in actuation strategy, the last actuated value is instead held ($u_{k+1} = u_k$).
+The resulting closed-loop state-space form can be seen in~\eqref{eq:KH}, where $A_{KH}\funof{\nummisses}$ is used to represent the system matrix for $\nummisses$ misses under the Kill\&Hold strategy and matrix $A$ is specified in~\eqref{eq:matrixA}.
 %
 \begin{equation}
     \setlength\arraycolsep{2pt}
@@ -186,22 +114,12 @@ matrix $A$ is specified in~\eqref{eq:matrixA}.
 
 \textbf{Skip-Next\&Zero: }%
 %
-When the control task misses a deadline under the Skip-Next
-strategy, the job missing the deadline is allowed to continue its
-execution until completion. However, no subsequent job of the
-control task is released until the current job has finished
-executing. If the currently active job terminates during period
-$k$, the next control job is released at the start of the
-$k+1$-th period. We can then write the evolution of the system 
-where the control job experiences $\nummisses$ misses before
-completing its execution, meaning that there is a subsequent hit
-that uses old information for the error measurements. While the
-controller executed only once to completion, the plant evolved
-for $\nummisses+1$ steps. The resulting closed-loop state-space
-form can be seen in~\eqref{eq:SZ}, where
-$A_{SZ}\funof{\nummisses}$ is used to represent the system matrix
-under the Skip-Next\&Zero strategy for $\nummisses$ misses and
-one completion using old measurements.
+When the control task misses a deadline under the Skip-Next strategy, the job missing the deadline is allowed to continue its execution until completion.
+However, no subsequent job of the control task is released until the current job has finished executing.
+If the currently active job terminates during period $k$, the next control job is released at the start of the $k+1$-th period.
+We can then write the evolution of the system where the control job experiences $\nummisses$ misses before completing its execution, meaning that there is a subsequent hit that uses old information for the error measurements.
+While the controller executed only once to completion, the plant evolved for $\nummisses+1$ steps.
+The resulting closed-loop state-space form can be seen in~\eqref{eq:SZ}, where $A_{SZ}\funof{\nummisses}$ is used to represent the system matrix under the Skip-Next\&Zero strategy for $\nummisses$ misses and one completion using old measurements.
 %
 \begin{equation}
 \setlength\arraycolsep{2pt}
@@ -225,14 +143,10 @@ one completion using old measurements.
 
 \textbf{Skip-Next\&Hold: }%
 %
-Similar to Skip-Next\&Zero, one job finishes execution after
-$\nummisses$ consecutive misses. However, the actuation strategy
-holds the previous control value during the entire burst
-interval. Therefore, the plant evolution is affected by a
-cumulative sum over the prior control values. The resulting
-closed-loop state-space form can be seen in~\eqref{eq:SH}, where
-$A_{SH}\funof{\nummisses}$ is used to represent the system matrix
-for $\nummisses$ misses under the Skip-Next\&Hold strategy.
+Similar to Skip-Next\&Zero, one job finishes execution after $\nummisses$ consecutive misses.
+However, the actuation strategy holds the previous control value during the entire burst interval.
+Therefore, the plant evolution is affected by a cumulative sum over the prior control values.
+The resulting closed-loop state-space form can be seen in~\eqref{eq:SH}, where $A_{SH}\funof{\nummisses}$ is used to represent the system matrix for $\nummisses$ misses under the Skip-Next\&Hold strategy.
 %
 \begin{equation}
 \setlength\arraycolsep{2pt}
@@ -254,51 +168,40 @@ for $\nummisses$ misses under the Skip-Next\&Hold strategy.
     \end{bmatrix}
 \end{equation}
 
-Equations~\eqref{eq:KZ}--\eqref{eq:SH} are inspired by the analysis 
-in~\cite{Maggio:2020}, but we have we introduced two generalisations. The
-first one is that our controller is specified as a general
-state-space system; therefore our method is able to address
-\emph{all} linear controllers. The second generalisation is that
-we could include estimates of the plant states in the controller.
-We can thus properly handle the presence 
-of an observer.\footnote{In~\cite{Maggio:2020} the
-controller state is specified as part of the plant (e.g., when the proportional and integral
-controller is introduced). This implies that the state is computed
-although the controller did not execute. Our formulation fixes
-this by separating the plant execution and the controller
-states.} Furthermore, we simplify the calculations by reducing
-the number of states $\Tilde{x}_k$ of the closed-loop matrices.
+Equations~\eqref{eq:KZ}--\eqref{eq:SH} are inspired by the analysis in~\cite{Maggio:2020}, but we have we introduced two generalisations.
+The first one is that our controller is specified as a general state-space system; therefore our method is able to address \emph{all} linear controllers.
+The second generalisation is that we could include estimates of the plant states in the controller.
+We can thus properly handle the presence of an observer.\footnote{In~\cite{Maggio:2020} the controller state is specified as part of the plant (e.g., when the proportional and integral controller is introduced). This implies that the state is computed although the controller did not execute. Our formulation fixes this by separating the plant execution and the controller states.}
+Furthermore, we simplify the calculations by reducing the number of states $\Tilde{x}_k$ of the closed-loop matrices.
 
 \paragraph*{Stability}%
 
 We now describe how the system matrices above can be used to analyse stability. 
 Recall that a closed-loop control system is stable if and only if the (fixed) system matrix $A$ is Schur stable. 
 This criterion is also valid for cyclic patterns, where $A$ represents the product of all closed-loop state matrices experienced in a full burst--recovery cycle. 
-%We can hence use the criterion in order to find the smallest number of deadline hits $\numhits$ such that $\nummisses$ consecutive misses do not destabilise the system. 
 Hence, we can search for the shortest recovery interval length $\numhits$ such that
 %
 \begin{equation}
-\underset{i}{\max}{\abs{\eig{i}{A^{\numhits-1}A_{\strat}\funof{\nummisses}}}} < 1, \quad \strat \in  \{ KZ, KH, SZ, SH \}.
 \label{eq:stability-cond}
+    \underset{i}{\max}{\abs{\eig{i}{A^{\numhits-1}A_{\strat}\funof{\nummisses}}}} < 1, \quad \strat \in  \{ KZ, KH, SZ, SH \}.
 \end{equation}
 %
 Recall that $A_{\strat}\funof{m}$ already includes one hit, thus the left multiplication with $A^{n-1}$. 
-%It is important to note that $\numhits$ is the number of consecutive hits necessary for the system to recover to such an extent that another burst interval would not destabilise the system. 
 This is a sufficient condition and not necessary, meaning that a miss occurring during the recovery interval does not immediately imply that the closed-loop system is destabilised. 
 We summarise the analysis in the following definition.
 
-% This stability analysis is fairly simple in nature, and applies
-% precisely to the model presented in Definition~\ref{def:task-model}.
-\begin{definition}[\titlecap{\nilsstability{} stability analysis}]
-We denote the stability analysis from~\eqref{eq:stability-cond} with the term \emph{\nilsstability{} stability analysis}.
-The system under analysis cycles through a
-sequence of $\nummisses$ misses followed by a sequence of $\numhits$ hits, indefinitely.
+\begin{definition}[Static-Cyclic Stability Analysis]
+    We denote the stability analysis from~\eqref{eq:stability-cond} with the term \emph{\nilsstability{} stability analysis}.
+    The system under analysis cycles through a sequence of $\nummisses$ misses followed by a sequence of $\numhits$ hits, indefinitely.
 \end{definition}
 %
-The \nilsstability{} analysis assumes a repeating burst--recovery cycle with no interruptions. This works well for instance in case the misses are due to a permanent overload condition caused by a mode switch (for example from low to high criticality mode in mixed-critical systems). However, the setting is not very general. To foster generality, we complement the stability evaluation with a less restrictive stability analysis, based on the proposed task model in Definition~\ref{def:task-model}.
+The \nilsstability{} analysis assumes a repeating burst--recovery cycle with no interruptions.
+This works well for instance in case the misses are due to a permanent overload condition caused by a mode switch (for example from low to high criticality mode in mixed-critical systems).
+However, the setting is not very general.
+To foster generality, we complement the stability evaluation with a less restrictive stability analysis, based on the proposed task model in Definition~\ref{def:task-model}.
 
-\begin{definition}[\titlecap{\switchingstability{} stability analysis}]
-To guarantee \emph{\switchingstability{} stability}, a system has to be stable under arbitrary switching between all the possible $\nummisses$ realisations (i.e., closed-loop matrices) that comply with all task models $\tau \vdash \genfrac{\{}{\}}{0pt}{}{\nummisses_\subset}{\numtotalanalysed}, \nummisses_\subset \in \{1, \dots,\nummisses\}$ and also include the case in which the system does not miss deadlines.
+\begin{definition}[\switchingstability{} stability analysis]
+    To guarantee \emph{\switchingstability{} stability}, a system has to be stable under arbitrary switching between all the possible $\nummisses$ realisations (i.e., closed-loop matrices) that comply with all task models $\tau \vdash \genfrac{\{}{\}}{0pt}{}{\nummisses_\subset}{\numtotalanalysed}, \nummisses_\subset \in \{1, \dots,\nummisses\}$ and also include the case in which the system does not miss deadlines.
 \end{definition}
 In other words, a system is \switchingstability{} stable if and only if it is stable under arbitrary switching of the closed-loop matrices in the set
 %
@@ -312,16 +215,10 @@ However, many excellent tools have been developed to simplify this analysis (e.g
 \paragraph*{Performance}%
 %\label{sec:performance}
 
-We now show how the cost function in
-Equation~\eqref{eq:covartocost}
-can be used as a time-varying
-performance metric. Before a burst interval, we assume that the
-system is in the neighbourhood of its steady-state covariance
-$P_\infty$ and performance $J_\infty$.
+We now show how the cost function in Equation~\eqref{eq:covartocost} can be used as a time-varying performance metric.
+Before a burst interval, we assume that the system is in the neighbourhood of its steady-state covariance $P_\infty$ and performance $J_\infty$.
 
-When a burst interval of $\nummisses$ missed deadlines occurs,
-the system will be disrupted and its covariance matrix will
-evolve according to
+When a burst interval of $\nummisses$ missed deadlines occurs, the system will be disrupted and its covariance matrix will evolve according to
 %
 \begin{equation}
 \label{eq:covariance-evolution}
@@ -350,15 +247,11 @@ where
         \end{aligned}
 \end{equation}
 
-$A_p$ and $G_p$ are matrices from the plant 
-evolution in~\eqref{eq:background:plant}, $R$ is the noise intensity 
-from~\eqref{eq:covevolution}, and $A$ is the closed-loop matrix 
-from~\eqref{eq:matrixA}. The cost will simultaneously change 
-following~\eqref{eq:covartocost}. In the recovery interval, the
-covariance is again governed by the normal closed-loop evolution
-described in~\eqref{eq:covevolution}. The system is said
-to have recovered once the cost is arbitrarily close to the
-steady-state cost. We evaluate this as
+$A_p$ and $G_p$ are matrices from the plant evolution in~\eqref{eq:background:plant}, $R$ is the noise intensity from~\eqref{eq:covevolution}, and $A$ is the closed-loop matrix from~\eqref{eq:matrixA}.
+The cost will simultaneously change following~\eqref{eq:covartocost}.
+In the recovery interval, the covariance is again governed by the normal closed-loop evolution described in~\eqref{eq:covevolution}.
+The system is said to have recovered once the cost is arbitrarily close to the steady-state cost.
+We evaluate this as
 %
 \begin{equation}
     \label{eq:cost-threshold}
@@ -366,84 +259,35 @@ steady-state cost. We evaluate this as
 \end{equation}
 where $\varepsilon> 0$ is the \emph{recovery threshold}.
 
-\begin{definition}[\titlecap{Performance recovery interval}]
+\begin{definition}[Performance Recovery Interval]
 \label{def:recovery-lenght-interval}
-%
-We define the recovery length interval
-$\recoverylengthinterval_{\strat}$ as the smallest $\numhits$
-such that~\eqref{eq:cost-threshold} is satisfied for all $k \geq
-\numhits$ when using $\strat$ to handle deadline
-misses.
-%
+    We define the recovery length interval $\recoverylengthinterval_{\strat}$ as the smallest $\numhits$ such that~\eqref{eq:cost-threshold} is satisfied for all $k \geq \numhits$ when using $\strat$ to handle deadline misses.
 \end{definition}
 
-\begin{definition}[\titlecap{Maximum normalised cost}]\label{def:maximum-system-cost}
-%
-We denote the maximum normalised cost of the system by
-%
-\begin{equation}
-J_{M,\strat} = \max_k \frac{J_{k, \strat}}{J_\infty},
-\end{equation}
-%
-where $J_{k,\strat}$ is the cost computed according
-to~\eqref{eq:covartocost} when using $\strat$ to handle the
-deadline misses.
-%
+\begin{definition}[Maximum normalised cost]
+\label{def:maximum-system-cost}
+    We denote the maximum normalised cost of the system by
+    %
+    \begin{equation}
+        J_{M,\strat} = \max_k \frac{J_{k, \strat}}{J_\infty},
+    \end{equation}
+    %
+    where $J_{k,\strat}$ is the cost computed according to~\eqref{eq:covartocost} when using $\strat$ to handle the deadline misses.
 \end{definition}
-\begin{figure}[t] \centering
-\begin{tikzpicture}
-\small
-
-\begin{axis}[clip=false,
-xlabel={Time},
-ylabel={Normalised Cost},
-ylabel near ticks,
-xlabel near ticks,
-width=12cm, height=4.5cm,
-ymin=0,
-ymax=6.25,
-enlarge x limits=0]
-
-\fill[red!5] (axis cs:0,0) rectangle (axis cs:3,6.25);
-\fill[green!5] (axis cs:3,0) rectangle (axis cs:13,6.25);
-\fill[blue!30] (axis cs:0,0.9) rectangle (axis cs:20.5,1.1);
-\draw[densely dashed, black!20, step=1.0] (axis cs:0,0) grid (axis cs:20,6.25);
-\node[rectangle, draw, fill=white, align=center] at (axis cs:15,4.5) {$\strat = KZ$\\\tikz{\fill[white] (0,0) rectangle (1,0.75);\draw[blue, ultra thick] (0,0.25) -- (1,0.25); \fill[blue] (0.5,0.25) circle (0.175);}$\,\,J_{k,\strat}/J_\infty=J_{k,KZ}/J_\infty$};
-\draw[black] (0,0) rectangle (20,6.25);
-\node[clip=false, anchor=west] at (axis cs:20.55,1) {$2\,\varepsilon$ band};
-\addplot table [col sep=comma, x=T, y=J] {data/definitions.csv};
-\draw[dashed, black] (axis cs:0,5.4692) -- (axis cs:5,5.4692) node[right, xshift=1mm, blue] {$J_{M,\strat} = J_{M,KZ}$};
-
-\draw[<->, blue, thick] (5,0) -- (5,5.4692);
-\draw[<->, red, thick] (0,3) -- node[above] {$\nummisses$} (3,3);
-\draw[<->, green!80!black, thick] (3,3) -- node[above] {$\recoverylengthinterval_{\strat} = \recoverylengthinterval_{KZ}$} (13,3);
-
-\end{axis}
-
-\end{tikzpicture}
-\caption{Illustration of normalised cost ($J_k/J_\infty$), performance recovery interval $\recoverylengthinterval_{\strat}$ and maximum normalised cost $J_{M,\strat}$ on a data trace. The example uses $\strat = \text{Kill\&Zero}$ and $\varepsilon=0.1$.}
-\label{fig:recoveryandpeak}
+\begin{figure}[t]
+    \centering
+    \input{\figdir/performance-example} 
+    \caption{Illustration of normalised cost ($J_k/J_\infty$), performance recovery interval $\recoverylengthinterval_{\strat}$ and maximum normalised cost $J_{M,\strat}$ on a data trace. The example uses $\strat = \text{Kill\&Zero}$ and $\varepsilon=0.1$.}
+    \label{fig:recoveryandpeak}
 \end{figure}
-Figure~\ref{fig:recoveryandpeak} gives a graphical representation of $\recoverylengthinterval_{\strat}$ and  $J_{M,\strat}$ for an execution trace in which the controller experiences 3 misses and uses Kill\&Zero as strategy $\strat$.
+Figure~\ref{fig:recoveryandpeak} gives a graphical representation of $\recoverylengthinterval_{\strat}$ and $J_{M,\strat}$ for an execution trace in which the controller experiences 3 misses and uses Kill\&Zero as strategy $\strat$.
 
-Compared to the stability analysis, the performance analysis also
-takes into account state deviations and uncertainty due to disturbances. In
-Section~\ref{sec:derivation} we used the system dynamics to
-analyse the stability of the system. The disturbance term $w_k$
-was neglected as it does not influence the system
-stability. However, its presence (as the presence of any
-disturbance) changes the dynamic behaviour of the system. For the
-performance metric, the state covariance matrix $P_k$ evolves according
-to both the noise intensity and the system
-dynamics~\eqref{eq:covariance-evolution}. The result is that the
-performance analysis provides us with a conservative (but more
-realistic) recovery interval, that takes system uncertainties into
-consideration.
+Compared to the stability analysis, the performance analysis also takes into account state deviations and uncertainty due to disturbances.
+In Section~\ref{sec:derivation} we used the system dynamics to analyse the stability of the system.
+The disturbance term $w_k$ was neglected as it does not influence the system stability.
+However, its presence (as the presence of any disturbance) changes the dynamic behaviour of the system.
+For the performance metric, the state covariance matrix $P_k$ evolves according to both the noise intensity and the system dynamics~\eqref{eq:covariance-evolution}.
+The result is that the performance analysis provides us with a conservative (but more realistic) recovery interval, that takes system uncertainties into consideration.
 
-To find the length of the recovery interval, we evolve the state 
-covariance during a burst interval, using a specific strategy 
-$\strat$ according to~\eqref{eq:covariance-evolution}. 
-Thereafter, the state covariance is evolved under normal operation, 
-according to~\eqref{eq:covevolution}, until~\eqref{eq:cost-threshold} 
-is satisfied, allowing us to find the performance recovery interval 
-$\recoverylengthinterval_{\strat}$.
+To find the length of the recovery interval, we evolve the state covariance during a burst interval, using a specific strategy $\strat$ according to~\eqref{eq:covariance-evolution}.
+Thereafter, the state covariance is evolved under normal operation, according to~\eqref{eq:covevolution}, until~\eqref{eq:cost-threshold} is satisfied, allowing us to find the performance recovery interval $\recoverylengthinterval_{\strat}$.
