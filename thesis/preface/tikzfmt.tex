@@ -1,24 +1,9 @@
-% from template
-\usepackage[T1]{fontenc}
-\usepackage{mathptmx, helvet}
-\usepackage{graphicx}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%
 %%% packages copy pasted from:
 %%%    ecrts21/preamble/pkg.tex
 %%% as you add the papers you'll have to adjust them
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
-\usepackage{amssymb, mathtools}
-\usepackage[inline]{enumitem} %inline enumeration
-%\usepackage{xfrac}
-%\usepackage{nicefrac}
-%\usepackage{microtype}
-%\usepackage[table]{xcolor} 
-%\usepackage{flushend}
-%\usepackage{afterpage}
-%\usepackage{titlecaps}
-%
 % TIKZ settings
 \usepackage{tikz, pgfplots, pgfplotstable}
 \usepackage{shellesc} %As suggested in the wiki
@@ -27,6 +12,7 @@
 \usetikzlibrary{external}
 \tikzexternalize[prefix=externalised/]
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%
 % libraries
 \pgfplotsset{compat=1.16}
 \usetikzlibrary{shapes, fit}
@@ -73,19 +59,3 @@
 %    \pgfplotstablegetelem{#2}{[index]#3}\of{#1}%
 %    \let#4\pgfplotsretval
 %}
-%
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%% maths
-%% \newtheorem{theorem}{Theorem}
-%% \newtheorem{corollary}{Corollary}
-%% \newtheorem{problem}{Problem}
-%% \newtheorem{lemma}{Lemma}
-%% \newtheorem{remark}{Remark}
-%% \newtheorem{definition}{Definition}
-%
-%
-%\usepackage{readarray}
-%
-%\definecolor{baselinecolor}{rgb}{0.99,0.78,0.07}
