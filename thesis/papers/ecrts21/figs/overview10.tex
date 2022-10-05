@@ -1,0 +1,197 @@
+\begin{tikzpicture}[bar width=1mm]
+\small
+
+\begin{groupplot}[group style = {group size = 4 by 9, vertical sep=8mm, horizontal sep=8mm},
+    height = 3.05cm,
+    width = 4cm,
+    ybar,
+    ymin = 0,
+    ylabel style={at={(-0.35,1)}, anchor=east},
+    grid = major,
+    grid style = {dashed, black!20},
+    x tick label style = {rotate = 60, anchor=north east, inner sep = 0mm},
+    xtick distance=1, enlarge x limits=0.05,
+    extra x ticks={1}]
+
+    \nextgroupplot[title={\textbf{\textcolor{white}{p}Kill\&Hold\textcolor{white}{p}}}, ymax=70, ylabel={\textbf{$\,\,$Batch 1}},
+    xtick distance=3, enlarge x limits=0.02]
+    \addplot[thin, black, fill=blue] table[x=ID, y=HITS, col sep=comma]
+    {\figdir/data/processed/B1_KH_10.csv};
+
+    \nextgroupplot[title={\textbf{Skip\&Hold}}, ymax=70,
+    xtick distance=3, enlarge x limits=0.02]
+    \addplot[thin, black, fill=pink!75!black] table[x=ID, y=HITS, col sep=comma]
+    {\figdir/data/processed/B1_SH_10.csv};
+
+    \nextgroupplot[title={\textbf{\textcolor{white}{p}Kill\&Zero\textcolor{white}{p}}}, ymax=70,
+    xtick distance=3, enlarge x limits=0.02]
+    \addplot[thin, black, fill=cyan] table[x=ID, y=HITS, col sep=comma]
+    {\figdir/data/processed/B1_KZ_10.csv};
+
+    \nextgroupplot[title={\textbf{Skip\&Zero}}, ymax=70,
+    xtick distance=3, enlarge x limits=0.02]
+    \addplot[thin, black, fill=red] table[x=ID, y=HITS, col sep=comma]
+    {\figdir/data/processed/B1_SZ_10.csv};
+
+    % ------------------------------------------------------
+
+    \nextgroupplot[ymax=120, ylabel={\textbf{$\,\,$Batch 2}},
+    xtick distance=3, enlarge x limits=0.02]
+    \addplot[thin, black, fill=blue] table[x=ID, y=HITS, col sep=comma]
+    {\figdir/data/processed/B2_KH_10.csv};
+
+    \nextgroupplot[ymax=120,
+    xtick distance=3, enlarge x limits=0.02]
+    \addplot[thin, black, fill=pink!75!black] table[x=ID, y=HITS, col sep=comma]
+    {\figdir/data/processed/B2_SH_10.csv};
+
+    \nextgroupplot[ymax=120,
+    xtick distance=3, enlarge x limits=0.02]
+    \addplot[thin, black, fill=cyan] table[x=ID, y=HITS, col sep=comma]
+    {\figdir/data/processed/B2_KZ_10.csv};
+
+    \nextgroupplot[ymax=120,
+    xtick distance=3, enlarge x limits=0.02]
+    \addplot[thin, black, fill=red] table[x=ID, y=HITS, col sep=comma]
+    {\figdir/data/processed/B2_SZ_10.csv};
+
+    % ------------------------------------------------------
+
+    \nextgroupplot[ymax=90, ylabel={\textbf{$\,\,$Batch 3}}]
+    \addplot[thin, black, fill=blue] table[x=ID, y=HITS, col sep=comma]
+    {\figdir/data/processed/B3_KH_10.csv};
+
+    \nextgroupplot[ymax=90]
+    \addplot[thin, black, fill=pink!75!black] table[x=ID, y=HITS, col sep=comma]
+    {\figdir/data/processed/B3_SH_10.csv};
+
+    \nextgroupplot[ymax=90]
+    \addplot[thin, black, fill=cyan] table[x=ID, y=HITS, col sep=comma]
+    {\figdir/data/processed/B3_KZ_10.csv};
+
+    \nextgroupplot[ymax=90]
+    \addplot[thin, black, fill=red] table[x=ID, y=HITS, col sep=comma]
+    {\figdir/data/processed/B3_SZ_10.csv};
+
+    % ------------------------------------------------------
+
+    \nextgroupplot[ymax=70,
+    ylabel={\textbf{$\,\,$Batch 4}}]
+    \addplot[thin, black, fill=blue] table[x=ID, y=HITS, col sep=comma]
+    {\figdir/data/processed/B4_KH_10.csv};
+
+    \nextgroupplot[ymax=70]
+    \addplot[thin, black, fill=pink!75!black] table[x=ID, y=HITS, col sep=comma]
+    {\figdir/data/processed/B4_SH_10.csv};
+
+    \nextgroupplot[ymax=70]
+    \addplot[thin, black, fill=cyan] table[x=ID, y=HITS, col sep=comma]
+    {\figdir/data/processed/B4_KZ_10.csv};
+
+    \nextgroupplot[ymax=70]
+    \addplot[thin, black, fill=red] table[x=ID, y=HITS, col sep=comma]
+    {\figdir/data/processed/B4_SZ_10.csv};
+
+    % ------------------------------------------------------
+
+    \nextgroupplot[ymax=100,
+    ylabel={\textbf{$\,\,$Batch 5}}]
+    \addplot[thin, black, fill=blue] table[x=ID, y=HITS, col sep=comma]
+    {\figdir/data/processed/B5_KH_10.csv};
+
+    \nextgroupplot[ymax=100]
+    \addplot[thin, black, fill=pink!75!black] table[x=ID, y=HITS, col sep=comma]
+    {\figdir/data/processed/B5_SH_10.csv};
+
+    \nextgroupplot[ymax=100]
+    \addplot[thin, black, fill=cyan] table[x=ID, y=HITS, col sep=comma]
+    {\figdir/data/processed/B5_KZ_10.csv};
+
+    \nextgroupplot[ymax=100]
+    \addplot[thin, black, fill=red] table[x=ID, y=HITS, col sep=comma]
+    {\figdir/data/processed/B5_SZ_10.csv};
+
+    % ------------------------------------------------------
+
+    \nextgroupplot[ymax=120,
+    ylabel={\textbf{$\,\,$Batch 6}}]
+    \addplot[thin, black, fill=blue] table[x=ID, y=HITS, col sep=comma]
+    {\figdir/data/processed/B6_KH_10.csv};
+
+    \nextgroupplot[ymax=120]
+    \addplot[thin, black, fill=pink!75!black] table[x=ID, y=HITS, col sep=comma]
+    {\figdir/data/processed/B6_SH_10.csv};
+
+    \nextgroupplot[ymax=120]
+    \addplot[thin, black, fill=cyan] table[x=ID, y=HITS, col sep=comma]
+    {\figdir/data/processed/B6_KZ_10.csv};
+
+    \nextgroupplot[ymax=120]
+    \addplot[thin, black, fill=red] table[x=ID, y=HITS, col sep=comma]
+    {\figdir/data/processed/B6_SZ_10.csv};
+
+
+    % ------------------------------------------------------
+
+    \nextgroupplot[ymax=120, ylabel={\textbf{$\,\,$Batch 7}},
+    xtick distance=5, enlarge x limits=0.02]
+    \addplot[thin, black, fill=blue, bar width=0.6mm] table[x=ID, y=HITS, col sep=comma]
+    {\figdir/data/processed/B7_KH_10.csv};
+
+    \nextgroupplot[ymax=120,
+    xtick distance=5, enlarge x limits=0.02]
+    \addplot[thin, black, fill=pink!75!black, bar width=0.6mm] table[x=ID, y=HITS, col sep=comma]
+    {\figdir/data/processed/B7_SH_10.csv};
+
+    \nextgroupplot[ymax=120,
+    xtick distance=5, enlarge x limits=0.02]
+    \addplot[thin, black, fill=cyan, bar width=0.6mm] table[x=ID, y=HITS, col sep=comma]
+    {\figdir/data/processed/B7_KZ_10.csv};
+
+    \nextgroupplot[ymax=120,
+    xtick distance=5, enlarge x limits=0.02]
+    \addplot[thin, black, fill=red, bar width=0.6mm] table[x=ID, y=HITS, col sep=comma]
+    {\figdir/data/processed/B7_SZ_10.csv};
+
+    % ------------------------------------------------------
+
+    \nextgroupplot[ymax=70,
+    ylabel={\textbf{$\,\,$Batch 8}}]
+    \addplot[thin, black, fill=blue] table[x=ID, y=HITS, col sep=comma]
+    {\figdir/data/processed/B8_KH_10.csv};
+
+    \nextgroupplot[ymax=70]
+    \addplot[thin, black, fill=pink!75!black] table[x=ID, y=HITS, col sep=comma]
+    {\figdir/data/processed/B8_SH_10.csv};
+
+    \nextgroupplot[ymax=70]
+    \addplot[thin, black, fill=cyan] table[x=ID, y=HITS, col sep=comma]
+    {\figdir/data/processed/B8_KZ_10.csv};
+
+    \nextgroupplot[ymax=70]
+    \addplot[thin, black, fill=red] table[x=ID, y=HITS, col sep=comma]
+    {\figdir/data/processed/B8_SZ_10.csv};
+
+
+    % ------------------------------------------------------
+
+    \nextgroupplot[ymax=60,
+    ylabel={\textbf{$\,\,$Batch 9}}]
+    \addplot[thin, black, fill=blue] table[x=ID, y=HITS, col sep=comma]
+    {\figdir/data/processed/B9_KH_10.csv};
+
+    \nextgroupplot[ymax=60]
+    \addplot[thin, black, fill=pink!75!black] table[x=ID, y=HITS, col sep=comma]
+    {\figdir/data/processed/B9_SH_10.csv};
+
+    \nextgroupplot[ymax=60]
+    \addplot[thin, black, fill=cyan] table[x=ID, y=HITS, col sep=comma]
+    {\figdir/data/processed/B9_KZ_10.csv};
+
+    \nextgroupplot[ymax=60]
+    \addplot[thin, black, fill=red] table[x=ID, y=HITS, col sep=comma]
+    {\figdir/data/processed/B9_SZ_10.csv};
+
+\end{groupplot}
+
+\end{tikzpicture}

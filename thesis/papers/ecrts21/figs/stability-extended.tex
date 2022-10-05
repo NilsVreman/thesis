@@ -1,0 +1,156 @@
+\pgfplotstableread[header=false,col sep=comma]{\figdir/data/stability-furuta/KH-stability.csv}\kh%
+\pgfplotstableread[header=false,col sep=comma]{\figdir/data/stability-furuta/KZ-stability.csv}\kz%
+\pgfplotstableread[header=false,col sep=comma]{\figdir/data/stability-furuta/SH-stability.csv}\sh%
+\pgfplotstableread[header=false,col sep=comma]{\figdir/data/stability-furuta/SZ-stability.csv}\sz%
+
+% they all have the same number of columns and rows
+\pgfplotstablegetrowsof{\kh}
+\pgfmathtruncatemacro{\numrows}{\pgfplotsretval}
+\pgfplotstablegetcolsof{\kh}
+\pgfmathtruncatemacro{\numcols}{\pgfplotsretval}
+
+\centering
+
+\begin{tikzpicture}[scale=0.096]
+    \small
+
+    \draw[thick] (0,0) -- (0,50) -- (25,50) -- (25,0) -- cycle;
+    \draw[dashed] (-1,0.5) node[left] {$1$} -- (0,0.5);
+    \draw[dashed] (-1,9.5) node[left] {$10$} -- (0,9.5);
+    \draw[dashed] (-1,19.5) node[left] {$20$} -- (0,19.5);
+    \draw[dashed] (-1,29.5) node[left] {$30$} -- (0,29.5);
+    \draw[dashed] (-1,39.5) node[left] {$40$} -- (0,39.5);
+    \draw[dashed] (-1,49.5) node[left] {$50$} -- (0,49.5);
+
+    \draw[dashed] (0.5,-1) node[below] {$1$} -- (0.5,0);
+    \draw[dashed] (4.5,-1) node[below] {$5$} -- (4.5,0);
+    \draw[dashed] (9.5,-1) node[below] {$10$} -- (9.5,0);
+    \draw[dashed] (14.5,-1) node[below] {$15$} -- (14.5,0);
+    \draw[dashed] (19.5,-1) node[below] {$20$} -- (19.5,0);
+    \draw[dashed] (24.5,-1) node[below] {$25$} -- (24.5,0);
+
+    \foreach \Y [evaluate=\Y as \PrevY using {int(\numrows-\Y)},
+    evaluate=\Y as \NewY using {int(\numrows-\Y+1)}] in {1,...,\numrows}{
+        \foreach \X  [evaluate=\X as \PrevX using {int(\X-1)}] in {1,...,\numcols}{
+            \ReadOutElement{\kh}{\PrevY}{\PrevX}{\Current}
+            % our class
+            \ifnum\Current=0 \def\colorcell{white} \fi
+            \ifnum\Current=2 \def\colorcell{blue!30} \fi
+            \ifnum\Current=3 \def\colorcell{blue} \fi
+
+            \draw[black,densely dotted,fill=\colorcell] (\PrevX,\numrows-\PrevY-1) rectangle +(1,1);
+        }
+        }
+        % title and axis
+        \node at (12.5,52.5) {\textbf{Kill\&Hold}};
+        %\node[rotate=90] at (-7.5,25) {$m$};
+        \node[] at (12.5,-6.5) {$n$};
+        \node[rotate=90] at (-7.5,25) {$m$};
+\end{tikzpicture}
+\hspace{-1mm}
+\begin{tikzpicture}[scale=0.096]
+    \small
+
+    \draw[thick] (0,0) -- (0,50) -- (25,50) -- (25,0) -- cycle;
+    \draw[dashed] (-1,0.5) node[left] {$1$} -- (0,0.5);
+    \draw[dashed] (-1,9.5) node[left] {$10$} -- (0,9.5);
+    \draw[dashed] (-1,19.5) node[left] {$20$} -- (0,19.5);
+    \draw[dashed] (-1,29.5) node[left] {$30$} -- (0,29.5);
+    \draw[dashed] (-1,39.5) node[left] {$40$} -- (0,39.5);
+    \draw[dashed] (-1,49.5) node[left] {$50$} -- (0,49.5);
+
+    \draw[dashed] (0.5,-1) node[below] {$1$} -- (0.5,0);
+    \draw[dashed] (4.5,-1) node[below] {$5$} -- (4.5,0);
+    \draw[dashed] (9.5,-1) node[below] {$10$} -- (9.5,0);
+    \draw[dashed] (14.5,-1) node[below] {$15$} -- (14.5,0);
+    \draw[dashed] (19.5,-1) node[below] {$20$} -- (19.5,0);
+    \draw[dashed] (24.5,-1) node[below] {$25$} -- (24.5,0);
+
+    \foreach \Y [evaluate=\Y as \PrevY using {int(\numrows-\Y)},
+    evaluate=\Y as \NewY using {int(\numrows-\Y+1)}] in {1,...,\numrows}{
+        \foreach \X  [evaluate=\X as \PrevX using {int(\X-1)}] in {1,...,\numcols}{
+            \ReadOutElement{\sh}{\PrevY}{\PrevX}{\Current}
+            % our class
+            \ifnum\Current=0 \def\colorcell{white} \fi
+            \ifnum\Current=2 \def\colorcell{pink} \fi
+            \ifnum\Current=3 \def\colorcell{pink!75!black} \fi
+
+            \draw[black,densely dotted,fill=\colorcell] (\PrevX,\numrows-\PrevY-1) rectangle +(1,1);
+        }
+        }
+        % title and axis
+        \node at (12.5,52.5) {\textbf{Skip\&Hold}};
+        %\node[rotate=90] at (-7.5,25) {$m$};
+        \node[] at (12.5,-6.5) {$n$};
+\end{tikzpicture}
+\hspace{-1mm}
+\begin{tikzpicture}[scale=0.096]
+    \small
+
+    \draw[thick] (0,0) -- (0,50) -- (25,50) -- (25,0) -- cycle;
+    \draw[dashed] (-1,0.5) node[left] {$1$} -- (0,0.5);
+    \draw[dashed] (-1,9.5) node[left] {$10$} -- (0,9.5);
+    \draw[dashed] (-1,19.5) node[left] {$20$} -- (0,19.5);
+    \draw[dashed] (-1,29.5) node[left] {$30$} -- (0,29.5);
+    \draw[dashed] (-1,39.5) node[left] {$40$} -- (0,39.5);
+    \draw[dashed] (-1,49.5) node[left] {$50$} -- (0,49.5);
+
+    \draw[dashed] (0.5,-1) node[below] {$1$} -- (0.5,0);
+    \draw[dashed] (4.5,-1) node[below] {$5$} -- (4.5,0);
+    \draw[dashed] (9.5,-1) node[below] {$10$} -- (9.5,0);
+    \draw[dashed] (14.5,-1) node[below] {$15$} -- (14.5,0);
+    \draw[dashed] (19.5,-1) node[below] {$20$} -- (19.5,0);
+    \draw[dashed] (24.5,-1) node[below] {$25$} -- (24.5,0);
+
+    \foreach \Y [evaluate=\Y as \PrevY using {int(\numrows-\Y)},
+    evaluate=\Y as \NewY using {int(\numrows-\Y+1)}] in {1,...,\numrows}{
+        \foreach \X  [evaluate=\X as \PrevX using {int(\X-1)}] in {1,...,\numcols}{
+            \ReadOutElement{\kz}{\PrevY}{\PrevX}{\Current}
+            % our class
+            \ifnum\Current=0 \def\colorcell{white} \fi
+            \ifnum\Current=2 \def\colorcell{cyan!30} \fi
+            \ifnum\Current=3 \def\colorcell{cyan} \fi
+
+            \draw[black,densely dotted,fill=\colorcell] (\PrevX,\numrows-\PrevY-1) rectangle +(1,1);
+        }
+        }
+        % title and axis
+        \node at (12.5,52.5) {\textbf{Kill\&Zero}};
+        \node[] at (12.5,-6.5) {$n$};
+\end{tikzpicture}
+\hspace{-1mm}
+\begin{tikzpicture}[scale=0.096]
+    \small
+
+    \draw[thick] (0,0) -- (0,50) -- (25,50) -- (25,0) -- cycle;
+    \draw[dashed] (-1,0.5) node[left] {$1$} -- (0,0.5);
+    \draw[dashed] (-1,9.5) node[left] {$10$} -- (0,9.5);
+    \draw[dashed] (-1,19.5) node[left] {$20$} -- (0,19.5);
+    \draw[dashed] (-1,29.5) node[left] {$30$} -- (0,29.5);
+    \draw[dashed] (-1,39.5) node[left] {$40$} -- (0,39.5);
+    \draw[dashed] (-1,49.5) node[left] {$50$} -- (0,49.5);
+
+    \draw[dashed] (0.5,-1) node[below] {$1$} -- (0.5,0);
+    \draw[dashed] (4.5,-1) node[below] {$5$} -- (4.5,0);
+    \draw[dashed] (9.5,-1) node[below] {$10$} -- (9.5,0);
+    \draw[dashed] (14.5,-1) node[below] {$15$} -- (14.5,0);
+    \draw[dashed] (19.5,-1) node[below] {$20$} -- (19.5,0);
+    \draw[dashed] (24.5,-1) node[below] {$25$} -- (24.5,0);
+
+    \foreach \Y [evaluate=\Y as \PrevY using {int(\numrows-\Y)},
+    evaluate=\Y as \NewY using {int(\numrows-\Y+1)}] in {1,...,\numrows}{
+        \foreach \X  [evaluate=\X as \PrevX using {int(\X-1)}] in {1,...,\numcols}{
+            \ReadOutElement{\sz}{\PrevY}{\PrevX}{\Current}
+            % our class
+            \ifnum\Current=0 \def\colorcell{white} \fi
+            \ifnum\Current=2 \def\colorcell{red!30} \fi
+            \ifnum\Current=3 \def\colorcell{red} \fi
+
+            \draw[black,densely dotted,fill=\colorcell] (\PrevX,\numrows-\PrevY-1) rectangle +(1,1);
+        }
+        }
+        % title and axis
+        \node at (12.5,52.5) {\textbf{Skip\&Zero}};
+        %\node[rotate=90] at (-7.5,25) {$m$};
+        \node[] at (12.5,-6.5) {$n$};
+\end{tikzpicture}
