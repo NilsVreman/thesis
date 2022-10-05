@@ -1,0 +1,32 @@
+\documentclass{LTHthesis}
+
+\input{frontmatter/packages} 
+
+% Bibliography for all papers
+\addbibresource{kappa/kappa.bib}
+\addbibresource{papers/ecrts21/paper.bib}
+%\addbibresource{papers/rtas22a/paper.bib}
+%\addbibresource{papers/rtas22b/paper.bib}
+%\addbibresource{papers/lcss22/paper.bib}
+
+% This can be used for including and compiling only parts of the document
+\includeonly{%
+    frontmatter/frontmatter,
+    kappa/kappa,
+    papers/ecrts21/ecrts21,
+}
+
+\begin{document}
+
+% Preamble
+\include{frontmatter/frontmatter}
+
+% Kappa
+\include{kappa/kappa}
+
+% Papers
+\begin{papers}
+   \include{papers/ecrts21/ecrts21}
+\end{papers}
+
+\end{document}
