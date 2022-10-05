@@ -1,0 +1,59 @@
+\renewcommand\thisdir{papers/rtas22a}
+\tikzsetfigurename{rtas22a-}
+\renewcommand\figdir{\thisdir/figs}
+
+% Commands for this paper
+% if the conflict with previously defined commands use \renewcommand
+\input{\thisdir/preamble/cmd.tex}
+
+\paper[Deadline-Miss-Adaptive Controller Implementation]{Deadline-Miss-Adaptive Controller Implementation for Real-Time Control Systems}
+\authors{Nils Vreman \and Claudio Mandrioli \and Anton Cervin}
+
+\begin{abstract}
+    The policy used to implement a control algorithm in a real-time system can significantly affect the quality of control.
+    In this paper, we present a method to adapt the controller implementation, with the objective to improve the system's performance under real-time faults.
+    Our method compensates for missing state updates by adapting the controller parameters according to the number of consecutively missed deadlines. 
+    It extends the state-of-the-art by considering dynamic controllers, which have had limited coverage in previous literature.
+    The adaptation mechanism can be precomputed offline, solely based on knowledge about the controller and not on the controlled plant. 
+    The approach is indifferent to the control design, as well as to the scheduling policy, and can be automatically realised by the operating system, thus improving the robustness of the control system to intermittent and unexpected real-time faults.
+    We develop a stochastic performance analysis method and apply it to both a real plant and numerous simulated plants to evaluate our adaptive controller.
+    Complementary to the stochastic analysis, we also do worst-case stability analysis of the resulting system.
+    The results confirm the conjuncture that the adaptive controller improves both the performance and robustness in the presence of deadline misses.
+\end{abstract}
+
+\vfill
+Originally published in IEEE 28th Real-Time and Embedded Technology and Applications Symposium (2022). 
+Reprinted with permission.
+\newpage
+
+\section{Introduction}
+\label{sec:intro}
+\input{\thisdir/sec/intro.tex}
+
+\section{System Model}
+\label{sec:sys-model}
+\input{\thisdir/sec/problem.tex}
+
+\section{Problem Description}
+\label{sec:problem-descr}
+%\input{\thisdir/sec/related.tex}
+
+\section{Real-Time Controller Adaptation}
+\label{sec:darc}
+%\input{\thisdir/sec/adaptation.tex}
+
+\section{Experimental Evaluation}
+\label{sec:results}
+%\input{\thisdir/sec/results.tex}
+
+\section{Conclusion}
+\label{sec:conclusion}
+%\input{\thisdir/sec/conclusion.tex}
+
+\section*{Acknowledgements}
+This work was supported by the ELLIIT Strategic Research Area.
+This work was partially supported by the Wallenberg AI, Autonomous Systems and Software Program (WASP) funded by the Knut and Alice Wallenberg Foundation.
+This project has received funding from the European Union's Horizon 2020 research and innovation programme under grant agreement No 871259 (ADMORPH project). This (publication/report) reflects only the authors' view and the European Commission is not responsible for any use that may be made of the information it contains.
+
+
+\printbibliography[heading=subbibliography]

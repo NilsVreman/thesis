@@ -1,0 +1,79 @@
+\documentclass[conference]{IEEEtran}
+
+%% Include packages
+\input{preamble/packages.tex}
+
+%% Include commands
+\input{preamble/commands.tex}
+
+%% Tikz Externalize
+% \usetikzlibrary{external}
+% \tikzexternalize[prefix=tikz/]
+
+\title{Deadline-Miss-Adaptive Controller Implementation for Real-Time Control Systems}
+
+\author{Nils Vreman, Claudio Mandrioli, Anton Cervin\\
+Lund University, Sweden\\
+\thanks{This work was supported by the ELLIIT Strategic Research Area.
+This work was partially supported by the Wallenberg AI, Autonomous Systems and Software Program (WASP) funded by the Knut and Alice Wallenberg Foundation.
+This project has received funding from the European Union's Horizon 2020 research and innovation programme under grant agreement No 871259 (ADMORPH project). This (publication/report) reflects only the authors' view and the European Commission is not responsible for any use that may be made of the information it contains.}
+}
+
+\IEEEoverridecommandlockouts
+
+\begin{document}
+
+%% ARTIFACT EVALUATION STAMP - START
+\makeatletter
+\def\@artifactstamptop{0.1cm}
+\def\@artifactstampright{0.1cm}
+\def\@artifactstampwidth{2.5cm}
+\let\@aetitle\@maketitle
+\def\@maketitle{
+\begin{tikzpicture}[remember picture,overlay,shift={(current page.north east)}]%
+\node[anchor=north east,xshift=-\@artifactstampright,yshift=-\@artifactstamptop]{\includegraphics[width=\@artifactstampwidth]{badge_rtas_AE}};%
+\end{tikzpicture}%
+\@aetitle}
+\makeatother
+%% ARTIFACT EVALUATION STAMP - END 
+
+\maketitle
+
+%%%%
+% \thispagestyle{plain}
+% \pagestyle{plain}
+%%%%
+
+\input{preamble/abstract}
+
+\begin{IEEEkeywords}
+Fault-Tolerant Control Systems, Deadline Miss, Adaptive Control
+\end{IEEEkeywords}
+
+\section{Introduction}
+\label{sec:intro}
+\input{sec/intro.tex}
+
+\section{System Model}
+\label{sec:sys-model}
+\input{sec/problem.tex}
+
+\section{Problem Description}
+\label{sec:problem-descr}
+\input{sec/related.tex}
+
+\section{Real-Time Controller Adaptation}
+\label{sec:darc}
+\input{sec/adaptation.tex}
+
+\section{Experimental Evaluation}
+\label{sec:results}
+\input{sec/results.tex}
+
+\section{Conclusion}
+\label{sec:conclusion}
+\input{sec/conclusion.tex}
+
+\bibliographystyle{abbrv}
+\bibliography{paper}
+\end{document}

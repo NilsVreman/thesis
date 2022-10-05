@@ -1,0 +1,162 @@
+\begin{figure}
+    \centerline{\input{\figdir/ctrl-loop}}
+    \caption{Typical structure of a computer-controlled system. \emph{Left:} the Electronic Control Unit (ECU) implementing a real-time system, including a task executing the controller. \emph{Right:} the physical plant controlled by the actuation variable $u$, affected by the disturbance $w$, and producing the measurement~$y$.}
+    \label{fig:ctrl-loop}
+\end{figure}
+
+This section introduces the necessary background and models needed for the remainder of the paper.
+We discuss the real-time implementation of a general linear controller and how it can affect the performance of the system. 
+We start by describing the behaviour of the system under \emph{ideal} conditions. 
+Based on this, we state how \emph{deadline misses} in the real-time implementation affect the system's behaviour.
+
+\subsection{Control Systems under Ideal Operations}
+The objective of a control system is to regulate a physical process, usually called a \emph{plant}, so that it behaves as desired. 
+Figure~\ref{fig:ctrl-loop} shows the structure of a control system, where an Electronic Control Unit (ECU) implements a real-time system. 
+Among the different tasks executed in the system, there is a task responsible for the control computations, denoted as the control task.
+Every job released by this task performs the following actions:
+\begin{enumerate*}[label=(\roman*)]
+    \item Read measurements from the sensors.
+    \item Use the sensor information to update its state and compute a control action. 
+    \item Write the control action to the actuators.
+\end{enumerate*}
+The executed algorithm is generally designed using control theory, where the effective application of the algorithm relies on assumptions about the real-time execution.  
+
+The dynamic behaviour of a plant is commonly described using a state-space model~\cite{Astrom:2008}. 
+Such models are constituted of two sets of equations: one describing the dynamics of the plant and another one describing the relation between the plant state and the available measurements. 
+Describing physical phenomena, those equations are for the most part continuous and nonlinear. 
+However, for control design and implementation purposes, they are commonly transformed into a discrete-time linear time-invariant (LTI) state-space model:
+\begin{equation}
+    \label{eq:plant}
+    \plant: \,\, \left\{
+    \begin{aligned}
+        x_{k+1} &= \Ap x_k + \Bp u_k + \Wp w_k \\
+        y_k &= \Cp x_k + \Dp u_k 
+    \end{aligned}
+    \right.
+\end{equation}
+Here, the variable $k$ counts the number of discrete time steps that have passed since the system started executing. 
+Furthermore, the variable $x_k \in \R^{n_x}$ represents the \emph{plant state}, $u_k \in \R^{n_u}$ corresponds to the \emph{control signal} computed in order to affect the plant, $w_k \in \R^{n_w}$ models disturbances and reference signals, and $y_k \in \R^{n_y}$ is the \emph{measurement signal} available to the controller. 
+For what concerns the matrices, $\Ap \in \R^{n_x \times n_x}$ captures the relation between the current state and the next state, while $\Bp \in \R^{n_x \times n_u}$ and $\Wp \in \R^{n_x \times n_w}$ respectively capture how the control signal and the exogenous signals affect the state at the next time step.
+Furthermore, $\Cp \in \R^{n_y \times n_x}$ and $\Dp \in \R^{n_y \times n_u}$ respectively describe how the current state and control signal relate to the measurements.
+
+To control the behaviour of the plant, a \emph{controller} $\ctrler$ is synthesised to follow some desired properties, such as: 
+\begin{enumerate*}[label=(\roman*)]
+    \item stability, 
+    \item speed of convergence, 
+    \item control effort, and 
+    \item disturbance rejection.
+\end{enumerate*}
+The stability requirement enforces that none of the signals diverge and is a necessary condition for all controllers.
+Moreover, a controller that fulfils all requirements will make the output converge to the reference value within a specified time, while minimising the control effort and the effect of possible disturbances.
+
+Controllers are commonly implemented as fixed-rate, periodically executing tasks, following the Logical Execution Time (LET) paradigm~\cite{Henzinger:2003,Kirsch:2012, Ernst:2018}.
+Adopting this paradigm, the sensors are read at the beginning of the task period, and the control action is written to the actuators at the end of the period. 
+This minimises the effect of fluctuations in the execution pattern of the control algorithm (called jitter) at the cost of introducing a one-step delay in the actuation.
+
+While they are sometimes specified as transfer functions~\cite{Astrom:2008}, controllers are often \emph{implemented} as discrete-time state-space systems.
+More specifically, we assume that the controller is an LTI system that takes the measurement $y_k$ as input and produces the control signal $u_{k+1}$ as output:\footnote{Note that we adopt a positive feedback convention.}
+\begin{equation}
+    \label{eq:ctrler}
+    \ctrler: \,\, \left\{
+    \begin{aligned}
+        z_{k+1} &= \Ac z_k + \Bc y_k \\
+        u_{k+1} &= \Cc z_{k} + \Dc y_k.
+    \end{aligned}
+    \right.
+\end{equation}
+Here, $z_k \in \R^{n_z}$ represents the internal state of the controller.
+The second equation, specifying the control action at step $k+1$, captures the one-step delay introduced by the LET paradigm.
+The matrices $\Ac \in \R^{n_z \times n_z}$, $\Bc \in \R^{n_z \times n_y}$, $\Cc \in \R^{n_u \times n_z}$, and $\Dc \in \R^{n_u \times n_y}$ govern the behaviour of the controller.
+
+In conjunction with Equation~\eqref{eq:ctrler}, we define two types of controllers: \emph{static} and \emph{dynamic}.
+
+\begin{definition}[Static Controller]
+    We denote a \emph{static controller} as any controller $\ctrler$ that is \emph{stateless} (i.e., it has no internal state $z$;\, $n_z = 0$).
+\end{definition}
+
+\begin{definition}[Dynamic Controller]
+    We denote a \emph{dynamic controller} as any controller $\ctrler$ that is \emph{stateful} (i.e., it has an internal state $z$;\, $n_z\geq 1$).
+\end{definition}
+
+From the definitions above, we note that a static controller can be written as a fixed gain matrix times the input (i.e., $\ctrler \,:\, u_{k+1} = \Dc y_k$), while a dynamic controller is equivalent to~\eqref{eq:ctrler} with non-empty matrices $\Ac$, $\Bc$, $\Cc$, and $\Dc$.
+Examples of static controllers include proportional (P) controllers, state feedback controllers, and linear--quadratic regulators (LQR), while dynamic controllers include proportional--integral--derivative (PID) controllers, lead--lag compensators, and linear--quadratic--Gaussian (LQG) regulators~\cite{Astrom:2008}.
+
+\subsection{Control Systems Subject to Deadline Misses}
+
+We assume that the controller $\ctrler$ is implemented as a periodic task with period $T$ and implicit deadlines. 
+Intuitively, each execution period of the control task corresponds to one time step $k$.
+At the start of period $k$, the task releases a \emph{job} that should be completed before the deadline at time $(k+1) T$.
+
+Faults in the real-time system can affect the timely execution of the control task~\cite{Steinbauer:2013}.
+We denote the outcome of a job's execution as either a deadline \emph{hit} or \emph{miss}, corresponding to whether the job completed its execution before its deadline or not. 
+The source of a deadline miss could be a temporary CPU overload~\cite{Baruah:1997}, cache misses~\cite{Milligan:1996, Wang:2012},  or unexpected preemption from hardware interrupts or higher priority tasks~\cite{Stankovic:1995}.
+However, the analysis and adaptation methods presented in this paper are independent of the origin of the deadline miss.
+
+To study what happens when the controller misses a deadline, we have to define how the system behaves in such circumstances.
+In particular, three aspects need to be considered: 
+\begin{enumerate*}[label=(\roman*)]
+    \item how the controller state is updated, 
+    \item how the actuator handles the lack of a new control signal~\cite{Schenato:2009}, and
+    \item how the operating system handles a job that misses its deadline~\cite{Pazzaglia:2019, Cervin:2005}.
+\end{enumerate*}
+The first item refers to what happens to the internal state $z$ when the controller is unable to finish its execution ahead of its dedicated deadline.
+Henceforth, we assume that when the controller misses its deadline, the controller state is \emph{not} updated (implying $z_{k+1} = z_k$). 
+This is motivated by the possibility to roll back $z_k$ to a previous state~\cite{akesson:2020, Seong:2001, Zhang:2003} and by the impossibility to guarantee that the state update was finished if the job was only partially completed.
+
+Regarding the second item, mainly two actuator models have previously been considered in the literature: \emph{Zero} and \emph{Hold} \cite{Schenato:2009}.
+Under the Zero model, if the job released at time $kT$ misses its deadline at time  $(k+1)T$, the actuator outputs $u_{k+1} = 0$.
+This strategy is uncommon in practice, because it performs well only in very specific cases~\cite{Vreman:2021ecrts}. 
+Instead, the more common actuator model is to hold the control signal in the case of a missed deadline: $u_{k+1} = u_k$.
+Although our proposed adaptation is in itself independent of the actuator model, the Hold model has been adopted in the analysis and examples of this paper.
+
+% For the final item, there exists at least three different employable strategies dealing with missed deadlines: 
+For what concerns the handling of the job that missed the deadline, there exist at least three different employable strategies:
+\begin{enumerate*}[label=(\alph*)] % roman already used for the three aspects
+    \item \emph{Kill}
+    \item \emph{Skip-Next}, and 
+    \item \emph{Queue}.
+\end{enumerate*}
+When using the Kill strategy, the job that missed its deadline gets terminated, the controller state is rolled back, and the next job is released. 
+The Skip-Next strategy does not terminate the job that missed its deadline. 
+Instead, it lets the job continue its execution, not releasing subsequent jobs until the active one has finished executing.
+Queue behaves similarly to the Skip-Next strategy: it does not kill the current job, but it does release the subsequent jobs to the job queue.
+Both the Skip-Next and Queue strategies allow jobs to work with outdated input data, since they do not terminate jobs that miss their deadline.
+Thus, they introduce a lag in the actuation of the control law, which in most cases reduces the control performance with respect to what could be achieved with the Kill strategy.
+
+For the remainder of this paper we will use the Kill strategy, since it
+\begin{enumerate*}[label=(\alph*)]
+    \item introduces explicit breakpoints in which to adapt the controller,
+    \item supplies the controller with the latest sensor measurement after an overrun,
+    \item helps free computational resources in overrun situations, and
+    \item is a common choice in both industry and literature~\cite{akesson:2020, Bernat:2001, Hertneck:2019}.
+\end{enumerate*}
+Furthermore, we note that in~\cite{Vreman:2021ecrts} it has been observed that the actuator model is of greater relevance than the handling of the deadline overrun.
+We also note that an effective implementation of the kill strategy that includes state roll-back requires the implementation of checkpointing mechanisms~\cite{Zhang:2003,Seong:2001}, which might not be implemented by default in a real-time system.
+
+We conclude this section by mentioning that various models have been proposed to describe tasks
+that may experience deadline misses, e.g., soft~\cite{Marchand:2008} or weakly hard models~\cite{Bernat:2001, hammadeh:2017}.
+For the adaptive controller in this work, we only assume that the number of consecutive deadline misses $\counter$ is bounded by a finite quantity $\counter_\mathit{max} < \infty$.
+This assumption is a practical necessity, since accepting an infinite run of deadline misses would completely disconnect the plant from the controller~\cite{Maggio:2020}.
+
+Solely for performance analysis, in Section~IV-B we adopt a stochastic model of the sequences of deadline hits and misses. 
+Such a model can be computed from a probabilistic task set model using existing techniques~\cite{Chen:2017, Chen:2018, markovic:2021}. 
+However, we remark that the proposed adaptive controller implementation is independent of the stochastic deadline miss model.
+
+\subsection{Control System Stability under Deadline Misses}
+\label{sec:stability}
+Guaranteeing the stability of control systems is essential in control engineering.
+A linear control system without exogenous inputs is \emph{stable} if and only if the system's state always converges to zero irrespective of its initial value.
+Assuming ideal conditions, i.e., no deadline misses, stability can be verified by checking whether all the closed-loop system's eigenvalues lie inside the unit circle.
+However, in the presence of deadline misses, the classical stability criteria are no longer sufficient, since the dynamics of the control system is time-varying and changes according to the specific pattern of deadline misses.
+For such cases, switched system stability analysis (also known as switching stability) is a viable extension of classical stability~\cite{Liberzon:2003}.
+In this paper, we analyse the switching stability using both a time-averaged (Markov Jump Linear Analysis~\cite{Fang:2002}) and a worst-case (Joint Spectral Radius~\cite{Rota:1960}) approach.
+
+Modelling the deadline misses as a stationary random process with known statistical properties allows us to calculate an analytical time-averaged performance index of the closed-loop system.
+If the performance index is finite, then the system is guaranteed to be stable in the mean-square sense (meaning that the state will not diverge with probability~1).
+We develop our approach to compute the time-averaged performance in Section~\ref{sec:analysis}.
+
+If the statistical properties of the deadline misses are unknown or uncertain, switching stability can still be analysed under worst-case conditions.
+The Joint Spectral Radius (JSR) generalises the spectral radius of a matrix (i.e., the largest absolute eigenvalue) to a set of matrices; thus, the JSR characterises the largest asymptotic growth (or contraction) rate of the states. % arbitrary matrix product of the matrices in the set.
+If the JSR of the set of closed-loop matrices representing $i = \{0,1,\ldots,q_{max}\}$ deadline misses (followed by a hit) is below $1$ then the system is switching stable.
+Conversely, if it is above $1$, there exists at least one sequence of deadline misses and hits that makes the system unstable.
+There exist both toolboxes and methods for calculating the JSR for control systems subject to deadline misses~\cite{Jungers:2014, Maggio:2020, Vreman:2021}.

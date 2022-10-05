@@ -1,0 +1,54 @@
+Computer-controlled systems are prime instances of real-time systems~\cite{Oshana:2006, akesson:2020}.
+Due to the tight interconnection between the environment, hardware, and software, designing such systems has been considered challenging.
+Part of this challenge resides in the design of the real-time software, specifically considering both the normal operation~\cite{Lozoya:2013,Aminifar:2011} (e.g., correct output computation) and system malfunctions~\cite{Caccamo:2002,Ramanathan:1997} (e.g., temporary overloads).
+For this reason, the research community has undertaken a significant effort to merge design choices on the algorithmic side and on the real-time implementation side.
+
+In computer-controlled systems, algorithms are developed using control theory~\cite{Astrom:2008}.
+The theory offers strong and practically relevant formal guarantees, but also makes strict assumptions on the real-time execution of the implemented algorithm.
+These assumptions are naturally translated into periodic tasks with hard deadlines.
+However, meeting every single deadline in a periodic control task is not necessary \cite{Ramamritham:1996,Ramanathan:1997}.
+Instead, the timing requirements are the result of design choices and engineering trade-offs between resource utilisation and performance \cite{Lozoya:2013,Cervin:2004}.
+
+Co-design approaches have been proposed to maximise the control performance while minimising the real-time resource utilisation~\cite{Marti:2001,Rehbinder:2000}.
+However, the tight integration between control algorithms and the real-time implementation has limitations, due to the complexity of the resulting systems.
+This complexity generally translates into
+\begin{enumerate*}[label=(\roman*)]
+    \item complex design methodologies,
+    \item conservative results, and
+    \item strong assumptions on the system properties.
+\end{enumerate*}
+
+Differently from existing approaches, in this paper we avoid the additional complexity by \emph{automatically} adapting the real-time implementation of the controller.
+The approach is inspired by the concept of autotuning, originating in the control literature~\cite{Astrom:1984, Hagglund:1983}.
+Autotuning was developed to simplify the PID control design process by automatically optimising the controller's design parameters.
+This idea is here translated to the real-time implementation, where instead the predesigned control algorithm is automatically adapted for the real-time architecture to minimise the design effort.
+
+To enable an automatic adaptation of the control algorithm for a wide range of systems, we make as few assumptions about the implementation platform as possible.
+The system requirements that we pose are nonintrusive and seen in industrial applications~\cite{akesson:2020}.
+The real-time operating system is required to be able to: schedule periodic tasks with implicit deadlines, abort (kill) instances of tasks that miss their deadlines, roll back the state of aborted tasks~\cite{Zhang:2003,Seong:2001}, and handle controller inputs and outputs at task release times~\cite{Kirsch:2012, Ernst:2018}.
+While previous co-design approaches require, e.g., probabilistic or weakly hard descriptions of deadline misses~\cite{Pazzaglia:2019,Chakraborty:2014}, our adaptation approach works for any deadline miss model.
+From the point of view of the controller, we assume a linear time-invariant control law, but we require no prior information about the control design, nor about the system to be controlled.
+Similarly to~\cite{Pazzaglia:2021}, our adaptive control implementation is applicable to general linear discrete-time controllers and not only static ones.
+
+% paragraph on the analysis and the empirical campaign
+To evaluate the performance of our adaptive implementation, we propose a stochastic analysis of the control system.
+The analysis assumes a probabilistic model of the deadline misses; however, it is agnostic to how the model is obtained.
+We utilise this analysis to evaluate our approach on both a \emph{real} system and a benchmark set of $268$ \emph{simulated} control systems from the process industrial domain.
+We use the former to evaluate the practical relevance of the proposed approach and the latter to evaluate its general applicability.
+We complement our performance analysis with a worst-case stability analysis.
+In all of our tests, the adaptive implementation improves both the performance and the worst-case stability of the system.
+
+The paper provides the following two main contributions:
+\begin{itemize}
+    \item It proposes a novel, modular and intuitive control law implementation that adapts the control action upon the occurrence of deadline misses in the periodic controller task. The adaptive implementation has a small overhead and is applicable to all linear dynamic controllers.
+    \item It proposes a probabilistic analysis of the resulting control system subject to deadline misses.
+    The analysis is based on a comparison with the ideal system without deadline misses and is used to evaluate the performance of both a real system and numerous simulated control systems.
+    The results show that the adaptive implementation significantly improves the system performance and robustness, compared to the nominal implementation.
+\end{itemize}
+
+The remainder of this paper is outlined as follows. 
+In Section~\ref{sec:sys-model} we present the relevant control and real-time system background. 
+Section~\ref{sec:problem-descr} presents and discusses the previous literature on the topic, identifying the limitations of the state-of-the-art that we are addressing.
+In Section~\ref{sec:darc} we first propose our adaptive implementation of the control law, and then we integrate the proposed controller with a probabilistic analysis method to enable its evaluation.
+Section~\ref{sec:results} presents an empirical evaluation of the adaptive control law based on the proposed analysis for both a physical system and numerous simulated systems.
+Finally, Section~\ref{sec:conclusion} concludes the paper.

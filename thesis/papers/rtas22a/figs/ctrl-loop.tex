@@ -1,0 +1,36 @@
+\begin{tikzpicture}
+\small
+\node[draw] (ctrler) at (0,0) {
+    \begin{tikzpicture}[
+    task/.style={draw,
+                 thick,
+                 minimum width=3.2cm,
+                 minimum height=1.8cm,
+                 fill=white,
+                 node distance =1.3cm},
+    >=stealth]
+        \node[] (hw) at (0,0) {\textbf{ECU}};
+        \node[task, below of=hw, xshift=-7,yshift=7, opacity=.3] (task-3) [align=center]{};
+        \node[task, below of=hw, xshift=-5,yshift=5, opacity=.5] (task-2) [align=center]{};
+        \node[task, below of=hw, xshift=-3,yshift=3, opacity=.7] (task-1) [align=center]{};
+        \node[task, below of=hw] (task-c)[align=left]{Control Task $\ctrler$ \\[0.5mm]
+                                                    \small
+                                                      \texttt{y = read\_input();}\\
+                                                      \texttt{u = ctrl\_comp();}\\
+                                                      \texttt{write\_output(u);}};
+    \end{tikzpicture}
+};
+
+\node[draw,minimum height=2cm] (plant) at (5,0) [align=center]{
+    Physical Plant $\plant$ \\[1mm]
+    $\begin{aligned}
+    x_{k+1} &= \Ap x_k \!+\! \Bp u_k \!+\! \Wp w_k\\
+    y_k &= \Cp x_k \!+\! \Dp u_k 
+    \end{aligned}$
+};
+
+\draw[->] ([yshift=-0.5cm] plant.west) -- node[yshift=-0.2cm]{$y$} ([yshift=-0.5cm]ctrler.east);
+\draw[->] ([yshift= 0.5cm]ctrler.east) -- node[yshift=0.2cm]{$u$} ([yshift= 0.5cm] plant.west);
+\draw[->]([yshift=0.8cm]plant.north)--node[xshift=0.2cm]{$w$}(plant);
+
+\end{tikzpicture}
