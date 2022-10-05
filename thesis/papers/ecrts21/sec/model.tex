@@ -4,7 +4,7 @@ In this section, we introduce the relevant control background needed for the rem
 \centering
 \input{\figdir/loop.tex}
 \caption{Control loop: The reference value $r_k$ is compared with the output $y_k$ of the plant $\plant$.
-    The control error $e_k = r_k - y_k$ is used by the controller $\controller$ to compute the value of the control signal $u_k$.
+    The control error $e_k = r_k - y_k$ is used by the controller $\ctrler$ to compute the value of the control signal $u_k$.
     The plant is disturbed by the stochastic process $w_k$.}
 \label{fig:loop}
 \end{figure}
@@ -45,12 +45,12 @@ The matrices $A_p$ (size $\numstatesplant \times \numstatesplant$), $B_p$ (size 
 
 \subsection{Controller Model}
 
-The plant $\plant$ is controlled by a periodically executing controller $\controller$ with implicit deadlines, i.e., the deadline of each task instance (job) coincides with the next task activation.
+The plant $\plant$ is controlled by a periodically executing controller $\ctrler$ with implicit deadlines, i.e., the deadline of each task instance (job) coincides with the next task activation.
 We consider the class of all linear controllers with a one-step delay between sampling and actuation.\footnote{One-step delay controllers are controllers in which a control signal is computed in the $k$-th interval and actuated at the beginning of the $k+1$-th period. In the real-time systems jargon, one-step delay controllers are often referred to as controllers that follow the Logical Execution Time (LET) paradigm~\cite{Kirsch:2012, Ernst:2018}. From the real-time perspective, implementing the controller following the LET paradigm improves the timing predictability. From the control perspective, one-step delay controllers reduce activation jitter and allows the engineer to neglect time-varying computational delays.}
 In other words, we consider all the controllers that can be written as linear systems, according to the following state-space equation:
 \begin{equation}
 \label{eq:background:controller}
-    \controller : \left\{
+    \ctrler : \left\{
     \begin{aligned}
         z_{k+1} &\,=\, A_c\,z_k + B_c\,e_k \\
         u_{k+1} &\,=\, C_c\,z_k + D_c\,e_k
@@ -76,7 +76,7 @@ Hence, it is possible to analyse plants and controllers that transition between 
 
 We now analyse the closed-loop system shown in Figure~\ref{fig:loop}.
 Combining the dynamical models from~\eqref{eq:background:plant} and~\eqref{eq:background:controller}, we obtain matrices that represent the closed-loop system.
-We denote the state vector of the closed-loop system with $\tilde{x}_k = \left[ x_k^T,\, z_k^T,\, u_k^T \right]^T$, where $^T$ is the transpose operator.
+We denote the state vector of the closed-loop system with $\tilde{x}_k = \left[ x_k^\T,\, z_k^\T,\, u_k^\T \right]^\T$, where $^\T$ is the transpose operator.
 In this way, we obtain a system that has the vectors $r_k$ and $w_k$ as input, and is described by
 %
 \begin{equation} 
@@ -150,15 +150,15 @@ In our work, we use a quadratic cost function
 %
 \begin{equation}
     \label{eq:cost}
-    J_k = \E \left(e_k^T Q_e e_k + u_k^T Q_u u_k\right).
+    J_k = \E{e_k^\T Q_e e_k + u_k^\T Q_u u_k}.
 \end{equation}
 %
 The cost function penalises deviations from the reference value as well as usage of the control signal.
-$\E\!$ denotes expected value, and the positive semidefinite weighting matrices $Q_e$ (size $\numoutputplant \times \numoutputplant$) and $Q_u$ (size $\numoutputctl \times \numoutputctl$) weigh the different terms against each other.
+$\mathbb{E}$ denotes expected value, and the positive semidefinite weighting matrices $Q_e$ (size $\numoutputplant \times \numoutputplant$) and $Q_u$ (size $\numoutputctl \times \numoutputctl$) weigh the different terms against each other.
 A small cost value means that the controller successfully makes the error approach zero, using a small control signal.
 
 If the stochastic properties of the external signals $r_k$ and $w_k$ are known, it is possible to calculate the value of the cost function analytically.
-For simplicity and without loss of generality, we will henceforth assume that $r_k = 0$ (i.e., we want to regulate the output to zero) and that $w_k$ is a zero-mean Gaussian white noise process with variance~$R=\E \left(w_k w_k^T\right)$.
+For simplicity and without loss of generality, we will henceforth assume that $r_k = 0$ (i.e., we want to regulate the output to zero) and that $w_k$ is a zero-mean Gaussian white noise process with variance~$R=\E{w_k w_k^\T}$.
 More elaborate disturbance models can be realised by adding extra states in the plant model.
 
 We now detail how to evaluate \eqref{eq:cost}.
@@ -166,29 +166,29 @@ Let $P_k$ denote the covariance of the closed-loop state vector at time $k$,
 %
 \begin{equation}
 \label{eq:covarcalc}
-    P_k = \E \left( \tilde x_k \tilde x_k^T \right).
+    P_k = \E{\tilde x_k \tilde x_k^\T }.
 \end{equation}
 %
 The state covariance evolves according to
 %
 \begin{equation}
 \label{eq:covevolution}
-    P_{k+1} = A \,P_k\, A^T + B_w \,R\, B_w^T.
+    P_{k+1} = A \,P_k\, A^\T + B_w \,R\, B_w^\T.
 \end{equation}
 %
 Given $P_k$, we can calculate the cost for time step $k$ as
 %
 \begin{equation}
 \label{eq:covartocost}
-    J_k = \E \left(\tilde x_k^T \,Q\, \tilde x_k \right)= \trace \left(P_k \,Q\right),
+    J_k = \E{\tilde x_k^\T \,Q\, \tilde x_k } = \trace{P_k \,Q},
 \end{equation}
 %
-where $\trace{}$ computes the trace of the matrix, and
+where $\mathrm{tr}$ computes the trace of the matrix, and
 %
 \begin{equation}
     \setlength\arraycolsep{2pt}
     Q = \begin{bmatrix} 
-        C_p^T\,Q_e\,C_p                           & 0_{\numstatesplant \times \numstatesctl} & 0_{\numstatesplant \times \numinputplant} \\
+        C_p^\T\,Q_e\,C_p                           & 0_{\numstatesplant \times \numstatesctl} & 0_{\numstatesplant \times \numinputplant} \\
         0_{\numstatesctl \times \numstatesplant}  & 0_{\numstatesctl \times \numstatesctl}   & 0_{\numstatesctl \times \numinputplant} \\
         0_{\numinputplant \times \numstatesplant} & 0_{\numinputplant \times \numstatesctl}  & Q_u
     \end{bmatrix} 

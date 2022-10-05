@@ -8,7 +8,7 @@ Faults can happen during the normal execution of tasks on a platform.
 Informally, as a result of a fault, tasks miss their deadlines.
 When the fault is resolved, then the original situation is recovered (possibly after a transient initial phase).
 
-Specifically, given a system $\system$, we define a \emph{burst interval} $\miss$ as an interval of controller activations in which the control task executing $\controller$ consecutively misses $\nummisses$ deadlines, regardless of the strategy used to handle the misses.
+Specifically, given a system $\system$, we define a \emph{burst interval} $\miss$ as an interval of controller activations in which the control task executing $\ctrler$ consecutively misses $\nummisses$ deadlines, regardless of the strategy used to handle the misses.
 We assume that the burst interval $\miss$ is followed by a \emph{recovery interval} $\recovery$, defined as an interval in which the control task consecutively hits $\numhits$ deadlines.
 
 During the burst interval, the deadline misses of the control task are handled using a \emph{deadline handling strategy} $\dstrat$ (Kill, $K$, or Skip-Next, $S$).
@@ -58,7 +58,7 @@ If a control task deadline miss occurs at time instant $k$, the plant states $x_
 However, the controller terminates its execution prematurely by killing the job, thus not updating its states ($z_{k+1} = z_k$).
 The controller output is determined by the actuation strategy and is here zero ($u_{k+1} = 0$).
 Now, consider a burst interval of length $\nummisses$ after time instant $k$.
-Recalling that $\tilde{x}_k = \left[ {x_k}^T {z_k}^T {u_k}^T \right]^T$, we can write the evolution of the closed-loop system for the sequence of $m$ deadline misses followed by a single deadline hit as the product of a matrix representing the behaviour of the system for a hit and a matrix representing the behaviour in case of miss elevated to the power of $m$ to indicate $m$ steps of the system evolution.
+Recalling that $\tilde{x}_k = \left[ {x_k}^\T {z_k}^\T {u_k}^\T \right]^\T$, we can write the evolution of the closed-loop system for the sequence of $m$ deadline misses followed by a single deadline hit as the product of a matrix representing the behaviour of the system for a hit and a matrix representing the behaviour in case of miss elevated to the power of $m$ to indicate $m$ steps of the system evolution.
 
 The resulting closed-loop system in state-space form is
 %
@@ -222,7 +222,7 @@ When a burst interval of $\nummisses$ missed deadlines occurs, the system will b
 %
 \begin{equation}
 \label{eq:covariance-evolution}
-    P_{k+\nummisses+1} = A_{\strat}\funof{m} P_k \left( A_{\strat}\funof{m} \right)^T + A^{j_{\numhits}} R_w \left( A^{j_{\numhits}} \right)^T,
+    P_{k+\nummisses+1} = A_{\strat}\funof{m} P_k \left( A_{\strat}\funof{m} \right)^\T + A^{j_{\numhits}} R_w \left( A^{j_{\numhits}} \right)^\T,
 \end{equation}
 where
 \begin{equation}
@@ -231,7 +231,7 @@ where
     \begin{aligned}
         R_w &= 
         \begin{bmatrix} 
-            \sum_{i=0}^{j_{\nummisses}} A_p^i\,G_p\,R\,G_p^T\,(A_p^i)^T & 0_{\numstatesplant \times \numstatesctl+\numinputplant} \\ 
+            \sum_{i=0}^{j_{\nummisses}} A_p^i\,G_p\,R\,G_p^\T\,(A_p^i)^\T & 0_{\numstatesplant \times \numstatesctl+\numinputplant} \\ 
             0_{\numstatesctl + \numinputplant \times \numstatesplant}               & 0_{\numstatesctl + \numinputplant \times \numstatesctl+ \numinputplant}
         \end{bmatrix}, \\
         j_{\nummisses} &= 
