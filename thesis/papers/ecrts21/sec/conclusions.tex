@@ -1,0 +1,10 @@
+In this paper we analysed control systems and their behaviour in the presence of bursts of deadline misses. 
+We provided a comprehensive set of tools to determine how robust a given control system is to faults that hinder the computation to complete in time, with different handling strategies. 
+%
+Our analysis tackles both stability and performance. In fact, we have shown that analysing the stability of the system is not enough to properly quantify the robustness to deadline misses, as the performance loss could be significant even for stable systems. We introduced two performance metrics, linked to the recovery of a system from a burst of deadline misses.
+
+A limitation of the presented performance analysis is that it only applies to linear control systems. However, the approach can easily be extended to analyse \emph{time-varying} linear systems and can also be used for local analysis of a nonlinear system that should follow a given reference trajectory. In fact, to illustrate the applicability to real (e.g., nonlinear) systems, we applied the  analysis to a Furuta pendulum and compared the results of simulations obtained with a model of the process to the real execution data.
+The results support our claim that the proposed performance analysis is a valid approximation of the real-world system performance.
+
+We performed additional tests on a large batch of industrial plants, using modern control design techniques. 
+From our experimental campaign, we conclude that the choice of actuation strategy affects the control performance significantly more than the choice of deadline handling strategy.

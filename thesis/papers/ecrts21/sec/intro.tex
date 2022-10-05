@@ -1,0 +1,77 @@
+Feedback control systems have been used as prime examples of hard
+real-time systems ever since the term was coined. However, in the 
+past twenty years, it has become increasingly clear that the hard
+real-time task model is overly strict for most control
+systems. Requiring that \emph{all} deadlines of a periodic control
+task must be met can lead to very conservative designs with low
+utilisation, low sampling rates, and---in the end---worse than
+necessary control performance. Following this line of reasoning, researchers started looking into task models in which tasks can sporadically miss some deadlines, and defined concepts like the ``skip factor''~\cite{Koren:1995}, i.e., the number of correctly executed jobs that must occur between two failed instances. Task models with failed jobs eventually led to the definition of the weakly hard task
+model~\cite{Bernat:2001}, that specify constraints on the sequence of jobs that complete their execution correctly and the ones that miss their deadlines.
+Adopting the weakly hard model allows a control task to opportunistically
+execute more frequently, which in general improves reference tracking
+and disturbance rejection~\cite{Chakraborty:2014a, Linsenmayer:2017, Pazzaglia:2018}.
+
+A recent industrial survey has shown that practitioners are
+used to work with systems that experience deadline
+misses~\cite[Questions 14 and 15]{Akesson:2020}. In a significant
+percentage of cases, these systems are subject to blackout events that
+can persist for more than ten consecutive task periods. Examples of such
+events are mode switches in mixed-criticality systems, resets due to
+hardware faults, security attacks, specific types of cache misses, and
+connectivity issues in networked control systems. Handling all of
+these situations by design could require extreme resource
+over-provisioning.
+
+In this paper we focus precisely on these sporadic
+system events, which may cause a control task to stall for one
+or several cycles. To determine the effect of deadline misses on the
+control system, it is of utmost importance to analyse the physics of the
+plant and the effect of control signals not being delivered to it. For
+these systems, stability guarantees have been given on the maximum number
+of tolerable consecutive deadline misses~\cite{Maggio:2020}. These guarantees only
+consider \emph{stability} of the closed-loop system as the property to be
+preserved. In this paper, we demonstrate that while stability may be
+preserved, the control system \emph{performance} may be severely affected by
+the burst of misses. Performance and stability have been considered
+simultaneously in the literature. For example, in~\cite{Chakraborty:2018} a controller is developed that guarantees stability, accepting some level of performance degradation for a given plant. However,
+we believe that a lot is left open to investigate, especially with respect to general guarantees. In particular, in
+this paper we aim to understand the effect that the deadline handling
+strategies jointly have on performance and stability, providing a
+holistic evaluation. Furthermore, we evaluate our results on both
+simulated platforms and real control plants.
+More precisely, we offer the following contributions:
+%
+\begin{itemize}
+\item We propose a new type of weakly hard task model, which
+specifies a \emph{consecutive} deadline miss interval followed by
+a minimum \emph{consecutive} deadline hit (recovery) interval. This model
+is crucial to properly assess the performance effect of a burst of
+deadline misses, as the ones reported by
+practitioners~\cite{Akesson:2020}.
+
+\item We provide an analysis methodology for stability and performance of
+control tasks executing under this task model using a variety of
+implementation choices to handle deadline misses (Kill vs. Skip-Next,
+Zero vs. Hold). In particular, we separately consider the two cases in
+which a miss pattern is repeated (which fits an increased workload
+situation---for example due to a different mode of execution), and in
+which it is not possible to specify constraints on the repetition of
+the miss pattern.
+
+\item We compare experimental results obtained with a real process---a Furuta pendulum that is stabilised in the upright position---with simulation results based on a linear model of the same process, using the same controller. 
+This shows that simulated data is representative enough to draw conclusions on the controller performance, despite unmodelled nonlinear dynamics and noise.
+
+\item We present the result of a large scale evaluation campaign of commonly used controllers on a benchmark of 133 industrial plants. From this evaluation we conclude that the choice of actuation strategy (i.e., what to do with the control signal when a miss occurs) affects control performance significantly more than the choice of deadline handling strategy (i.e., what to do with the control task when a miss occurs).
+
+\end{itemize}
+
+The rest of this paper is outlined as follows. In
+Section~\ref{sec:related} we give a brief overview of related work. In
+Section~\ref{sec:model} we present relevant control theory and
+introduce the stability and performance concepts.
+Section~\ref{sec:deadline} describes the weakly hard task models and
+the strategies that are commonly used to handle deadline
+misses. Section~\ref{sec:analysis} presents our extension to the weakly
+hard task model, and the corresponding stability and
+performance analysis. Section~\ref{sec:results} presents our experimental results, and
+Section~\ref{sec:conc} concludes the paper.

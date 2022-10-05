@@ -1,0 +1,62 @@
+\renewcommand\thisdir{papers/ecrts21}
+\tikzsetfigurename{ecrts21-}
+\renewcommand\figdir{\thisdir/figs}
+
+% Commands for this paper
+% if the conflict with previously defined commands use \renewcommand
+\input{\thisdir/preamble/cmd.tex}
+
+\paper[Analysis of Control Systems Subject to Bursts of Deadline Misses]{Stability and Performance Analysis of Control Systems Subject to Bursts of Deadline Misses}
+\authors{Nils Vreman \and Anton Cervin \and Martina Maggio}
+
+\begin{abstract}
+    Control systems are by design robust to various disturbances, ranging from noise to unmodelled dynamics.
+    Recent work on the weakly hard model---applied to controllers---has shown that control tasks can also be inherently robust to deadline misses.
+    However, existing exact analyses are limited to the stability of the closed-loop system.
+    In this paper we show that stability is important but cannot be the only factor to determine whether the behaviour of a system is acceptable also under deadline misses.
+    We focus on systems that experience bursts of deadline misses and on their recovery to normal operation.
+    We apply the resulting comprehensive analysis (that includes both stability and performance) to a Furuta pendulum, comparing simulated data and data obtained with the real plant.
+    We further evaluate our analysis using a benchmark set composed of 133 systems, which is considered representative of industrial control plants.
+    Our results show the handling of the control signal is an extremely important factor in the performance degradation that the controller experiences---a clear indication that only a stability test does not give enough indication about the robustness to deadline misses.
+\end{abstract}
+
+\vfill
+Originally published in Leibniz International Proceedings in Informatics (LIPIcs) 33rd Euromicro Conference on Real-Time Systems (2021). 
+Reprinted with permission.
+\newpage
+
+\section{Introduction}
+\label{sec:intro}
+\input{\thisdir/sec/intro}
+
+\section{Related Work}
+\label{sec:related}
+\input{\thisdir/sec/related.tex}
+
+\section{System Behaviour in Nominal Conditions}
+\label{sec:model}
+\input{\thisdir/sec/model}
+
+\section{System Behaviour with Deadline Misses}
+\label{sec:deadline}
+%\input{\thisdir/sec/deadline}
+
+\section{Burst Interval Analysis}
+\label{sec:analysis}
+%\input{\thisdir/sec/analysis}
+
+\section{Experimental Results}
+\label{sec:results}
+%\input{\thisdir/sec/results}
+
+\section{Conclusions}
+\label{sec:conc}
+\input{\thisdir/sec/conclusions}
+
+\section*{Acknowledgements}
+The authors are members of the ELLIIT Strategic Research Area at Lund University.
+This project has received funding from the European Union's Horizon 2020 research and innovation programme under grant agreement Number 871259 (ADMORPH project).
+This publication reflects only the authors' view and the European Commission is not responsible for any use that may be made of the information it contains.
+
+
+\printbibliography[heading=subbibliography]

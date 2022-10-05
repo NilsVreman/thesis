@@ -1,0 +1,39 @@
+% maths command
+\newcommand{\funof}[1]{\left(#1\right)}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\eig}[2]{\lambda_{#1}\left( #2 \right)}
+\newcommand{\trace}[1]{\mathrm{tr}\, #1}
+\newcommand{\E}[1]{\mathbb{E}\, #1}
+%\DeclareMathOperator{\Mat}{Mat}
+%\DeclarePairedDelimiter{\diagfences}{(}{)}
+\newcommand{\diag}{\operatorname{diag}\diagfences}
+
+%% Notation
+% Calligraphy
+\newcommand{\closedloop}{\mathcal{S}}
+\newcommand{\plant}{\mathcal{P}}
+\newcommand{\noise}{\mathcal{N}}
+\newcommand{\controller}{\mathcal{C}}
+\newcommand{\system}{\mathcal{S}}
+\newcommand{\dstrat}{\mathcal{D}}
+\newcommand{\hstrat}{\mathcal{A}}
+\newcommand{\strat}{\mathcal{H}}
+\newcommand{\miss}{\mathcal{M}}
+\newcommand{\recovery}{\mathcal{R}}
+
+\newcommand{\nilsstability}{static-cyclic}
+\newcommand{\switchingstability}{miss-constrained}
+
+% Variables
+\newcommand{\nummisses}{m}
+\newcommand{\numtotalanalysed}{\ell}
+\newcommand{\numhits}{n}
+\newcommand{\numinputplant}{i_p}
+\newcommand{\numstatesplant}{d_p}
+\newcommand{\numoutputplant}{o_p}
+\newcommand{\numinputctl}{i_c}
+\newcommand{\numstatesctl}{d_c}
+\newcommand{\numoutputctl}{o_c}
+\newcommand{\samplingperiod}{h}
+\newcommand{\recoverylengthinterval}{n^*}
+\newcommand{\performanceawaretolerablemisses}{m^*}

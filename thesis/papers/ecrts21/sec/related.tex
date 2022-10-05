@@ -1,0 +1,56 @@
+The work presented in this paper is closely related to two broad research areas, namely, the analysis of 
+\begin{enumerate*}[label=(\roman*)]
+    \item weakly hard systems and
+    \item fault-tolerant control systems.
+\end{enumerate*}
+
+\textbf{Weakly Hard Systems:}
+Deadline misses can be seen as sporadic events caused by
+unforeseen delays in the system. Such delays could for instance
+be induced by overload activations~\cite{Xu:2015, Ernst:2014}
+or cache misses~\cite{Altmeyer:2014, Davis:2013}. The idea behind
+weakly hard analysis is that deadline misses are permitted under
+predefined constraints. Such systems have been analysed
+extensively from a real-time scheduling
+perspective~\cite{Bernat:1997, Caccamo:1997, Choi:2019,
+Hammadeh:2019}.  The weakly hard models have gained traction in
+the research community as a tool to understand and analyse
+systems with sporadic faults~\cite{Soudbakhsh:2013, Bund:2014,
+Frehse:2014, Bund:2015, Hammadeh:2017a, Hammadeh:2017b, Sun:2017,
+Ahrendts:2018, Soudbakhsh:2018, Pazzaglia:2018,
+Gaukler:2019a}. In a recent paper, Gujarati et
+al.~\cite{Gujarati:2019} analysed and compared different methods
+for estimating the overall reliability of control systems using
+the weakly hard task model. Furthermore, the authors
+of~\cite{Broman:2019} proposed a toolchain for analysing the
+strongest, satisfied weakly hard constraints as a function of the
+worst-case execution time.
+
+\textbf{Fault-Tolerant Control Systems:} 
+Real-time systems are sensitive to faults. Due to their
+safety-critical nature, it is arguably more important
+to guarantee fault-tolerance with respect to other
+classes of systems. Some of these faults can be
+described using the weakly hard model. Due to the
+nature of control systems, special analysis techniques
+can combine fault models and the physical characteristics of
+systems.
+
+Fault-tolerance has been investigated in
+many of its aspects, e.g., fault-aware scheduling 
+algorithms~\cite{Rowe:2013, Buttazzo:2000b} and the analysis of systems with unreliable components~\cite{Teich:2015}. Furthermore, 
+restart-based design~\cite{Caccamo:2017a, Caccamo:2018} has been used as a technique to guarantee resilience. The fault models are frequently assumed to target overload-prone 
+systems, or systems with components subject to sporadic failures. Bursts of faults have been observed to affect real systems~\cite{Phan:2015, Vreman:2020}.
+Gujarati et al.~\cite{Gujarati:2018} proposed an analysis 
+method for networked control systems that uses active replication and quantifies the resilience of the control
+system to stochastic errors. 
+Maggio et al.~\cite{Maggio:2020} developed a tool for determining the stability of a control system where the control task behaves according to the weakly hard 
+model. From the control perspective, there has been extensive research into both analysis and mitigation of real-time faults in feedback systems~\cite{Ramanathan:1997, Chakraborty:2014b, Chakraborty:2018}. Very often, this research produced tools to analyse the effect of computational delays~\cite{Cervin:2019} and of choosing specific scheduling policies or parameters~\cite{Palopoli:2000, Cervin:2005}, possibly including deadline misses. In a few instances, researchers looked at how to improve the performance of control systems in conjunction with scheduling information~\cite{Buttazzo:2007}. One such effort analyses modifications to the code of classic and simple control systems to handle overruns that reset the period of execution of the control task~\cite{Pazzaglia:2021}.
+Abdi et al.~\cite{Caccamo:2017b} proposed a control design method for safe system-level restart, mitigating 
+unknown faults during runtime execution, while keeping the system inside a safe operating space. 
+Pazzaglia et al.~\cite{Pazzaglia:2019} used the scenario theory to derive a control design method accounting for potential 
+deadline misses, and discussed the effect of different deadline handling strategies.
+Linsenmayer et al.~\cite{Linsenmayer:2020} worked on the stabilisation of weakly-hard linear control systems for networked control systems, with some extension for nonlinear systems~\cite{Hertneck:2019}. In the considered setup, faults compromise network transmissions, but do not interfere with the controller computation (assuming that the computation is triggered). The work also focused on stability, with no control performance evaluation.
+
+To the best of our knowledge, no previous work has devised a combined stability and performance analysis to understand how faults (even when they can be tolerated) affect the plant that should be controlled when different deadline handling strategies are used.
+

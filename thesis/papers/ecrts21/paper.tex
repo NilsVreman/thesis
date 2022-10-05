@@ -1,0 +1,89 @@
+\documentclass[a4paper,UKenglish,cleveref, autoref, thm-restate]{lipics-v2021}
+
+\bibliographystyle{plainurl}
+
+\input{preamble/pkg.tex}
+\input{preamble/cmd.tex}
+\tikzexternalize[prefix=tikz/] % needs to be in the main
+
+\title{Stability and Performance Analysis of Control Systems Subject to Bursts of Deadline Misses}
+
+\author{Nils Vreman}{Lund University, Department of Automatic Control, Sweden}{nils.vreman@control.lth.se}{https://orcid.org/0000-0002-6732-9500}{}
+\author{Anton Cervin}{Lund University, Department of Automatic Control, Sweden}{anton.cervin@control.lth.se}{https://orcid.org/0000-0003-4889-8772}{}
+\author{Martina Maggio}{Saarland University, Department of Computer Science, Germany \and Lund University, Department of Automatic Control, Sweden}{maggio@cs.uni-saarland.de}{https://orcid.org/0000-0002-1143-1127}{}
+
+\authorrunning{N. Vreman, A. Cervin, and M. Maggio}
+
+\titlerunning{Stability and Performance Analysis of Control Systems \ldots}
+
+\ccsdesc{Computer systems organization~Embedded and cyber-physical systems}
+\ccsdesc{Computer systems organization~Real-time systems}
+\ccsdesc{Computer systems organization~Dependable and fault-tolerant systems and networks}
+
+
+\keywords{Fault-Tolerant Control Systems, Weakly Hard Task Model}
+
+\acknowledgements{The authors are members of the ELLIIT Strategic Research Area at Lund University. This project has received funding from the European Union's Horizon 2020 research and innovation programme under grant agreement Number 871259 (ADMORPH project). This publication reflects only the authors' view and the European Commission is not responsible for any use that may be made of the information it contains.
+}
+
+\Copyright{Nils Vreman, Anton Cervin, Martina Maggio}
+
+\EventEditors{Bj\"{o}rn B. Brandenburg}
+\EventNoEds{1}
+\EventLongTitle{33rd Euromicro Conference on Real-Time Systems (ECRTS 2021)}
+\EventShortTitle{ECRTS 2021}
+\EventAcronym{ECRTS}
+\EventYear{2021}
+\EventDate{July 5--9, 2021}
+\EventLocation{Virtual Conference}
+\EventLogo{}
+\SeriesVolume{196}
+\ArticleNo{15}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Control systems are by design robust to various disturbances, ranging from noise to unmodelled dynamics. 
+Recent work on the weakly hard model---applied to controllers---has shown that control tasks can also be inherently robust to deadline misses. 
+However, existing exact analyses are limited to the stability of the closed-loop system. 
+In this paper we show that stability is important but cannot be the only factor to determine whether the behaviour of a system is acceptable also under deadline misses. 
+We focus on systems that experience bursts of deadline misses and on their recovery to normal operation. 
+We apply the resulting comprehensive analysis (that includes both stability and performance) to a Furuta pendulum, comparing simulated data and data obtained with the real plant. 
+We further evaluate our analysis using a benchmark set composed of 133 systems, which is considered representative of industrial control plants. 
+Our results show the handling of the control signal is an extremely important factor in the performance degradation that the controller experiences---a clear indication that only a stability test does not give enough indication about the robustness to deadline misses.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:intro}
+\input{sec/intro}
+
+\section{Related Work}
+\label{sec:related}
+\input{sec/related.tex}
+
+\section{System Behaviour in Nominal Conditions}
+\label{sec:model}
+\input{sec/model}
+
+\section{System Behaviour with Deadline Misses}
+\label{sec:deadline}
+\input{sec/deadline}
+
+\section{Burst Interval Analysis}
+\label{sec:analysis}
+\input{sec/analysis}
+
+\section{Experimental Results}
+\label{sec:results}
+\input{sec/results}
+
+\section{Conclusions}
+\label{sec:conc}
+\input{sec/conclusions}
+
+%\bibliographystyle{abbrv}
+\bibliography{paper}
+
+\end{document}

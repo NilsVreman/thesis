@@ -1,0 +1,95 @@
+The analysis above holds when the control task meets all its
+deadlines. However, the presence of deadline misses changes the
+behaviour of the system. The stability of controllers with a
+number of consecutive deadline misses has been
+investigated in~\cite{Maggio:2020}. The results of this
+investigation attested that, due to their inherent robustness,
+many control systems can withstand at least a small number of
+consecutive misses.
+
+To analyse the system, we need to clarify three aspects about the
+miss behaviour:
+
+\begin{enumerate}[label=(\roman*)]
+\item What happens to the control signal.
+\item What happens to the control task.
+\item The computational model used for the analysis (how many
+deadlines can we miss, and in what pattern).
+\end{enumerate}
+
+For the first item, the actuator can either output a
+\emph{zero} ($u_k = 0_{\numoutputctl \times 1}$), or \emph{hold}
+the previous value ($u_k = u_{k-1}$). The choice depends
+on both the plant dynamics and on the controller, as no strategy
+in general dominates the other one \cite{schenato09}. For controllers
+with integral action, it makes sense to hold the previous control
+value, under the presumption that the system is still
+disturbed and that a non-zero control signal is needed to keep the 
+plant close to its operating point. On the other hand, the zero strategy
+may be preferred for plants with unstable or integrator dynamics,
+where outputting a zero control action may be the safer option. 
+
+Considering the second item, at least three different strategies can be employed to deal
+with a control task that misses its deadline~\cite{Cervin:2005}:
+\begin{enumerate*}[label=(\roman*)]
+\item \emph{Kill},
+\item \emph{Skip-Next},
+\item and \emph{Queue$\funof{\lambda}$}
+($\lambda \in \left\{ 1, 2, 3, \ldots \right\}$).
+\end{enumerate*}
+%
+When the Kill strategy is used, the job that missed its deadline
+is terminated, its changes are rolled back, and the next job is
+released. Following the Skip-Next strategy, the job that missed
+its deadline continues its execution. No new control task jobs
+are released until the currently running one completes its
+execution. Queue$\funof{\lambda}$ behaves similarly to Skip-Next in allowing the
+current job to complete execution, but also allows the activation
+of new jobs (the queue of active jobs holds up to the most recent
+$\lambda$ instances of the control task). In this paper we only
+analyse Kill and Skip-Next. In fact, the results presented
+in~\cite{Cervin:2005,Maggio:2020} suggest that Queue$\funof{\lambda}$ is not a feasible
+strategy to handle misses. The presence of two or more active jobs
+in the same period creates a chain effect that is hard to recover from and that
+deteriorates stability and performance.
+%verloads the system, that loses the ability of
+%withstanding even a few misses.
+
+The last item refers to models of computation. The weakly hard
+task model~\cite{Hamdaoui:1995, Bernat:2001} is usually
+considered expressive enough to analyse the behaviour of tasks
+that miss their deadlines. The authors of~\cite{Bernat:2001}
+propose four definitions for a weakly hard real-time task $\tau$:
+\begin{definition}[Weakly Hard Task Models~\cite{Bernat:2001}]
+    \label{def:wh-models}
+    A task $\tau$ may satisfy any of these four weakly hard constraints:
+    \begin{enumerate}[label=(\roman*)]
+        \item $\tau \vdash \binom{n}{\!\:\!\:\numtotalanalysed\!\:\!\:}$: there are at least $n$ hits for every $\numtotalanalysed$ jobs,
+        \item $\tau \vdash \binom{\overline{m}}{\numtotalanalysed}$: there are at most $m$ misses for every $\numtotalanalysed$ jobs, 
+        \item $\tau \vdash \genfrac{<}{>}{0pt}{}{n}{\!\:\!\:\numtotalanalysed\!\:\!\:}$: there are at least $n$ consecutive hits for every $\numtotalanalysed$ jobs,
+        \item $\tau \vdash \genfrac{<}{>}{0pt}{}{\overline{m}}{\numtotalanalysed}$: there are at most $m$ consecutive misses for every $\numtotalanalysed$ jobs.
+    \end{enumerate}
+\end{definition}
+
+There has been a lot of research on the second model, often also
+called $m$-$K$ model~\cite{Koren:1995, Ramanathan:1997, Soudbakhsh:2013, Bund:2014,
+Frehse:2014, Bund:2015, Hammadeh:2017a, Hammadeh:2017b, Sun:2017,
+Ahrendts:2018, Soudbakhsh:2018, Pazzaglia:2018, Pazzaglia:2019,
+Gaukler:2019a} (with $m$ being the maximum number of misses in a
+window of $K$ activations). Recently there has also been an
+analysis of the stability of control systems when the control
+task behaves according to the fourth model~\cite{Maggio:2020}.
+
+If the misses are due to faults or security attacks, usually the
+control task experiences an interval of consecutive misses. When the
+fault is resolved, the control task starts hitting its deadlines
+again. From the performance standpoint, a consecutive number of
+misses degrades the control quality. We are interested in what
+degradation is acceptable and how much time should occur between
+two potential failures. Specifically, we look at how many deadline
+hits should follow a given number of consecutive misses for the
+system to \emph{recover}. None of the four models above allow us
+to formulate this requirement (as they specify either consecutive 
+hits or misses but not both), which leads us to introduce a different
+weakly hard model of computation, together with its analysis, in
+Section~\ref{sec:analysis}.

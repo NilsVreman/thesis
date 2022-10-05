@@ -1,0 +1,76 @@
+\usepackage{amsmath, amssymb, amsthm, mathtools}
+\usepackage{xfrac}
+\usepackage{nicefrac}
+\usepackage[inline]{enumitem} %inline enumeration
+\usepackage{cite}
+\usepackage{microtype}
+\usepackage[table]{xcolor} 
+\usepackage{flushend}
+\usepackage{afterpage}
+\usepackage{titlecaps}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% TIKZ settings
+\usepackage{tikz, pgfplots, pgfplotstable}
+\pgfplotsset{compat=1.16}
+\usetikzlibrary{shapes, fit}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{decorations.markings}
+\usepgfplotslibrary{groupplots}
+% externalization
+\usetikzlibrary{external}
+
+
+%% TIKZ commands
+\makeatletter
+\pgfplotsset{
+  every axis plot/.append style =
+    {cyan, ultra thick, mark=none, mark options={fill=white}},
+  mark max/.style={
+    scatter/@pre marker code/.code={%
+    \ifx\pgfplotspointmeta\pgfplots@metamax
+        \def\markopts{}%
+        \node [anchor=south, xshift=1mm] { \pgfmathprintnumber[precision=1, fixed zerofill]{\pgfplotspointmeta} };
+    \else
+        \def\markopts{mark=none}
+    \fi
+        \expandafter\scope\expandafter[\markopts]
+    },%
+    scatter/@post marker code/.code={ \endscope },
+    scatter
+  }
+}
+% Style to select only points from #1 to #2 (inclusive)
+\pgfplotsset{select coords between index/.style 2 args={
+    x filter/.code={
+        \ifnum\coordindex<#1\def\pgfmathresult{}\fi
+        \ifnum\coordindex>#2\def\pgfmathresult{}\fi
+    }
+}}
+\makeatother
+
+\newcommand{\findmax}[1]{
+    \pgfmathsetmacro\buffer{0.0}
+    \pgfplotstableforeachcolumnelement{#1}\of\extdata\as\cellValue{%
+    \pgfmathsetmacro{\buffer}{max(\buffer,\cellValue)}}
+}
+\newcommand*{\ReadOutElement}[4]{%
+    \pgfplotstablegetelem{#2}{[index]#3}\of{#1}%
+    \let#4\pgfplotsretval
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% maths
+% \newtheorem{theorem}{Theorem}
+% \newtheorem{corollary}{Corollary}
+% \newtheorem{problem}{Problem}
+% \newtheorem{lemma}{Lemma}
+% \newtheorem{remark}{Remark}
+% \newtheorem{definition}{Definition}
+
+
+\usepackage{readarray}
+
+\definecolor{baselinecolor}{rgb}{0.99,0.78,0.07}
