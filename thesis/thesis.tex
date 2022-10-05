@@ -1,6 +1,6 @@
-\documentclass{LTHthesis}
+\documentclass{style/LTHthesis}
 
-\input{frontmatter/packages} 
+\input{preface/packages} 
 
 % Bibliography for all papers
 \addbibresource{kappa/kappa.bib}
@@ -11,7 +11,7 @@
 
 % This can be used for including and compiling only parts of the document
 \includeonly{%
-    frontmatter/frontmatter,
+    preface/preface,
     kappa/kappa,
     papers/ecrts21/ecrts21,
 }
@@ -19,7 +19,7 @@
 \begin{document}
 
 % Preamble
-\include{frontmatter/frontmatter}
+\include{preface/preface}
 
 % Kappa
 \include{kappa/kappa}
