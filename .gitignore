@@ -273,7 +273,7 @@ TSWLatexianTemp*
 *.lpz
 
 # Mine
-*tikz-externalized/*
+*externalised/*
 */*,aux
 *build/*
 claudios-thesis/
