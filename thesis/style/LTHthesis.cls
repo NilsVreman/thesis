@@ -453,7 +453,7 @@
 \theoremseparator{.}    
 \theoremheaderfont{\bfseries\itshape}
 \theorembodyfont{\normalfont}
-%\theoremsymbol{\ensuremath{\Box}}
+\theoremsymbol{\ensuremath{\Box}}
 \newtheorem{proof}{Proof}
 
 \newtheoremstyle{regler}%
@@ -462,7 +462,7 @@
     {\item[\strut]{\theorem@headerfont##1\ ##2---##3}\newline}
 \theoremstyle{regler}
 \theoremseparator{}      
-%\theoremsymbol{\ensuremath{\Box}}
+\theoremsymbol{\ensuremath{\Box}}
 \theorembodyfont{\normalfont}
 \theoremheaderfont{\scshape}
 
