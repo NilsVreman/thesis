@@ -1,0 +1,316 @@
+%
+In this section, we compare our adaptive controller with the nominal controller implementation for different case studies.
+We demonstrate the practical usefulness of the proposed controller by examining its impact on real hardware, namely, a ball and beam plant.
+We compare the performance of the adaptive control system with the nominal one, according to the analysis presented in Section~\ref{sec:analysis}.
+Finally, we complement the results with a worst-case switching stability analysis of the nominal and adaptive controlled systems.
+
+In addition to the evaluation on the physical system, we present aggregate results obtained from a set of control benchmarks, representative of the process industry. %~\cite{Astrom:2004}.
+We use this set of plants to evaluate the general applicability of our approach.
+To make the evaluation comprehensive, we chose an unstable plant (the ball and beam) for the physical experiments and a set of mainly stable plants for the aggregate results.
+Furthermore, we remark that all the considered controllers are dynamic.
+As discussed in Section~\ref{sec:related}, to the best of our knowledge, only one previous work considers dynamic controllers~\cite{Pazzaglia:2021}.
+In that work, however, a different overrun handling method is used, and a proper comparison is therefore not possible.
+
+\subsection{Real World Evaluation -- Ball and Beam}
+\label{sec:realplant}
+%
+\subsubsection*{System Description and Models}
+The ball and beam~\cite{Wellstead:1978} is a common example in the automatic control literature and education, where a ball is free to roll over a beam that in turn is tilted by a servo motor.
+The control objective is to make the ball position follow a reference trajectory across the beam by adjusting the voltage sent to the motor. Both the beam angle and the ball position can be measured.
+% Furthermore, we assume that the system is disturbed by zero-mean white noise $w_k$ with unit variance.
+Assuming the sampling period $T = 0.01$~s, a discrete-time plant model $\plant$ was derived as
+%
+\begin{equation*}
+\setlength\arraycolsep{1.25pt}
+    \label{eq:bnb-plant}
+    \plant : 
+    \left\{
+    \begin{matrix}
+        x_{k+1} &=& 
+        \begin{bmatrix}
+            1 & 0.015 & 0.0003 & 0\\
+            0 & 1 & 0.045 & 0\\
+            0 & 0 & 1 & 0 \\
+            0 & 0 & 0 & 1
+        \end{bmatrix} x_k &+ 
+        \begin{bmatrix}
+            2.9\!\cdot\!10^{-5} \\
+            0.0058 \\
+            0.256 \\
+            0
+        \end{bmatrix} u_k + w_k \\ \vspace{-3mm} \\
+        y_k &=& 
+        \begin{bmatrix}
+            0.5 & 0 & 0 & -1\\
+            0 & 0 & 0.25 & 0
+        \end{bmatrix} x_k, & 
+    \end{matrix}
+    \right.
+\end{equation*}
+where the four components of $x_k$ represent the ball position, ball velocity, beam velocity, and ball reference, respectively. The external signal vector $w_k$ is assumed to be white noise with variance $R = \mathrm{diag}(1,1,1,1)$. Under this state-space model, the objective is to regulate both outputs $y_k$ to zero, with the performance weighting matrix $Q = \mathrm{diag}(1,1)$.
+
+To control $\plant$ we design a cascaded P--PID controller.
+% Cascaded controllers are frequently applied to systems with multiple  decoupled  measurements,  e.g.,  the  ball  and  beam,where  both  the  beam’s  angle  and  ball’s  position  can  be measured  independently.
+Cascaded controllers are frequently applied to systems with multiple measurements where one measured quantity affects another, but not vice versa.
+Thus, the plant measurements can be controlled in sequential order (hence the naming \emph{cascaded}) using a controller designed for each measurement signal.
+In our case study, this is implemented by a proportional (P) controller designed for controlling the beam's angle and a proportional--integral--derivative (PID) controller for the ball's position.
+The controller is run as a periodically executing task with period $T=0.01$~s on a single core CPU where overrun deadlines are killed and the corresponding sensor data is discarded. 
+In between actuator calls, the control signal is assumed to be held constant.
+The state-space representation of our controller is
+%
+\begin{equation*}
+\setlength\arraycolsep{2pt}
+    \label{eq:bnb-ctrler}
+    \ctrler : \,\,
+    \left\{
+    \begin{aligned}
+        z_{k+1} &= 
+        \begin{bmatrix}
+            1 & 0  \\
+            0 & 0.9685 \\
+        \end{bmatrix} z_k + 
+        \begin{bmatrix}
+            0.025 & 0 \\
+            -0.2608 & 0
+        \end{bmatrix} y_k, \\ \vspace{-4mm} \\
+        u_{k+1} &= 
+        \begin{bmatrix}
+            -0.108 & -0.2608
+        \end{bmatrix} z_k +
+        \begin{bmatrix}
+            -2.43 & -3
+        \end{bmatrix} y_k.
+        \end{aligned}
+    \right.
+\end{equation*}
+
+\begin{table}[t]
+    \centering
+    \caption{Analytical study of the relative performance degradation of the ball and beam plant $\plant$ using either the nominal $\ctrler^n$ or adaptive controller $\ctrler^a$.}
+    \renewcommand{\arraystretch}{1.6}
+    \setlength{\tabcolsep}{5pt}
+    \begin{tabular}{c | a b a b a b a} \hline
+        $\rho$ & 10\% & 20\% & 30\% & 40\% & 50\% & 60\% & 70\% \\ \hline\hline
+        ${\large\sfrac{\Delta J^n}{J}}$ & 2.5\% & 9.2\% & 20.8\% & 39.9\% & 75.3\% & 156\% & 452\% \\ \hline
+        ${\large\sfrac{\Delta J^a}{J}}$ & 0.1\% & 0.1\% & 0.3\% & 0.6\% & 1.1\% & 2.5\% & 6.7\% \\ \hline
+    \end{tabular}
+    \label{tab:cost-sim}
+\end{table}
+
+
+\subsubsection*{Experiments Design}
+We apply the performance analysis presented in Section~\ref{sec:analysis} to the plant model $\plant$ controlled using either the ideal ($\ctrler$), nominal ($\ctrler^n$), or adaptive ($\ctrler^a$) implementations from Section~\ref{sec:adaptation}.
+% system noise
+%To perform a fair comparison, we feed the three control systems with the \emph{same} noise values at each time instant $k$. 
+We include the effect of deadline misses only on the nominal and adaptive control systems.
+% miss model
+The probability distribution $p_\counter$ can be chosen arbitrarily according to the desired task model. 
+For simplicity, we assume here that the deadline misses are Bernoulli distributed~\cite{Schenato:2007}, i.e., the probabilities of missing deadlines in each period are independently and identically distributed with probability $\rho$.
+This results in the probability $p_\counter = (1-\rho)\rho^\counter$ of $\counter$ consecutive deadline misses followed by a hit.
+We assume that no more than $\counter_\mathit{max}=20$ consecutive deadlines can be missed.
+The latter assumption might seem restrictive, but if the probability of missing a deadline is $30\%$, the probability of missing $20$ consecutive deadlines is less than $4\cdot10^{-11}$.
+
+\begin{table}[t]
+    \centering
+    \caption{Empirical study of the relative performance degradation of the real ball and beam plant using either the nominal $\ctrler^n$ or adaptive controller $\ctrler^a$.}
+    \renewcommand{\arraystretch}{1.6}
+    \setlength{\tabcolsep}{5pt}
+    \begin{tabular}{c | a b a b a b a} \hline
+        $\rho$ & 10\% & 20\% & 30\% & 40\% & 50\% & 60\% & 70\% \\ \hline\hline
+        ${\large\sfrac{\Delta J^n}{J}}$ & 6.3\% & 27.1\% & 22.5\% & 50.5\% & 73.1\% & 260\% & $\infty$ \\ \hline
+        ${\large\sfrac{\Delta J^a}{J}}$ & 6.1\% & 7.8\% & 3.2\% & 4.6\% & 3.8\% & 4.9\% & 11.7\% \\ \hline
+    \end{tabular}
+    \label{tab:cost-real}
+\end{table}
+
+\begin{figure}
+    \centering
+    \input{\figdir/evaluation/ball-and-beam/bnb-ideal}
+    \caption{Snippet of the test performed on the real ball and beam plant using the ideal controller, i.e., without deadline misses.
+        The plot shows one period of the square wave used as reference, the black line. The blue line shows the ball's position.}
+    \label{fig:real-plant-ideal}
+\end{figure}
+
+
+\begin{figure*}
+    \centering
+    \input{\figdir/evaluation/ball-and-beam/bnb}
+    \caption{Snippets of the tests performed on the real ball and beam plant for $\rho=30\%$ (two left plots) and $\rho=50\%$ (two right plots).
+        The plots show one period of the square wave used as reference, the black line.
+        The coloured lines show the ball position, in green for the nominal controller (upper plots) and orange for the adaptive controller (lower plots).}
+    \label{fig:real-plant}
+\end{figure*}
+
+% performance metric
+We measure the relative performance of the nominal and adaptive controllers according to the quantity $\sfrac{\Delta J^\dagger}{J}$ in Equation~\eqref{eq:relcost}.
+%The numerator, $\Delta J$ (computed according to Equation~\eqref{eq:Jdiff} with $Q=I$), is the cost associated to the output difference $\Delta y_k$ between either the ideal and the nominal or the ideal and adaptive closed-loop control systems.
+%The normalisation variable $J$ (computed according to Equation~\eqref{eq:J} with $Q=I$) is the performance of the ideal controller.
+Since the mean-square deviation from the ideal controller is used to evaluate the relative performance, the \emph{optimal} achievable cost is $0$.
+% For the \removed{simulated}\new{analytical } system, we compute it using Equation~\eqref{eq:deltaJ}.
+%We analytically evaluate the system performance using Equation~\eqref{eq:deltaJ}.
+For the real system, we do not feed the system with white noise, but we expose the system to a repeatable exogenous signal in the form of periodic reference changes. 
+Furthermore, we evaluate the relative performance degradation empirically from the measured signals using Equation~\eqref{eq:relcost}, with $\E{\cdot}$ being interpreted as the mean value of the real signals.
+
+To complement the performance analysis, we perform a JSR stability analysis on the model to determine the maximum number of consecutive deadline misses that are tolerated while still guaranteeing closed-loop stability.
+
+\subsubsection*{Analytical Evaluation}
+The performance results obtained with the analytical study of $\plant$ for different values of $\rho$ are summarised in Table~\ref{tab:cost-sim}.
+From the table, we can see that the adaptive controller drastically improves the relative performance (in comparison to the nominal controller) across all deadline miss probabilities.
+%For lower miss probabilities ($\rho \leq 40\%$) the relative performance is improved by an order of magnitude, and for higher miss probabilities ($\rho \geq 50\%$) it is improved by a factor of $5$.
+Already for small probabilities, the nominal controller significantly degrades the relative performance compared to the ideal controller; e.g., for $\rho = 30\%$ the relative performance is degraded by $20.8\%$. This can be compared to the  adaptive controller, where the relative performance reduction stays below $5\%$ until the miss probability reaches $70\%$.
+
+Analysing the switching stability, we calculated the JSR for the set of closed-loop matrices corresponding to $i = \{0,1,\ldots,q\}$ consecutive deadline misses followed by one hit ($q \leq q_{max}$).
+The nominal control system is guaranteed to be switching stable (i.e., the JSR is below $1$) for a maximum of $q=2$ consecutive deadline misses, while the adaptive control system is guaranteed stable up to $q=8$. 
+We conclude that the adaptive controller improves also worst-case robustness against deadline misses for the ball and beam.
+However, we emphasise that these results do \emph{not} imply that the system will go unstable if more deadline misses occurs; only that the system is \emph{guaranteed} switching stable if no more than $q$ consecutive deadline misses are ever experienced.
+
+\subsubsection*{Empirical Evaluation}
+We conducted experiments on the physical ball and beam plant to evaluate the performance of the controller on a real system.\footnote{
+% \textcolor{red}{\textbf{FIX:}
+A video, showing experiments with the real ball and beam system can be viewed at \texttt{https://youtu.be/6y\_C7NIzXto}. The video provides a real-world comparison between the nominal and adaptive controllers for $\rho = \left\{30\%, 50\%, 70\%\right\}$.}
+Each experiment is run for $10$ minutes, where the control objective is for the ball to follow a square-wave reference across the beam.
+The square wave has a period of $50$~s and alternates between position $0$ and $15$~cm.
+Differently from the analytical evaluation, it is impossible to obtain the same exogenous signal $w_k$ in the different experiments.
+While the reference changes can be exactly repeated, the real stochastic disturbances (in the form of electrical noise, mechanical glitches, etc.) are not repeatable.
+This means that the empirical cost relative to the ideal case, as measured by Equation~\eqref{eq:relcost}, is not expected to be zero even in the complete absence of deadline misses.
+%However, we injected the same sequence of reference changes for each system. 
+%We assume that the conditions are sufficiently consistent between experiments.
+
+%The baseline performance is acquired from the system controlled by the ideal controller $\ctrler$, i.e., in the absence of deadline misses.
+Figure~\ref{fig:real-plant-ideal} displays a snippet of the ball's position (blue line) under said ideal conditions.
+The ball quite successfully follows the reference (black line). 
+Here, the fluctuations around the reference are caused by measurement noise and irregularities in the beam surface, where the latter can cause the ball to get lodged in an undesired position and thus result in oscillations.
+
+% experiments outcome report
+After measuring the performance of the ideal controller, each controller ($\ctrler^n$ and $\ctrler^a$) was applied to the system, using probabilities $\rho \in \left\{ 10\%,\, 20\%,\, \ldots,\, 70\% \right\}$ of missing each deadline (with $\counter_\mathit{max} = 20$).
+The results of the experiments are reported in Table~\ref{tab:cost-real}, where the relative performance degradation $\sfrac{\Delta J^\dagger}{J}$ is computed for both the nominal and adaptive controllers.
+To give an intuition for how the physical system behaves, in Figure~\ref{fig:real-plant} we provide a snippet of a time plot portraying the ball's position controlled by either the nominal (upper plots) or adaptive (lower plots) controller.
+We distinguish the differences between the nominal and adaptive controllers for a probability $\rho = 30\%$ (left plots) of missing a deadline.
+The nominal controller shows oscillations around the reference value.
+When the probability of missing a deadline is increased to $\rho = 50\%$ (right plots), the nominal controller's oscillations grow more evident, while the adaptive controller appears unaffected (compared to the ideal controller in Figure~\ref{fig:real-plant-ideal}).
+
+% experiments comments
+From Table~\ref{tab:cost-real}, we observe that the adaptive controller has a lower performance degradation across all deadline miss probabilities $\rho \geq 20\%$ compared to the nominal controller. The performance of the adaptive controller seems virtually unaffected for $\rho \leq 60\%$, where the baseline relative degradation of approximately  $4\%$ to $8\%$ is due to the natural disturbances in the system. The nominal controller on the other hand experiences significant performance degradation at higher miss probabilities, and for $\rho = 70\%$ the system becomes unstable -- we report this as an infinite cost.
+%This difference is emphasised for higher probabilities ($\rho \geq 50\%$) where the nominal controller degrades the relative performance by more than $73.1\%$, while the adaptive controller degrades the relative performance by no more than $11.7\%$.
+%For lower probabilities of missing a deadline (e.g., $\rho = 10\%$) the nominal and adaptive controllers behave similarly.
+%This follows from other noise sources (e.g., measurement noise and beam irregularities) affecting the system more than the deadline misses, hence concealing their effect.
+%We also emphasise that each experiment is run for a finite amount of time, during which it is affected by unique noise dynamics -- unlike the analytical study where the controllers all experience the same noise.
+%Thus, the results in Table~\ref{tab:cost-real} are not perfectly accurate, but rather empirical approximations of the system behaviour for the different controller types.
+
+In summary, both the analytical and empirical studies show that the adaptive controller $\ctrler^a$ consistently outperforms the nominal controller $\ctrler^n$ for the ball and beam. Furthermore, the adaptive controller can tolerate
+a large likelihood of random deadline misses (at least 60\%) without any noticeable performance degradation.
+
+%\new{Both the analytical and empirical study } show that the adaptive controller $\ctrler^a$ consistently outperforms the nominal controller $\ctrler^n$. \removed{on both the simulated analytical and physical plant.}
+%\new{This holds true for both the time-averaged approach and the worst-case analysis. }
+%In the real plant, for low miss probabilities, the adaptive controller reduces the effect of deadline misses to be comparable to measurement noise.
+%Higher performance gains are observed for deadline miss-prone controllers, i.e., when the probability of missing a deadline is large.
+%Additionally, comparing the results acquired with the plant model (Table~\ref{tab:cost-sim}) to the physical system (Table~\ref{tab:cost-real}), we observe that the relative cost degradation for the nominal controller evolves similarly in both cases (with an increasing $\rho$).
+%However, the adaptive controller appears to improve the relative performance more in the physical process than in \removed{simulations}\new{the analytical model}.
+%\textbf{\textcolor{red}{This sentence is not true any more?}}
+%This is likely due to:
+%\begin{enumerate*}[label=(\roman*)]
+%    \item the nonlinearities of the physical plant that are unaccounted for %in the linear plant model $\plant$, and
+%    \item the white noise model used in the \removed{simulations}\new{analytical model } that is not representative enough of the disturbances in the physical system.
+%\end{enumerate*}
+%We also assume that the noise in the \removed{simulations}\new{analytical model } enter the ideal, nominal, and adaptive control systems identically -- a fact which we know is false for the physical plant.
+
+\subsection{Benchmark Evaluation -- Process Industry}
+\label{sec:aggregate}
+%
+% We have so far discussed the adaptive controller's performance for \emph{one} physical plant.
+% For the sake of completeness, we now provide an extensive evaluation campaign performed on a set of control systems developed to analyse various PID designs~\cite{Astrom:2004}.
+\subsubsection*{System Description and Models}
+To evaluate the general applicability of the proposed adaptive controller, we perform an extensive evaluation campaign on a benchmark set of plants.
+The set was developed specifically to evaluate various PID designs~\cite{Astrom:2004} in the process industry.
+It consists of $134$ unique plants separated into $9$ categories, where each category has its own specific properties frequently recognised in the process industry.
+Since the benchmark was developed specifically with process industrial plants in mind, the majority of the plants are stable, i.e., all their eigenvalues lie inside the unit circle.
+However, there are also plants with integrating dynamics included in the benchmark, i.e., an eigenvalue in $1$; these plants are generally not considered stable.
+For each plant, two controllers -- a PI and a PID controller -- are optimised using known methods~\cite{Garpinger:2008}; hence, $268$ unique control systems are analysed in total.
+
+\subsubsection*{Experiments Design}
+Similarly to the ball and beam, we analyse the relative performance of the nominal and adaptive controllers in accordance with the analysis described in Section~\ref{sec:analysis}.
+We again consider the probability of missing a deadline to follow a Bernoulli distribution with probabilities $\rho \in \left\{ 10\%,\, 30\%,\, 50\%,\, 70\% \right\}$ and a maximum of $\counter_\mathit{max} = 20$ consecutive deadline misses.
+We feed the systems with a stochastic disturbance and analytically evaluate the ability of the controllers to reject it.
+Differently from the ball and beam, we analyse the systems when subject to brown noise, i.e., integrated white noise~\cite{Schmidt:1985}.
+The brown noise model is generally considered appropriate for process industrial plants since it is dominant for low frequencies (e.g., load disturbances and disturbances from nearby heavy machinery).
+We assume that the \emph{same} disturbance process enters the ideal, nominal, and adaptive control systems; this guarantees an unbiased comparison between the different controllers.
+For each of the $268$ control systems we calculate the relative performance $\sfrac{\Delta J^\dagger}{J}$ for both the nominal and the adaptive controller.
+
+Similarly to the ball and beam, we complement our performance analysis with a JSR worst-case stability analysis.
+
+\begin{figure}
+    \centering
+    \input{\figdir/evaluation/batch-processes/batch-processes}
+    \caption{Histograms comparing the relative performance degradation of the nominal and adaptive controllers for the benchmark plants. The plots correspond to different deadline miss probabilities $\rho$. The orange bars report the performance obtained with the adaptive controller $\ctrler^a$, while the green bars report the performance obtained with the nominal controller $\ctrler^n$. The systems with a performance worse than the stability threshold (red dashed line) resulted in unstable dynamics.}
+    \label{fig:aggregate}
+\end{figure}
+
+% In Figure~\ref{fig:aggregate} we display a sample of the aggregate results ($\rho = 10\%,\, 30\%,\, 50\%,\text{ and }70\%$) as histograms -- using both the nominal (green bars) and adaptive (blue bars) controller structures.
+\subsubsection*{Experiments Results}
+In Figure~\ref{fig:aggregate} we display histograms reporting the relative performance degradation of all the $268$ control systems.
+The horizontal axis displays the relative performance $\sfrac{\Delta J^\dagger}{J}$ in logarithmic scale. 
+The vertical axis counts the number of control systems with a given relative performance.
+The four plots correspond to the different deadline miss probabilities considered.
+In each plot, we represent the nominal controllers with green bars and the adaptive controllers with orange bars.
+Unstable closed-loop systems have an infinite cost and are thus marked in the rightmost part of the plot, beyond the red dashed threshold.
+
+From Figure~\ref{fig:aggregate} we see that the adaptive controller performs better than the nominal one for \emph{all} the $268$ control systems, regardless of the probability of missing a deadline.
+Despite the control systems' dynamics varying significantly (e.g., lag dominated, lead dominated, oscillatory, high system order, integrating), the worst adaptive control system still performs better than the best nominal control system for all $\rho$.
+The improvement is particularly distinguishable for lower probabilities, e.g., $\rho=10\%$, where the mean relative cost over all the control systems is improved by two orders of magnitude.
+
+Second, when the probability of missing a deadline grows, the relative performance degradation increases accordingly.
+For $\rho=50\%$ and $\rho=70\%$ some of the systems using the nominal controller become unstable, i.e., $\sfrac{\Delta J^\dagger}{J} = \infty$.
+In the case of $\rho=70\%$, more than $40\%$ of the nominal control systems are unstable.
+On the other hand, \emph{all} the adaptive control systems are stable and have a relative cost degradation below $10\%$.
+This suggests that $\ctrler^a$ improves both performance and robustness compared to the nominal controller.
+
+\begin{figure}
+    \centering
+    \input{\figdir/evaluation/batch-processes/jsr}
+    \caption{Histogram reporting the number of benchmark systems (out of 268) that are guaranteed switching stable for up to~$\counter$ consecutive deadline misses, according to the JSR analysis.
+    For each value of $\counter$, the green bar (left) reports how many $\ctrler^{n}$ controlled systems can tolerate up to $\counter$ consecutive deadline misses and the orange bar (right) reports the corresponding number of $\ctrler^{a}$ controlled systems.
+    For readability the y axis is cut at $65$: a total of $138$ plants can tolerate $20$ or more misses with the nominal controller, and a total of $185$ plants can tolerate $20$ or more misses with the adaptive controller.}
+    \label{fig:jsr-histogram}
+\end{figure}
+
+% \begin{table}[b]
+%  \centering
+%  \caption{\new{Number of benchmark systems (out of 268) that can tolerate up to~$q$ consecutive deadline misses without risking instability.}}
+%   \label{tab:stab-benchmark}
+%  \renewcommand{\arraystretch}{1.5}
+%  \setlength{\tabcolsep}{1pt}
+%  {\color{blue}\begin{tabular}{cc | a b a b a b a b a b a} \hline
+%      $q$ && $0$ & $1$ & $2$ & $3$ & $4$ & $5$ & $6$ & $7$ & $8$ & $9$ & $10$ \\ \hline\hline
+%      $\ctrler^n$ && 5 & 64 & 59 & 0 & 0 & 0 & 0 & 2 & 0 & 0 & 0 \\ \hline
+%      $\ctrler^a$ && 0 & 0 & 0 & 1 & 0 & 1 & 0 & 1 & 2 & 3 & 6 \\ \hline
+%  \end{tabular}}
+%  \bigskip
+%  \addtocounter{table}{-1}
+%   \caption{\new{(continued)}}
+%  {\color{blue}\begin{tabular}{cc | b a b a b a b a b a} \hline
+%     $q$ && $11$ & $12$ & $13$ & $14$ & $15$ & $16$ & $17$ & $18$ & $19$ & $20$  \\ \hline\hline
+%       $\ctrler^n$ && 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 138 \\ \hline
+%     $\ctrler^a$ && 20 & 1 & 5 & 11 & 6 & 8 & 2 & 6 & 10 & 185 \\ \hline
+%  \end{tabular}}
+% \end{table}
+
+To verify that the adaptive controller improves the robustness to deadline misses compared to the nominal controller, we complement the evaluation with a JSR analysis.
+% The results can be seen in Table~\ref{tab:stab-benchmark}; here, the number of $\ctrler^n$ and $\ctrler^a$ controlled systems that are switching stable for a maximum number of consecutive deadline misses $q$ are counted.
+% Table~\ref{tab:stab-benchmark}  
+The histogram in Figure~\ref{fig:jsr-histogram} shows, for each value of $\counter$, the number of control systems that are guaranteed switching stable for a maximum number of consecutive deadline misses $q$, when they are controlled with either the nominal ($\ctrler^n$) or the adaptive ($\ctrler^a$) controller.
+Intuitively, the more control systems that can guarantee switching stability for a higher value of $\counter$, the better.
+The vertical axis of the histogram is cut at $65$ for legibility: this affects only the columns for $\counter=20$ where the nominal controller can guarantee stability for $138$ plants while the adaptive controller can guarantee stability for $185$ plants.
+
+For the nominal controller, we see that the maximum number of consecutive deadline misses tolerated by the system varies greatly between the different control systems.
+In the whole benchmark, $138$ systems were stable for (at least) $20$ consecutive deadline misses, but $123$ systems were guaranteed stable only for one or two misses.
+Furthermore, $5$ of the nominal control systems were unstable unless \emph{all} of the control task's deadlines were hit.
+
+For the adaptive controller, on average, a much larger number of consecutive deadline misses can be tolerated.
+Out of all the control systems, $185$ were stable for (at least) $q=20$, and the large majority of the remaining control systems are guaranteed to tolerate between $q=10$ and $q=19$ consecutive deadline misses. Additionally, we see that \emph{all} adaptively controlled systems can tolerate at least $3$ deadline misses.
+
+We note that both for the nominal and adaptive controllers, a significant number of control systems are stable for $20$ deadline misses.
+This presumably follows from the (mainly) stable nature of the plants in the benchmark, an attribute that generally makes the system more robust.
+
+The results of the evaluation campaign confirm the hypothesis that the proposed adaptive controller improves the control system's performance in the presence of deadline misses.
+While we observed some cases in which the nominal controller goes unstable and the adaptive controller is stable, we never observed the opposite.
+Additionally, the adaptive controller does not compromise the performance under ideal conditions, and it preserves the major part of the ideal controller's performance when deadline misses are present.

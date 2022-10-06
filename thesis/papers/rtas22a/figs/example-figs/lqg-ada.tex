@@ -1,0 +1,59 @@
+\def \ada {\figdir/example-figs/adaptive.csv}
+\def \lqg {\figdir/example-figs/lqg.csv}
+\def \nom {\figdir/example-figs/lqg-nominal.csv}
+
+\begin{tikzpicture}
+    \footnotesize
+
+    %Main axes
+    \begin{axis}[%
+            height=\timeplotheight,
+            width=\columnwidth,
+            xmin=0,
+            xmax=5,
+            ymin=-0.4,
+            ymax=1.1,
+            xlabel={Time (s)}, 
+            ylabel={State},
+            ytick={-0.4,-0.2,0,0.2,0.4,0.6,0.8,1.0,1.2},
+            yticklabels={-0.4,-0.2,0,0.2,0.4,0.6,0.8,1.0,1.2},
+            ylabel near ticks,
+            grid=major,
+            grid style={dashed,black!20},
+            legend cell align=left,
+            scatter/classes={a={mark=x, mark size=3, color=misscolour}},
+            % legend columns = 2
+            ]
+        
+        % LQG x
+        \addplot[lqgnomcolour, solid, very thick] table[x=T, y=X, col sep=comma] {\nom};
+        
+        % LQG x
+        \addplot[lqgcolour, dash pattern={on 7pt off 2pt}, very thick] table[x=T, y=X, col sep=comma] {\lqg};
+        
+        % Ada x
+        \addplot[adacolour, dash pattern={on 7pt off 2pt}, very thick] table[x=T, y=X, col sep=comma] {\ada};
+        
+        % Misses
+        % scatter src=explicit symbolic gets the scatter definition in axis options.
+        \addplot+[scatter, only marks, scatter src=explicit symbolic] coordinates{
+            (0.3, -0.4) [a]
+            (0.7, -0.4) [a]
+            (0.9, -0.4) [a]
+            (1.6, -0.4) [a]
+            (2.1, -0.4) [a]
+            (2.2, -0.4) [a]
+            (2.3, -0.4) [a]
+            (2.9, -0.4) [a]
+            (3.2, -0.4) [a]
+            (3.5, -0.4) [a]
+            (3.8, -0.4) [a]
+            (4.1, -0.4) [a]
+            (5.0, -0.4) [a]
+        };
+        
+        % Legend
+        \legend{$x_2$ ($\ctrler_2$ -- ideal), $x_2$ ($\ctrler^n_2$ -- nominal), $x_2$ ($\ctrler^a_2$ -- adaptive), Overrun};
+    \end{axis}
+
+\end{tikzpicture}

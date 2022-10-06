@@ -1,0 +1,11 @@
+In this paper, we have proposed a novel adaptive implementation scheme for real-time embedded controllers, aiming to increase their robustness to arbitrary patterns of deadline misses. 
+The approach adapts a general, predesigned linear controller according to the number of consecutive deadline overruns.
+No additional assumptions are made on the predesigned controller or the plant model, and only minimal requirements are put on the control task (Logical Execution Time) and the real-time operating system (late tasks being killed).
+The adaptation scheme can be implemented without any additional complexity or design overhead, hence strengthening the industrial applicability.
+Additionally, we extend the state-of-the-art by considering dynamic controllers.
+
+To analyse our controller implementation, we developed a probabilistic approach.
+With said approach, it is possible to leverage a plant model and a probabilistic model of deadline misses to evaluate the effectiveness of the adaptive controller.
+We complement this average-case analysis with a worst-case stability analysis based on JSR.
+We used both approaches to evaluate the controller on both a physical plant and a considerable number of simulated plants from the literature on process control.
+The results show that our adaptive controller implementation consistently improves system performance and robustness to deadline misses.

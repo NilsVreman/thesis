@@ -1,0 +1,38 @@
+\begin{tikzpicture}
+\begin{axis}[
+            group style = {group size = 1 by 2,
+                                 vertical sep=0.4cm},
+            ybar,ybar legend,
+            %  x=0.40cm,
+            %  bar width=0.1cm,
+            ybar interval,
+            width=\textwidth,
+            grid=both,
+            grid style={dashed,black!20},
+            height=3cm,
+            width=\columnwidth,
+            ymin=0, ymax=70,
+            xmin=a0, xmax=a21,
+            tick align=inside,
+            xtick align=outside,
+            xtick pos=lower,
+            legend style = {at = {(0.5,1.1)},
+                anchor = south,
+                /tikz/every even column/.append style = {column sep=0.2cm}},
+            legend columns = 2,
+            ylabel = {Number of systems},
+            xlabel = {$\counter$},
+            ylabel near ticks,
+            symbolic x coords={a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21},
+            xticklabels={0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21}
+            ]
+        \addplot [fill=lqgcolour, ]
+                coordinates { (a0,5) (a1,64) (a2,59) (a3,0) (a4,0) (a5,0) (a6,0) (a7,2) (a8,0) (a9,0) (a10,0) (a11,0) (a12,0) (a13,0) (a14,0) (a15,0) (a16,0) (a17,0) (a18,0) (a19,0) (a20,138) (a21,0) };
+        \addlegendentry{$\ctrler^{n}$}
+        \addplot [fill=adacolour,]
+                coordinates { (a0,0) (a1,0) (a2,0) (a3,1) (a4,0) (a5,1) (a6,0) (a7,1) (a8,2) (a9,3) (a10,6) (a11,20) (a12,1) (a13,5) (a14,11) (a15,6) (a16,8) (a17,2) (a18,6) (a19,10) (a20,185) (a21,0) };
+        \addlegendentry{$\ctrler^{a}$}
+
+
+\end{axis}
+\end{tikzpicture}
