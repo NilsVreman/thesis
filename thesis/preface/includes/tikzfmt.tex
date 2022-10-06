@@ -15,7 +15,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 % libraries
 \pgfplotsset{compat=1.16}
-\usetikzlibrary{shapes, fit}
+\usetikzlibrary{shapes}
+\usetikzlibrary{fit}
 \usetikzlibrary{arrows, arrows.meta}
 \usetikzlibrary{decorations.markings}
 \usepgfplotslibrary{groupplots}
@@ -49,4 +50,56 @@
 %%% as you add the papers you'll have to adjust them
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
-\usetikzlibrary{shapes.misc,backgrounds}
+\usetikzlibrary{shapes.misc}
+\usetikzlibrary{backgrounds}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% packages copy pasted from:
+%%%    rtas22b/og/pkg.tex
+%%% as you add the papers you'll have to adjust them
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\usetikzlibrary{positioning}
+\usepgfplotslibrary{fillbetween}
+
+\tikzset{Dom Node/.style={draw,
+                        thick, 
+                        circle, 
+                        inner sep=0pt,
+                        minimum size=12mm}%
+}%
+
+% Comparison figure related
+\def\xstart{1}
+\def\xend{10} % change according to how many plots you have
+
+% this is the list of styles define as many colours as the number of lines you could also change the marker etc
+\pgfplotscreateplotcyclelist{blue10}{
+    {blue!95!black, mark=*, mark size=2pt,mark options={fill=white}},
+    {blue!85!black, mark=*, mark size=2pt},
+    {blue!75!black, mark=*, mark size=2pt},
+    {blue!65!black, mark=*, mark size=2pt},
+    {blue!55!black, mark=*, mark size=2pt},
+    {blue!45!black, mark=*, mark size=2pt},
+    {blue!35!black, mark=*, mark size=2pt},
+    {blue!25!black, mark=*, mark size=2pt},
+    {blue!15!black, mark=*, mark size=2pt},
+    {blue! 5!black, mark=*, mark size=2pt},
+}
+
+% argument #1: any options
+\makeatletter
+\newenvironment{customlegend}[1][]{%
+    \begingroup
+    % inits/clears the lists (which might be populated from previous axes):
+    \pgfplots@init@cleared@structures
+    \pgfplotsset{#1}%
+}{%
+    % draws the legend:
+    \pgfplots@createlegend
+    \endgroup
+}%
+
+% makes \addlegendimage available (typically only available within an axis environment):
+\def\addlegendimage{\pgfplots@addlegendimage}
+\makeatother

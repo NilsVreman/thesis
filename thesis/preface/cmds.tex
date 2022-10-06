@@ -3,9 +3,16 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% Mathematics
+% Automaton related
+\newcommand{\GG}[1]{\mathcal{G}_{#1}} % Automaton
+\newcommand{\VV}[1]{V_{#1}} % Nodes
+\newcommand{\EE}[1]{E_{#1}} % Edges
+
 % Shorthand
 \newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
 \newcommand{\T}{\mathrm{\small{T}}}
+\newcommand{\nequiv}{\not\equiv}  
 
 % Functions
 \newcommand{\LL}{\mathcal{L}_2}
@@ -15,11 +22,33 @@
 \newcommand{\E}[1]{\mathbb{E}\left[ #1 \right]}
 \newcommand{\trace}[1]{\mathrm{tr}\left(#1\right)}
 \newcommand{\diag}[1]{\mathrm{diag}\left\{#1\right\}}
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\argmin}{argmin}
+\newcommand{\ourmod}[1]{\ \mathrm{mod}\ #1}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
 
 %% Control
 \newcommand{\plant}{\mathcal{P}}
 \newcommand{\ctrler}{\mathcal{C}}
 
 %% Code
+\newcommand{\code}[1]{\texttt{\textbf{#1}}} % code environments
+\newcommand{\tool}{\code{WeaklyHard.jl}}
 
 %% Real-Time
+% Constraint names
+\newcommand{\tAH}{\code{AnyHit}}
+\newcommand{\tAM}{\code{AnyMiss}}
+\newcommand{\tRH}{\code{RowHit}}
+\newcommand{\tRM}{\code{RowMiss}}
+
+% Constraints related 
+\newcommand{\anyhit}[1]{\binom{x_{#1}}{k_{#1}}} 
+\newcommand{\anymiss}[1]{\overline{\binom{x_{#1}}{k_{#1}}}} 
+\newcommand{\rowhit}[1]{\genfrac{<}{>}{0pt}{}{x_{#1}}{k_{#1}}}
+\newcommand{\rowmiss}[1]{\overline{\genfrac{<}{>}{0pt}{}{x_{#1}}{k_{#1}}}}
+\newcommand{\sset}[2]{\mathcal{S}_{#1}\funof{#2}} 
+\newcommand{\lweak}{\underline{\lambda}} 
+\newcommand{\lhard}{\overline{\lambda}} 
+
