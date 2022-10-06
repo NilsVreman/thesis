@@ -16,7 +16,7 @@ The controller behaves \emph{ideally} when every control period includes one job
 By iterating the equation, the desired controller state and control action at any future time step can be computed. 
 We formally define this behaviour as follows:
 
-\begin{definition}[Ideal Controller]
+\begin{definition}[Ideal Controller]%
     We denote the \emph{ideal controller}, $\ctrler\funof{\counter}$, as the discrete-time LTI controller $\ctrler$ evolved over an interval of $\counter+1$ consecutive deadline hits.
     The controller state and output at the end of the interval are
     \begin{equation}
@@ -39,7 +39,7 @@ In the presence of deadline misses, the control task discards the measurements a
 Thus, both the state and output of the controller deviate from their desired behaviours. 
 Applying Equation~\eqref{eq:ctrler} to a scenario of $\counter$ consecutive deadline misses, we obtain the following:
 
-\begin{definition}[Nominal Controller]
+\begin{definition}[Nominal Controller]%
     We denote the \emph{nominal controller}, $\ctrler^n\funof{\counter}$, as the discrete-time LTI controller $\ctrler$ evolved over an interval of $\counter$ consecutive deadline misses followed by one deadline hit. 
     After the hit, the state and output are given by
     \begin{equation}
@@ -76,7 +76,7 @@ We approximate the missing measurement values using a linear interpolation betwe
 %
 If we substitute the values of $y$ that are missing in the ideal controller, Equation~\eqref{eq:ctrler-ideal}, with the corresponding interpolated ones $\hat y$ from Equation~\eqref{eq:interpolation}, we obtain an adaptive controller as follows:
 
-\begin{definition}[Adaptive Controller]
+\begin{definition}[Adaptive Controller]%
     We denote the \emph{adaptive controller}, $\ctrler^a\funof{\counter}$, as an adaptation of the controller $\ctrler$ evolved over an interval of $\counter$ consecutive deadline misses followed by one deadline hit.
     After the hit, the state and output are
     \begin{equation}
@@ -128,7 +128,7 @@ Hence, the execution time of the adaptive controller will be independent of $\co
 In Section~\ref{sec:problem-form}, we presented a motivating example of why it is insufficient to analyse static controllers subject to overruns.
 We conclude this section with a continuation of this example showing the benefits of our scheme.
 
-\begin{example}[Application to Motivating Example]
+\begin{example}[Application to Motivating Example]%
     Consider the plant $\plant$, from Equation~\eqref{eq:example-plant}, controlled by the LQG controller $\ctrler_2$.
     We apply our proposed scheme to $\ctrler_2$, obtaining the corresponding adaptive controller $\ctrler_2^a\funof{\counter}$.
     In Figure~\ref{fig:lqgs-lqgd}, we compare the plant state obtained by controlling the plant using the two controllers, subject to the same deadline misses as in Figure~\ref{fig:lqr-lqg}.

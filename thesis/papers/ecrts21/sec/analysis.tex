@@ -27,8 +27,8 @@ The analysis methods we propose allow us to address such situations and to provi
 Moreover, following a burst interval, we are interested in analysing the length of the recovery interval $\recovery$ that is needed to return to normal operation under each implementation strategy $\strat$.
 Hence, we here extend the weakly hard models of computation with a fifth alternative and then devote the remainder of the paper to its analysis.
  
-\begin{definition}[Weakly Hard Fault Model with Burst of Misses]
-    \label{def:task-model}
+\begin{definition}[Weakly Hard Fault Model with Burst of Misses]%
+    \label{def:task-model}%
     A real-time task $\tau$ may satisfy the weakly hard task model
     \begin{enumerate}[label=(\roman*)]
         \setcounter{enumi}{4}
@@ -190,7 +190,7 @@ Recall that $A_{\strat}\funof{m}$ already includes one hit, thus the left multip
 This is a sufficient condition and not necessary, meaning that a miss occurring during the recovery interval does not immediately imply that the closed-loop system is destabilised. 
 We summarise the analysis in the following definition.
 
-\begin{definition}[Static-Cyclic Stability Analysis]
+\begin{definition}[Static-Cyclic Stability Analysis]%
     We denote the stability analysis from~\eqref{eq:stability-cond} with the term \emph{\nilsstability{} stability analysis}.
     The system under analysis cycles through a sequence of $\nummisses$ misses followed by a sequence of $\numhits$ hits, indefinitely.
 \end{definition}
@@ -200,7 +200,7 @@ This works well for instance in case the misses are due to a permanent overload 
 However, the setting is not very general.
 To foster generality, we complement the stability evaluation with a less restrictive stability analysis, based on the proposed task model in Definition~\ref{def:task-model}.
 
-\begin{definition}[\switchingstability{} stability analysis]
+\begin{definition}[\switchingstability{} stability analysis]%
     To guarantee \emph{\switchingstability{} stability}, a system has to be stable under arbitrary switching between all the possible $\nummisses$ realisations (i.e., closed-loop matrices) that comply with all task models $\tau \vdash \genfrac{\{}{\}}{0pt}{}{\nummisses_\subset}{\numtotalanalysed}, \nummisses_\subset \in \{1, \dots,\nummisses\}$ and also include the case in which the system does not miss deadlines.
 \end{definition}
 In other words, a system is \switchingstability{} stable if and only if it is stable under arbitrary switching of the closed-loop matrices in the set
@@ -259,13 +259,13 @@ We evaluate this as
 \end{equation}
 where $\varepsilon> 0$ is the \emph{recovery threshold}.
 
-\begin{definition}[Performance Recovery Interval]
-\label{def:recovery-lenght-interval}
+\begin{definition}[Performance Recovery Interval]%
+\label{def:recovery-lenght-interval}%
     We define the recovery length interval $\recoverylengthinterval_{\strat}$ as the smallest $\numhits$ such that~\eqref{eq:cost-threshold} is satisfied for all $k \geq \numhits$ when using $\strat$ to handle deadline misses.
 \end{definition}
 
-\begin{definition}[Maximum normalised cost]
-\label{def:maximum-system-cost}
+\begin{definition}[Maximum normalised cost]%
+\label{def:maximum-system-cost}%
     We denote the maximum normalised cost of the system by
     %
     \begin{equation}
