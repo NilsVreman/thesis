@@ -1,0 +1,78 @@
+A recent survey on the state of industrial practice in real-time systems showed that a significant fraction of real-time tasks are allowed to miss a finite number of deadlines~\cite{Akesson:2020}.
+%
+The research community spent years defining and analysing models of tasks that can miss deadlines, from soft real-time systems~\cite{Buttazzo:2005}, to tasks with a skip-factor~\cite{Koren:1995}, from calculating the miss ratio based on execution time probability distributions~\cite{Manolache:2004}, to approximating the deadline miss probability~\cite{vonDerBruggen:2018, Bozhko:2021, vonderBrueggen:2021} for a given system.
+
+One of such models in which tasks may miss deadlines is the weakly-hard task model~\cite{Bernat:2001}. 
+Weakly-hard tasks behave according to patterns of hit and missed deadlines that are (mainly) window-based.
+The originally proposed constraint models specifies alternatively (for a window of subsequent jobs):
+\begin{enumerate*}[label=(\roman*)]
+    \item the minimum number of deadlines that are hit,
+    \item the minimum number of consecutive deadlines that are hit,
+    \item the maximum number of deadlines that may be missed, or
+    \item the maximum number of consecutive deadlines that may be missed.
+\end{enumerate*}
+The third of these models -- often called the $(m,K)$ model -- gained attention in the research community, generating results on scheduling algorithms~\cite{Hamdaoui:1995}, real-time and schedulability analysis~\cite{Sun:2017, Pazzaglia:2021b, Hammadeh:2017}, verification~\cite{Huang:2019b, Behrouzian:2020} and runtime monitoring~\cite{Wu:2020} of constraint satisfaction, derivation of task model parameters~\cite{Xu:2015}, together with applications to domains like telecommunication~\cite{Ahrendts:2018, Huang:2019a} and control systems~\cite{Ramanathan:1999, Pazzaglia:2018, Vreman:2021, Pazzaglia:2021}. 
+The fourth model has also proved relevant to perform analyses of the stability of control systems~\cite{Maggio:2020}. 
+Furthermore, the relation between weakly-hard constraint types has been partially investigated~\cite{Tu:2007, Wu:2020}.
+However, this investigation remains partial as some of the constraints are not connected and their dominance (i.e., the comparison of how strictly does the task model constrain the task execution for different types of constraints) is not assessed.
+
+The practical usefulness of weakly-hard models will remain limited, unless it is possible to build tools to enforce and monitor the satisfaction of weakly-hard constraints for execution platforms.
+Many real-time platforms offer the possibility to invoke ``protected'' task executions, ensuring that deadlines are met at the cost of increasing the execution cost.
+This is a very simple mechanism to secure that the weakly-hard constraint is satisfied in an execution platform.
+However, this requires writing monitoring code, that generates transition points to this protected execution mode when a constraint might otherwise be violated.
+Generating this code in a scalable way requires abstracting from the constraint and representing the execution of tasks with compact, but expressive, models.
+
+To date, the literature has focused on the $(m,K)$ constraint, neglecting the others, despite their relevance in application domains such as control~\cite{Maggio:2020, Linsenmayer:2017, Vreman:2021}.
+As a result, the mentioned tools and models are not available for all the constraint types.
+This paper aims at both solving this problem and answering some open issues, namely:
+\begin{enumerate*}[label=(\roman*)]
+    \item guaranteeing consecutive deadline hits, and not only following patterns of deadline misses; and
+    \item dealing with systems that satisfy multiple weakly-hard constraint simultaneously.
+\end{enumerate*}
+
+The first issue comes from the consideration that in practice it may be easier to guarantee that some prescribed job will hit their deadline rather than ensuring that the number of misses follows a given pattern. 
+This is the case of the mentioned protected execution environment. 
+As an example, mixed-criticality allows the scheduler to raise the criticality level and thus guarantee that the highly-critical tasks meet the corresponding deadlines~\cite{Burns:2013}. 
+We can treat the weakly-hard task as highly critical and raise the criticality level when a deadline hit must be enforced. 
+Alternatively, we can increase the budget of a reservation-based scheduler~\cite{Casini:2019}.
+Despite the fact that guaranteeing hits is often easier than enforcing miss patterns, the first two types of weakly hard tasks, that constrain the number of hits, have not been receiving much attention from the research community.
+
+Furthermore, we would like to analyse tasks that satisfy multiple constraints simultaneously.
+Most analysis methods only take into account a single constraint, e.g.,~\cite{Pazzaglia:2018} or~\cite{Maggio:2020} for the stability of control systems.
+In some cases, one of the two constraints \emph{dominates} the other, meaning that satisfying the dominant constraint also guarantees the satisfaction of the dominated one. 
+But this is not always the case.
+Consider for example two constraints $\lambda_1$ and $\lambda_2$, where $\lambda_1$ specifies that the task may miss a maximum of 2 deadlines in every window of 5 consecutive jobs, and $\lambda_2$ that it may miss a maximum of 3 deadlines in every window of 7 consecutive jobs.
+On the one hand the sequence 0011100, where 0 represents a deadline miss and 1, satisfies $\lambda_1$ but fails $\lambda_2$, meaning that $\lambda_2$ does not dominate $\lambda_1$.
+On the other hand the sequence 0001111 satisfies $\lambda_2$ but fails $\lambda_1$, and so $\lambda_1$ does not dominate $\lambda_2$ either.
+If the analysis can only be conducted with a single constraint, the choice of which constraint is to be used is left to the practitioner, while it would be best to consider \emph{both} constraints simultaneously.
+
+Finally, we bring forward the question of \emph{scalability}. 
+Many of the research results, for example in the control domain~\cite{Pazzaglia:2018, Linsenmayer:2017, Linsenmayer:2021}, use short windows. 
+However, for practical applications it may be relevant to use a large window size, as done for example in the experimental analysis in~\cite{Behrouzian:2020}. 
+In fact, the original motivation behind the weakly-hard task model~\cite{Bernat:2001} uses a practical example from the avionics domain in which a deadline may be missed $11$ times in every consecutive $295$ jobs. 
+It seems reasonable that systems that are built and certified (for example in the automotive domain) would not experience many deadline misses, and that using a short window size would lead to very conservative results.
+
+To address these questions and empower researchers with a tool to apply their analysis techniques, this paper presents \tool, a software library for weakly hard tasks that treats scalability as a first-class citizen. 
+More precisely, the contributions of the paper are the following:
+
+\begin{itemize}
+
+    \item We provide a theoretical contribution on the relation between weakly hard tasks that constrain the number of hits and the number of consecutive hits in a window (Section~\ref{sec:theorems}). 
+        This relation allows us to relate all the types of constraints with one another, and provide some ordering among them. 
+
+    \item We leverage an automata-based representation to describe the behaviour of a task subject to a weakly-hard constraint~\cite{Horssen:2016, Linsenmayer:2021}.
+        In constrast to other approaches, our description exploits a mapping between a single transition in the automaton and a deadline (Section~\ref{sec:code}).
+        This enables uses such as automatic generation of monitors to check weakly-hard constraint satisfaction on the fly.
+
+    \item We extend the automaton to describe a task subject to a finite set of weakly-hard constraints (Section~\ref{sec:theorems}).
+        In this way, we are able to address the analysis of systems that satisfy multiple constraints, possibly of different types, that do not dominate one another.
+        As far as we know, this is the first paper that presents an analysis of a set of weakly-hard constraints.
+
+\end{itemize}
+
+We conduct an extensive performance evaluation campaign with a two-fold purpose (Section~\ref{sec:experiment}). 
+First, we analyse the scalability of our library compared to the state of the art whenever possible, i.e., for single constraints. 
+Second, we look at sets of constraints and perform a sensitivity analysis, to determine which parameters affect the execution time of the automaton construction for a set of constraints. 
+
+\tool{} can be used for monitoring tasks subject to multiple weakly-hard constraints, analysing satisfaction sets, schedulability analysis, or connecting the weakly-hard model to applied fields like control theory.
+In particular, recent papers~\cite{Pazzaglia:2018, Maggio:2020, Vreman:2021, Linsenmayer:2021, Linsenmayer:2017} connected the weakly-hard model with control proofs considering stability and performance guarantees, and \tool{} can generate general automata-based monitoring code ensuring the satisfaction of said properties.

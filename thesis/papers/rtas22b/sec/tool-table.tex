@@ -1,0 +1,23 @@
+\begin{table*}[t]
+    \centering
+    \caption{Functions offered by \tool{}.}
+    \label{tab:tool:functionality}
+    {\renewcommand{\arraystretch}{1.4}
+    \begin{tabular}{p{0.39\textwidth}p{0.59\textwidth}}
+        \hline\hline
+        \textbf{Function} & \textbf{Description} \\ \hline \hline
+        \texttt{AnyHitConstraint(x, k)}             & Defines a constraint $\lambda = \anyhit{}$ \\ \hline
+        \texttt{AnyMissConstraint(x, k)}            & Defines a constraint $\lambda = \anymiss{}$  \\ \hline
+        \texttt{RowHitConstraint(x, k)}             & Defines a constraint $\lambda = \rowhit{}$  \\ \hline
+        \texttt{RowMissConstraint(x)}               & Defines a constraint $\lambda = \overline{\left<x\right>}$  \\ \hline
+        \texttt{is\_satisfied(Lambda, w)}           & Returns \textbf{true} if $w \vdash \Lambda$, i.e., if the word $w$ satisfies all the constraints in $\Lambda$, and \textbf{false} otherwise (note: can be invoked also passing a single constraint $\lambda$ as parameter) \\ \hline
+        \texttt{is\_dominant(lambda1, lambda2)}     & Returns \textbf{true} if $\lambda_1 \preceq \lambda_2$ and \textbf{false} otherwise \\ \hline
+        \texttt{is\_equivalent(lambda1, lambda2)}   & Returns \textbf{true} if $\lambda_1 \equiv \lambda_2$ and \textbf{false} otherwise \\ \hline
+        \texttt{dominant\_set(Lambda)}              & Returns $\Lambda^* \subseteq \Lambda$ \\ \hline
+        \texttt{build\_automaton(Lambda)}           & Returns the automaton $\GG{\Lambda}$ (note: can be invoked also passing a single constraint $\lambda$ as parameter) \\ \hline
+        \texttt{minimize\_automaton!(G)}            & Returns the minimal representation of $\GG{\Lambda}$ (note: changes $\GG{\Lambda}$) \\ \hline
+        \texttt{random\_sequence(G, N)}             & Returns a word $w,\, \abs{w}=N$ obtained through an $N$-step random walk in $\GG{\Lambda}$ \\ \hline
+        \texttt{all\_sequences(G, N)}               & Returns the satisfaction set $\sset{N}{\Lambda}$ corresponding to $\GG{\Lambda}$ \\ \hline\hline
+    \end{tabular}
+    }
+\end{table*}

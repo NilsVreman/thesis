@@ -1,0 +1,138 @@
+In this work, we analyse a single real-time task. 
+For the remainder of this paper, a real-time task $\tau$ is an entity composed of a sequence of jobs $(j_i)_{i \in \N^\geq}$, representing code that is executed repeatedly on a given hardware platform (not necessarily according to any temporal pattern or periodicity). 
+A task is characterised by its relative deadline $d$, representing the time after which each job should be completed.
+
+The index $i$ counts the job number. 
+For a given job $j_i$, we denote with $a_i$ its release time (the time in which the job becomes active in the hardware platform), and with $f_i$ its completion time (the time in which the job terminates its execution). 
+We also use $d_i$ to represent the absolute deadline of the $i$-th job, meaning that $d_i=a_i+d$.
+
+In general, a job can either complete its execution before its deadline or overrun it, resulting respectively in a deadline \emph{hit} or \emph{miss} (collectively denoted by the job's \emph{outcome}).
+%
+\begin{definition}[Deadline Hit]%
+\label{def:hit}%
+    The $i$-th job of a task $\tau$ is said to hit its deadline if $f_i \leq d_i$.
+\end{definition}
+%
+\begin{definition}[Deadline Miss]%
+\label{def:miss}%
+    The $i$-th job of a task $\tau$ is said to miss its deadline if $f_i > d_i$.
+\end{definition}
+%
+The weakly-hard task model~\cite{Bernat:2001, Bernat:1998} provides guarantees on the sequence of outcomes of a real-time task via four constraints, each specifying how deadline misses and hits are interleaved for a window of $k \geq 1$ consecutive jobs.
+%
+\begin{definition}[Weakly-Hard Task]%
+\label{def:weakly-hard}%
+    A weakly-hard task $\tau$ is a task that satisfies (at least) one of the following constraints:
+    \begin{enumerate}[label=(\roman*)]
+        \item \label{item:AnyHit} $\tau \vdash \anyhit{}$ (\tAH{}): in any window of $k$ consecutive jobs, the minimum number of hits is $x$;
+        \item \label{item:RowHit} $\tau \vdash \rowhit{}$ (\tRH{}): in any window of $k$ consecutive jobs, the minimum number of consecutive hits is $x$;
+        \item \label{item:AnyMiss} $\tau \vdash \anymiss{}$ (\tAM{}): in any window of $k$ consecutive jobs, the maximum number of misses is $x$; and
+        \item \label{item:RowMiss} $\tau \vdash \rowmiss{}$ (\tRM{}): in any window of $k$ consecutive jobs, the maximum number of consecutive misses is $x$;
+    \end{enumerate}
+    for some values of $x\in \N^\geq$, $k \in \N^>$, where $x\leq k$. We use the $\vdash$ symbol to indicate that all the possible sequences of outcomes of $\tau$ satisfy the right hand side.
+\end{definition}
+%
+The types of constraints in Definition~\ref{def:weakly-hard} have received different attention in the real-time systems literature. 
+In particular, the \tAM{} constraint has been extensively studied, and is commonly addressed as the $(m,K)$ weakly-hard task model~\cite{Hamdaoui:1995, Hammadeh:2017a, Hammadeh:2017b, Sun:2017, Ahrendts:2018, Pazzaglia:2018}. 
+However, these constraints have been studied separately, while a task can simultaneously satisfy many, possibly of different types.
+
+Exploiting different types of constraints -- and possibly different parameters for the same type of constraint -- leads to a better outcome for the analysis of the system. 
+This follows from the space of possible sequences being pruned, thus allowing us to focus on proving that the real-time system behaves correctly in the relevant cases. 
+In the following, we denote a set of $L$ weakly-hard constraints with $\Lambda = \left\{ \lambda_1, \lambda_2, \ldots, \lambda_L \right\} $. 
+To characterise the possible sequences of outcomes that satisfy a constraint, we borrow some elementary concepts from language theory, in particular the \emph{binary alphabet}~\cite{Hopcroft:2006}.
+%
+\begin{definition}[Alphabet $\Sigma$ of Job Outcomes]%
+\label{def:alphabet}%
+    We define the alphabet of job outcomes $\Sigma = \left\{ 0, 1 \right\}$, where $0$ indicates a deadline miss and $1$ represents a deadline hit.
+\end{definition}
+%
+Using well-established notation, we denote the \emph{character} $c_i \in \Sigma$ as the outcome of job $j_i$.
+A \emph{word} $w$ of length $\abs{w} = N$ is a sequence of characters $w = \left( c_1, c_2, \ldots, c_N \right)$ that specifies a sequence of consecutive job outcomes for a task.
+Without loss of generality, we assume that all words are preceded and followed only by hits.
+We denote the subword of a word $w$ from index $a$ to $b$ with $w\funof{a, b} = \left( c_a, c_{a+1}, \ldots, c_b \right)$.
+Finally, $\Sigma^N$ denotes the set of all possible words of length $N$.
+
+With a slight abuse of notation, we use $w \vdash \lambda$ to indicate that the word $w$ satisfies the constraint $\lambda$.
+Obtaining the set of words satisfying $\lambda$ follows directly from the definitions of the alphabet and the constraint itself~\cite{Bernat:2001, Bernat:1998}.
+%
+\begin{definition}[Satisfaction Set $\sset{N}{\lambda}$]%
+    \label{def:satisfaction-set}%
+    The set of all length $N$ words $w$, satisfying the weakly-hard constraint $\lambda$, is denoted by $\sset{N}{\lambda}$.
+    Formally, $\sset{N}{\lambda} = \left\{ w \in \Sigma^N \, | \, w \vdash \lambda \right\},\, N \geq 1$.
+\end{definition}
+%
+Trivially, all words in $\sset{M}{\lambda}$ are subwords of words existing in $\sset{N}{\lambda}$, if $M \leq N$.
+To simplify notation we define the set containing all words of infinite length as $\sset{}{\lambda} \equiv \sset{\infty}{\lambda}$.
+
+Using satisfaction sets, it is possible to formally define a partial ordering between two constraints $\lambda_i$ and $\lambda_j$.
+We denote the logical conjunction with $\land$ and the logical disjunction with $\lor$.
+The following notions of constraint \emph{domination} and \emph{equivalence}~\cite{Bernat:2001, Bernat:1998} are used extensively throughout the remainder of the paper (jointly denoted \emph{constraint dominance}).
+%
+\begin{definition}[Constraint Domination]%
+\label{def:domination}%
+    Given two arbitrary weakly-hard constraints $\lambda_i$ and $\lambda_j$, $\lambda_i$ dominates $\lambda_j$ (denoted $\lambda_i \prec \lambda_j$) if all words satisfying $\lambda_i$ also satisfy $\lambda_j$, i.e., $\sset{}{\lambda_i} \subset \sset{}{\lambda_j}$.
+    Correspondingly, $\lambda_i \preceq \lambda_j \Leftrightarrow \sset{}{\lambda_i} \subseteq \sset{}{\lambda_j}$.
+\end{definition}
+%
+\begin{definition}[Constraint Equivalence]%
+\label{def:equivalence}%
+    Given two arbitrary weakly-hard constraints $\lambda_i$ and $\lambda_j$, $\lambda_i$ is equivalent to $\lambda_j$ if they respectively dominate each other.
+    Formally, $\lambda_i \equiv \lambda_j \Leftrightarrow \lambda_i \preceq \lambda_j \land \lambda_j \preceq \lambda_i$. Two constraints are equivalent if they share the same satisfaction set, i.e., $\lambda_i \equiv \lambda_j \Leftrightarrow \sset{}{\lambda_i} = \sset{}{\lambda_j}$.
+\end{definition}
+
+The notion of constraint dominance has attracted attention from different areas, and is still occasionally researched~\cite{Wu:2020, Tu:2007}.
+To provide dominance results, we first define the \emph{weakest} and \emph{hardest} constraints~\cite{Bernat:2001, Bernat:1998}.
+%
+\begin{definition}[Weakest Constraint $\lweak$]%
+\label{def:weakest}%
+    The weakest constraint $\lweak$ is defined as the constraint satisfied by \emph{any} word.
+    Formally, $\sset{N}{\lweak} = \Sigma^N,\,\forall N \in \mathbb{N}^{>}$.
+\end{definition}
+%
+\begin{definition}[Hardest Constraint $\lhard$]%
+\label{def:hardest}%
+    The hardest constraint $\lhard$ is defined as the constraint satisfied \emph{solely} by the word containing all deadline hits.
+    Formally, $\sset{N}{\lhard} = \left\{ 1^N \right\},\,\forall N \in \mathbb{N}^{>}$.
+\end{definition}
+Using these definitions, we now review known constraint dominance relations.
+We refer the reader to~\cite{Bernat:1998} or any referenced paper for the corresponding proofs.
+
+\begin{lemma}[Known Equivalence Relations]%
+\label{thm:equivalence-known}%
+    The following equivalence relations hold:
+    \begin{enumerate}[label=(\roman*)]
+        \item \label{thm:equiv-anyhit-anymiss} $\anyhit{} \equiv \overline{\binom{k-x}{k}}$, an \tAH{} constraint with $x$ deadline hits in a window of $k$ jobs is equivalent to an \tAM{} constraint with $k-x$ hits in a window of $k$ jobs,
+        \item \label{thm:equiv-rowmiss-rowmiss} $\rowmiss{} \equiv \overline{\left< x \right>},\,\, \forall k \geq 1$, a \tRM{} constraint is independent of the window size, i.e., it is equivalent to the same constraint with any $k$ value,
+        \item \label{thm:equiv-anymiss-rowmiss} $\overline{\left< x \right>} \equiv \overline{\binom{x}{x+1}}$, a \tRM{} constraint with $x$ deadline misses is equivalent to an \tAM{} with $x$ possible misses in a window of $x+1$ jobs~\cite{Maggio:2020},
+        \item ${\genfrac{<}{>}{0pt}{}{1}{k}} \equiv {\binom{1}{k}}$, (trivially) a \tRH{} constraint is equivalent to an \tAH{} when looking at the same window length and a single deadline,
+        \item \label{thm:equiv-rowhit-hardest} $\rowhit{} \equiv \lhard \Leftrightarrow x > \sfrac{k}{2}$, a \tRH{} constraint is equivalent to the hardest constraint when $x> \sfrac{k}{2}$.
+    \end{enumerate}
+\end{lemma}
+
+Using these equivalence relations, we can always translate \tAM{} and \tRM{} constraints into a corresponding \tAH{} constraint.
+However, there is no clear equivalence between \tAH{} and \tRH{} constraints (beside the trivial case of a single deadline and the same window length).
+Finding such a relation is important because it would allow us to treat sets of different types of constraints reducing the analysis to a single type and therefore improving efficiency.
+This motivates our formal analysis of the relation between hit-related constraints, presented in Section~\ref{sec:theorems}.
+
+Denoting with $\floor{\cdot}$ and $\ceil{\cdot}$ respectively the floor and ceiling operators, we can then define some domination relations.
+
+\begin{lemma}[Known Domination Relations]%
+\label{thm:dominance-known}%
+    The following domination relations hold:
+    \begin{enumerate}[label=(\roman*)]
+        \item \label{thm:dom-anyhit-anyhit} $\anyhit{1} \preceq \anyhit{2} \Leftrightarrow x_2 \leq \max \left\{ a, b \right\}$, where $a=\floor{\frac{k_2}{k_1}}x_1$ and $b=k_2 - \ceil{\frac{k_2}{k_1}}(k_1-x_1)$; the \tAH{} constraint with parameters $x_1$ and $k_1$ dominates all \tAH{} constraints with parameters $x_2$ and $k_2$ if and only if $x_2 \leq \max \left\{ a, b \right\}$ with $a$ and $b$ defined as above.
+
+        \item \label{thm:dom-rowhit-rowhit} For any two constraints $\rowhit{1}, \rowhit{2} \nequiv \lhard$, $\rowhit{1} \preceq \rowhit{2} \Leftrightarrow ( k_2 < k_1 \land k_2 \leq x_1 - \ceil{ \frac{k_1-k_2}{2} } ) \lor \left( k_2 \geq k_1 \land x_2 \leq x_1 \right)$; this specifies the domination between two \tRH{} constraints depending on their constraint parameters.
+
+        \item \label{thm:dom-rowhit-anyhit-fixk} $\genfrac{<}{>}{0pt}{}{x_1}{k} \preceq \binom{x_2}{k} \Rightarrow \{ x_2 \leq 4x_1 - k - 2,\,\, x_2 \leq x_1,\,\, x_2 \geq 0 \}$; for a fixed and equal window $k$, if a \tRH{} constraint with consecutive deadlines hits $x_1$ dominates an \tAH{} constraint with $x_2$ deadlines hits, then the indicated relation between the constraint parameters hold.
+
+        \item \label{thm:rowmiss-rowmiss-relation} $\overline{ \left< x_1 \right>} \preceq \overline{\left< x_2 \right>} \Leftrightarrow x_1 \leq x_2$; a \tRM{} constraint with a lower number of deadline misses dominates a \tRM{} with a higher number of deadline misses.
+
+        \item \label{thm:anymiss-anymiss-relation} $\overline{\binom{x+p}{k+p}} \preceq \overline{\binom{x}{k}}$ if $p > 0$; \tAM{} constraints can be dominated by other \tAM{} constraints when particular relations hold for values of their parameters~\cite{Tu:2007}.
+    \end{enumerate}
+\end{lemma}
+
+The ability to translate constraints into \tAH{} equivalents makes Lemma~\ref{thm:dominance-known}\ref{thm:dom-anyhit-anyhit} very powerful to compare different weakly hard constraints. 
+Finally, Lemma~\ref{thm:dominance-known}\ref{thm:dom-rowhit-anyhit-fixk} is the only known result that relates the \tRH{} constraints with the other types. 
+However, its applicability is limited to the case in which the two constraints share the same window size.
+From the presentation of the existing constraint dominance relations, we gather that there is an important piece missing to achieve a comprehensive weakly-hard analysis.

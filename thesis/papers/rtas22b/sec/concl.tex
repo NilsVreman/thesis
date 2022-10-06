@@ -1,0 +1,19 @@
+The research behind this paper is motivated by the attention the weakly-hard model is receiving in both academic and industrial contexts.
+The paper primarily proposes two contributions:
+\begin{enumerate*}[label=(\roman*)]
+    \item two novel theorems that complete the relation graph between weakly-hard constraints of different types, and 
+    \item an open-source tool, \tool{}, that helps in the analysis of weakly-hard tasks. 
+\end{enumerate*}
+The tool includes functions to relate different weakly-hard constraints to one another, and functions to generate automata that encode the feasible outcomes of weakly-hard tasks.
+
+We envision \tool{} to be used for
+\begin{enumerate*}[label=(\roman*)]
+    \item the analysis of complex tasksets, in which tasks are subject to different weakly-hard constraints, possibly with large windows,
+    \item the generation of monitoring code that provides runtime checks for the satisfaction of weakly-hard constraints.
+\end{enumerate*}
+As an example, to validate the conjectures that became the theorems of Section~\ref{sec:theorems:single}, we used \tool{} to generate the satisfaction sets for various pairs of \tAH{} and \tRH{} constraints. 
+We then calculated the intersection between the generated sets to verify that our conjecture held for the specific cases under test.
+
+We analyse the scalability of \tool{} and the dominance between different constraints.
+Furthermore, we build dominant sets of constraints.
+To the best of our knowledge, \tool{} is the first tool that enables the analysis of tasks that satisfy sets of weakly-hard constraints.

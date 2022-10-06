@@ -1,0 +1,44 @@
+\centering
+\begin{tikzpicture}
+            
+    %\pgfplotstableread[col sep=comma]{figs/data/parsed-manipulaed-rowhit-25-100-median.csv}{\data}
+    \pgfplotstableread[col sep=comma]{\figdir/data/parsed-rowhit-15-85-mean.csv}{\data}
+
+    \begin{axis}[% plotting options
+        width = 0.85\textwidth,
+        height = 0.5\textwidth,
+        title style={align=center},
+        ylabel style={align=center, yshift=-0.6cm},
+        xlabel = {$i=k-x$},
+        ylabel = {execution time [s]\\(log scale)},
+        xmin=0, xmax=85,
+        %xmin=0, xmax=75,
+        ymode=log,
+        ymin=-14, ymax=30,     % may want to change these values
+        % y axes labels, you really want to emphasise the numbers, so no powers of 10
+        log ticks with fixed point,
+        y tick label style={/pgf/number format/1000 sep = {}},
+        % grid to make the graph more readable
+        grid=both,
+        grid style={black!70, densely dotted},
+        minor grid style={black!10, densely dotted},
+        legend pos=south east]
+
+        \addplot[blue!40,ultra thick,mark=none] table [x index=0, y index=1] {\data}; \addlegendentry{$x=1$}
+        \addplot[blue!50,ultra thick,mark=none, forget plot] table [x index=0, y index=2] {\data};
+        \addplot[blue!60,ultra thick,mark=none, forget plot] table [x index=0, y index=3] {\data};
+        \addplot[blue!70,ultra thick,mark=none, forget plot] table [x index=0, y index=4] {\data};
+        \addplot[blue!75,ultra thick,mark=none, forget plot] table [x index=0, y index=5] {\data};
+        \addplot[blue!80,ultra thick,mark=none, forget plot] table [x index=0, y index=6] {\data};
+        \addplot[blue!85,ultra thick,mark=none, forget plot] table [x index=0, y index=7] {\data};
+        \addplot[blue!90,ultra thick,mark=none, forget plot] table [x index=0, y index=8] {\data};
+        \addplot[blue!95,ultra thick,mark=none, forget plot] table [x index=0, y index=9] {\data};
+        \addplot[blue,ultra thick,mark=none, forget plot] table [x index=0, y index=10] {\data};
+        \addplot[black!10!blue,ultra thick,mark=none, forget plot] table [x index=0, y index=11] {\data};
+        \addplot[black!20!blue,ultra thick,mark=none, forget plot] table [x index=0, y index=12] {\data};
+        \addplot[black!30!blue,ultra thick,mark=none, forget plot] table [x index=0, y index=13] {\data};
+        \addplot[black!40!blue,ultra thick,mark=none, forget plot] table [x index=0, y index=14] {\data};
+        \addplot[black!50!blue,ultra thick,mark=none] table [x index=0, y index=15] {\data}; \addlegendentry{$x=15$}
+
+    \end{axis}
+\end{tikzpicture}

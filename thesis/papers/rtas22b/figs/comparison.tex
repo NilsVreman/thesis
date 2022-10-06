@@ -1,0 +1,156 @@
+\begin{center}
+\begin{tikzpicture}
+\begin{customlegend}[legend columns=5,legend style={column sep=1ex},legend entries={$x=1$,$x=2$,$x=3$,$x=4$,$x=5$,$x=6$,$x=7$,$x=8$,$x=9$,$x=10$}]
+\addlegendimage{blue!95!black, mark=*, mark size=2pt,mark options={fill=white}},
+\addlegendimage{blue!85!black, mark=*, mark size=2pt}
+\addlegendimage{blue!75!black, mark=*, mark size=2pt}
+\addlegendimage{blue!65!black, mark=*, mark size=2pt}
+\addlegendimage{blue!55!black, mark=*, mark size=2pt}
+\addlegendimage{blue!45!black, mark=*, mark size=2pt}
+\addlegendimage{blue!35!black, mark=*, mark size=2pt}
+\addlegendimage{blue!25!black, mark=*, mark size=2pt}
+\addlegendimage{blue!15!black, mark=*, mark size=2pt}
+\addlegendimage{blue! 5!black, mark=*, mark size=2pt}
+\end{customlegend}
+\end{tikzpicture}
+\end{center}
+
+\begin{tikzpicture}
+            
+    \pgfplotstableread[col sep=comma]{\figdir/data/parsed-julia-any-hit-10-20-mean.csv}{\table}
+    \pgfplotstabletranspose{\data}{\table}
+
+    \begin{axis}[% plotting options
+	width = 0.265\textwidth,
+	height = 0.3\textwidth,
+	title style={align=center},
+        title = {\tool{}\\\tAH{}\\(baseline $3.7 \mu$s)},
+        xlabel = {$i=k-x$},
+        ylabel = {$\frac{\text{execution time}}{\text{baseline}}$ (log scale)},
+        cycle list name=blue10,   % force me to follow my color list
+        xmin=\xstart-1, xmax=\xend, % 1 is to ignore the first data which is the x value
+        ymode=log,                % y scale should be logarithmic
+        ymin=0.1, ymax=10000,     % may want to change these values
+        xtick distance=1,         % we would like to see them all if possible
+        % y axes labels, you really want to emphasise the numbers, so no powers of 10
+        log ticks with fixed point,
+        y tick label style={/pgf/number format/1000 sep = {}},
+        % grid to make the graph more readable
+        grid=both,
+        grid style={black!70, densely dotted},
+        minor grid style={black!10, densely dotted},
+        ]
+
+        % the actual plot in a foreach
+        \pgfplotsforeachungrouped \n in {\xstart,...,\xend}{
+            \addplot+ table [x expr=\coordindex-1, y index=\n] {\data};
+        }
+    \end{axis}
+\end{tikzpicture}
+%
+\hspace{-5mm}
+%
+\begin{tikzpicture}
+
+    \pgfplotstableread[col sep=comma]{\figdir/data/parsed-matlab-any-hit-10-20-mean.csv}{\table}
+    \pgfplotstabletranspose{\data}{\table}
+
+    \begin{axis}[% plotting options
+	width = 0.265\textwidth,
+	height = 0.3\textwidth,
+	title style={align=center},
+        title = {\toolLinsenmayer{}~\cite{Linsenmayer:2017}\\\tAH{}\\(baseline $32.4$ms)},
+        xlabel = {$i=k-x$},
+        %ylabel = {$\frac{\text{execution time}}{\text{baseline}}$ (logarithmic scale)},
+        cycle list name=blue10,   % force me to follow my color list
+        xmin=\xstart-1, xmax=\xend, % 1 is to ignore the first data which is the x value
+        ymode=log,                % y scale should be logarithmic
+        ymin=0.1, ymax=10000,     % may want to change these values
+        xtick distance=1,         % we would like to see them all if possible
+        % y axes labels, you really want to emphasise the numbers, so no powers of 10
+        log ticks with fixed point,
+        y tick label style={/pgf/number format/1000 sep = {}},
+        % grid to make the graph more readable
+        grid=both,
+        grid style={black!70, densely dotted},
+        minor grid style={black!10, densely dotted},
+        ]
+
+	\addplot {-1};
+        % the actual plot in a foreach
+        \pgfplotsforeachungrouped \n in {2,...,\xend}{
+            \addplot+ table [x expr=\coordindex-1, y index=\n] {\data};
+        }
+    \end{axis}
+\end{tikzpicture}
+%
+\hspace{-5mm}
+%
+\begin{tikzpicture}
+
+    \pgfplotstableread[col sep=comma]{\figdir/data/parsed-julia-row-hit-10-20-mean.csv}{\table}
+    \pgfplotstabletranspose{\data}{\table}
+
+    \begin{axis}[% plotting options
+	width = 0.265\textwidth,
+	height = 0.3\textwidth,
+	title style={align=center},
+        title = {\tool{}\\\tRH{}\\(baseline $3.2 \mu$s)},
+        xlabel = {$i=k-x$},
+        %ylabel = {$\frac{\text{execution time}}{\text{baseline}}$ (logarithmic scale)},
+        cycle list name=blue10,   % force me to follow my color list
+        xmin=\xstart-1, xmax=\xend, % 1 is to ignore the first data which is the x value
+        ymode=log,                % y scale should be logarithmic
+        ymin=0.1, ymax=10000,     % may want to change these values
+        xtick distance=1,         % we would like to see them all if possible
+        % y axes labels, you really want to emphasise the numbers, so no powers of 10
+        log ticks with fixed point,
+        y tick label style={/pgf/number format/1000 sep = {}},
+        % grid to make the graph more readable
+        grid=both,
+        grid style={black!70, densely dotted},
+        minor grid style={black!10, densely dotted},
+        ]
+
+        % the actual plot in a foreach
+        \pgfplotsforeachungrouped \n in {\xstart,...,\xend}{
+            \addplot+ table [x expr=\coordindex-1, y index=\n] {\data};
+        }
+    \end{axis}
+\end{tikzpicture}
+%
+\hspace{-5mm}
+%
+\begin{tikzpicture}
+
+    \pgfplotstableread[col sep=comma]{\figdir/data/parsed-matlab-row-hit-10-20-mean.csv}{\table}
+    \pgfplotstabletranspose{\data}{\table}
+
+    \begin{axis}[% plotting options
+	width = 0.265\textwidth,
+	height = 0.3\textwidth,
+	title style={align=center},
+        title = {\toolLinsenmayer{}~\cite{Linsenmayer:2017}\\\tRH{}\\(baseline $17.7$ms)},
+        xlabel = {$i=k-x$},
+        %ylabel = {$\frac{\text{execution time}}{\text{baseline}}$ (logarithmic scale)},
+        cycle list name=blue10,   % force me to follow my color list
+        xmin=\xstart-1, xmax=\xend, % 1 is to ignore the first data which is the x value
+        ymode=log,                % y scale should be logarithmic
+        ymin=0.1, ymax=10000,     % may want to change these values
+        xtick distance=1,         % we would like to see them all if possible
+        % y axes labels, you really want to emphasise the numbers, so no powers of 10
+        log ticks with fixed point,
+        y tick label style={/pgf/number format/1000 sep = {}},
+        % grid to make the graph more readable
+        grid=both,
+        grid style={black!70, densely dotted},
+        minor grid style={black!10, densely dotted},
+        ]
+
+	\addplot {-1};
+        % the actual plot in a foreach
+        \pgfplotsforeachungrouped \n in {2,...,\xend}{
+            \addplot+ table [x expr=\coordindex-1, y index=\n] {\data};
+        }
+    \end{axis}
+\end{tikzpicture}

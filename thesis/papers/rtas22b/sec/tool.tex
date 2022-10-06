@@ -1,0 +1,202 @@
+In this section we introduce \tool{}\footnote{\url{https://github.com/NilsVreman/WeaklyHard.jl}}, a scalable tool for analysing (sets of) weakly-hard constraints of different types.
+The tool facilitates the analysis of weakly-hard tasks providing functions to:
+%
+\begin{enumerate}[label=(\roman*)]
+    \item compare two arbitrary weakly-hard constraints or two sets of weakly-hard constraints, obtaining answers about their dominance,% (are the two constraints equivalent, does one dominate the other, or is there no dominance relation between the two),
+    \item translate a weakly-hard constraint or a set of weakly-hard constraints into a corresponding automaton, that represents all the sequences that belong to the satisfaction set of the set of constraints,
+    \item produce \emph{all} sequences of arbitrary length that satisfy a set of weakly-hard constraints, i.e., the satisfaction set.
+\end{enumerate}
+%
+We distribute \tool{} as an open-source package, written in the Julia programming language~\cite{Julia:2017}.
+Julia is a scripting language with Just-In-Time compilation.
+The language design is centered upon two core concepts: type-stability and function specialisation through multiple-dispatch. 
+The type-stable compilation provides an implementation that is close to the hardware, resulting in efficient code execution.
+Multiple-dispatching allows us to write a user-friendly code library.
+Additionally, Julia's built in package manager simplifies the distribution of non-proprietary packages.
+
+A task subject to any weakly-hard constraint (from Definition~\ref{def:weakly-hard}) can be represented using an automaton.
+Automata have been used in the analysis of networked systems~\cite{Huang:2019a, Osch:2001}, schedulability~\cite{Zeng:2012, Fersman:2002, Fersman:2007}, and control systems~\cite{Linsenmayer:2017, Linsenmayer:2021, Pazzaglia:2018, Horssen:2016}.
+In this paper, we decided to constrain the automaton structure, thinking about the possible use of the automaton, e.g., generating a monitor to check whether a constraint is satisfied.
+In our representation, vertices encode the task's state, i.e., the relevant suffix of the sequence of job outcomes.
+Similarly, edges are associated with a \emph{feasible} outcome (hit or miss) and encode the transitions from one state to another.
+Feasibility here refers to the fact that deadline misses are not allowed if the constraint would not permit them.
+The outcome sequences acquired from \emph{all} random walks in the automaton correspond to the satisfaction set of the weakly-hard constraint represented by the automaton.
+
+Due to their combinatorial nature, weakly-hard systems are inherently complicated to analyse.
+Their complexity becomes apparent in the size of the automaton, and evidently grows when the window length of the constraint increases.
+In the following, we present a scalable approach for generating automata representations of weakly-hard constraints.
+
+\subsection{Weakly-hard constraints as automata}%
+\label{sec:tool:notation}%
+%
+Suppose that $\tau \vdash \lambda$.
+We use $\GG{\lambda} = (\VV{\lambda}, \EE{\lambda})$ to indicate the directed labeled graph $\GG{\lambda}$ corresponding to the automaton representation of $\tau$.
+Here, $\VV{\lambda}$ represents the set of \emph{vertices} in the graph and $\EE{\lambda}$ represents the directed \emph{edges} between vertices (also denoted \emph{transitions}).
+Each vertex $v_i \in \VV{\lambda}$ represents a word $w_i \in \sset{}{\lambda}$.
+With a slight notational abuse, vertices $v_i$ will occasionally (when evident from context) be treated as the word they represent, $w_i$.
+The transition $e_{i,j} \in \EE{\lambda}$ corresponds to a tuple $e_{i,j} = \funof{v_i, v_j, c_{i, j}}$, where the vertex pair $v_i, v_j \in \VV{\lambda}$ denotes the tail and head of the transition, and the character $c_{i,j} \in \Sigma$ corresponds to the transition's label.
+A transition $e_{i, j}$ is feasible if and only if the concatenation of the character $c_{i,j}$ to the word $w_i$ satisfies $\lambda$. Formally: 
+\begin{equation*}
+    e_{i, j} \in \EE{\lambda} \Leftrightarrow \left( w_i\funof{2,\abs{w_i}},\, c_{i,j} \right) = w_j \vdash \lambda.
+\end{equation*}
+Finally, for two vertices $v_i, v_j \in \VV{\lambda}$ we say that $v_j$ is a direct successor of $v_i$ if there exists a transition $e_{i,j} \in \EE{\lambda}$.
+Without loss of generality, we will assume that each vertex $v_i \in \VV{\lambda}$ can have at most two direct successors with distinct transition outcomes, i.e., one successor $v_{j_1}$ through $e_{i, j_1} = \left( v_i, v_{j_1}, 1 \right)$ and (if permissible) one successor $v_{j_0}$ through $e_{i, j_0} = \left( v_i, v_{j_0}, 0 \right)$.
+
+\subsection{Automaton construction}%
+\label{sec:tool:scalable}%
+%
+The na{\"i}ve approach of constructing the automaton $\GG{\lambda}$ is both time consuming and memory intensive (including $\abs{\sset{k}{\lambda}}$ vertices, where $k$ is the window length of $\lambda$).
+In order to improve performance and scalability, we include the following optimisations: 
+%
+\begin{enumerate}[label=(\roman*)]
+    \item representing words as bit strings,
+    \item minimising the automata size by combining equivalent vertices during the automata generation, and
+    \item representing large sets of constraints with their dominant subset.
+\end{enumerate}
+%
+Support for bit string operations (like shifting) is essential for efficient sequence management.
+Logical and bitwise operations are directly supported by all processors, thus they are highly optimised and require a minimal amount of instruction cycles.
+We use the following notation: $\BitAnd$ is the \emph{bitwise and}, $\BitOr$ is the \emph{bitwise or}, and $\ShiftLeft$ is the \emph{logical left-shift}. 
+
+Each word $w \in \sset{}{\lambda}$ is a sequence of outcomes and can therefore be interpreted as a string of bits -- recall that an outcome is a character in $\Sigma = \left\{ 0,1 \right\}$.
+The rightmost character in $w$ is the outcome of the last job, e.g., $w=001$ implies that the last deadline was hit, but the two previous ones were missed.
+Assuming that the task $\tau$ experienced the outcomes $w$ and the next outcome is $c \in \Sigma$, then the new sequence of outcomes is $w' = \left( w \ShiftLeft 1 \right) \BitOr c$.
+
+The size of the na{\"i}ve automaton can be reduced substantially by combining vertices that would otherwise result in language-equivalent states~\cite{Hopcroft:2006}.
+Two vertices $v_{i_1}, v_{i_2} \in \VV{\lambda}$ are considered equivalent if they share the same direct successors with the same transition outcomes.
+%
+As an example, consider the \tAH{} constraint $\lambda = \binom{1}{2}$. 
+Trivially there are only three feasible vertices in the na{\"i}ve automaton, since there are $2^k = 4$ words in $\Sigma^k$ and $w = 00$ is infeasible.
+The words $w_1 = 11$ and $w_2 = 01$ are equivalent since they share the same direct successors with the same transition outcomes, i.e., $\left( w_1 \ShiftLeft 1 \right) \BitOr 0 = \left( w_2 \ShiftLeft 1 \right) \BitOr 0$ and $\left( w_1 \ShiftLeft 1 \right) \BitOr 1 = \left( w_2 \ShiftLeft 1 \right) \BitOr 1$, considering the window $k = 2$.
+Intuitively, the fact that it is possible to combine vertices comes from the realisation that a task's history, prior to the last $k$ job outcomes, is irrelevant. 
+Combining the equivalent vertices results in a new vertex representing the word $w = w_1 \BitAnd w_2$.
+
+Finally, for sets of weakly-hard constraints $\Lambda$ we construct the graph $\GG{\Lambda^*}$ for the dominant set $\Lambda^* \subseteq \Lambda$. 
+Since $\sset{}{\Lambda^*} = \sset{}{\Lambda}$, it also follows that $\GG{\Lambda^*} \equiv \GG{\Lambda}$.
+
+\begin{algorithm}[t]\footnotesize%
+    \caption{Generation of the minimal automaton representation $\GG{\lambda}$ corresponding to a weakly-hard constraint $\lambda$.}
+    \label{alg:tool:automata} 
+    
+    \begin{algorithmic}[1]
+        \algnewcommand\Not{\textbf{not}}
+    
+        \Procedure{BuildAutomaton}{$\lambda$}
+            \State $\VV{\lambda} \leftarrow \left\{ v_1 = \left( 1 \ShiftLeft n \right) - 1 \right\}$
+            \State $\EE{\lambda} \leftarrow \emptyset,\, Q = \left\{ v_1 \right\}$
+            \While{$Q \neq \emptyset$}
+                \State $v_i \leftarrow pop\funof{Q}$
+                \State $v_{j_0} \leftarrow compact\funof{\lambda,\, \left( v_i \ShiftLeft 1 \right) \BitOr 0}$
+                \State $v_{j_1} \leftarrow compact\funof{\lambda,\, \left( v_i \ShiftLeft 1 \right) \BitOr 1}$
+                \If{$v_{j_0} \vdash \lambda$}
+                    \If{$v_{j_0} \not\in \VV{\lambda}$}
+                        \State $\VV{\lambda} \leftarrow \VV{\lambda} \cup \left\{ v_{j_0} \right\}$
+                        \State $Q \leftarrow Q \cup \left\{ v_{j_0} \right\}$
+                    \EndIf
+                    \State $\EE{\lambda} \leftarrow \EE{\lambda} \cup \left\{ e_{i, j_0} = (v_i, v_{j_0}, 0) \right\}$
+                \EndIf
+                \If{$v_{j_0} \not\in \VV{\lambda}$}
+                    \State $\VV{\lambda} \leftarrow \VV{\lambda} \cup \left\{ v_{j_1} \right\}$
+                    \State $Q \leftarrow Q \cup \left\{ v_{j_1} \right\}$
+                \EndIf
+                \State $\EE{\lambda} \leftarrow \EE{\lambda} \cup \left\{ e_{i, j_1} = (v_i, v_{j_1}, 1) \right\}$
+            \EndWhile
+        
+            \Return $\GG{\lambda} = \left( \VV{\lambda}, \EE{\lambda} \right)$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+We generate the minimal automaton $\GG{\lambda}$ as presented in Algorithm~\ref{alg:tool:automata}.
+The automaton is initialised with a single vertex corresponding to the word $w_1 = 1^n$, $v_1 = \left( 1 \ShiftLeft n \right) - 1$.
+Here, $n$ is the smallest number of hits required in a window to meet the constraint $\lambda$, e.g., $n=1$ for $\lambda = \overline{\left<3\right>}$ or $n=2$ for $\genfrac{<}{>}{0pt}{}{2}{5}$.
+As long as there exists uninitialised vertices $v_i$, its successors $v_{j_0}$ and $v_{j_1}$ are created and passed through a function in order to \emph{compact}~them.
+This step reduces the new word to the minimal, equivalent word that would still satisfy $\lambda$.
+In particular, if either $\left( v_i \ShiftLeft 1 \right) \BitOr 0$ or $\left( v_i \ShiftLeft 1 \right) \BitOr 1$ return an existing vertex $v_{i_0}$ or $v_{i_1}$, then $v_{j_0}$ and $v_{j_1}$ are reduced to the corresponding existing one.
+If the resulting words would satisfy $\lambda$, they are properly added to the automaton.
+Note that it is only required to verify that the successor following a deadline miss satisfy the constraint.
+
+Notice that minimality comes from the fact that we include a vertex in $\GG{\lambda}$ only if there exists no other vertex that represents the same sequence.
+In fact, each new vertex added to the automaton represents a feasible sequence that no other vertex is already encoding.
+If a potential new vertex represents a sequence that is \emph{equivalent} to another existing vertex, the algorithm connects the existing vertex instead of creating a new one.
+
+\begin{figure*}[t]
+    \input{\figdir/dominant-set.tex}
+    \caption{Minimal automata $\GG{\lambda_1}$, $\GG{\lambda_2}$, and $\GG{\Lambda}$ representing respectively $\lambda_1$, $\lambda_2$, and $\Lambda = \{\lambda_1, \lambda_2\}$ from the Example in Section~\ref{sec:tool:example}.}%{ex:tool:set}.}
+    \label{fig:dominant-set}
+\end{figure*}
+
+\subsection{Scalable automata generation}%
+\label{sec:tool:scalability}%
+
+Intuitively, the time required for generating an automaton is directly correlated to its size, i.e., more vertices lead to a larger exploration time and hence to a larger automaton-construction time. 
+Additionally, the automata-based representation can be used in embedded devices, e.g., to monitor the satisfaction of a constraint.
+Thus, space and memory requirements create a clear need for the automaton to be minimal.
+
+We provide a brief discussion on the minimum number of vertices needed to express the automaton corresponding to the weakly hard constraints presented in Definition~\ref{def:weakly-hard}.
+The structure of the minimal automaton depends on the type of constraint.
+For example, to describe an \tAH{} constraint $\anyhit{ah}$ we need to keep track of the number and the position of the deadline hits we encountered in the past $k_{ah}$ outcomes, giving us a number of vertices that corresponds to the binomial coefficient \emph{$k_{ah}$ choose $x_{ah}$}.
+The \tAM{} constraint can be reduced to the \tAH{} constraint and hence we easily obtain the number of its vertices.
+For the \tRM{} constraint, the number of vertices is also obvious, as we need to count the number of consecutive deadlines that have been missed, and return to the initial state as soon as the following outcome is a hit.
+Denoting with $\mathrm{s}\left(\lambda\right)$ the function that counts the number of vertices of the minimal automaton corresponding to the constraint $\lambda$, we obtain:
+\begin{equation*}
+    \begin{aligned}
+        \tAH{}:\phantom{\textbf{iii}}\lambda_{ah} = \textstyle\anyhit{ah} & \Rightarrow \mathrm{s}\left(\lambda_{ah}\right) = \frac{k_{ah}!}{x_{ah}!\,(k_{ah}-x_{ah})!}  \\
+        \tAM{}:\phantom{\textbf{s}}\lambda_{am} = \textstyle\anymiss{am} & \Rightarrow \mathrm{s}\left(\lambda_{am}\right) = \frac{k_{am}!}{x_{am}!\,(k_{am}-x_{am})!}  \\
+        \tRM{}:\phantom{\textbf{s}}\lambda_{rm} = \textstyle\rowmiss{rm} & \Rightarrow \mathrm{s}\left(\lambda_{rm}\right) = x_{rm}+1 \\
+    \end{aligned}
+\end{equation*}
+e.g., the minimal automaton for the \tAM{} constraint $\overline{\binom{5}{20}}$ includes $15\,504$ vertices.
+
+The \tRH{} constraint, $\rowhit{rh}$ is more interesting.
+When $k_{rh} < 2\,x_{rh}$, the constraint reduces to the hardest constraint $\lhard$, hence the automaton has a single vertex.
+If $k_{rh} = 2\,x_{rh}$, it is possible to have a single deadline miss, that can only appear before a sequence of $x_{rh}$ has been recorded, hence the corresponding automaton has $x_{rh} + 1$ vertices.
+If $k_{rh} = 2\,x_{rh} + 1$, the number of vertices of the automaton are $x_{rh} + 2$ and subsequent values can be found using recursion.
+Specifically,
+\begin{equation*}
+    \begin{aligned}
+        & \tRH{}: \, \lambda_{rh} = \textstyle\rowhit{rh} \Rightarrow \mathrm{s}\left(\lambda_{rh}\right) = \\
+        & \begin{cases}
+            1 & k_{rh} < 2x_{rh} \\
+            x_{rh}+1 & k_{rh} = 2x_{rh} \\
+            x_{rh}+2 & k_{rh} = 2x_{rh}+1 \\
+            2\, \mathrm{s}\,(\textstyle \genfrac{<}{>}{0pt}{}{x_{rh}}{k_{rh}-1} ) - 
+                \mathrm{s}\,(\textstyle \genfrac{<}{>}{0pt}{}{x_{rh}}{k_{rh}-2} ) + 1 & 2x_{rh} + 1 < k_{rh} < 3x_{rh} \\
+            \mathrm{s}\,(\textstyle \genfrac{<}{>}{0pt}{}{x_{rh}}{k_{rh}-1} ) + x_{rh} &k_{rh} \geq 3x_{rh}. \\
+        \end{cases}
+    \end{aligned}
+\end{equation*}
+%
+In contrast to the \tAH{} or \tAM{} constraints, the size of the minimal automaton corresponding to the \tRH{} constraint is linear in the window length $k_{rh}$ in stationarity, i.e., when $k_{rh} \geq 3x_{rh}$.
+The linearity property also holds for the \tRM{} constraint.
+Intuitively, since the size of the minimal automaton is directly correlated to the scalability, \tRH{} and \tRM{} constraints are preferred for large problems.
+
+\subsection{Example}%
+\label{sec:tool:example}%
+%
+We now provide an example to illustrate how the automata differ between constraint types. 
+In particular, we focus on \tAH{} and \tRH{} constraints, that have been the subject of our theoretical investigation. 
+
+%\begin{example}[Weakly-Hard Automata]
+%    \label{ex:tool:set}%
+Given the two weakly-hard constraints $\lambda_1 = \binom{1}{3}$ and $\lambda_2 = \genfrac{<}{>}{0pt}{}{2}{6}$, we apply Theorems~\ref{thm:dom-rowhit-anyhit} and~\ref{thm:dom-anyhit-rowhit} and confirm that there is no partial ordering between the constraints, i.e. $\lambda_1 \npreceq \lambda_2$ and $\lambda_2 \npreceq \lambda_1$.
+Following the steps in Algorithm~\ref{alg:tool:automata}, we generate the \emph{minimal} automaton representations of the two constraints, i.e., $\GG{\lambda_1}$ and $\GG{\lambda_2}$.
+The automaton representing the constraint set $\Lambda = \left\{ \lambda_1,\, \lambda_2 \right\}$, i.e., $\GG{\Lambda}$, is also generated and subsequently minimised.
+The results are shown in Figure~\ref{fig:dominant-set}, where the leftmost, middle, and rightmost automata correspond respectively to $\GG{\lambda_1}$, $\GG{\lambda_2}$, and $\GG{\Lambda}$.
+%\end{example}
+
+One of the most important novelties presented in this paper is the possibility to analyse weakly-hard constraint \emph{sets} containing \emph{all} the weakly-hard constraints types from Definition~\ref{def:weakly-hard}. 
+Prior work proposed alternative solutions to the automaton generation problem, handling either a specific type of constraint~\cite{Horssen:2016}, or a separate solution for each individual constraint type~\cite{Linsenmayer:2017}.
+Our aim is to switch the focus to the applicability and scalability of the constraint representation, and hence substitute \tAH{} and \tAM{} with \tRH{} and \tRM{} whenever possible.
+Being able to analyse sets of constraints in a scalable way brings us one step closer to the analysis of real systems, in which window lengths are quite large.
+Additionally, for real systems it is often easier to constrain hits (e.g., via execution in a protected environment without interference) rather than the maximum number or the pattern of deadline misses.
+
+\subsection{\tool{} functionality}%
+\label{sec:tool:functionality}%
+%
+\input{\thisdir/sec/tool-table.tex}
+%
+The most relevant functions provided by \tool{} are summarised in Table~\ref{tab:tool:functionality}.\footnote{The package includes a README file that guides the user through the setup of the package and provides simple usage examples. The only prerequisite is the Julia interpreter and compiler, available at \url{https://julialang.org}.}
+In addition to the automata generation, the toolbox provides functions to compare constraints and obtain answers about their dominance and equivalence, to reduce a set of constraints to their dominant subset, and to generate sequences of arbitrary length satisfying sets of weakly-hard constraints.
+We also included a function that generate the satisfaction set $\sset{N}{\Lambda}$ from a graph $\GG{\Lambda}$.
+In addition to the functions presented in Table~\ref{tab:tool:functionality}, additional functions are included as syntactic sugar for a better user experience.
