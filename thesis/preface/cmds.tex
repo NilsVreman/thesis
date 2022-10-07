@@ -8,6 +8,14 @@
 \newcommand{\VV}[1]{V_{#1}} % Nodes
 \newcommand{\EE}[1]{E_{#1}} % Edges
 
+% Language related
+\newcommand{\cM}{\texttt{M}}
+\newcommand{\cH}{\texttt{H}}
+\newcommand{\cR}{\texttt{R}}
+\newcommand{\cT}{\texttt{T}}
+\newcommand{\cX}{\texttt{X}}
+
+
 % Shorthand
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\N}{\mathbb{N}}
@@ -27,6 +35,8 @@
 \newcommand{\ourmod}[1]{\ \mathrm{mod}\ #1}
 \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\newcommand{\overbar}[1]{\mkern 1.5mu\overline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}
+\newcommand{\fact}[1]{#1!}
 
 %% Control
 \newcommand{\plant}{\mathcal{P}}
@@ -37,6 +47,9 @@
 \newcommand{\tool}{\code{WeaklyHard.jl}}
 
 %% Real-Time
+% Strategies
+\newcommand{\strat}{\mathcal{H}} 
+
 % Constraint names
 \newcommand{\tAH}{\code{AnyHit}}
 \newcommand{\tAM}{\code{AnyMiss}}
@@ -45,10 +58,15 @@
 
 % Constraints related 
 \newcommand{\anyhit}[1]{\binom{x_{#1}}{k_{#1}}} 
-\newcommand{\anymiss}[1]{\overline{\binom{x_{#1}}{k_{#1}}}} 
+\newcommand{\anymiss}[1]{\overbar{\binom{x_{#1}}{k_{#1}}}}
 \newcommand{\rowhit}[1]{\genfrac{<}{>}{0pt}{}{x_{#1}}{k_{#1}}}
-\newcommand{\rowmiss}[1]{\overline{\genfrac{<}{>}{0pt}{}{x_{#1}}{k_{#1}}}}
-\newcommand{\sset}[2]{\mathcal{S}_{#1}\funof{#2}} 
-\newcommand{\lweak}{\underline{\lambda}} 
-\newcommand{\lhard}{\overline{\lambda}} 
+\newcommand{\rowmiss}[1]{\overbar{\genfrac{<}{>}{0pt}{}{x_{#1}}{k_{#1}}}}
+\newcommand{\eanyhit}[2]{\binom{x_{#1}}{k_{#1}}^{#2}}
+\newcommand{\eanymiss}[2]{\overbar{\binom{x_{#1}}{k_{#1}}}^{#2}}
+\newcommand{\erowhit}[2]{\genfrac{<}{>}{0pt}{}{x_{#1}}{k_{#1}}^{#2}}
+\newcommand{\erowmiss}[2]{\overbar{\genfrac{<}{>}{0pt}{}{x_{#1}}{k_{#1}}}^{#2}}
 
+\newcommand{\lweak}{\underline{\lambda}} 
+\newcommand{\lhard}{\overbar{\lambda}}
+
+\newcommand{\sset}[2]{\mathcal{S}_{#1}\funof{#2}}
