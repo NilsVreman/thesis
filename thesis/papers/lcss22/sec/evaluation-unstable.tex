@@ -1,0 +1,108 @@
+\begin{table}
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.175}
+\caption{Results obtained for the unstable system $P_2$, when controlled using $C_2$.}\label{table:unstable}
+%\rowcolors{2}{gray!25}{white}
+\begin{center}
+\begin{tabular}{|cc|lllll|lllll|lllll|lllll|}
+\hline
+% \rowcolor{gray!50}
+% &&\multicolumn{3}{c}{Dense $d=1$}&\multicolumn{3}{c}{Sparse $d=1$} &\multicolumn{2}{c}{JSR\_toolbox}\\
+% \rowcolor{gray!50}
+% \multirow{-2}*{$m$}&\multirow{-2}*{$k$}&$ub$&time&$mb$&$ub$&time&$mb$&$lb$&$ub$\\
+\rowcolor{gray!50}
+& & \multicolumn{5}{c|}{\textbf{Kill and Zero}} & \multicolumn{5}{c|}{\textbf{Kill and Hold}} & \multicolumn{5}{c|}{\textbf{Skip-Next and Zero}} & \multicolumn{5}{c|}{\textbf{Skip-Next and Hold}} \\
+\rowcolor{gray!50}
+\multicolumn{2}{|c|}{$\overbar{\binom{m}{k}}$} & \multicolumn{2}{c}{JSR} & \multicolumn{1}{c}{Dense} & \multicolumn{2}{c|}{Sparse}
+& \multicolumn{2}{c}{JSR} & \multicolumn{1}{c}{Dense} & \multicolumn{2}{c|}{Sparse}
+& \multicolumn{2}{c}{JSR} & \multicolumn{1}{c}{Dense} & \multicolumn{2}{c|}{Sparse}
+& \multicolumn{2}{c}{JSR} & \multicolumn{1}{c}{Dense} & \multicolumn{2}{c|}{Sparse} \\
+\rowcolor{gray!50}
+$m$ & $k$
+% kill and zero
+& \multicolumn{1}{c}{LB} & \multicolumn{1}{c}{UB} & \multicolumn{1}{c}{UB} & \multicolumn{1}{c}{UB} & \multicolumn{1}{c|}{$\times$}
+% kill and hold
+& \multicolumn{1}{c}{LB} & \multicolumn{1}{c}{UB} & \multicolumn{1}{c}{UB} & \multicolumn{1}{c}{UB} & \multicolumn{1}{c|}{$\times$}
+% skip and zero
+& \multicolumn{1}{c}{LB} & \multicolumn{1}{c}{UB} & \multicolumn{1}{c}{UB} & \multicolumn{1}{c}{UB} & \multicolumn{1}{c|}{$\times$}
+% skip and hold
+& \multicolumn{1}{c}{LB} & \multicolumn{1}{c}{UB} & \multicolumn{1}{c}{UB} & \multicolumn{1}{c}{UB} & \multicolumn{1}{c|}{$\times$}
+\\
+\hline
+1 & 2
+& 0.995 & 1.163 & 1.148 & \underline{\textbf{0.995}} & 0.02 % & 0.995 & 1.148 & 1.148 & 0.96
+& 0.995 & 1.133 & 1.149 & \underline{\textbf{0.998}} & 0.01 % & 0.995 & 1.149 & 1.149 & 0.97
+& 0.995 & 1.187 & \textbf{0.995} & \textbf{0.995} & 1.87
+& 0.995 & 1.178 & \textbf{0.995} & \textbf{0.995} & 1.82\\
+1 & 3
+& 0.995  & 1.128 & 1.116 & 1.116$\mathbf{^*}$ & 0.78 % & 0.995  & 1.116 & 1.116 & 0.78
+& 0.995  & 1.109 & 1.116 & 1.116$\mathbf{^*}$ & 0.75 % & 0.995  & 1.116 & 1.116 & 0.75
+& 0.995  & 1.166 & 1.109$\mathbf{^*}$ & 1.109$\mathbf{^*}$ & 3.00
+& 0.995  & 1.147 & 1.110$\mathbf{^*}$ & 1.110$\mathbf{^*}$ & 2.96\\
+1 & 4
+& 0.995 & 1.110 & 1.095 & 1.169$\mathbf{^*}$ & 1.38 % & 0.995  & 1.095 & 1.169 & 1.38
+& 0.995 & 1.098  & 1.095 & 1.169$\mathbf{^*}$ & 1.28 % & 0.995  & 1.095 & 1.169 & 1.28
+& 0.995 & 1.145  & 1.093$\mathbf{^*}$ & 1.093$\mathbf{^*}$ & 4.05
+& 0.995 & 1.134  & 1.093$\mathbf{^*}$ & 1.093$\mathbf{^*}$ & 5.05\\
+1 & 5
+& 0.995  & 1.099 & 1.080 & 1.145$\mathbf{^*}$ & 2.17 % & 0.995  & 1.080 & 1.145 & 2.17
+& 0.995  & 1.076 & 1.081 & 1.145$\mathbf{^*}$ & 2.66 % & 0.995  & 1.081 & 1.145 & 2.66
+& 0.995  & 1.130 & 1.079$\mathbf{^*}$ & 1.079$\mathbf{^*}$ & 3.90
+& 0.995  & 1.120 & 1.080$\mathbf{^*}$ & 1.080$\mathbf{^*}$ & 4.84\\
+1 & 6
+& 0.995 & 1.088 & 1.070 & 1.128$\mathbf{^*}$ & 3.88 % & 0.995  & 1.070 & 1.128 & 3.88
+& 0.995 & 1.079 & 1.070 & 1.128$\mathbf{^*}$ & 4.79 % & 0.995  & 1.070 & 1.128 & 4.79
+& 0.995 & 1.126 & 1.069$\mathbf{^*}$ & 1.069$\mathbf{^*}$ & 4.04
+& 0.995 & 1.117  & 1.070$\mathbf{^*}$ & 1.070$\mathbf{^*}$ & 4.61\\
+\hline
+2 & 3
+& 0.995 & 1.217 & 1.162 & \underline{\textbf{0.997}} & 0.01 % & 0.995  & 1.162 & 1.162 & 0.97
+& 0.995 & 1.194 & 1.166 & 1.166 & 0.88
+& 0.995 & 1.278 & 1.090 & 1.095 & 1.66
+& 0.995 & 1.289 & 1.094 & 1.100 & 1.63\\
+2 & 4
+& 0.995 & 1.226 & 1.148 & 1.148$\mathbf{^*}$ & 0.91 % & 0.995  & 1.148 & 1.148 & 0.91
+& 0.995 & 1.204 & 1.149 & 1.149 & 0.80
+& 0.995 & 1.293 & 1.150 & 1.159 & 2.96
+& 0.995 & 1.282 & 1.152 & 1.161 & 4.60\\
+2 & 5
+& 0.995 & 1.224 & 1.131 & 1.195$\mathbf{^*}$ & 1.74 % & 0.995  & 1.131 & 1.195 & 1.74
+& 0.995 & 1.205 & 1.132 & 1.195 & 1.87
+& 0.995 & 1.287 & 1.134 & 1.142 & 7.79
+& 0.995 & 1.269 & 1.135 & 1.143 & 8.70\\
+2 & 6
+& 0.995 & 1.216 & 1.118 & 1.195$\mathbf{^*}$ & 7.49 % & 0.995  & 1.118 & 1.195 & 7.49
+& 0.995 & 1.201 & 1.118 & 1.195 & 12.4
+& 0.995 & 1.274 & 1.120 & 1.135 & 15.8
+& 0.995 & 1.264 & \multicolumn{1}{c}{--} & 1.136 & \multicolumn{1}{c|}{--} \\
+\hline
+3 & 4
+& 0.999 & 1.262 & 1.154 & 1.154 & 0.91
+& 0.995 & 1.243 & 1.159 & 1.159 & 0.86
+& 0.998 & 1.345 & 1.123 & 1.133 & 1.09
+& 0.995 & 1.354 & 1.127 & 1.135 & 1.31\\
+3 & 5
+& 0.995 & 1.279 & 1.153 & 1.153 & 0.86
+& 0.995 & 1.262 & 1.156 & 1.156 & 0.76
+& 0.995 & 1.381 & 1.163 & 1.175 & 2.31
+& 0.995 & 1.378 & 1.166 & 1.177 & 3.30\\
+3 & 6
+& 0.995 & 1.314 & 1.144 & 1.195 & 2.67
+& 0.995 & 1.299 & 1.146 & 1.218 & 2.76
+& 0.995 & 1.357 & \multicolumn{1}{c}{--} & 1.163 & \multicolumn{1}{c|}{--}
+& 0.995 & 1.360 & \multicolumn{1}{c}{--} & \multicolumn{1}{c}{--} & \multicolumn{1}{c|}{--}\\
+\hline
+4 & 5
+& 1.000 & 1.275 & 1.147 & 1.147 & 0.91
+& 0.995 & 1.263 & 1.149 & 1.149 & 0.90
+& 1.000 & 1.365 & 1.138 & 1.148 & 1.25
+& 0.995 & 1.377 & 1.140 & 1.149 & 1.26\\
+4 & 6
+& 0.995 & 1.340 & 1.148 & 1.148 & 0.71
+& 0.995 & 1.328 & 1.153 & 1.153 & 0.60
+& 0.995 & 1.419 & 1.166 & 1.178 & 2.12
+& 0.995 & 1.414 & \multicolumn{1}{c}{--} & \multicolumn{1}{c}{--} & \multicolumn{1}{c|}{--}\\
+\hline
+\end{tabular}
+\end{center}
+\end{table}

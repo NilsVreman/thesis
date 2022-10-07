@@ -1,0 +1,69 @@
+\PassOptionsToPackage{table,xcdraw}{xcolor}
+\documentclass[lettersize,journal]{IEEEtran}
+
+% Include packages
+\input{preamble/packages.tex}
+
+% Include commands
+\input{preamble/commands.tex}
+
+% leave here for maths sloppiness
+\sloppy
+
+\begin{document}
+
+\title{Stability of Linear Control Systems under Extended Weakly-Hard Constraints}
+
+\author{Nils Vreman$^{1}$, Paolo Pazzaglia$^{2}$, Victor Magron$^{3}$, Jie Wang$^{3}$, Martina Maggio$^{2,1}$\\
+$^{1}\,$Department of Automatic Control, Lund University, Sweden\\
+$^{2}\,$Department of Computer Science, Saarland University, Germany\\
+$^{3}\,$Laboratory for Analysis and Architecture of Systems, CNRS, France}
+\author{Anonymous}
+
+\markboth{IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems}%
+{Stability of Linear Control Systems under Extended Weakly-Hard Constraints}
+
+\maketitle
+
+\begin{abstract}
+Control systems can show robustness to many events, like disturbances and model inaccuracies.
+It is natural to speculate that they are also robust to alterations of the control signal pattern, due to sporadic late completions (called \emph{deadline misses}) when implemented as a digital task on an embedded platform.
+Recent research analysed stability when imposing constraints on the maximum number of consecutive deadlines that can be missed.
+This is only one type of characterisation, and results in a pessimistic analysis when applied to more general cases.
+To overcome this limitation, this paper proposes a comprehensive stability analysis for control systems subject to a set of generic constraints, describing the possible sequences  of correct completions and deadline misses.
+The proposed analysis brings the assessment of control systems robustness to computational problems one step closer to the controller implementation.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:intro}
+\input{sec/intro.tex}
+
+\section{Background and Notation}
+\label{sec:background}
+\input{sec/background.tex}
+
+\section{Extended Weakly-Hard Task Model}
+\label{sec:model}
+\input{sec/model.tex}
+
+\section{State Machine Realisation}
+\label{sec:state-machine}
+\input{sec/state-machine.tex}
+
+\section{Stability Analysis}
+\label{sec:stability}
+\input{sec/stability.tex}
+
+\section{Evaluation}
+\label{sec:evaluation}
+\input{sec/evaluation.tex}
+
+\section{Conclusion}
+\label{sec:conclusion}
+\input{sec/conclusion.tex}
+
+\balance
+\bibliographystyle{abbrv}
+\bibliography{paper}
+
+\end{document}

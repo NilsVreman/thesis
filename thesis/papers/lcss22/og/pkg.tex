@@ -1,0 +1,64 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% In this file, only packages are allowed. These packages should be explained to
+% greatest possible extent.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{array}
+\usepackage{textcomp}
+\usepackage{stfloats}
+\usepackage{url}
+\usepackage{verbatim}
+\usepackage{graphicx}
+
+%%%%%%%%%%%%%% Old IEEE packages
+%\usepackage[paper=letterpaper,margin=.75in]{geometry} % Latex file type
+\usepackage{microtype}                      % For char. and variable expansion
+%\usepackage{cite}                           % For citations
+%\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{afterpage}
+\usepackage[normalem]{ulem}
+\usepackage{colortbl}
+
+%%% math
+\usepackage{xfrac}                          % Nice fractions
+\usepackage{balance}
+\usepackage{xspace}
+
+%%%%%%%%%%%%%% ACM packages
+\usepackage{amsmath, amsthm, mathrsfs}      % Math related packages amssymb,
+\usepackage{xcolor}                         % For color coding text
+\usepackage[inline]{enumitem}               % For nice enumerations
+%%% Algorithm
+%\usepackage{algorithm}
+%\usepackage{algorithmicx}
+%\usepackage[noend]{algpseudocode}
+
+%%% Tikz and pgf
+\usepackage{tikz, pgfplots, pgfplotstable}  % To be able to draw tikz pictures
+\usetikzlibrary{arrows}                     % For stealth arrows
+\usetikzlibrary{shapes}                     % For ellipses
+\usetikzlibrary{positioning}                % For positioning nodes
+\usetikzlibrary{shapes.misc}                % For crosses
+\pgfplotsset{compat=1.17}
+\tikzset{cross/.style={cross out,           % For crosses
+                        draw=black,
+                        minimum size=2*(#1-\pgflinewidth),
+                        inner sep=0pt,
+                        outer sep=0pt},
+        %default radius will be 1pt.
+        cross/.default={1pt}}
+\tikzset{main node/.style={ellipse,         % For nodes in graph
+                            minimum height=20pt,
+                            minimum width=60pt,
+                            draw,
+                            font=\Large}}
+
+\usepackage{multirow}
+\usepackage{lscape}
+
+\usepackage{soul}
