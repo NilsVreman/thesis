@@ -95,7 +95,7 @@
 
 \parskip=0pt plus 0.1pt\relax
 %%%%%%%%%%%%%% Part style%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% We want the part page to always be recto, so some extra work is 
+% We want the part page to always be recto, so some extra work is
 % necessary.
 \let \origPart=\part
 \renewcommand*{\part}{\@openrighttrue\origPart}
@@ -139,8 +139,13 @@
 %%%%%%%%%%%%% subsubsection style %%%%%%%%%%%%%%%%%%%%%%%%
 \setbeforesubsubsecskip{6pt plus 2pt minus 1pt}
 \setaftersubsubsecskip{-1em}
-\newcommand{\subsubsecdot}[1]{\normalsize\bfseries\itshape #1.}
-\setsubsubsecheadstyle{\subsubsecdot}
+\setsubsubsecheadstyle{\normalsize\bfseries\itshape}
+% The following tries to add a period after the title (Anton?). But, since the
+% style macro receives an already formatted title it adds the period after the
+% negative space which forces the actual title to after the first paragraph.
+% \newcommand{\subsubsecdot}[1]{\normalsize\bfseries\itshape #1.}
+% \setsubsubsecheadstyle{\subsubsecdot}
+
 
 %%%%%%%%%%%%%%%%%%% Style for all section numbering %%%%%%%%%55555
 \setsecnumformat{\csname the#1\endcsname\csname #1dot\endcsname\quad}
@@ -172,10 +177,10 @@
 }
 % The command \@minipagerestore is called at the start
 % of every minipage. It is intended to set any necessary
-% internal parameters. In this case we need to reset the 
+% internal parameters. In this case we need to reset the
 % captionwidth. See 'texdoc source2e', section ltboxes.
 \renewcommand\@minipagerestore{\normalcaptionwidth}
-  
+
 \setlength{\textfloatsep}{12pt plus 4pt minus 3pt}
 
 %%%%%%%%%%%%% Footnotes  %%%%%%%%%%%%%%%%%%%%%%%%%
@@ -212,15 +217,13 @@
     \let\p@toc=\p@title
   \fi
   \ifx\p@head\@empty %no optional arg
-    \let\p@head=\p@toc  
+    \let\p@head=\p@toc
   \fi
   \par
   \clearforchapter
   \thispagestyle{chapter}
-   \refstepcounter{paper}
-  \addcontentsline{toc}{paper}{%
- %   \protect\numberline{\paperheadname\ \thepaper}\p@toc}%
-    \protect\papernumberline{\thepaper}\p@toc}%
+  \refstepcounter{paper}
+  \addcontentsline{toc}{paper}{\protect\papernumberline{\thepaper}\p@toc}%
   \markboth{\paperheadname\ \thepaper.\quad\p@head}{}
   \begingroup
     \offinterlineskip
@@ -281,8 +284,11 @@
 }
 
 
+% \newcommand*\papernumberline[1]{\texorpdfstring{%
+%     \makebox[\leftskip]{\cftchapterfont Paper\enskip #1.\enskip}\ignorespaces
+% }{Paper #1. }}
 \newcommand*\papernumberline[1]{\texorpdfstring{%
-    \makebox[\leftskip]{\cftchapterfont Paper\enskip #1.\enskip}\ignorespaces
+    {\cftchapterfont Paper\enskip #1.\enskip}\ignorespaces
 }{Paper #1. }}
 
 % If hyperref is used it will define \texorpdfstring
@@ -296,7 +302,7 @@
 }
 
 
- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % This section is to handle labels and references in papers.
 % We want them all to be local inside papers, so a lot of
 % extra work is required.
@@ -328,7 +334,7 @@
 \protected\def\paper@Cref#1{\paper@cref@{Cref}{#1}}
 \protected\def\paper@labelcref#1{\paper@cref@{labelcref}{#1}}
 
-%% This is a copy of sf@memsub@label taken from the deep inside of 
+%% This is a copy of sf@memsub@label taken from the deep inside of
 %% memoir.cls, and also from cleveref.sty. I don't like it, but it is necessary to handle
 %% \label inside \subcaption and still make the label local to a paper.
 \AtBeginDocument{%
@@ -369,7 +375,7 @@
 \newenvironment{papers}{%
   % \setP@perCounters
 %  \counterwithout{section}{chapter}
-  \renewcommand\cftsectionaftersnum{.} 
+  \renewcommand\cftsectionaftersnum{.}
   \counterwithin{section}{paper}
   \counterwithin{figure}{paper}
   \counterwithin{table}{paper}
@@ -385,7 +391,7 @@
   \renewcommand\theHsection{\thepaper.\thesection}
   \renewcommand\theHfigure{\thepaper.\thefigure}
   \renewcommand\theHtable{\thepaper.\thetable}
- 
+
   \setsecnumdepth{subsection}
   \let\cl@paper\cl@chapter
   \let\paper=\paper@
@@ -448,9 +454,10 @@
 
 \newtheoremstyle{proof}%
     {\item[\theorem@headerfont\hskip\labelsep ##1\theorem@separator]}%
-    {\item[\theorem@headerfont\hskip \labelsep ##1\ ##3\theorem@separator]}
+    {\item[\theorem@headerfont\hskip\labelsep ##3\theorem@separator]}
+    % {\item[\theorem@headerfont\hskip \labelsep ##1\ ##3\theorem@separator]}
 \theoremstyle{proof}
-\theoremseparator{.}    
+\theoremseparator{.}
 \theoremheaderfont{\bfseries\itshape}
 \theorembodyfont{\normalfont}
 \theoremsymbol{\ensuremath{\Box}}
@@ -461,9 +468,12 @@
             ##1\ ##2\theorem@separator}\hbox{\strut}}}]}%
     {\item[\strut]{\theorem@headerfont##1\ ##2---##3}\newline}
 \theoremstyle{regler}
-\theoremseparator{}      
-\theoremsymbol{\ensuremath{\Box}}
-\theorembodyfont{\normalfont}
+\theoremseparator{}
+% \theoremsymbol{\ensuremath{\Box}}
+\theoremsymbol{}
+% \theorembodyfont{\normalfont}
+% \theorembodyfont{\slshape}
+\theorembodyfont{\itshape}
 \theoremheaderfont{\scshape}
 
 %%%%%%%%%%%%% Title Pages %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -494,7 +504,7 @@
       \newcommand*\tp@department@{Institutionen f\"or Reglerteknik}
       \newcommand*\tp@type@{Examensarbete}%
       \newcommand*\title@page{Titelsida}
-    }%                            
+    }%
 
 \newenvironment{titlepages}{
   \renewcommand\month[1]{\renewcommand\tp@month@{##1}}
@@ -516,7 +526,7 @@
   \newcommand*\copyrightnotice[1]{\renewcommand*\tp@copyright@{##1}}
   \let\TFRT\reportnumber
   \let\thesisnumber\reportnumber
-}{ 
+}{
   % \show\tp@copyright@
   \currentpdfbookmark{\title@page}{titlepage}
   \thispagestyle{empty}
@@ -566,7 +576,7 @@
    \thispagestyle{empty}
    \vspace*{0pt plus 0.4fill}
    \begin{center}
-     \itshape \tp@dedication@ 
+     \itshape \tp@dedication@
    \end{center}%
    \vspace*{0pt plus 0.6fill}
    \cleartorecto
@@ -599,7 +609,7 @@
 \@ifpackagelater{biblatex}{2017/11/21}{%
    \ExecuteBibliographyOptions{urldate=iso,seconds=true}
 } {%
-   \ExecuteBibliographyOptions{urldate=edtf,seconds=true} 
+   \ExecuteBibliographyOptions{urldate=edtf,seconds=true}
  }
 \AtEveryBibitem{\clearfield{month}}
 
@@ -612,7 +622,7 @@
     \printtext[bibhyperref]{\usebibmacro{cite}}}
   {\multicitedelim}
   {\usebibmacro{postnote}}
-  
+
 \DeclareCiteCommand*{\parencite}[\mkciteparens]
 {\usebibmacro{prenote}}
 {\usebibmacro{citeindex}%
@@ -621,7 +631,7 @@
 {\usebibmacro{postnote}}
 
   \renewcommand*{\nameyeardelim}{\addcomma\addspace}
- 
+
 \renewcommand*{\bibsetup}{%
   \interlinepenalty=5000\relax
   \widowpenalty=10000\relax
