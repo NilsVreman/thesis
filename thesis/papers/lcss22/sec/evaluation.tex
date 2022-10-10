@@ -1,23 +1,20 @@
-We \removed{here}\new{now} apply the lifted dynamics model presented in Section~\ref{sec:stability} to two representative case studies.
+We now apply the lifted dynamics model presented in Section~\ref{sec:stability} to two representative case studies.
 The corresponding controllers are designed to stabilise the closed loop in ideal conditions, i.e., without deadline misses.
-\removed{We perform}Numerical experiments \new{are performed} to analyse the stability of the \removed{two}control systems \removed{when they are}subject to different constraints, particularly \removed{in}the \removed{$\lambda=\mks{}{\strat}$ form}\new{$\overbar{\binom{m}{k}}^{\strat}$} (due to its prevalence).
-\removed{We consider both the Kill and Skip-Next strategy, and we also vary the actuator mode, being either Zero or Hold.}%
-\new{We consider all combinations of strategy (Kill or Skip-Next) and actuator mode (Zero or Hold).}%
+Numerical experiments are performed to analyse the stability of the control systems subject to different constraints, particularly the $\overbar{\binom{m}{k}}^{\strat}$ (due to its prevalence).
+%
+We consider all combinations of strategy (Kill or Skip-Next) and actuator mode (Zero or Hold).
 
-For each combination of plant and \ewhc{}, $\lambda^{\strat}$, \removed{a minimal FSM is built and the resulting closed loop systems are expressed in}the lifted \removed{form}\new{set $\Alifted_{\lambda^\strat}$} of Section~\ref{sec:stability} \new{is generated}.
-\removed{%
-, each yielding a specific set of matrices $\Alifted_{\lambda}$.
-The stability of the system is computed by approximating%
-}%
-\new{We approximate} the JSR of $\Alifted_{\lambda^\strat}$, namely $\rho \left( \Alifted_{\lambda^\strat} \right)$, using three different algorithms.
-First, a lower and upper bound of $\rho \left( \Alifted_{\lambda^\strat} \right)$ are computed using the \texttt{JSR toolbox}~\cite{vankeerberghen2014jsr}\removed{in Matlab}.
-We compare these bounds with an upper bound of the JSR obtained via SOS relaxations, \removed{as}described in Section~\ref{sec:existing}, both with the \emph{dense} and \emph{sparse} algorithm from the \texttt{SparseJSR} toolbox~\cite{sparsejsr}, \new{obtaining $\rho_{\textrm{SOS},2d}\left(\Alifted_{\lambda^\strat}\right)$ and $\rho_{\textrm{TSSOS},2d}\left(\Alifted_{\lambda^\strat}\right)$, respectively}.
-\removed{Concretely, we compute upper bounds on the JSR given by the optimal value $\rho_{\textrm{SOS},2d}\left(\Alifted_{\lambda}\right)$ of the dense SOS relaxation \eqref{densesos} as well the optimal value $\rho_{\textrm{TSSOS},2d}\left(\Alifted_{\lambda}\right)$ of the sparse relaxation \removed{\eqref{tssos}} implemented in the \texttt{SparseJSR} algorithm.}%
+For each combination of plant and \ewhc{}, $\lambda^{\strat}$, the lifted set $\Alifted_{\lambda^\strat}$ of Section~\ref{sec:stability} is generated.
+%
+We approximate the JSR of $\Alifted_{\lambda^\strat}$, namely $\rho \left( \Alifted_{\lambda^\strat} \right)$, using three different algorithms.
+First, a lower and upper bound of $\rho \left( \Alifted_{\lambda^\strat} \right)$ are computed using the \texttt{JSR toolbox}~\cite{vankeerberghen2014jsr}.
+We compare these bounds with an upper bound of the JSR obtained via SOS relaxations, described in Section~\ref{sec:existing}, both with the \emph{dense} and \emph{sparse} algorithm from the \texttt{SparseJSR} toolbox~\cite{sparsejsr}, obtaining $\rho_{\textrm{SOS},2d}\left(\Alifted_{\lambda^\strat}\right)$ and $\rho_{\textrm{TSSOS},2d}\left(\Alifted_{\lambda^\strat}\right)$, respectively.
+%
 For efficiency, we run experiments at the first relaxation order $d = 1$.
 
 The \texttt{JSR toolbox} provides an accurate lower bound and a coarse upper bound in a few seconds.
 In contrast, the dense SOS-based method usually finds a good upper bound but takes more time.
-The sparse/dense upper bounds are obtained with the \texttt{SparseJSR} Julia package\removed{, based on the \texttt{TSSOS} package used in~\cite{tssos} and the SDP solver MOSEK~\cite{andersen2000mosek}}.
+The sparse/dense upper bounds are obtained with the \texttt{SparseJSR} Julia package.
 Since \texttt{JSR toolbox} and \texttt{SparseJSR} are implemented in different programming languages (Matlab and Julia) and rely on different SDP solvers (SDPT3/SeDuMi and MOSEK), it is not meaningful to compare their respective timings.
 However, the time it takes to run the dense and sparse SOS methods in Julia is compared.
 All numerical examples have been computed on an Intel Core i5-8265U@1.60GHz CPU with 8GB RAM memory.
@@ -72,33 +69,29 @@ Table~\ref{table:stable} displays the results obtained with the distinct strateg
 Lower and upper bounds are denoted with ``LB'' and ``UB''.
 The symbol ``$\times$'' stands for the speedup factor of the time required to obtain the sparse bound w.r.t.~the dense one.
 The symbol ``$-$'' means that the SDP solver runs out of memory, and the test is interrupted.
-Bold values represent stable systems under \new{their}corresponding \ewhc{}\removed{for the given}, strategy and actuator mode.
+Bold values represent stable systems under their corresponding \ewhc{}, strategy and actuator mode.
 The starred values represent stable systems inferred from Corollary~\ref{cor:rho_dominance_mk}.
 
 All the upper bounds computed by \texttt{JSR toolbox} are greater than 1, while all lower bounds are \emph{below} 1, thus we cannot draw any conclusion about the stability of the considered system using the \texttt{JSR toolbox}.
 However, for all \ewhc{}, $\overbar{\binom{m}{k}}^{\strat}$ where $m=1$ and $2<k\leq 6$ the dense/sparse SOS upper bounds allow us to infer that the system is stable for all combinations of strategy and actuator mode, and also for $k=2$ under the Skip-Next strategy.
-As a consequence of \new{Theorem~\ref{th:rho_dominance_general}, the stability will hold also for all constraints that are harder to satisfy; in particular,} Corollary~\ref{cor:rho_dominance_mk} \removed{the stability will hold also}\new{implies stability} for all $\overbar{\binom{m}{k}}^{\strat}$ with $m=1$ and $k>6$.
-The \removed{computing time and the}speedup ratio \removed{are}\new{is} growing when $k$ increases, yielding a particularly high benefit of exploiting sparsity for the Skip-Next strategy and Zero actuation.
-For instance, with $m=1$ the computing time of \removed{the dense SOS upper bound is between 2.32 seconds (for $k=2$) and 273 seconds (for $k=6$), while obtaining the sparse SOS upper bound takes from 0.43 to 13.1 seconds}\new{the sparse upper bound goes from 0.43 ($k=2$) to 13.1 seconds ($k=6$)}.
-\removed{%
-Additionally, increasing the value of $m$ result in harder analyses.
-For the Skip-Next strategy and Zero actuation, it takes more than 1 hour to compute the dense SOS upper bounds with $m=2$ or $m=3$ and $k=5$, and less than 2 minutes to obtain the corresponding sparse upper bounds.%
-}%
-\new{Furthermore, the complexity of the analysis increases with the value of $m$.}
-This follows from the higher number of \removed{nodes}\new{vertices} in the corresponding FSM, thus increasing the sizes of the matrices in $\Alifted_{\lambda}$. 
-\removed{As a consequence, we managed to complete the tests with the dense SOS only up to $\overbar{\binom{m}{k}}^{\strat} = (2,6)$ with the Kill strategy and Hold actuation and up to $\overbar{\binom{m}{k}}^{\strat} = (2,5)$ with the Skip-Next strategy and Zero actuation.}%
-\new{As a consequence, the tests using the dense SOS ran out of memory for $\overbar{\binom{m}{k}}^{\strat} = \overbar{\binom{m}{6}}^{\text{Skip-Next}}, m \in \left\{ 2, 3, 4 \right\}$ using both Hold and Zero actuation.
-Despite the dense memory failures, it still takes less than 2 minutes to obtain the sparse upper bounds.}%
+As a consequence of Theorem~\ref{th:rho_dominance_general}, the stability will hold also for all constraints that are harder to satisfy; in particular, Corollary~\ref{cor:rho_dominance_mk} implies stability for all $\overbar{\binom{m}{k}}^{\strat}$ with $m=1$ and $k>6$.
+The speedup ratio is growing when $k$ increases, yielding a particularly high benefit of exploiting sparsity for the Skip-Next strategy and Zero actuation.
+For instance, with $m=1$ the computing time of the sparse upper bound goes from 0.43 ($k=2$) to 13.1 seconds ($k=6$).
+%
+Furthermore, the complexity of the analysis increases with the value of $m$.
+This follows from the higher number of vertices in the corresponding automaton, thus increasing the sizes of the matrices in $\Alifted_{\lambda}$. 
+%
+As a consequence, the tests using the dense SOS ran out of memory for $\overbar{\binom{m}{k}}^{\strat} = \overbar{\binom{m}{6}}^{\text{Skip-Next}}, m \in \left\{ 2, 3, 4 \right\}$ using both Hold and Zero actuation.
+Despite the dense memory failures, it still takes less than 2 minutes to obtain the sparse upper bounds.
 
-\removed{To further distinguish this work from the state-of-the-art~\cite{Maggio:2020},}We performed additional tests on $P_1$ and $C_1$, comparing the lower and upper bounds of the JSR \new{obtained using the lifted approach, with the one of~\cite{Maggio:2020} for the case of $\overbar{\left<m\right>}^{\strat}$.}
-\removed{for the $\overbar{\left<m\right>}^{\strat}$ constraint model.
-Both methodologies were tested using}\new{We used} the \texttt{JSR toolbox} for all combinations of strategy and actuator mode, with $5 \leq m \leq 10$.
+We performed additional tests on $P_1$ and $C_1$, comparing the lower and upper bounds of the JSR obtained using the lifted approach, with the one of~\cite{Maggio:2020} for the case of $\overbar{\left<m\right>}^{\strat}$.
+We used the \texttt{JSR toolbox} for all combinations of strategy and actuator mode, with $5 \leq m \leq 10$.
 The results show that our lifted model yields an average improvement of bound accuracy of $10 \%$ as well as an average speedup factor equal to $6$.
 %}%
 
 \subsection{Ballistic missile}\label{sec:eval:unstable}
 Our second case study treats the stability analysis of the altitude control on a ballistic missile~\cite{Blakelock:1991, Sree:2006}.
-The dynamics are given by an unstable discrete-time model $P_2$, which is stabilised using an LQR-controller $C_2$ (\removed{sampled using the sampling period}$T = 0.01$~s):
+The dynamics are given by an unstable discrete-time model $P_2$, which is stabilised using an LQR-controller $C_2$ ($T = 0.01$~s):
 \begin{equation*}%\textstyle
     {
     \begin{aligned}
@@ -122,19 +115,12 @@ The dynamics are given by an unstable discrete-time model $P_2$, which is stabil
     }
 \end{equation*}
 
-Table~\ref{table:unstable} displays the results\removed{obtained by running the \texttt{SparseJSR} toolbox on each of the strategies combined with the actuation modes}.
+Table~\ref{table:unstable} displays the results.
 Again, applying Corollary~\ref{cor:rho_dominance_mk}, the stability of the case $\overbar{\binom{1}{2}}^{\strat}$ guarantees that the system is stable for $m=1$ and $k>2$, under both the Kill and Skip-Next strategies.
 Almost all reported sparse SOS upper bounds have been obtained with the first relaxation order $d=1$, using the same notation as for Table~\ref{table:stable}.
 However, we extend the notation by underlining values computed with the second relaxation order $d=2$.
 These values correspond to tighter upper bounds on the joint spectral radii, but come with a much higher computational cost.
 For instance, we remark that $\overbar{\binom{1}{2}}^{\text{Kill}}$ is stable using either actuation mode (invisible using $d=1$), a result acquired at the cost of a factor 100 increase in computation time.
 %
-In Example~$3$, we presented the FSM corresponding to the constraint set $\Lambda^{\strat} = \{ \lambda^{\strat}_1, \lambda^{\strat}_2 \}$ consisting of $\lambda^{\strat}_1 = \overbar{\left<2\right>}^{\text{Kill}}$ and $\lambda^{\strat}_2 = \overbar{\binom{3}{5}}^{\text{Kill}}$.
+In Example~$3$, we presented the automaton corresponding to the constraint set $\Lambda^{\strat} = \{ \lambda^{\strat}_1, \lambda^{\strat}_2 \}$ consisting of $\lambda^{\strat}_1 = \overbar{\left<2\right>}^{\text{Kill}}$ and $\lambda^{\strat}_2 = \overbar{\binom{3}{5}}^{\text{Kill}}$.
 Since $\overbar{\left<m\right>}^{\strat} = \overbar{\binom{m}{m+1}}^{\strat}$ and $\overbar{\binom{2}{3}}^{\text{Kill}}$ is stable, according to Table~\ref{table:unstable}, applying Corollary~\ref{cor:rho_dominance_set} allows us to deduce that the ballistic missile is stable under the \ewhc{} set $\Lambda^{\strat}$.
-
-\removed{
-\subsection{Discussion}
-We would like to conclude the experimental evaluation with a remark.
-The qualitative and quantitative difference between the two tables is not surprising, as the two controllers are different in nature. We controlled the stable plant in Section~\ref{sec:eval:stable} with a PI controller, that has a state corresponding to the integral error, whose update is affected by the deadline misses. On the contrary, the LQR controller developed for the unstable plant in Section~\ref{sec:eval:unstable} does not have a state and therefore recovers immediately. This explains the similarity between the values of the lower bounds found using the JSR toolbox in Table~\ref{table:unstable}.
-}%
-%\pp{This can be all cut to me}

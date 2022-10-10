@@ -1,18 +1,14 @@
 An important point raised in previous works~\cite{Pazzaglia:2018, Pazzaglia:2019, Maggio:2020, Vreman:2021}, is that the original weakly-hard model is not sufficiently descriptive to model the dynamics of a control task executing on an embedded platform.
-The missing piece of the puzzle is represented by the \removed{actual}strategy used to handle the control task's deadline misses, \new{which directly affects the actual pattern of the control signal.} 
-\removed{In fact, different strategies may have dramatically different effects on the physical equations and properties of the control system.}For instance, under \new{the} Kill strategy, a missed deadline represents a job that will never be completed;
-\removed{However,}in the case of \new{the} Skip-Next strategy, \removed{a missed deadline}\new{it} represents a job that will complete \emph{later}.
-\removed{As a consequence, the chosen strategy directly affects the actual pattern of the control signal, when jobs miss their deadlines.
-
-A model that only counts the number of missed deadlines is leaving out pieces of information about how those deadline misses affect the controlled system. Indeed, what we are really interested in is \emph{if} and \emph{when} a job is completed.}%
-This Section presents our proposal to \removed{giving practical shape of such intuition, by extending}\new{extend} the concepts related to weakly-hard constraints (Section~\ref{ssec:whalgebra}) to also include the deadline handling strategy. 
+The missing piece of the puzzle is represented by the strategy used to handle the control task's deadline misses, which directly affects the actual pattern of the control signal.
+For instance, under the Kill strategy, a missed deadline represents a job that will never be completed;
+in the case of the Skip-Next strategy, it represents a job that will complete \emph{later}.
+%
+This Section presents our proposal to extend the concepts related to weakly-hard constraints (Section~\ref{ssec:whalgebra}) to also include the deadline handling strategy. 
 
 To provide a comprehensive analysis framework, we need to examine what occurs in each time interval $(\pi_i)_{i \in \N}$, with $\pi_i = [a_0 + i\cdot T, a_0 + (i+1)\cdot T)$. 
 In fact, depending on the strategy that is used to handle deadline misses, the activation rate of jobs may be decoupled by the nominal periodic pattern.
 In this context, the alphabet $\Sigma$ introduced in Definition~\ref{def:basic-alphabet} and the weakly-hard model need to be extended to account for the specific deadline handling procedure -- denoted hereafter with the symbol $\strat$.
-\removed{%
-This is done by directly including the deadline miss handling strategy $\strat$ in the model, and defining a richer characterization of what happens at each time interval $\pi_i$ of the control task $\tau$, as follows.
-}%
+%
 
 \begin{definition}[Extended Weakly Hard Task $\tau \vdash \lambda^{\strat}$]%
     \label{def:new-mk}%
@@ -23,63 +19,41 @@ This is done by directly including the deadline miss handling strategy $\strat$ 
         \item $\tau \vdash \overbar{\genfrac{<}{>}{0pt}{}{m}{\!\:\!\:k\!\:\!\:}}^{\strat}$: at most $m$ \emph{consecutive} intervals lack a job completion, in any window of $k$ consecutive jobs; and
         \item $\tau \vdash \genfrac{<}{>}{0pt}{}{h}{\!\:\!\:k\!\:\!\:}^{\strat}$: at least $h$ \emph{consecutive} intervals contain a job completion, in any window of $k$ consecutive jobs,
     \end{enumerate}
-    \removed{with $m,h,k\in \mathbb{N}^\geq$, $m\leq k$, $h \leq k$ and $k\geq 1$, while using strategy $\strat$ to handle potential deadline misses.}
-    \new{with $m,h\in \N$, $k \in \N\setminus \left\{ 0 \right\}$, $m\leq k$, and $h\leq k$, while using strategy $\strat$ to handle potential deadline misses.}
+    with $m,h\in \N$, $k \in \N\setminus \left\{ 0 \right\}$, $m\leq k$, and $h\leq k$, while using strategy $\strat$ to handle potential deadline misses.
 \end{definition}
 
-The definition above differs from Definition~\ref{def:weakly-hard} in two points: firstly, it focuses on the presence of a new control command at the end of each time interval $\pi_i$, instead of checking the outcome \removed{(deadline hit or miss)}~of a job; secondly, it explicitly introduces the handling strategy \removed{by adding the symbol}$\strat$.
+The definition above differs from Definition~\ref{def:weakly-hard} in two points: firstly, it focuses on the presence of a new control command at the end of each time interval $\pi_i$, instead of checking the outcome of a job; secondly, it explicitly introduces the handling strategy $\strat$.
 %
-The dependency \removed{of the new extended weakly-hard model}on the strategy $\strat$ is \removed{thus}required by the necessity of introducing a more expressive alphabet $\Sigma\left(\strat\right)$ to characterize the behaviour of task $\tau$ in each possible time interval.
-\removed{%
-In the case under analysis in this paper, for both the strategies, Kill and Skip-Next, in each interval $\pi_i$ at most one job is activated and at most one job is completed.
-}%
-\new{For both the Kill and Skip-Next strategies, each interval $\pi_i$ contains at most one activated and one completed job.}
+The dependency on the strategy $\strat$ is required by the necessity of introducing a more expressive alphabet $\Sigma\left(\strat\right)$ to characterise the behaviour of task $\tau$ in each possible time interval.
+For both the Kill and Skip-Next strategies, each interval $\pi_i$ contains at most one activated and one completed job.
 This restricts the possible behaviours to three cases, defined by the following symbols:
 \begin{enumerate}[label=(\roman*)]
     \item a time interval in which the same job is both released and completed is denoted by $\cH$ (\emph{hit});
     \item a time interval in which either one or zero jobs are released, but no job is completed is denoted by $\cM$ (\emph{miss});
     \item a time interval in which no job is released, but a job (released in a previous interval) is completed, is denoted by $\cR$ (\emph{recovery}).
 \end{enumerate}
-\removed{%
-Therefore, we can build an alphabet for each possible strategy, namely $\Sigma\left(\strat\right)$. In the case of Kill and Skip-Next we obtain
-\begin{enumerate}[label=(\roman*)]
-    \item $\Sigma\left(\text{Kill}\right) = \{ \cM, \cH \}$, and
-    \item $\Sigma\left(\text{Skip-Next}\right) = \{ \cM, \cH, \cR \}$.
-\end{enumerate}
-%
-Trivially, $\Sigma\left(\text{Kill}\right)$ uses the basic alphabet from Definition~\ref{def:basic-alphabet}.
-In fact, exactly one job is activated at the beginning of each time interval when Kill is used -- and that job has a binary termination outcome.
-The additional recovery character $\cR$ is used in the Skip-Next alphabet to identify the late completion of a job that was not activated at the beginning of the current time interval.
-As a consequence, recalling Definition~\ref{def:new-mk}, $\cR$ is treated equivalently to $\cH$ when checking the extended weakly hard constraints (\ewhc{}).
-Similarly, an alphabet can be created for any arbitrary handling strategy, by checking all unique combinations of job activations and completions in each interval. 
-Notably, the definition of such an alphabet does not require any additional information about the actuator modes introduced in Section~\ref{sec:back_deadline_miss}. 
-However, the actuator mode will be fundamental later in Section~\ref{sec:matrices} in order to properly express the resulting dynamic matrices.
-}%
-\new{%
 An alphabet can thus be created for any arbitrary handling strategy by checking all unique combinations of job activations and completions in each interval. 
 In the case of Kill and Skip-Next we obtain $\Sigma\left(\text{Kill}\right) = \{ \cM, \cH \}$ and $\Sigma\left(\text{Skip-Next}\right) = \{ \cM, \cH, \cR \}$.
 Trivially, $\Sigma\left(\text{Kill}\right)$ uses the basic alphabet from Definition~\ref{def:basic-alphabet}.
 The recovery character $\cR$ is used in the Skip-Next alphabet to identify the late \emph{completion} of a job.
 As a consequence, $\cR$ is treated equivalently to $\cH$ when checking the extended weakly hard constraints (\ewhc{}).
-}%
 
 We can now extend the algebra presented in Section~\ref{ssec:whalgebra} to the new alphabet.
 We assign a character of the alphabet $\Sigma\left(\strat\right)$ to each interval $\pi_i$.
-A string $\astring = \{\event_1,\event_2,\dots,\event_N \} \in \Sigma\left(\strat\right)^N$ is used to represent a sequence of \new{$N$} outcomes \removed{(hits, misses and recoveries)}for task $\tau$, \removed{spanning any $N$ consecutive time intervals,}with $\event_i$ representing the outcome associated to the interval $\pi_i$. 
+A word $\aword = \{\event_1,\event_2,\dots,\event_N \} \in \Sigma\left(\strat\right)^N$ is used to represent a sequence of $N$ outcomes for task $\tau$, with $\event_i$ representing the outcome associated to the interval $\pi_i$. 
 Without loss of generality, we always consider ideal startup conditions, i.e., $\event_t=\cH, \, \forall t \leq 0$.
 
-In principle, the string $\astring$ could be any combination of characters in $\Sigma\left(\strat\right)$.
+In principle, the word $\aword$ could be any combination of characters in $\Sigma\left(\strat\right)$.
 However, we are only interested in analysing the set of \emph{feasible sequences} of the task $\tau$.
 To this end, we introduce an order constraint for the $\cR$ character.
 %
 \begin{rule_}%
     \label{rule:R}%
-    For any arbitrary string $\astring \in \Sigma\left(\text{Skip-Next}\right)^N$, $\cR$ may only directly follow \removed{a miss}$\cM$, or be the initial element of the string.
+    For any arbitrary word $\aword \in \Sigma\left(\text{Skip-Next}\right)^N$, $\cR$ may only directly follow $\cM$, or be the initial element of the word.
 \end{rule_}
 %
 The rule is trivial when noticing that a recovery $\cR$ at interval $\pi_i$ corresponds to the completion of a job that was activated in an interval $\pi_j$ with $j<i$, that is not completed yet.
-Hereafter, we will consider each arbitrary sequence $\astring\in \Sigma\left(\text{Skip-Next}\right)^N$ to always satisfy Rule~\ref{rule:R}.
+Hereafter, we will consider each arbitrary sequence $\aword\in \Sigma\left(\text{Skip-Next}\right)^N$ to always satisfy Rule~\ref{rule:R}.
 
-The extended weakly hard model \removed{presented so far}also inherits all the properties of the original weakly hard model.
-In particular, the satisfaction set of $\lambda^\strat$ can be defined for $N\geq 1$ as $\sset{N}{\lambda^{\strat}} = \{ \astring \in \Sigma\left(\strat\right)^N \mid \astring \vdash \lambda^{\strat} \}$, and the constraint domination still holds as $\lambda^{\strat}_{i} \preceq \lambda^{\strat}_{j}$ if $\sset{}{\lambda^{\strat}_{i} } \subseteq \sset{}{\lambda^{\strat}_{j}}$.
-\removed{As a consequences, when the context is clear, to avoid heavy notation, we will hereafter inherit the same symbol $\lambda$ to identify a constraint in the extended form, i.e., $\lambda\equiv\lambda^{\strat}$, with implicit dependency on $\strat$.}
+The extended weakly hard model also inherits all the properties of the original weakly hard model.
+In particular, the satisfaction set of $\lambda^\strat$ can be defined for $N\geq 1$ as $\sset{N}{\lambda^{\strat}} = \{ \aword \in \Sigma\left(\strat\right)^N \mid \aword \vdash \lambda^{\strat} \}$, and the constraint domination still holds as $\lambda^{\strat}_{i} \preceq \lambda^{\strat}_{j}$ if $\sset{}{\lambda^{\strat}_{i} } \subseteq \sset{}{\lambda^{\strat}_{j}}$.

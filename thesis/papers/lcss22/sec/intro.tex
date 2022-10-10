@@ -1,54 +1,50 @@
 Robustness is an essential concern in the design of control systems~\cite{Zhou:1998}.
 Robust control design techniques ensure that controlled systems are able to reliably handle nonlinear effects, unmodeled dynamics, and external noise.
-\new{Distributed controllers were also demonstrated to be robust to problems that may occur in the communication network, like data loss for either the sensor measurement or the control signals~\cite{Lemmon:2002, Lemmon:2003b, Heemels:2015, Heemels:2016b, Heemels:2018}, or aperiodic behaviour~\cite{al2017stability}.
+Distributed controllers were also demonstrated to be robust to problems that may occur in the communication network, like data loss for either the sensor measurement or the control signals~\cite{Lemmon:2002, Lemmon:2003b, Heemels:2015, Heemels:2016b, Heemels:2018}, or aperiodic behaviour~\cite{al2017stability}.
 However, the vast majority of the literature dealing with control systems' robustness to implementation issues in fact deals with delays in the transmission and dropped packets.
-On the contrary, this paper addresses the problem of sampled controllers'}
-\removed{However, existing methods rarely consider}robustness to \emph{computational issues}.
+On the contrary, this paper addresses the problem of sampled controllers' robustness to \emph{computational issues}.
 This latter aspect is relevant for a vast number of control applications, which rely on the usage of digital controllers implemented as periodic \emph{tasks} in cheap embedded platforms.
 Such tasks are expected to execute with real-time guarantees, and that their execution must be completed before a well-defined \emph{deadline}, usually corresponding to the activation of the next periodic instance of the task.
 
 In the case of a digital controller, its execution consists in performing the control signal calculation and dealing with sensing and actuation.
-In practice, control systems are often designed introducing one step delay:
-\removed{, i.e., the control signal computed during one control period is applied to the plant at the beginning of the next period. }this helps masking the timing variability experienced using embedded platforms, that often have to dynamically share their limited computational resources among many concurrent functions.
+In practice, control systems are often designed introducing one step delay: this helps masking the timing variability experienced using embedded platforms, that often have to dynamically share their limited computational resources among many concurrent functions.
 It is still possible -- and it happens quite often in practice~\cite{akesson2020empirical} -- that tasks do not complete within their execution period, causing what is called a \emph{deadline miss}.
 The reasons behind misses can vary, from delays to non-delivered sensor messages, to transient overload conditions, to bugs in the controller code.
 
 Generally speaking, extensive studies have been made about real-time systems that allow deadline misses, and two main frameworks arose: soft real-time tasks~\cite{buttazzo2005soft} and weakly-hard tasks~\cite{Bernat:2001}.
 The first model is often used for those tasks where completing the execution before the deadline is beneficial, but not strictly required all the time.
-It is in general associated with a \emph{probabilistic} description of deadline misses\new{~\cite{fontanelli2013continuous,Heemels:2016a,Jiang:2016,kim2005exact}}, and with the definition of a performance loss function for late completions.
-Due to its probabilistic nature, this approach has mostly been used to describe multimedia applications\new{~\cite{Cucinotta:2010}}, like video encoding and decoding, in which a small delay is not perceived by the end user, as long as it does not happen too frequently.
+It is in general associated with a \emph{probabilistic} description of deadline misses~\cite{fontanelli2013continuous,Heemels:2016a,Jiang:2016,kim2005exact}, and with the definition of a performance loss function for late completions.
+Due to its probabilistic nature, this approach has mostly been used to describe multimedia applications~\cite{Cucinotta:2010}, like video encoding and decoding, in which a small delay is not perceived by the end user, as long as it does not happen too frequently.
 Nonetheless, the soft deadline model has been applied in the past also for the case of control tasks design with some success, e.g., in~\cite{caccamo2002handling, cervin2005control, fontanelli2013soft,fontanelli2013continuous, fontanelli2015optimal}.
 The second model -- weakly-hard tasks -- applies to those cases where it is important to identify worst-case conditions. 
 Weakly-hard tasks are characterized by a maximum number of deadlines that can be missed in a given number of consecutive periods. 
 This can be defined, e.g., by a constraint of the form $(m, k)$ to describe a task that cannot miss more than $m$ deadlines in every $k$ consecutive activations.
-\removed{This second framework}\new{The weakly-hard model} has gained a lot of traction recently, especially in the real-time community. 
+The weakly-hard model has gained a lot of traction recently, especially in the real-time community. 
 Its properties have also been studied for control tasks that occasionally miss deadlines~\cite{ramanathan1999overload, Frehse:2014, Pazzaglia:2018, Maggio:2020}, and will also be the focus of this work.
 
 Assessing properties of control systems that miss deadlines is not only important for the embedded systems architects, but it is also an important research area in the control domain~\cite{Cervin:2005, Linsenmayer:2017, Chakraborty:2018, pazzaglia2021adaptive}.
 When considering a \emph{control task}, to properly analyse the effect a miss has on the controlled plant, it is necessary to specify also \emph{what happens when the miss is experienced}, both in terms of changes to the control signal and in terms of actions taken to deal with the failed task~\cite{Pazzaglia:2019}.
 In the case of embedded controllers, different approaches are used. 
-For example, a computation instance that experiences a deadline miss can be \removed{let}\new{allowed to} continue executing until completion (and possibly used later), while in other applications it is stopped and discarded instead.
+For example, a computation instance that experiences a deadline miss can be allowed to continue executing until completion (and possibly used later), while in other applications it is stopped and discarded instead.
 
 There is however quite a mismatch between the guarantees that can be obtained for real-time tasks and platforms~\cite{Hammadeh:2017b, Hammadeh:2019, choi2019job, pazzaglia2020generalized}, and the analysis that is available for \emph{control} tasks~\cite{Pazzaglia:2018, Maggio:2020}.
-In particular, \removed{few}\new{fewer}works deal with the \emph{stability} analysis of real-time control tasks subject to \new{weakly-hard}deadline misses, and they often lack generality. 
+In particular, fewer works deal with the \emph{stability} analysis of real-time control tasks subject to weakly-hard deadline misses, and they often lack generality. 
 The analysis presented in~\cite{Maggio:2020} (which can be considered the closest work to this paper) is limited to constraints that specify a maximum number of \emph{consecutive} deadline misses.
-The majority of other state-of-the-art approaches deal with constraints of the form $(m,k)$.
-In particular, the works in \cite{Linsenmayer:2017} and \cite{linsenmayer2020linear} study the stability of \emph{networked control systems} where packet dropouts (or system faults) are bounded using the $(m,k)$ constraint model. 
+The majority of other state-of-the-art approaches deal with constraints of the form $(m,k)$.\fix{}
+In particular, the works in \cite{Linsenmayer:2017} and \cite{linsenmayer2020linear} study the stability of \emph{networked control systems} where packet dropouts (or system faults) are bounded using the $(m,k)$ constraint model.\fix{}
 This model is equivalent to the case where deadline misses represent discarded computations, but its results can not be generalized for the other common case of \emph{late completions}.
-In other works~\cite{huang2019exploring,liang2019security,liang2020leveraging}, the authors have studied how to enforce safety guarantees of weakly-hard real-time controllers, with focus also on stability. \removed{properties.}However, they consider only the case where a deadline miss corresponds to a discarded computation, with the additional hypothesis of a known periodic pattern of deadline hits and misses~\cite{liang2019security,liang2020leveraging}.
+In other works~\cite{huang2019exploring,liang2019security,liang2020leveraging}, the authors have studied how to enforce safety guarantees of weakly-hard real-time controllers, with focus also on stability. However, they consider only the case where a deadline miss corresponds to a discarded computation, with the additional hypothesis of a known periodic pattern of deadline hits and misses~\cite{liang2019security,liang2020leveraging}.
 
 This paper aims at filling this gap, by providing a stability analysis that can be applied to a general class of weakly-hard models and strategies at the deadline miss event.
 To the best of our knowledge, the analysis proposed in this paper is also the first being able to guarantee the stability of systems subject to \emph{multiple} constraints belonging to \emph{any} of the weakly-hard types available in the state-of-the-art.
 More precisely:
 \begin{enumerate}[label=(\roman*)]
-    \item The paper formally extends the weakly-hard model to explicitly consider the strategy used to handle \new{computational problems that result in} miss events \new{(which was only intuitively introduced in some prior work)}. \removed{This was intuitively introduced in some prior work, but this paper offers a formal extension, that considers time intervals instead of periodic jobs and sheds some light on the required notation.}%
-    \item It builds a representation of the control task execution, subject to a set of weakly-hard constraints as a finite state machine \new{(FSM)}. We use the resulting \removed{finite state machine}\new{FSM} to construct a transition matrix that determines the valid state transitions.
-    \item It uses Kronecker \removed{lifted switching systems}\new{lifting} and the joint spectral radius as tools to properly express stability conditions for systems that satisfy a set of weakly-hard constraints.
-    \item It uses the concept of constraint dominance \removed{(in which a constraint dominates another if satisfying the first implies always satisfying the second too) }to prove analytic bounds on the stability of a weakly-hard \removed{constrained }system with respect to \emph{less dominant} weakly-hard constraints.
-    \item It analyses the stability of the resulting closed-loop systems using \texttt{SparseJSR}, an algorithm that exploits the \removed{structure (i.e., the sparsity patterns) }\new{sparsity pattern} that naturally arises in the Kronecker lifted representation of the closed-loop systems.
+    \item The paper formally extends the weakly-hard model to explicitly consider the strategy used to handle computational problems that result in miss events (which was only intuitively introduced in some prior work).
+    \item It builds a representation of the control task execution, subject to a set of weakly-hard constraints as an automaton. We use the resulting automaton to construct a transition matrix that determines the valid transitions.
+    \item It uses Kronecker lifting and the joint spectral radius as tools to properly express stability conditions for systems that satisfy a set of weakly-hard constraints.
+    \item It uses the concept of constraint dominance to prove analytic bounds on the stability of a weakly-hard system with respect to \emph{less dominant} weakly-hard constraints.
+    \item It analyses the stability of the resulting closed-loop systems using \texttt{SparseJSR}, an algorithm that exploits the sparsity pattern that naturally arises in the Kronecker lifted representation of the closed-loop systems.
 \end{enumerate}
 
-\removed{Notably,}The analysis presented in this paper calls for modularity and separation of concern, \removed{defining the interface between the control engineer and the embedded system designer. 
-It decouples}\new{by decoupling} the constraint specification and the control verification. 
-With the proposed method, the embedded system designer can extract a set of constraints that belong to the hardware and software design phase \removed{(e.g., the control task is not going to miss more than two consecutive deadlines and not more than three for every subsequent seven activations)}and the control engineer can verify that the proposed constraints satisfy all control requirements. 
-\removed{This decoupling is one of the main advantages of the proposed solution.}
+The analysis presented in this paper calls for modularity and separation of concern, by decoupling the constraint specification and the control verification. 
+With the proposed method, the embedded system designer can extract a set of constraints that belong to the hardware and software design phase and the control engineer can verify that the proposed constraints satisfy all control requirements. 

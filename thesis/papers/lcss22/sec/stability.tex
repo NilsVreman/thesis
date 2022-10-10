@@ -1,16 +1,16 @@
-In this Section we illustrate the dynamics of the closed-loop system under \ewhc{}, \removed{together with}an efficient way to implement a stability analysis and some interesting properties of the resulting system.
+In this Section we illustrate the dynamics of the closed-loop system under \ewhc{}, an efficient way to implement a stability analysis and some interesting properties of the resulting system.
 
 \subsection{Closed-loop system}%
 \label{sec:matrices}
 
-Using the alphabet $\Sigma\left(\strat\right)$, defined for a given \removed{deadline miss}strategy $\strat$, and the chosen actuator mode (Zero or Hold), we \removed{now}compute the closed-loop system's behaviour, \removed{of plant~\eqref{eq:plant} with controller~\eqref{eq:controller}}\new{recall Equations~\eqref{eq:plant} and~\eqref{eq:controller}}.
+Using the alphabet $\Sigma\left(\strat\right)$, defined for a given strategy $\strat$, and the chosen actuator mode (Zero or Hold), we compute the closed-loop system's behaviour, recall Equations~\eqref{eq:plant} and~\eqref{eq:controller}.
 In particular, we identify one matrix for each distinct dynamics corresponding to a character $\event \in \Sigma\left( \strat \right)$, building the set $\Aa^\strat$.
 Again, we treat the cases of Kill and Skip-Next, but the same approach can be extended to other strategies.
 
 \textbf{Kill: }%
 %
 The alphabet for the Kill strategy includes two characters, $\Sigma\left(\text{Kill}\right) = \{ \cH, \cM \}$. We define $\tilde x_t^{\,\text{K}} = \left[ x_t^T\,\, z_t^T\,\, u_t^T \right]^T$ as the state vector for the closed-loop system.
-We compute the one-step closed-loop system dynamics $A^{\,\text{K}}_{\cH}$, corresponding to the character $\cH$ \removed{(i.e., when the job released in the given period $\pi_t$ successfully completes within its deadline)}as follows.
+We compute the one-step closed-loop system dynamics $A^{\,\text{K}}_{\cH}$, corresponding to the character $\cH$ as follows.
 \begin{equation*}
     \tilde x_{t+1}^{\,\text{K}} = A^{\,\text{K}}_{\cH}\,\tilde x_t^{\,\text{K}}, \quad
      A^{\,\text{K}}_{\cH} = \begin{bmatrix}
@@ -20,7 +20,7 @@ We compute the one-step closed-loop system dynamics $A^{\,\text{K}}_{\cH}$, corr
     \end{bmatrix}
 \end{equation*}
 %
-On the other hand, for the case of $\cM$, \removed{(i.e., when the job released in $\pi_t$ misses its deadline)}the controller terminates its execution prematurely by killing the job, thus not updating its states ($z_{t+1} = z_t$).
+On the other hand, for the case of $\cM$, the controller terminates its execution prematurely by killing the job, thus not updating its states ($z_{t+1} = z_t$).
 In this case, the controller output is forced to a default value, determined by the actuator mode and is thus either zeroed ($u_{t+1} = 0$) or held ($u_{t+1} = u_t$).
 The resulting closed-loop system in state-space form is denoted with $A^{\,\text{K}}_{\cM}$ and defined as follows.
 \begin{equation*}
@@ -31,18 +31,15 @@ The resulting closed-loop system in state-space form is denoted with $A^{\,\text
         0   & 0  & \Delta
     \end{bmatrix}
 \end{equation*}
-Here, $I$ is the identity matrix of appropriate size, \removed{and $\Delta$ assume values depending on the actuation mode, i.e.,}$\Delta = I$ if the control signal is held and $\Delta = 0$ if it is zeroed.
+Here, $I$ is the identity matrix of appropriate size, $\Delta = I$ if the control signal is held and $\Delta = 0$ if it is zeroed.
 The set of dynamic matrices that a controlled system under Kill strategy may experience is $\Aa^{\text{Kill}}=\left\{A^{\,\text{K}}_{\cH},A^{\,\text{K}}_{\cM}\right\}$.
 
 \textbf{Skip-Next: }%
 %
-\removed{When considering \ewhc{} under the Skip-Next strategy, characterizing the resulting closed-loop dynamics requires a different state vector model.
-In this case, when a control task released in an arbitrary interval $\pi_t$ misses a deadline, it is allowed to continue its execution until completion.
-Once completed, the control state will then be updated with a control command computed using \emph{old} measurement values.
-Thus,}\new{For the Skip-Next strategy,} we introduce two additional states $\hat x_t$ and $\hat u_t$ that store \removed{those}\new{the corresponding} old values \new{of $x_t$ and $u_t$} while the controller awaits an update.
+For the Skip-Next strategy, we introduce two additional states $\hat x_t$ and $\hat u_t$ that store the corresponding old values of $x_t$ and $u_t$ while the controller awaits an update.
 The resulting state vector then becomes $\tilde x_t^{\,\text{S}} = \left[ x_t^T\,\,z_t^T\,\, u_t^T\,\, \hat{x}_t^T\,\, \hat{u}_t^T \right]^T$.
 
-When $\pi_t$ is associated to $\cH$ (i.e., a job is both activated and completed in $\pi_t$), the two \removed{augmented}\new{additional} states mirror the behaviour of the states of which they are storing data.
+When $\pi_t$ is associated to $\cH$ (i.e., a job is both activated and completed in $\pi_t$), the two additional states mirror the behaviour of the states of which they are storing data.
 The resulting closed-loop system is described using $A^{\,\text{S}}_{\cH}$ as follows:
 \begin{equation*}
     \tilde x_{t+1}^{\,\text{S}} = A^{\,\text{S}}_{\cH}\,\tilde x_t^{\,\text{S}}, \,\,\,
@@ -69,7 +66,7 @@ resulting closed-loop system is described by $A^{\,\text{S}}_{\cM}$:
 	\end{bmatrix}.
 \end{equation*}
 %
-Finally, for the case of recovery $\cR$ in $\pi_t$ \removed{(i.e., when no control job is activated, but an old one is completed)}the new control command is calculated using the old measurement and control values stored in $\hat x_t$ and $\hat u_t$.
+Finally, for the case of recovery $\cR$ in $\pi_t$ the new control command is calculated using the old measurement and control values stored in $\hat x_t$ and $\hat u_t$.
 The resulting closed-loop system is described by $A^{\,\text{S}}_{\cR}$ as follows:
 %
 \begin{equation*}
@@ -87,20 +84,19 @@ The set of dynamic matrices under Skip-Next strategy can then be finally defined
 
 \subsection{Kronecker lifted switching system}%
 \label{sec:system_dynamics}
-
-\removed{We have so far derived the possible switching patterns under a set of constraints $\Lambda^\strat$ in terms of a graph $\GG{\Lambda^\strat}$ (Section~\ref{sec:model}), and the closed-loop switching dynamics $\Aa^\strat$ of the controlled system (Section~\ref{sec:matrices}).}%
-To analyse the system stability under any switching pattern constrained by $\Lambda^\strat$, we \removed{are then required to}combine the set of system dynamics $\Aa^\strat$ with the FSM describing the allowed switches $\GG{\Lambda^\strat}$.
+%
+To analyse the system stability under any switching pattern constrained by $\Lambda^\strat$, we combine the set of system dynamics $\Aa^\strat$ with the automaton describing the allowed switches $\GG{\Lambda^\strat}$.
 
 A straightforward approach would be configuring a CJSR problem in the form of Equation~\eqref{cjsr}, obtaining $\rho\,(\Aa^\strat,\GG{\Lambda^\strat})$.
 %
-Conversely, building upon the recent work of~\cite{xu2020approximation}, we seek to obtain an equivalent \new{system} model \removed{of the system}based on Kronecker lifting.
-The model obtained with this approach \new{is} characterized by a set of matrices \removed{that we}denoted \removed{with}\new{by} $\Alifted_{\Lambda^\strat}$ \new{and} behaves as an \emph{arbitrary switching system}, such that \removed{the JSR of the set $\Alifted_{\Lambda^\strat}$ is equal to the CJSR of the constrained system $\rho\left(\Aa^{\strat},\GG{\Lambda^\strat}\right)$, i.e.,}$\rho\,(\Alifted_{\Lambda^\strat})= \rho\,(\Aa^{\strat},\GG{\Lambda^\strat})$.
-\removed{In this way}\new{Therefore}, \removed{we can use}powerful algorithms applicable to arbitrary switching system -- such as the ones implemented in~\cite{vankeerberghen2014jsr} and \removed{the {\tt SparseJSR} algorithm}\cite{sparsejsr} -- \new{can be used} to find tight stability bounds \removed{of our target controlled system}.
-For the sake of brevity, we \removed{will give}only \new{provide} an intuitive explanation \removed{here about}\new{of} the Kronecker lifting approach presented in~\cite{xu2020approximation}.
-\removed{The interested reader is referred to~\cite{xu2020approximation} for a more detailed analysis.}The Kronecker product is formally defined as follows~\cite{horn2012matrix}.
+Conversely, building upon the recent work of~\cite{xu2020approximation}, we seek to obtain an equivalent system model based on Kronecker lifting.
+The model obtained with this approach is characterized by a set of matrices denoted by $\Alifted_{\Lambda^\strat}$ and behaves as an \emph{arbitrary switching system}, such that $\rho\,(\Alifted_{\Lambda^\strat})= \rho\,(\Aa^{\strat},\GG{\Lambda^\strat})$.
+Therefore, powerful algorithms applicable to arbitrary switching system -- such as the ones implemented in~\cite{vankeerberghen2014jsr} and \cite{sparsejsr} -- can be used to find tight stability bounds.
+For the sake of brevity, we only provide an intuitive explanation of the Kronecker lifting approach presented in~\cite{xu2020approximation}.
+The Kronecker product is formally defined as follows~\cite{horn2012matrix}.
 
 \begin{definition}[Kronecker product]%
-    The Kronecker product between two real-valued matrices $A$ and $B$ \emph{of any size} is\removed{defined as}:%
+    The Kronecker product between two real-valued matrices $A$ and $B$ \emph{of any size} is:%
     \begin{equation*}
         A \otimes B :=
         %\left[\begin{array}{cccc}
@@ -112,164 +108,45 @@ For the sake of brevity, we \removed{will give}only \new{provide} an intuitive e
       \end{bmatrix}.
     \end{equation*}
 \end{definition}
-\removed{%
-Differently from the common matrix product, the Kronecker product does not require the equivalence between the number of rows of $A$ and columns of $B$.
+%
 
-The Kronecker product is used here to build a set of lifted matrices ($P_\event$) that includes the information of both the system dynamics (closed-loop matrix $A^\strat_\event$) and the possible transitions (transition matrix $F_\event$) of a given outcome $\event\in\Sigma\left(\strat\right)$. 
-To avoid heavy notation, we will consider $A^\strat_\event\equiv A_\event$ henceforth, with implicit dependency on $\strat$.
-}%
-
-\new{First, by leveraging the vector $q_t$ of Definition~\ref{def:qt}}, we introduce the \emph{lifted discrete-time state}, $\xi_t\in\mathbb{R}^{n\abs{\VV{\Lambda^\strat}}}$, defined as 
+First, by leveraging the vector $q_t$ of Definition~\ref{def:qt}, we introduce the \emph{lifted discrete-time state}, $\xi_t\in\mathbb{R}^{n\abs{\VV{\Lambda^\strat}}}$, defined as 
 $$\xi_t = q_t\otimes x_t.$$
-By construction, $\xi_t$ is a vector composed of $\abs{\VV{\Lambda^\strat}}$ blocks of size $n$, where at most one block is equal to $x_t$ and all \removed{the}other blocks are equal to the $0$ vector.
+By construction, $\xi_t$ is a vector composed of $\abs{\VV{\Lambda^\strat}}$ blocks of size $n$, where at most one block is equal to $x_t$ and all other blocks are equal to the $0$ vector.
 
-\removed{All the possible lifted closed-loop system dynamic matrix associated to $\xi_t$ are defined as}\new{Second, we build a set of lifted matrices $P_{\event} ( \GG{\Lambda^\strat} )\in\mathbb{R}^{n\abs{\VV{\Lambda^\strat}}\times n\abs{\VV{\Lambda^\strat}}}$} that includes \removed{the}information \removed{of}\new{about} both the system dynamics (\removed{closed-loop matrix}$A^\strat_\event$ \new{of Section~\ref{sec:matrices}}) and the possible transitions (\removed{transition matrix}$F_{\event} ( \GG{\Lambda^\strat} )$ \new{of Definition~\ref{def:transition}}) \removed{of a}given \new{a certain} outcome $\event\in\Sigma\left(\strat\right)$, as follows
+Second, we build a set of lifted matrices $P_{\event} ( \GG{\Lambda^\strat} )\in\mathbb{R}^{n\abs{\VV{\Lambda^\strat}}\times n\abs{\VV{\Lambda^\strat}}}$ that includes information about both the system dynamics ($A^\strat_\event$ of Section~\ref{sec:matrices}) and the possible transitions ($F_{\event} ( \GG{\Lambda^\strat} )$ of Definition~\ref{def:transition}) given a certain outcome $\event\in\Sigma\left(\strat\right)$, as follows
 %
 \begin{equation}
     \label{eq:lifted_matrix}
     P_{\event} ( \GG{\Lambda^\strat} ) = F_{\event} ( \GG{\Lambda^\strat} )\otimes A_\event^\strat,\quad \event \in \Sigma \left( \strat \right).
 \end{equation}
 %
-\removed{where $P_\event\in\mathbb{R}^{n\abs{\VV{\Lambda^\strat}}\times n\abs{\VV{\Lambda^\strat}}}$.}%
-%
 The lifted dynamics of the closed loop system then become%
 %
-\removed{\begin{equation*}
-    \xi_{t+1} = P_\event\,\xi_t, \quad \event=\alpha_t.
-\end{equation*}}%
-\new{%
 $$
     \xi_{t+1} = P_{\event} ( \GG{\Lambda^\strat} )\,\xi_t.
 $$
-}%
-\removed{To better understand how this works, we here apply the theory to Example~$1$.
-\begin{example}%
-    \emph{Consider the graph of Example~$1$ in Figure X (left). The transition matrices $F_{\cH}$ and $F_{\cM}$, computed using Definition X, are:}
-    \begin{equation}
-        F_{\cH} =
-        \begin{bmatrix}
-            1 & 0 & 1 \\
-            0 & 0 & 0 \\
-            0 & 1 & 0
-        \end{bmatrix}, \quad
-        F_{\cM} =
-        \begin{bmatrix}
-            0 & 0 & 0 \\
-            1 & 0 & 0 \\
-            0 & 0 & 0
-        \end{bmatrix}.
-    \end{equation}
-    \emph{The lifted matrices corresponding to $\cH$ and $\cM$ are then computed using Equation X as follows:}
-    \begin{equation}
-        P_{\cH} =
-        \begin{bmatrix}
-            A_\cH & 0 & A_\cH \\
-            0 & 0 & 0 \\
-            0 &  A_\cH & 0
-        \end{bmatrix}, \quad
-        P_{\cM} =
-        \begin{bmatrix}
-            0 & 0 & 0 \\
-            A_\cM & 0 & 0 \\
-            0 & 0 & 0
-        \end{bmatrix}.
-    \end{equation}
-    \emph{Let consider an initial G-state $q_1 = \left[ 1,\, 0,\, 0 \right]^T$ and an initial plant state $x_1$.  Given a sequence $\alpha = \cH\cM$, we obtain:}
-    \begin{equation*}
-        \begin{aligned}
-            \xi_3 &= P_\cM\, P_\cH\, \xi_1 \\
-            &=\begin{bmatrix}
-                0 & 0 & 0 \\
-                A_\cM & 0 & 0 \\
-                0 & 0 & 0
-            \end{bmatrix}
-            \begin{bmatrix}
-                A_\cH & 0 & A_\cH \\
-                0 & 0 & 0 \\
-                0 &  A_\cH & 0
-            \end{bmatrix}
-            \begin{bmatrix}
-                x_1 \\
-                0   \\
-                0   \\
-            \end{bmatrix} =
-            \begin{bmatrix}
-                0 \\
-                A_\cM\, A_\cH\, x_1 \\
-                0 \\
-            \end{bmatrix}
-        \end{aligned}
-    \end{equation*}
-    \emph{Instead, if the sequence $\alpha = \cM\cM$ was given, which is infeasible for this example (}$\alpha \notin \sset{}{(1,3)_{\text{Kill}} }$\emph{), the dynamics will converge to $\xi=0$}.
-    \begin{equation*}
-        \xi_3 = P_\cM\, P_\cM\, \xi_1 =
-        \begin{bmatrix}
-            0 & 0 & 0 \\
-            A_\cM & 0 & 0 \\
-            0 & 0 & 0
-        \end{bmatrix}
-        \begin{bmatrix}
-            0 & 0 & 0 \\
-            A_\cM & 0 & 0 \\
-            0 & 0 & 0
-        \end{bmatrix}
-        \begin{bmatrix}
-            x_1 \\
-            0   \\
-            0
-        \end{bmatrix} =
-        \begin{bmatrix}
-            0 \\
-            0 \\
-            0
-        \end{bmatrix}
-    \end{equation*}%\qed
-\end{example}}%
 %
 Formally, we obtain a system composed of a set of switching dynamic matrices, $\Alifted_{\Lambda^\strat}$, which is defined as follows.
 %
 \begin{definition}[Lifted switching set $\Alifted_{\Lambda^\strat}$]%
     \label{def:switching_set}%
-    Given a set of dynamic matrices $\Aa^{\strat}$ and a graph $\GG{\Lambda^\strat}$, the switching set $\Alifted_{\Lambda^\strat}$ is defined as the set of all lifted matrices corresponding to $\Aa^{\strat}$.
+    Given a set of dynamic matrices $\Aa^{\strat}$ and an automaton $\GG{\Lambda^\strat}$, the switching set $\Alifted_{\Lambda^\strat}$ is defined as the set of all lifted matrices corresponding to $\Aa^{\strat}$.
     Formally,
     %
-    \removed{$$
-    \Alifted_{\Lambda^\strat} = \left\{ F_\event \otimes A^{\strat}_\event \,\, | \,\, \event \in \Sigma\left(\strat\right),\, A^{\strat}_\event \in \Aa^{\strat} \right\}.
-    $$}
     $$
     \Alifted_{\Lambda^\strat} = \left\{ P_{\event} ( \GG{\Lambda^\strat} ) \,\, | \,\, \event \in \Sigma\left(\strat\right) \right\}.
     $$
     \end{definition}
 %
-\removed{Proving then that $\rho\left(\Alifted_{\Lambda^{\strat}}\right)= \rho\left(\Aa^{\strat},\GG{\Lambda^{\strat}}\right)$ requires first finding a proper norm for the lifted system.
-For an arbitrary sequence $\astring\in\Sigma\left(\strat\right)^N$, the mixed-product property~\cite{horn2012matrix} of $\otimes$ guarantees the following relationship:
-%
-\begin{equation*}
-\begin{aligned}
-P_\astring &= P_{\alpha_N}\cdots P_{\alpha_2}P_{\alpha_1} \\ &= \left(F_{\alpha_N}\cdots F_{\alpha_2}F_{\alpha_1}\right)\otimes\left(A^{\strat}_{\alpha_N}\cdots A^{\strat}_{\alpha_2}A^{\strat}_{\alpha_1}\right)
-\end{aligned}
-\end{equation*}
-%
-Then, we introduce a submultiplicative norm $\vertiii{ \cdot}$ such that, for an arbitrary matrix $M$,
-it holds that
-%
-$$\vertiii{M} = \max_j\sum_i\Vert m_{i,j} \Vert.$$
-%
-Finally, recalling from Section~\ref{ssec:dynamicgraph} that there may be at most one entry 1 in each column of $F_\alpha$, and from Lemma~\ref{cor:Fseqnotinlambda} that $F_\alpha=0$ if $\alpha \notin \sset{}{\Lambda }$, we obtain that:
-\begin{equation}
-\vertiii{P_\alpha} = \left\{ \begin{array}{cc}
-    \Vert A_\alpha\Vert & \mbox{when } \alpha \in \sset{}{\Lambda } \\
-    0 & \mbox{when } \alpha \notin \sset{}{\Lambda }
- \end{array}\right.
-\end{equation}
+By leveraging the mixed-product property~\cite{horn2012matrix} of $\otimes$ and by introducing a proper submultiplicative norm, it is possible to prove that $\rho\left(\Alifted_{\Lambda^\strat}\right)= \rho\,(\Aa^{\strat},\GG{\Lambda^\strat})$.
+For more details and a formal proof we refer the interested reader to~\cite{xu2020approximation}.
 
-As a consequence, it follows that $\rho\left(\Alifted_{\Lambda^\strat}\right)= \rho\left(\Aa^{\strat},\GG{\lambda^\strat}\right)$, which proves the viability of our approach.%
-}\new{By leveraging the mixed-product property~\cite{horn2012matrix} of $\otimes$ and by introducing a proper submultiplicative norm, it is possible to prove that $\rho\left(\Alifted_{\Lambda^\strat}\right)= \rho\,(\Aa^{\strat},\GG{\Lambda^\strat})$.
-For more details and a formal proof we refer the interested reader to~\cite{xu2020approximation}.}
+\fix{Maybe include the example from the "longpaper".}
 
 \subsection{Extended weakly hard and JSR properties}
 \label{sec:analytic_results}
-\removed{In Section~\ref{sec:existing} we recalled existing stability results on the $\overbar{\left< m \right>}$ model obtained with the JSR~\cite{Maggio:2020}.}%
+%
 We now provide a general relation between \emph{all} \ewhc{}s in terms of the joint spectral radii, by leveraging the model presented earlier in the paper.
 
 \begin{theorem}[JSR dominance]%
@@ -300,34 +177,34 @@ We now provide a general relation between \emph{all} \ewhc{}s in terms of the jo
 The intuition that a sequence of control activations containing a large number of deadline misses is less robust than one including fewer errors, is well-established.
 However, Theorem~\ref{th:rho_dominance_general} is the first result that provides a clear, analytic, correlation between the control theoretical analysis and real-time implementation.
 Primarily, it implies that the constraint dominance from Definition~\ref{def:domination} also carries on to the JSR, giving us a notion of \emph{JSR dominance}.
-\removed{One of the most important consequences arising from the JSR dominance is the relation between the implementation and analysis of a weakly-hard constrained system.}If stability under a specific \ewhc{} is shown, Theorem~\ref{th:rho_dominance_general} guarantees stability for all \ewhc{} which are harder to satisfy.\footnote{This result also applies to the stability analysis presented in~\cite{Maggio:2020}, giving the user options for which methodology to use.}
+If stability under a specific \ewhc{} is shown, Theorem~\ref{th:rho_dominance_general} guarantees stability for all \ewhc{} which are harder to satisfy.\footnote{This result also applies to the stability analysis presented in~\cite{Maggio:2020}, giving the user options for which methodology to use.}
 We wish to emphasise that the results of Theorem~\ref{th:rho_dominance_general} are strategy independent (as long as $\lambda^\strat_1$ and $\lambda^\strat_2$ use the same strategy $\strat$), further reducing the coupling between the control analysis and implementation approach.
-\new{The results are also independent of the dynamics, and apply to open-loop as well as closed-loop systems, including feedforward controllers and any linear feedback control strategy, provided that an appropriate reformulation of matrices $\Aa^\strat$ is given.}
+The results are also independent of the dynamics, and apply to open-loop as well as closed-loop systems, including feedforward controllers and any linear feedback control strategy, provided that an appropriate reformulation of matrices $\Aa^\strat$ is given.
 
-\removed{Although Theorem~\ref{th:rho_dominance_general} holds for any \ewhc{}, $\lambda_1$ and $\lambda_2$, we here present a valuable special case of the theorem.}%
-Due to the $\overbar{\left< m \right>}^{\strat}$ and \removed{$\mks{}{\strat}$}\new{$\overbar{\binom{m}{k}}^{\strat}$} constraints being the two most used models, we derive \new{two Corollaries of Theorem~\ref{th:rho_dominance_general}, highlighting} some practical relations between \removed{them}\new{such constraints} in terms of the corresponding joint spectral radii.
-\begin{corollary}[\removed{$\mks{}{\strat}$}\new{$\overbar{\binom{m}{k}}^{\strat}$} dominance]%
+Due to the $\overbar{\left< m \right>}^{\strat}$ and $\overbar{\binom{m}{k}}^{\strat}$ constraints being the two most used models, we derive two Corollaries of Theorem~\ref{th:rho_dominance_general}, highlighting some practical relations between such constraints in terms of the corresponding joint spectral radii.
+\begin{corollary}[$\overbar{\binom{m}{k}}^{\strat}$ dominance]%
     \label{cor:rho_dominance_mk}%
-    Given two \ewhc{}, \removed{$\lambda_1 = \mkv{1}_{\strat}$ and $\lambda_2 = \mkv{2}_{\strat}$}\new{$\lambda^\strat_1 = \overbar{\binom{m}{k_1}}^{\strat}$ and $\lambda^\strat_2 = \overbar{\binom{m}{k_2}}^{\strat}$}, if $k_1 \leq k_2$ then
+    Given two \ewhc{}, $\lambda^\strat_1 = \overbar{\binom{m}{k_1}}^{\strat}$ and $\lambda^\strat_2 = \overbar{\binom{m}{k_2}}^{\strat}$, if $k_1 \leq k_2$ then
     $$
         \rho\bigl(\Alifted_{\lambda^\strat_2}\bigr) \leq \rho\bigl(\Alifted_{\lambda^\strat_1}\bigr).
     $$
 %
     \begin{proof}
-        According to~\cite{Wu:2020}, \removed{it holds that $\mkv{2}_{\strat} \preceq \mkv{1}_{\strat}$}\new{$\overbar{\binom{m}{k_2}}^{\strat}\preceq\overbar{\binom{m}{k_1}}^{\strat}$} if $k_1 \leq k_2$.
+        According to~\cite{Wu:2020}, $\overbar{\binom{m}{k_2}}^{\strat}\preceq\overbar{\binom{m}{k_1}}^{\strat}$ if $k_1 \leq k_2$.
         The corollary follows directly from~\cite{Wu:2020} and Theorem~\ref{th:rho_dominance_general}.
     \end{proof}
 \end{corollary}
 %
 \begin{corollary}[$\overbar{\left< m \right>}^{\strat}$ dominance]%
     \label{cor:rho_dominance_cons}%
-    Given two \ewhc{}, $\lambda^\strat_1 = \overbar{\left<m\right>}^{\strat}$ and \removed{$\lambda_2 = \mks{}{\strat},\, k > m$}\new{$\lambda^\strat_2 =\overbar{\binom{m}{k}}^{\strat}$}, then
+    Given two \ewhc{}, $\lambda^\strat_1 = \overbar{\left<m\right>}^{\strat}$ and $\lambda^\strat_2 =\overbar{\binom{m}{k}}^{\strat}$, then
     $$
         \rho\bigl(\Alifted_{\lambda^\strat_2}\bigr) \leq \rho\bigl(\Alifted_{\lambda^\strat_1}\bigr).
     $$
 %
     \begin{proof}
-        According to~\cite{Maggio:2020} it holds that \removed{$\overbar{\left<m\right>}_{\strat} \equiv \overbar{\binom{m}{m+1}}^{\strat}$}\new{$\overbar{\left<m\right>}^{\strat} \equiv\overbar{\binom{m}{m+1}}^{\strat}$}. The corollary follows directly from~\cite{Maggio:2020} and Corollary~\ref{cor:rho_dominance_mk}.
+        According to~\cite{Maggio:2020} it holds that $\overbar{\left<m\right>}^{\strat} \equiv\overbar{\binom{m}{m+1}}^{\strat}$.
+        The corollary follows directly from~\cite{Maggio:2020} and Corollary~\ref{cor:rho_dominance_mk}.
     \end{proof}
 \end{corollary}
 %
@@ -342,7 +219,7 @@ $$
 \Alifted_{\lambda^\strat_1} \bigr).
 $$
 %
-Regardless of the algorithm used to find the bounds, we can generally conclude that if $\rho^{UB} \left( \Alifted_{\lambda^\strat} \right) < 1$ \removed{we know that}the constrained system is switching stable.
+Regardless of the algorithm used to find the bounds, we can generally conclude that if $\rho^{UB} \left( \Alifted_{\lambda^\strat} \right) < 1$ the constrained system is switching stable.
 Similarly, if $\rho^{LB} \left( \Alifted_{\lambda^\strat} \right) > 1$ the system is unstable.
 Thus, if $\lambda^\strat_2 \preceq \lambda^\strat_1$, where $\rho^{UB} \left( \Alifted_{\lambda^\strat_1} \right) < 1$, we know that the system under $\lambda^\strat_2$ constraints is switching stable.
 A similar relation holds for the lower bound.
@@ -356,19 +233,12 @@ We now extend the results of Theorem~\ref{th:rho_dominance_general} by relating 
     $$
 
     \begin{proof}
-        \removed{%
-        A relationship between the satisfaction set of a constraint set and the individual constraints' satisfaction sets was presented in Equation~\eqref{eq:satisfaction-multi}.
-        Consequently, 
-        }\new{Considering the relationship presented in Equation~\eqref{eq:satisfaction-multi},} for an arbitrary constraint $\lambda^\strat$ and constraint set $\Lambda^\strat$, where $\Lambda^\strat = \{ \Lambda^\strat_1, \lambda^\strat \}$, it holds that
+        Considering the relationship presented in Equation~\eqref{eq:satisfaction-multi}, for an arbitrary constraint $\lambda^\strat$ and constraint set $\Lambda^\strat$, where $\Lambda^\strat = \{ \Lambda^\strat_1, \lambda^\strat \}$, it holds that
         \begin{equation}
             \sset{\ell}{\Lambda^\strat } = \sset{\ell}{ \Lambda^\strat_1 } \cap \sset{\ell}{ \lambda^\strat } \subseteq \sset{\ell}{ \lambda^\strat }.
         \end{equation}
-        \removed{%
-            Thus, if an arbitrary sequence is in the satisfaction set of $\Lambda^\strat$, i.e., $\beta \in \sset{\ell}{\Lambda^\strat }$, this means $\beta$ also belongs to the satisfaction set of $\lambda^\strat$, i.e., $\beta \in \sset{\ell}{ \lambda^\strat }$.
-        }%
-        \new{%
-            Thus, if an arbitrary sequence $b$ is in the satisfaction set of $\Lambda^\strat$ it also belongs to the satisfaction set of $\lambda^\strat$, i.e., $b \in \sset{\ell}{ \Lambda^\strat } \Rightarrow b \in \sset{\ell}{ \lambda^\strat }$.%
-        }%
+        %
+        Thus, if an arbitrary sequence $b$ is in the satisfaction set of $\Lambda^\strat$ it also belongs to the satisfaction set of $\lambda^\strat$, i.e., $b \in \sset{\ell}{ \Lambda^\strat } \Rightarrow b \in \sset{\ell}{ \lambda^\strat }$.
         The set of all possible $A_{b}$ is thus included in the set of all possible $A_{a},\, a \in \sset{\ell}{ \lambda^\strat }$.
         As a consequence it holds that
         \begin{equation*}
@@ -386,7 +256,7 @@ However, the JSR dominance extension to sets of constraints further improves the
 
 One of the most important implications of Theorem~\ref{th:rho_dominance_set_general} is the practical significance it has on the switching stability of the system.
 Specifically, enforcing tighter \ewhc{} to a stable system will \emph{never} destabilise it.
-\removed{Thus, if a system has been shown to be stable under a distinct constraint $\lambda$, the system implementation may be changed arbitrarily as long as the control task's execution still satisfies $\lambda$. }The result is formally given by the following corollary.
+The result is formally given by the following corollary.
 \begin{corollary}%
     \label{cor:rho_dominance_set}%
     Given an arbitrary \ewhc{}, $\lambda^\strat$, if $\rho \left( \Alifted_{\lambda^\strat} \right) < 1$ then
