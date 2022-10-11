@@ -14,12 +14,12 @@ In this context, the alphabet $\Sigma$ introduced in Definition~\ref{def:basic-a
     \label{def:new-mk}%
     An extended weakly-hard task $\tau$ satisfies any combination of these four constraints:
     \begin{enumerate}[label=(\roman*)]
-        \item $\tau \vdash \overbar{\binom{m}{k}}^{\strat}$: at most $m$ intervals lack a job completion, in any window of $k$ consecutive jobs;
-        \item $\tau \vdash \binom{h}{\!\:\!\:k\!\:\!\:}^{\strat}$: at least $h$ intervals contain a job completion, in any window of $k$ consecutive jobs;
-        \item $\tau \vdash \overbar{\genfrac{<}{>}{0pt}{}{m}{\!\:\!\:k\!\:\!\:}}^{\strat}$: at most $m$ \emph{consecutive} intervals lack a job completion, in any window of $k$ consecutive jobs; and
-        \item $\tau \vdash \genfrac{<}{>}{0pt}{}{h}{\!\:\!\:k\!\:\!\:}^{\strat}$: at least $h$ \emph{consecutive} intervals contain a job completion, in any window of $k$ consecutive jobs,
+        \item $\tau \vdash \erowmiss{}{\strat}$: at most $x$ intervals lack a job completion, in any window of $k$ consecutive jobs;
+        \item $\tau \vdash \erowhit{}{\strat}$: at least $x$ intervals contain a job completion, in any window of $k$ consecutive jobs;
+        \item $\tau \vdash \erowmiss{}{\strat}$: at most $x$ \emph{consecutive} intervals lack a job completion, in any window of $k$ consecutive jobs; and
+        \item $\tau \vdash \erowhit{}{\strat}$: at least $x$ \emph{consecutive} intervals contain a job completion, in any window of $k$ consecutive jobs,
     \end{enumerate}
-    with $m,h\in \N$, $k \in \N\setminus \left\{ 0 \right\}$, $m\leq k$, and $h\leq k$, while using strategy $\strat$ to handle potential deadline misses.
+    with $x\in \N$, $k \in \N\setminus \left\{ 0 \right\}$, and $x\leq k$, while using strategy $\strat$ to handle potential deadline misses.
 \end{definition}
 
 The definition above differs from Definition~\ref{def:weakly-hard} in two points: firstly, it focuses on the presence of a new control command at the end of each time interval $\pi_i$, instead of checking the outcome of a job; secondly, it explicitly introduces the handling strategy $\strat$.
@@ -27,11 +27,13 @@ The definition above differs from Definition~\ref{def:weakly-hard} in two points
 The dependency on the strategy $\strat$ is required by the necessity of introducing a more expressive alphabet $\Sigma\left(\strat\right)$ to characterise the behaviour of task $\tau$ in each possible time interval.
 For both the Kill and Skip-Next strategies, each interval $\pi_i$ contains at most one activated and one completed job.
 This restricts the possible behaviours to three cases, defined by the following symbols:
+%
 \begin{enumerate}[label=(\roman*)]
     \item a time interval in which the same job is both released and completed is denoted by $\cH$ (\emph{hit});
     \item a time interval in which either one or zero jobs are released, but no job is completed is denoted by $\cM$ (\emph{miss});
     \item a time interval in which no job is released, but a job (released in a previous interval) is completed, is denoted by $\cR$ (\emph{recovery}).
 \end{enumerate}
+%
 An alphabet can thus be created for any arbitrary handling strategy by checking all unique combinations of job activations and completions in each interval. 
 In the case of Kill and Skip-Next we obtain $\Sigma\left(\text{Kill}\right) = \{ \cM, \cH \}$ and $\Sigma\left(\text{Skip-Next}\right) = \{ \cM, \cH, \cR \}$.
 Trivially, $\Sigma\left(\text{Kill}\right)$ uses the basic alphabet from Definition~\ref{def:basic-alphabet}.

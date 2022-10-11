@@ -68,7 +68,7 @@ Since the stability analysis presented in this paper is invariant to the type (a
 \subsection{Dynamic model of a graph}
 \label{ssec:dynamicgraph}
 
-Extracting all the transitions in $\EE{\Lambda^\strat}$ corresponding to a character $\event$ yields what is generally known as a \emph{directed adjacency matrix}~\cite{xu2012matrix}, denoted here as a \emph{transition matrix}.
+Extracting all the transitions in $\EE{\Lambda^\strat}$ corresponding to a character $\event \in \Sigma\left(\strat\right)$ yields what is generally known as a \emph{directed adjacency matrix}~\cite{xu2012matrix}, denoted here as a \emph{transition matrix}.
 \begin{definition}[Transition matrix]%
     \label{def:transition}%
     Given an automaton $\GG{\Lambda^\strat}$, the \emph{transition matrix} $F_{\event} ( \GG{\Lambda^\strat} ) \in \R^{\abs{\VV{\Lambda^\strat}} \times \abs{\VV{\Lambda^\strat}}}$ with $\event\in\Sigma\left(\strat\right)$, is computed as $F_{\event} ( \GG{\Lambda^\strat} ) = \{f_{i,j}(\event)\}$ with
@@ -99,9 +99,9 @@ This vector is formally defined as follows.
 In other words, the G-state $q_t$ is the vector representation of the vertex we are \emph{leaving} at step $t$.
 In this definition, $q_t=0$ means that the transition at step $t-1$ was infeasible for the automaton.
 The G-state dynamics, given an arbitrary word $\aword=\{\alpha_1,\dots,\alpha_t,\dots,\}$, is then defined as $q_{t+1} = F_{\event} ( \GG{\Lambda^\strat} )\cdot q_t$.
-Hence, the following property from~\cite{xu2012matrix} holds.
-\begin{lemma}[Infeasible sequence]
-    \label{cor:Fseqnotinlambda}
+Hence, the following property from~\cite{xu2012matrix} holds.\fix{Definition of subword}
+\begin{lemma}[Infeasible sequence]%
+    \label{cor:Fseqnotinlambda}%
     If $\aword \notin \sset{N}{ \Lambda^\strat }$, then $F_{\aword} ( \GG{\Lambda^\strat} ) =
     F_{\event_N} ( \GG{\Lambda^\strat} )\cdots F_{\event_2} ( \GG{\Lambda^\strat} )\cdot F_{\event_1} ( \GG{\Lambda^\strat} ) = 0$
 \end{lemma}

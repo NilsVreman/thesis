@@ -25,7 +25,7 @@ In this case, the controller output is forced to a default value, determined by 
 The resulting closed-loop system in state-space form is denoted with $A^{\,\text{K}}_{\cM}$ and defined as follows.
 \begin{equation*}
     \tilde x_{t+1}^{\,\text{K}} = A^{\,\text{K}}_{\cM}\,\tilde x_t^{\,\text{K}}, \quad
-   A^{\,\text{K}}_{\cM} = \begin{bmatrix}
+    A^{\,\text{K}}_{\cM} = \begin{bmatrix}
         A_p & 0  & B_p \\
         0   & I  & 0   \\
         0   & 0  & \Delta
@@ -99,22 +99,20 @@ The Kronecker product is formally defined as follows~\cite{horn2012matrix}.
     The Kronecker product between two real-valued matrices $A$ and $B$ \emph{of any size} is:%
     \begin{equation*}
         A \otimes B :=
-        %\left[\begin{array}{cccc}
         \begin{bmatrix}
             a_{11}\cdot B   & a_{12}\cdot B & \hdots \\
             a_{21}\cdot B   & a_{22}\cdot B & \hdots \\
             \vdots          & \vdots        & \ddots\\
-        %\end{array}\right].
       \end{bmatrix}.
     \end{equation*}
 \end{definition}
-%
 
-First, by leveraging the vector $q_t$ of Definition~\ref{def:qt}, we introduce the \emph{lifted discrete-time state}, $\xi_t\in\mathbb{R}^{n\abs{\VV{\Lambda^\strat}}}$, defined as 
-$$\xi_t = q_t\otimes x_t.$$
-By construction, $\xi_t$ is a vector composed of $\abs{\VV{\Lambda^\strat}}$ blocks of size $n$, where at most one block is equal to $x_t$ and all other blocks are equal to the $0$ vector.
+First, by leveraging the vector $q_t$ of Definition~\ref{def:qt}, we introduce the \emph{lifted discrete-time state}, $\xi_t\in\R^{n\cdot n_{\VV{}}}$, defined as 
+$$\xi_t = q_t\otimes \tilde x_t,$$
+where $n$ is the number of states in $\tilde x_t$ and $n_{\VV{}} = \abs{\VV{\Lambda^\strat}}$.
+By construction, $\xi_t$ is then a vector composed of $n_{\VV{}}$ blocks of size $n$, where at most one block is equal to $\tilde x_t$ and all other blocks are equal to the $0$ vector.
 
-Second, we build a set of lifted matrices $P_{\event} ( \GG{\Lambda^\strat} )\in\mathbb{R}^{n\abs{\VV{\Lambda^\strat}}\times n\abs{\VV{\Lambda^\strat}}}$ that includes information about both the system dynamics ($A^\strat_\event$ of Section~\ref{sec:matrices}) and the possible transitions ($F_{\event} ( \GG{\Lambda^\strat} )$ of Definition~\ref{def:transition}) given a certain outcome $\event\in\Sigma\left(\strat\right)$, as follows
+Second, we build a set of lifted matrices $P_{\event} ( \GG{\Lambda^\strat} )\in\R^{n\cdot n_{\VV{}}\times n\cdot n_{\VV{}}}$ that includes information about both the system dynamics ($A^\strat_\event$ of Section~\ref{sec:matrices}) and the possible transitions ($F_{\event} ( \GG{\Lambda^\strat} )$ of Definition~\ref{def:transition}) given a certain outcome $\event\in\Sigma\left(\strat\right)$, as follows
 %
 \begin{equation}
     \label{eq:lifted_matrix}
@@ -181,10 +179,10 @@ If stability under a specific \ewhc{} is shown, Theorem~\ref{th:rho_dominance_ge
 We wish to emphasise that the results of Theorem~\ref{th:rho_dominance_general} are strategy independent (as long as $\lambda^\strat_1$ and $\lambda^\strat_2$ use the same strategy $\strat$), further reducing the coupling between the control analysis and implementation approach.
 The results are also independent of the dynamics, and apply to open-loop as well as closed-loop systems, including feedforward controllers and any linear feedback control strategy, provided that an appropriate reformulation of matrices $\Aa^\strat$ is given.
 
-Due to the $\overbar{\left< m \right>}^{\strat}$ and $\overbar{\binom{m}{k}}^{\strat}$ constraints being the two most used models, we derive two Corollaries of Theorem~\ref{th:rho_dominance_general}, highlighting some practical relations between such constraints in terms of the corresponding joint spectral radii.
-\begin{corollary}[$\overbar{\binom{m}{k}}^{\strat}$ dominance]%
+Due to the $\overbar{\left< x \right>}^{\strat}$ and $\eanymiss{}{\strat}$ constraints being the two most used models, we derive two Corollaries of Theorem~\ref{th:rho_dominance_general}, highlighting some practical relations between such constraints in terms of the corresponding joint spectral radii.
+\begin{corollary}[$\eanymiss{}{\strat}$ dominance]%
     \label{cor:rho_dominance_mk}%
-    Given two \ewhc{}, $\lambda^\strat_1 = \overbar{\binom{m}{k_1}}^{\strat}$ and $\lambda^\strat_2 = \overbar{\binom{m}{k_2}}^{\strat}$, if $k_1 \leq k_2$ then
+    Given two \ewhc{}, $\lambda^\strat_1 = \overbar{\binom{x}{k_1}}^{\strat}$ and $\lambda^\strat_2 = \overbar{\binom{x}{k_2}}^{\strat}$, if $k_1 \leq k_2$ then
     $$
         \rho\bigl(\Alifted_{\lambda^\strat_2}\bigr) \leq \rho\bigl(\Alifted_{\lambda^\strat_1}\bigr).
     $$
@@ -195,9 +193,9 @@ Due to the $\overbar{\left< m \right>}^{\strat}$ and $\overbar{\binom{m}{k}}^{\s
     \end{proof}
 \end{corollary}
 %
-\begin{corollary}[$\overbar{\left< m \right>}^{\strat}$ dominance]%
+\begin{corollary}[$\overbar{\left< x \right>}^{\strat}$ dominance]%
     \label{cor:rho_dominance_cons}%
-    Given two \ewhc{}, $\lambda^\strat_1 = \overbar{\left<m\right>}^{\strat}$ and $\lambda^\strat_2 =\overbar{\binom{m}{k}}^{\strat}$, then
+    Given two \ewhc{}, $\lambda^\strat_1 = \overbar{\left<x\right>}^{\strat}$ and $\lambda^\strat_2 =\eanymiss{}{\strat}$, then
     $$
         \rho\bigl(\Alifted_{\lambda^\strat_2}\bigr) \leq \rho\bigl(\Alifted_{\lambda^\strat_1}\bigr).
     $$
