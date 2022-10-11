@@ -30,8 +30,8 @@ For example, a computation instance that experiences a deadline miss can be allo
 There is however quite a mismatch between the guarantees that can be obtained for real-time tasks and platforms~\cite{Hammadeh:2017b, Hammadeh:2019, choi2019job, pazzaglia2020generalized}, and the analysis that is available for \emph{control} tasks~\cite{Pazzaglia:2018, Maggio:2020}.
 In particular, fewer works deal with the \emph{stability} analysis of real-time control tasks subject to weakly-hard deadline misses, and they often lack generality. 
 The analysis presented in~\cite{Maggio:2020} (which can be considered the closest work to this paper) is limited to constraints that specify a maximum number of \emph{consecutive} deadline misses.
-The majority of other state-of-the-art approaches deal with constraints of the form $(m,k)$.\fix{}
-In particular, the works in \cite{Linsenmayer:2017} and \cite{linsenmayer2020linear} study the stability of \emph{networked control systems} where packet dropouts (or system faults) are bounded using the $(m,k)$ constraint model.\fix{}
+The majority of other state-of-the-art approaches deal with constraints of the form $(m,k)$.
+In particular, the works in \cite{Linsenmayer:2017} and \cite{linsenmayer2020linear} study the stability of \emph{networked control systems} where packet dropouts (or system faults) are bounded using the $(m,k)$ constraint model.
 This model is equivalent to the case where deadline misses represent discarded computations, but its results can not be generalized for the other common case of \emph{late completions}.
 In other works~\cite{huang2019exploring,liang2019security,liang2020leveraging}, the authors have studied how to enforce safety guarantees of weakly-hard real-time controllers, with focus also on stability. However, they consider only the case where a deadline miss corresponds to a discarded computation, with the additional hypothesis of a known periodic pattern of deadline hits and misses~\cite{liang2019security,liang2020leveraging}.
 
