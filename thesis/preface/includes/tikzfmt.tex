@@ -52,6 +52,13 @@
 
 \usetikzlibrary{shapes.misc}
 \usetikzlibrary{backgrounds}
+\pgfplotsset{
+    ylabel right/.style={
+        after end axis/.append code={
+            \node [anchor=west, xshift=1.5mm] at (rel axis cs:1,0.5) {#1};
+        }
+    }
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 %%% packages copy pasted from:
