@@ -26,22 +26,22 @@ We consider a plant $\plant$ described in state-space form:
 \label{eq:background:plant}
     \plant : \left\{
     \begin{aligned}
-        x_{k+1} &\,=\,  A_p\,x_k + B_p\,u_k + G_p\,w_k \\
-        y_k &\,=\, C_p\,x_k + D_p\,u_k
+        x_{k+1} &\,=\,  \Ap\,x_k + \Bp\,u_k + \Gp\,w_k \\
+        y_k &\,=\, \Cp\,x_k + \Dp\,u_k
     \end{aligned}
     \right.
 \end{equation}
 
 In~\eqref{eq:background:plant}, $k$ counts the discrete instants that represent the plant's sampling points.
-We assume periodic sampling; the time between two consecutive samples $k$ and $k+1$ is fixed and equal to sampling period $t_s$.
-In the equation, $x_k$ is a column vector with $\numstatesplant$ elements.
+We assume periodic sampling; the time between two consecutive samples $k$ and $k+1$ is fixed and equal to sampling period $\Ts$.
+In the equation, $x_k$ is a column vector with $n_x$ elements.
 These elements represent the state variables that account for, e.g., the storage of mass, momentum, and energy.
-Similarly, $u_k$ is a column vector with $\numinputplant$ elements.
+Similarly, $u_k$ is a column vector with $n_u$ elements.
 These values represent the inputs that affect the dynamics of the plant.
-We also consider $w_k$, a column vector with $\numinputplant$ elements.
+We also consider $w_k$, a column vector with $n_u$ elements.
 The term $w_k$ represents an unknown load disturbance, modelled as a stationary stochastic process with known properties.
-Finally, $y_k$ is a column vector with $\numoutputplant$ elements, that represents the measurements that are taken from our plant.
-The matrices $A_p$ (size $\numstatesplant \times \numstatesplant$), $B_p$ (size $\numstatesplant \times \numinputplant$), $C_p$ (size $\numoutputplant \times \numstatesplant$), $D_p$ (size $\numoutputplant \times \numinputplant$), and $G_p$ (size $\numstatesplant \times \numinputplant$) characterise the dynamics of the plant.
+Finally, $y_k$ is a column vector with $n_y$ elements, that represents the measurements that are taken from our plant.
+The matrices $\Ap$ (size $n_x \times n_x$), $\Bp$ (size $n_x \times n_u$), $\Cp$ (size $n_y \times n_x$), $\Dp$ (size $n_y \times n_u$), and $\Gp$ (size $n_x \times n_u$) characterise the dynamics of the plant.
 
 \subsection{Controller Model}
 
@@ -52,17 +52,17 @@ In other words, we consider all the controllers that can be written as linear sy
 \label{eq:background:controller}
     \ctrler : \left\{
     \begin{aligned}
-        z_{k+1} &\,=\, A_c\,z_k + B_c\,e_k \\
-        u_{k+1} &\,=\, C_c\,z_k + D_c\,e_k
+        z_{k+1} &\,=\, \Ac\,z_k + \Bc\,e_k \\
+        u_{k+1} &\,=\, \Cc\,z_k + \Dc\,e_k
     \end{aligned}
     \right.
 \end{equation}
 
-Here, $z_k$ is a column vector with $\numstatesctl$ elements that represents the state of the controller.
-The input of the controller is $e_k$, a vector of $\numinputctl = \numoutputplant$ elements.
+Here, $z_k$ is a column vector with $n_z$ elements that represents the state of the controller.
+The input of the controller is $e_k$, a vector of $n_y$ elements.
 Each element in the vector is the error between the corresponding plant output and its reference value ($e_k = r_k - y_k$, where $r_k$ represents the reference values for the plant outputs).
-Finally, $u_k$ is a vector of $\numoutputctl = \numinputplant$ elements, that encodes the output of the controller, which is connected to the plant input vector.
-The matrices $A_c$ (size $\numstatesctl \times \numstatesctl$), $B_c$ (size $\numstatesctl \times \numinputctl$), $C_c$ (size $\numoutputctl \times \numstatesctl$), and $D_c$ (size $\numoutputctl \times \numinputctl$) characterise the dynamics of the controller.
+Finally, $u_k$ is a vector of $n_u$ elements, that encodes the output of the controller, which is connected to the plant input vector.
+The matrices $\Ac$ (size $n_z \times n_z$), $\Bc$ (size $n_z \times n_y$), $\Cc$ (size $n_u \times n_z$), and $\Dc$ (size $n_u \times n_y$) characterise the dynamics of the controller.
 For every task activation, the controller first applies the value of $u_k$ that was computed by the previous job and then reads the inputs $r_k$ and $y_k$.
 It then calculates the values of $z_{k+1}$ and $u_{k+1}$ that will be used in the next iteration.
 
@@ -81,60 +81,60 @@ In this way, we obtain a system that has the vectors $r_k$ and $w_k$ as input, a
 %
 \begin{equation} 
 \label{eq:feedback-basic}
-    \closedloop : \left\{
+    \clsys : \left\{
     \begin{aligned}
-        \tilde{x}_{k+1} &\,=\, A\,\tilde{x}_{k} + B_r\,r_{k} + B_w\,w_{k}\\
-        y_{k} &\,=\, C\,\tilde{x}_{k},
+        \tilde{x}_{k+1} &\,=\, \tilde A\,\tilde{x}_{k} + B_r\,r_{k} + B_w\,w_{k}\\
+        y_{k} &\,=\, \tilde C\,\tilde{x}_{k},
     \end{aligned} \right.
 \end{equation}
 %
-where the closed-loop state matrix $A$ is
+where the closed-loop state matrix $\tilde A$ is
 %
 \begin{equation}
 \label{eq:matrixA}
-    A =
-    \begin{bmatrix} A_p       & 0_{\numstatesplant \times \numstatesctl} & B_p \\
-                    -B_c\,C_p & A_c                                      & -B_c\,D_p \\
-                    -D_c\,C_p & C_c                                      & -D_c\,D_p
+    \tilde A =
+    \begin{bmatrix} \Ap       & 0_{n_x \times n_z} & \Bp \\
+                    -\Bc\,\Cp & \Ac                                      & -\Bc\,\Dp \\
+                    -\Dc\,\Cp & \Cc                                      & -\Dc\,\Dp
     \end{bmatrix},
 \end{equation}
 %
 the input matrices $B_r$ and $B_w$ are
 %
 \begin{equation}
-    B_r = \begin{bmatrix} 0_{\numstatesplant \times \numinputctl} \\ B_c \\ D_c \end{bmatrix},\;\;
-    B_w = \begin{bmatrix} G_p \\ 0_{\numstatesctl \times \numinputplant} \\ 0_{\numinputplant \times \numinputplant} \end{bmatrix},
+    B_r = \begin{bmatrix} 0_{n_x \times n_y} \\ \Bc \\ \Dc \end{bmatrix},\;\;
+    B_w = \begin{bmatrix} \Gp \\ 0_{n_z \times n_u} \\ 0_{n_u \times n_u} \end{bmatrix},
 \end{equation}
 %
-and the output matrix $C$ is
+and the output matrix $\tilde C$ is
 %
 \begin{equation}
-    C = \begin{bmatrix} C_p & 0_{\numstatesplant \times \numstatesctl} & D_p \end{bmatrix}.
+    \tilde C = \begin{bmatrix} \Cp & 0_{n_x \times n_z} & \Dp \end{bmatrix}.
 \end{equation}
 %
-Figure~\ref{fig:closedloop} shows the graphical representation of the closed-loop system $\closedloop$, with input and output signals.
+Figure~\ref{fig:closedloop} shows the graphical representation of the closed-loop system $\clsys$, with input and output signals.
 
 \begin{figure}[t]
 \centering
 \input{\figdir/compressed-loop.tex}
-\caption{Closed-loop system rewritten as a new linear system $\closedloop$.
+\caption{Closed-loop system rewritten as a new linear system $\clsys$.
     The resulting system has two inputs, $r_k$ and $w_k$ and one output.
-    The feedback loop shown in Figure~\ref{fig:loop} is hidden inside $\closedloop$.}
+    The feedback loop shown in Figure~\ref{fig:loop} is hidden inside $\clsys$.}
 \label{fig:closedloop}
 \end{figure}
 
 \paragraph*{Stability}
 
 To assess the stability of the closed-loop system under normal operation, it is sufficient to check the eigenvalues of the state matrix. 
-According to the Schur stability criterion~\cite{Astrom:1997}, if the eigenvalues of $A$ lie within the unit disc, then the system is asymptotically stable. 
+According to the Schur stability criterion~\cite{Astrom:1997}, if the eigenvalues of $\tilde A$ lie within the unit disc, then the system is asymptotically stable. 
 Formally, a closed-loop system is Schur stable if and only if
 %
 \begin{equation}
     \label{eq:schur}
-    \max_i{\abs{\eig{i}{A}}} < 1,
+    \max_i{\abs{\eig{i}{\tilde A}}} < 1,
 \end{equation}
 %
-where $\eig{i}{A}$ is a function that returns the $i$-th eigenvalue of~$A$.
+where $\eig{i}{\tilde A}$ is a function that returns the $i$-th eigenvalue of~$\tilde A$.
 
 If the system dynamics change at runtime (e.g., in the case of a lost sample, unexpected delay, or computational problem), Schur stability is no longer a sufficient stability criterion.
 Instead, \emph{switching stability analysis} can be employed to check the stability of a system with alternating dynamics~\cite{Jungers2009}.
@@ -154,7 +154,7 @@ In our work, we use a quadratic cost function
 \end{equation}
 %
 The cost function penalises deviations from the reference value as well as usage of the control signal.
-$\mathbb{E}$ denotes expected value, and the positive semidefinite weighting matrices $Q_e$ (size $\numoutputplant \times \numoutputplant$) and $Q_u$ (size $\numoutputctl \times \numoutputctl$) weigh the different terms against each other.
+$\mathbb{E}$ denotes expected value, and the positive semidefinite weighting matrices $Q_e$ (size $n_y \times n_y$) and $Q_u$ (size $n_u \times n_u$) weigh the different terms against each other.
 A small cost value means that the controller successfully makes the error approach zero, using a small control signal.
 
 If the stochastic properties of the external signals $r_k$ and $w_k$ are known, it is possible to calculate the value of the cost function analytically.
@@ -173,7 +173,7 @@ The state covariance evolves according to
 %
 \begin{equation}
 \label{eq:covevolution}
-    P_{k+1} = A \,P_k\, A^\T + B_w \,R\, B_w^\T.
+    P_{k+1} = \tilde A \,P_k\, \tilde A^\T + B_w \,R\, B_w^\T.
 \end{equation}
 %
 Given $P_k$, we can calculate the cost for time step $k$ as
@@ -188,9 +188,9 @@ where $\mathrm{tr}$ computes the trace of the matrix, and
 \begin{equation}
     \setlength\arraycolsep{2pt}
     Q = \begin{bmatrix} 
-        C_p^\T\,Q_e\,C_p                           & 0_{\numstatesplant \times \numstatesctl} & 0_{\numstatesplant \times \numinputplant} \\
-        0_{\numstatesctl \times \numstatesplant}  & 0_{\numstatesctl \times \numstatesctl}   & 0_{\numstatesctl \times \numinputplant} \\
-        0_{\numinputplant \times \numstatesplant} & 0_{\numinputplant \times \numstatesctl}  & Q_u
+        \Cp^\T\,Q_e\,\Cp                           & 0_{n_x \times n_z} & 0_{n_x \times n_u} \\
+        0_{n_z \times n_x}  & 0_{n_z \times n_z}   & 0_{n_z \times n_u} \\
+        0_{n_u \times n_x} & 0_{n_u \times n_z}  & Q_u
     \end{bmatrix} 
 \end{equation}
 %

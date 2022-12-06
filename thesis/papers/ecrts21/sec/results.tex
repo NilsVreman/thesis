@@ -20,7 +20,7 @@ We consider this as a stress test to check the divergence between simulation res
 In fact, the controller necessarily acts with information that is valid only around the upright position, and there is only a range of states in which the linearised model closely describes the behaviour of the physical plant.
 
 We design a linear-quadratic regulator (LQR) to control the plant. 
-Every $t_s=10\,$ms the plant is sampled and the control signal is actuated.
+Every $\Ts=10\,$ms the plant is sampled and the control signal is actuated.
 Based on state-of-the-art models~\cite{Cazzolato:2011} and on our control design, the plant model $\plant$ is
 \begin{equation}
     \label{eq:furuta}
@@ -88,7 +88,7 @@ For the performance analysis, we considered a one-shot burst fault of a specific
 Assuming that the pendulum starts close to the upright equilibrium, with stationary cost $J_\infty$, we calculate how the covariance $P_k$ and performance cost $J_k$ evolve during and after the burst interval using Equations~\eqref{eq:covariance-evolution}--\eqref{eq:evolutionparameters}.\footnote{The analysis is implemented using \texttt{JitterTime}~\cite{Cervin:2019}, \url{https://www.control.lth.se/jittertime}.} 
 These calculations assume an ideal, linear model of the pendulum. 
 The simulation results for different strategies and bursts of length $m=20$ are shown in the upper half of Figure~\ref{fig:cost_simvsreal}. 
-For Hold, it is seen that the cost grows exponentially during the initial fault interval (the first $20\,t_s=0.2\,$s). 
+For Hold, it is seen that the cost grows exponentially during the initial fault interval (the first $20\,\Ts=0.2\,$s). 
 This is true also for Zero, although the growth rate is too small to be visible.
 The reason for the poor performance of Hold is that any non-zero held control signal will actively push the pendulum away from its unstable upright equilibrium even further than either disturbances or noise would already do without a proper control action.
 %
