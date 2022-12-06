@@ -231,7 +231,7 @@ where
     \begin{aligned}
         R_w &= 
         \begin{bmatrix} 
-            \sum_{i=0}^{j_{\nummisses}} \Ap^i\,\Gp\,R\,\Gp^\T\,(\Ap^i)^\T & 0_{n_x \times n_z+n_u} \\ 
+            \sum_{i=0}^{j_{\nummisses}} \Ap^i\,\Wp\,R\,\Wp^\T\,(\Ap^i)^\T & 0_{n_x \times n_z+n_u} \\ 
             0_{n_z + n_u \times n_x}               & 0_{n_z + n_u \times n_z+ n_u}
         \end{bmatrix}, \\
         j_{\nummisses} &= 
@@ -247,7 +247,7 @@ where
         \end{aligned}
 \end{equation}
 
-$\Ap$ and $\Gp$ are matrices from the plant evolution in~\eqref{eq:background:plant}, $R$ is the noise intensity from~\eqref{eq:covevolution}, and $\tilde A$ is the closed-loop matrix from~\eqref{eq:matrixA}.
+$\Ap$ and $\Wp$ are matrices from the plant evolution in~\eqref{eq:background:plant}, $R$ is the noise intensity from~\eqref{eq:covevolution}, and $\tilde A$ is the closed-loop matrix from~\eqref{eq:matrixA}.
 The cost will simultaneously change following~\eqref{eq:covartocost}.
 In the recovery interval, the covariance is again governed by the normal closed-loop evolution described in~\eqref{eq:covevolution}.
 The system is said to have recovered once the cost is arbitrarily close to the steady-state cost.

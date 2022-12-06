@@ -26,7 +26,7 @@ We consider a plant $\plant$ described in state-space form:
 \label{eq:background:plant}
     \plant : \left\{
     \begin{aligned}
-        x_{k+1} &\,=\,  \Ap\,x_k + \Bp\,u_k + \Gp\,w_k \\
+        x_{k+1} &\,=\,  \Ap\,x_k + \Bp\,u_k + \Wp\,w_k \\
         y_k &\,=\, \Cp\,x_k + \Dp\,u_k
     \end{aligned}
     \right.
@@ -41,7 +41,7 @@ These values represent the inputs that affect the dynamics of the plant.
 We also consider $w_k$, a column vector with $n_u$ elements.
 The term $w_k$ represents an unknown load disturbance, modelled as a stationary stochastic process with known properties.
 Finally, $y_k$ is a column vector with $n_y$ elements, that represents the measurements that are taken from our plant.
-The matrices $\Ap$ (size $n_x \times n_x$), $\Bp$ (size $n_x \times n_u$), $\Cp$ (size $n_y \times n_x$), $\Dp$ (size $n_y \times n_u$), and $\Gp$ (size $n_x \times n_u$) characterise the dynamics of the plant.
+The matrices $\Ap$ (size $n_x \times n_x$), $\Bp$ (size $n_x \times n_u$), $\Cp$ (size $n_y \times n_x$), $\Dp$ (size $n_y \times n_u$), and $\Wp$ (size $n_x \times n_u$) characterise the dynamics of the plant.
 
 \subsection{Controller Model}
 
@@ -103,7 +103,7 @@ the input matrices $B_r$ and $B_w$ are
 %
 \begin{equation}
     B_r = \begin{bmatrix} 0_{n_x \times n_y} \\ \Bc \\ \Dc \end{bmatrix},\;\;
-    B_w = \begin{bmatrix} \Gp \\ 0_{n_z \times n_u} \\ 0_{n_u \times n_u} \end{bmatrix},
+    B_w = \begin{bmatrix} \Wp \\ 0_{n_z \times n_u} \\ 0_{n_u \times n_u} \end{bmatrix},
 \end{equation}
 %
 and the output matrix $\tilde C$ is

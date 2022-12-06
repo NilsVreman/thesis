@@ -29,8 +29,8 @@ However, for control design and implementation purposes, they are commonly trans
     \label{eq:plant}
     \plant: \,\, \left\{
     \begin{aligned}
-        x_{k+1} &= \Ap x_k + \Bp u_k + \Wp w_k \\
-        y_k &= \Cp x_k + \Dp u_k 
+        x_{k+1} &= \Ap\,x_k + \Bp\,u_k + \Wp\,w_k \\
+        y_k &= \Cp\,x_k + \Dp\,u_k 
     \end{aligned}
     \right.
 \end{equation}
@@ -59,8 +59,8 @@ More specifically, we assume that the controller is an LTI system that takes the
     \label{eq:ctrler}
     \ctrler: \,\, \left\{
     \begin{aligned}
-        z_{k+1} &= \Ac z_k + \Bc y_k \\
-        u_{k+1} &= \Cc z_{k} + \Dc y_k.
+        z_{k+1} &= \Ac\,z_k + \Bc\,y_k \\
+        u_{k+1} &= \Cc\,z_{k} + \Dc\,y_k.
     \end{aligned}
     \right.
 \end{equation}
@@ -83,9 +83,9 @@ Examples of static controllers include proportional (P) controllers, state feedb
 
 \subsection{Control Systems Subject to Deadline Misses}
 
-We assume that the controller $\ctrler$ is implemented as a periodic task with period $T$ and implicit deadlines. 
+We assume that the controller $\ctrler$ is implemented as a periodic task with period $\Ts$ and implicit deadlines. 
 Intuitively, each execution period of the control task corresponds to one time step $k$.
-At the start of period $k$, the task releases a \emph{job} that should be completed before the deadline at time $(k+1) T$.
+At the start of period $k$, the task releases a \emph{job} that should be completed before the deadline at time $(k+1) \Ts$.
 
 Faults in the real-time system can affect the timely execution of the control task~\cite{Steinbauer:2013}.
 We denote the outcome of a job's execution as either a deadline \emph{hit} or \emph{miss}, corresponding to whether the job completed its execution before its deadline or not. 
@@ -104,7 +104,7 @@ Henceforth, we assume that when the controller misses its deadline, the controll
 This is motivated by the possibility to roll back $z_k$ to a previous state~\cite{akesson:2020, Seong:2001, Zhang:2003} and by the impossibility to guarantee that the state update was finished if the job was only partially completed.
 
 Regarding the second item, mainly two actuator models have previously been considered in the literature: \emph{Zero} and \emph{Hold} \cite{Schenato:2009}.
-Under the Zero model, if the job released at time $kT$ misses its deadline at time  $(k+1)T$, the actuator outputs $u_{k+1} = 0$.
+Under the Zero model, if the job released at time $k\Ts$ misses its deadline at time  $(k+1)\Ts$, the actuator outputs $u_{k+1} = 0$.
 This strategy is uncommon in practice, because it performs well only in very specific cases~\cite{Vreman:2021ecrts}. 
 Instead, the more common actuator model is to hold the control signal in the case of a missed deadline: $u_{k+1} = u_k$.
 Although our proposed adaptation is in itself independent of the actuator model, the Hold model has been adopted in the analysis and examples of this paper.
@@ -135,7 +135,7 @@ We also note that an effective implementation of the kill strategy that includes
 
 We conclude this section by mentioning that various models have been proposed to describe tasks
 that may experience deadline misses, e.g., soft~\cite{Marchand:2008} or weakly hard models~\cite{Bernat:2001, hammadeh:2017}.
-For the adaptive controller in this work, we only assume that the number of consecutive deadline misses $\counter$ is bounded by a finite quantity $\counter_\mathit{max} < \infty$.
+For the adaptive controller in this work, we only assume that the number of consecutive deadline misses $\counter$ is bounded by a finite quantity $\counter_{max} < \infty$.
 This assumption is a practical necessity, since accepting an infinite run of deadline misses would completely disconnect the plant from the controller~\cite{Maggio:2020}.
 
 Solely for performance analysis, in Section~IV-B we adopt a stochastic model of the sequences of deadline hits and misses. 
@@ -157,6 +157,6 @@ We develop our approach to compute the time-averaged performance in Section~\ref
 
 If the statistical properties of the deadline misses are unknown or uncertain, switching stability can still be analysed under worst-case conditions.
 The Joint Spectral Radius (JSR) generalises the spectral radius of a matrix (i.e., the largest absolute eigenvalue) to a set of matrices; thus, the JSR characterises the largest asymptotic growth (or contraction) rate of the states. % arbitrary matrix product of the matrices in the set.
-If the JSR of the set of closed-loop matrices representing $i = \{0,1,\ldots,q_{max}\}$ deadline misses (followed by a hit) is below $1$ then the system is switching stable.
+If the JSR of the set of closed-loop matrices representing $i = \{0,1,\ldots,\counter_{max}\}$ deadline misses (followed by a hit) is below $1$ then the system is switching stable.
 Conversely, if it is above $1$, there exists at least one sequence of deadline misses and hits that makes the system unstable.
 There exist both toolboxes and methods for calculating the JSR for control systems subject to deadline misses~\cite{Jungers:2014, Maggio:2020, Vreman:2021}.

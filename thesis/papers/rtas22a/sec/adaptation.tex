@@ -1,5 +1,4 @@
 In this section, we derive an adaptive implementation scheme for real-time controllers to address the problems discussed in Section~\ref{sec:problem-form}.
-%in Section~\ref{sec:problem-form}. 
 We explain the intuition behind the proposed adaptation; then, starting from an arbitrary linear control algorithm, we show how to derive the adapted controller.
 The adaptive controller is complemented with a probabilistic analysis method to evaluate its effectiveness for a given control system and a given deadline miss model.
 
@@ -23,8 +22,8 @@ We formally define this behaviour as follows:
         \label{eq:ctrler-ideal}
         \ctrler\funof{\counter}:\,\, 
         \left\{\begin{aligned}
-            z_{k+\counter+1} &= \Ac^{\counter+1} z_{k} + \textstyle\sum_{i=0}^{\counter} \Ac^i \Bc y_{k+\counter-i}\\
-            u_{k+q+1} &= \Cc\, \Ac^{q}\, z_k + \\
+            z_{k+\counter+1} &= \Ac^{\counter+1}\,z_{k} + \textstyle\sum_{i=0}^{\counter} \Ac^i \Bc \,y_{k+\counter-i}\\
+            u_{k+q+1} &= \Cc\, \Ac^{q}\,\,z_k + \\
                        &\hspace{-2em}+ \Cc\, \textstyle\sum\nolimits_{i=1}^{q}\, \left[ \Ac^{i-1}\, \Bc\, y_{k+q-i}\right] 
                        + \Dc\, y_{k+q}.
         \end{aligned}\right.
@@ -46,17 +45,15 @@ Applying Equation~\eqref{eq:ctrler} to a scenario of $\counter$ consecutive dead
         \label{eq:ctrler-miss}
         \ctrler^n\funof{\counter}:\,\, 
         \left\{\begin{aligned}
-            z_{k+\counter+1} &= \Ac z_{k} + \Bc y_{k+\counter}\\
-            u_{k+\counter+1} &= \Cc z_{k} + \Dc y_{k+\counter}.
+            z_{k+\counter+1} &= \Ac\,z_{k} + \Bc\,y_{k+\counter}\\
+            u_{k+\counter+1} &= \Cc\,z_{k} + \Dc\,y_{k+\counter}.
         \end{aligned}\right.
     \end{equation}
     In the absence of deadline misses, we have $\ctrler^n\funof{0} = \ctrler$.
 \end{definition}
 
 By comparing \eqref{eq:ctrler-ideal} and~\eqref{eq:ctrler-miss} we see that, when deadline misses occur, the controller state $z_{k+\counter+1}$ and control action $u_{k+\counter+1}$ diverge from the ideal values, i.e., the ones that would be obtained in the presence of only deadline hits. 
-To compensate for this error (and consequently minimise it), we propose to
-%dynamically adapt the real-time implementation of the controller. 
-dynamically alter the controller's computations in real time according to the number of deadline misses. 
+To compensate for this error (and consequently minimise it), we propose to dynamically alter the controller's computations in real time according to the number of deadline misses. 
 
 Ideally, we would like an adaptive controller $\ctrler^a\funof{\counter}$ that mimics the ideal controller $\ctrler\funof{\counter}$ for any $\counter$.
 However, this is infeasible due to how the controller's dynamics evolves during an interval of deadline misses.
@@ -84,8 +81,8 @@ If we substitute the values of $y$ that are missing in the ideal controller, Equ
            \ctrler^a\funof{\counter}: \,\,
             \left\{
             \begin{aligned}
-                z_{k+\counter+1} &= F_z(\counter) z_{k} +  F_y(\counter) y_{k-1} + G_y(\counter) y_{k+\counter} \\
-                u_{k+\counter+1} &= H_z(\counter) z_{k} + H_y(\counter) y_{k-1} + K_y(\counter) y_{k+\counter},
+                z_{k+\counter+1} &= F_z(\counter)\,z_{k} +  F_y(\counter)\,y_{k-1} + G_y(\counter)\,y_{k+\counter} \\
+                u_{k+\counter+1} &= H_z(\counter)\,z_{k} + H_y(\counter)\,y_{k-1} + K_y(\counter)\,y_{k+\counter},
             \end{aligned}\right.
     \end{equation}
     where
@@ -102,7 +99,7 @@ If we substitute the values of $y$ that are missing in the ideal controller, Equ
 \end{definition}
 Note that for $\counter = 0$ we recover the original controller.
 
-All matrices in $\ctrler^a\funof{q}$ ($\counter \in \{0, \ldots, \counter_\mathit{max}\}$) can be precomputed and stored in memory.
+All matrices in $\ctrler^a\funof{q}$ ($\counter \in \{0, \ldots, \counter_{max}\}$) can be precomputed and stored in memory.
 Compared to the nominal controller, the two matrices $F_y$ and $H_y$ of size $n_z \times n_y$ and $n_u \times n_y$ need to be added to the controller, and one full set of controller matrices needs to be stored for each value of $\counter$.
 The memory requirement thus grows linearly with $\counter_{max}$.
 %the number $\counter$ of maximum tolerated misses.
@@ -112,7 +109,7 @@ The adaptive controller also needs to store the old measurement value $y_{k-1}$,
 % How we overcome the limitations of previous work
 We now briefly discuss how the limitations described in Section~\ref{sec:problem-form} are addressed.
 This work proposes an adaptation of the $\Ac$, $\Bc$, $\Cc$, and $\Dc$ matrices of the controller, thus adapting also the \emph{dynamic} part of the controller.
-The adaptive controller's matrices can be precomputed directly from the specified controller using Equation~\eqref{eq:adaptive}, and then stored in memory for each $\counter \leq \counter_\mathit{max}$.
+The adaptive controller's matrices can be precomputed directly from the specified controller using Equation~\eqref{eq:adaptive}, and then stored in memory for each $\counter \leq \counter_{max}$.
 The control algorithm can be developed independently of this adaptation, hence no extra design effort is needed.
 For $\counter=0$ the adaptive and the ideal controllers are equivalent, i.e., $\ctrler^a\funof{0} = \ctrler\funof{0}$, thus guaranteeing that the controller's performance is not degraded under ideal conditions.
 Concerning the limitation of increased runtime overhead, each time a job is released, the counter $\counter$ of immediately preceding deadline misses is evaluated and the corresponding controller matrices are selected.
@@ -144,9 +141,6 @@ Since the actual sequence of hits and misses is generally unpredictable, in the 
 
 \subsection{Stochastic Performance Analysis}
 \label{sec:analysis}
-%\textcolor{red}{\textbf{MAYBE ADD SOMETHING THAT TIES BACK TO SECTION~\ref{sec:stability}}}
-
-% By assuming a stochastic system model, where both the plant disturbance $w$ and the sequence of deadline hits and misses are described by stationary random processes with known statistical properties, it becomes possible to analyse the ``mean'' performance of the closed-loop system under deadline misses.
 To analyse the performance of the closed-loop system, we need to model the plant, the external disturbance $w$, and the sequences of deadline misses.
 For what concerns the plant, we consider the standard state-space model presented in Equation~\eqref{eq:plant}.
 The plant disturbance $w$ and the sequence of deadline hits and misses are modelled as stationary random processes with known statistical properties.
@@ -177,33 +171,29 @@ Here,
 \begin{equation*}
     \Gamma = \begin{bmatrix} \Wp \\ 0_{(n_z+n_y+n_u) \times n_w} \end{bmatrix},
 \end{equation*}
-while $\Phi_k$ can be either $\Phi_\mathit{hit}(\counter)$ or $\Phi_\mathit{miss}$, depending on whether the current deadline was hit or missed, and defined as
+while $\Phi_k$ can be either $\Phi_{hit}(\counter)$ or $\Phi_{miss}$, depending on whether the current deadline was hit or missed, and defined as
 \begin{equation*}
-    \Phi_\mathit{hit}(\counter) = \begin{bmatrix} \Ap & 0 & 0 & \Bp \\
+    \Phi_{hit}(\counter) = \begin{bmatrix} \Ap & 0 & 0 & \Bp \\
     \Bc_y(\counter) \, \Cp & \Ac_z(\counter) & \Ac_y(\counter) & \Bc_y(\counter) \, \Dp \\
     \Cp & 0 & 0 & \Dp \\
     \Dc_y(\counter) \, \Cp & \Cc_z(\counter) & \Cc_y(\counter) & \Dc_y(\counter) \, \Dp
     \end{bmatrix},
 \end{equation*}
-where $q$ denotes the number of consecutive deadline misses since the last hit, and
+where $\counter$ denotes the number of consecutive deadline misses since the last hit, and
 \begin{equation*}
-    \Phi_\mathit{miss} = \begin{bmatrix} \Ap & 0 & 0 & \Bp \\
+    \Phi_{miss} = \begin{bmatrix} \Ap & 0 & 0 & \Bp \\
     0 & I_{n_z} & 0 & 0 \\
     0 & 0 & I_{n_y} & 0 \\
     0 & 0 & 0 & I_{n_u} \end{bmatrix}.
 \end{equation*}
 
-Assuming that $w$ is a zero-mean white noise process with known covariance matrix $R = \E{w_k \cdot w_k^{\T}} \in \R^{n_w \times n_w}$,
-we can calculate how the state covariance, $\Pi_k = \E{\xi_k\cdot \xi_k^{\T}}$, evolves over time. Evaluating the covariance of both sides in 
-%If $\Pi_k$ is kept small, it means that the controller is effectively rejecting the disturbances.
-%On the contrary, if it is large, it represents poor performance and even instability (when not converging).
+Assuming that $w$ is a zero-mean white noise process with known covariance matrix $R = \E{w_k \cdot w_k^{\T}} \in \R^{n_w \times n_w}$, we can calculate how the state covariance, $\Pi_k = \E{\xi_k\cdot \xi_k^{\T}}$, evolves over time. Evaluating the covariance of both sides in 
+\nv{Change $\Pi_k$ to $P_k$ and $\xi_k$ to $\tilde x_k$ (or the other way around)}
 Equation~\eqref{eq:cl-system} we obtain (see, e.g., \cite{AstWit:1984})
 \begin{equation}
 \label{eq:covariance}
-\Pi_{k+1} = \Phi_k \Pi_k \Phi_k^{\T} + \Gamma R \Gamma^{\T} .
+    \Pi_{k+1} = \Phi_k \Pi_k \Phi_k^{\T} + \Gamma R \Gamma^{\T} .
 \end{equation}
-
-%If the matrix $\Phi_k$ varies according to an ergodic stochastic process, it is possible to evaluate the stationary variance $\bar\Pi = \underset{k}{\mathbb{E}} \left[ x_k^{cl} \right]$.
 
 \begin{figure}[t]
     \centerline{\includegraphics[scale=0.7]{\figdir/misses.eps}}
@@ -212,62 +202,33 @@ Equation~\eqref{eq:cl-system} we obtain (see, e.g., \cite{AstWit:1984})
 \end{figure}
 
 We model the task execution as a random process, assuming that the pattern of hits and misses in the real-time system is described by the homogeneous Markov model shown in Figure~\ref{fig:Markov}.
-In this model, after each hit, the system will experience a miss interval of length $\counter \in \{0,\ldots,\counter_\mathit{max}\}$ with independent probability $p_\counter$. Naturally, $\sum_{i=0}^{\counter_\mathit{max}} p_i = 1$.
+In this model, after each hit, the system will experience a miss interval of length $\counter \in \{0,\ldots,\counter_{max}\}$ with independent probability $p_\counter$. Naturally, $\sum_{i=0}^{\counter_{max}} p_i = 1$.
 
 In each interval, the system will experience $\counter$ deadline misses followed by one deadline hit. Iterating \eqref{eq:covariance} over said interval, the covariance will then develop as
 \begin{equation*}
     \label{eq:intervalP}
     \begin{aligned}
-    \Pi_{k+q+1} &= \Phi_\mathit{hit}(\counter)  \Bigl((\Phi_\mathit{miss})^\counter \Pi_k (\Phi_\mathit{miss}^{\T})^\counter \Bigr.\\
-    &\Bigl.+ \textstyle\sum_{i=0}^{q-1} (\Phi_\mathit{miss})^i \Gamma R \Gamma^{\T} (\Phi_\mathit{miss}^{\T})^i \Bigr)\Phi_\mathit{hit}^{\T}(\counter)  \\
+    \Pi_{k+q+1} &= \Phi_{hit}(\counter)  \Bigl((\Phi_{miss})^\counter \Pi_k (\Phi_{miss}^{\T})^\counter \Bigr.\\
+    &\Bigl.+ \textstyle\sum_{i=0}^{q-1} (\Phi_{miss})^i \Gamma R \Gamma^{\T} (\Phi_{miss}^{\T})^i \Bigr)\Phi_{hit}^{\T}(\counter)  \\
     &+ \Gamma R \Gamma^{\T} .
     \end{aligned}
 \end{equation*}
-The time-varying closed-loop system together with the Markov model define a \emph{discrete-time Markov jump linear system} for which well-established results exist (e.g., \cite{Blair:1975,Nilsson:1998,Lincoln:2002}). Using this theory, it is possible to calculate the \emph{stationary} (time-averaged) state covariance, denoted $\overline\Pi$. With this, the performance \eqref{eq:cost} can finally be obtained as
+The time-varying closed-loop system together with the Markov model define a \emph{discrete-time Markov jump linear system} for which well-established results exist (e.g., \cite{Blair:1975,Nilsson:1998,Lincoln:2002}). Using this theory, it is possible to calculate the \emph{stationary} (time-averaged) state covariance, denoted $\overbar\Pi$. With this, the performance \eqref{eq:cost} can finally be obtained as
 \begin{equation*}
-    J = \operatorname{trace} \funof{ \overline\Pi \, \overline{Q} },
+    J = \operatorname{trace} \funof{ \overbar{\Pi} \, \overbar{Q} },
 \end{equation*}
 where
 \begin{equation*}
-    \overline{Q} = \begin{bmatrix}
+    \overbar{Q} = \begin{bmatrix}
     C^{\T}Q C & 0 \\ 0 & 0_{n_z+n_y+n_u}
     \end{bmatrix}.
 \end{equation*}
-
-% From here, given the likelihood $p_\counter$ of each miss interval length $\counter$, the \emph{stationary} state variance $\Pi = \underset{q}{\mathbb{E}} \left[ \xi_k \cdot \xi_k^{\T} \right]$ after a hit satisfies
-% \begin{equation}
-%     \label{eq:expected-pi}
-%     \Pi  =\underset{q}{\mathbb{E}} \left[ \Pi_{k+q+1} \right] =
-%     \sum_{q=0}^{q_\mathit{max}} p_q \Pi_{k+q+1}.
-% \end{equation}
-% %
-% By imposing the convergence of $\Pi=\Pi_{k+q+1}=\Pi_{k}$, and substituting Equation~\eqref{eq:intervalP} in Equation~\eqref{eq:expected-pi}, we obtain
-% %
-% \begin{equation}
-%     \begin{aligned}
-%     \Pi &= \sum_{q=0}^{q_\mathit{max}} p_q \Bigl[ \Phi_\mathit{hit}(\counter)  (\Phi_\mathit{miss})^\counter \Pi (\Phi_\mathit{miss}^{\T})^\counter  \Phi_\mathit{hit}(q)^{\T} \Bigr.\\
-%     &+ \sum_{i=0}^{q-1}  \Phi_\mathit{hit}(\counter) (\Phi_\mathit{miss})^i \Gamma R_w \Gamma^{\T} (\Phi_\mathit{miss}^{\T})^i \Phi_\mathit{hit}^{\T}(\counter)  \Bigl. \Bigr] \\
-%     &+ \Gamma R_w \Gamma^{\T} .
-%     \end{aligned}
-% \end{equation}
-% This linear matrix equation can be solved analytically or by iteration. Once $\Pi$ has been found, the expected covariance during the miss intervals can be calculated from \eqref{eq:covariance}. \nv{Up until here I think it clear now!}
-% Finally, the time-average performance is given by
-% \revise{
-% \begin{equation}
-%     J = \E{ y_k^{\T} Q y_k } =  \operatorname{trace}\funof{\Pi_k \begin{bmatrix}
-% C^{\T} Q C & 0 \\ 0 & 0_{n_z+n_y+n_w} \end{bmatrix}}.
-%     \label{eq:J}
-% \end{equation}
-% }
-
-% To compare the performance of two closed-loop systems $a$ and $b$, we evaluate the weighted mean-square difference between their outputs:
 
 To compare the performance of different implementations, we first define the \emph{ideal performance} as the cost $J$ obtained when there are no deadline misses (i.e., $p_0 = 1$ and $p_i = 0$, $i \geq 1$).
 We then obtain the \emph{relative performance degradation} of an arbitrary controller $\ctrler^{\dagger}$ by calculating the weighted mean-square difference between the actual and ideal systems' outputs, $y^{\dagger}_k$ and $y_k$ respectively, and normalising it with respect to the ideal performance $J$:
 \begin{equation}
     \label{eq:relcost}
-%   \Delta J = \E{ (y^a_k - y^b_k)^{\T} Q (y^a_k - y^b_k) }.
-  \frac{\Delta J^{\dagger}}{J} = \frac{\E{ (y^{\dagger}_k - y_k)^{\T} Q (y^{\dagger}_k - y_k) }}{ \E{ y_k^{\T} Q y_k }}.
+    \frac{\Delta J^{\dagger}}{J} = \frac{\E{ (y^{\dagger}_k - y_k)^{\T} Q (y^{\dagger}_k - y_k) }}{ \E{ y_k^{\T} Q y_k }}.
 \end{equation}
 This can be found by analysing both systems in parallel when driven by the same noise sequence $w_k$:
 \begin{equation*}
@@ -284,28 +245,12 @@ This can be found by analysing both systems in parallel when driven by the same 
     \Gamma \\ \Gamma
     \end{bmatrix} w_k
 \end{equation*}
-After finding the stationary state covariance $\overline{\Pi}_e$ of this extended system (using the same technique as referred to above), we can retrieve the absolute performance difference as
+After finding the stationary state covariance $\overbar{\Pi}_e$ of this extended system (using the same technique as referred to above), we can retrieve the absolute performance difference as
 \begin{equation*}
     \label{eq:deltaJ}
- \Delta J^{\dagger} = \operatorname{trace} \funof{ \overline{\Pi}_e  \begin{bmatrix}
-    \phantom{-}\overline{Q} & -\overline{Q}\phantom{,} \\
-    -\overline{Q} & \phantom{-}\overline{Q}\phantom{,}
+ \Delta J^{\dagger} = \operatorname{trace} \funof{ \overbar{\Pi}_e  \begin{bmatrix}
+    \phantom{-}\overbar{Q} & -\overbar{Q}\phantom{,} \\
+    -\overbar{Q} & \phantom{-}\overbar{Q}\phantom{,}
     \end{bmatrix} }.
 \end{equation*}
 
-%The performance difference is finally obtained as
-%\begin{equation}
-%    \Delta J = \E{ \begin{bmatrix}
-%    \xi_k^\dagger \\ \xi_k%^b 
-%    \end{bmatrix}^{\T}
-%    \begin{bmatrix}
-%    C^{\T}QC & 0 & -C^{\T}QC & 0 \\
-%    0 & 0 & 0 & 0 \\
-%    -C^{\T}QC & 0 & C^{\T}QC & 0 \\
-%    0 & 0 & 0 &  0
-%    \end{bmatrix}
-%    \begin{bmatrix}
-%    \xi_k^\dagger \\ \xi_k%^b 
-%    \end{bmatrix}
-%    } .
-%\end{equation}

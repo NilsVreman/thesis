@@ -1,6 +1,5 @@
 In this section, we discuss the problem of implementing a control system, as defined in Section~\ref{sec:sys-model}, that is robust to deadline misses.
 The problem has been investigated in the existing literature, and different methods have been proposed to solve it.
-%To distinguish the contribution of this paper from the existing treatise, we offer a discussion on the scientific literature. 
 We offer a discussion on the scientific literature to identify the strengths and limitations of previous work and motivate the research problem studied in this paper.
 
 \subsection{Related Work}
@@ -30,8 +29,6 @@ Finally, several works discussed the trade-offs between schedulability and contr
 
 This paper distinguishes itself from previous synthesis literature as it assumes that a linear controller has already been developed.
 We propose an adaptive implementation of the control algorithm that does not require modifications to the system's design phase.
-%We also offer a stochastic performance analysis based on a probabilistic characterisation of the deadline miss patterns. 
-%\revise{The only previous work using a similar analysis approach is~\cite{Pazzaglia:2019}, where it was instead used for robust controller design.} \ac{Not true, such analysis goes back at least to Nilsson 1998 \ldots}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -44,7 +41,6 @@ Despite the considerable amount of prior research, we argue that existing design
     \item Assumptions about static controller -- i.e., the controller cannot have any internal dynamics~\cite{Ramanathan:1997,Schinkel:2006,Zhang:2010,Chakraborty:2012,Chakraborty:2014,Linsenmayer:2017,Pazzaglia:2019,Maggio:2020}. 
     \item Complex co-design methodology, leading to conservative results -- i.e., a detailed system model and a large extra design effort are needed~\cite{Marti:2001,Schinkel:2006,Chakraborty:2012,Chakraborty:2014,Linsenmayer:2017,Pazzaglia:2021}.
     \item Increased runtime overhead -- i.e., the approach reduces the likelihood of completing the control execution within the same total time budget~\cite{Crespo:1999,Camacho:2010,Caccamo:2000}.
-    % \item Conservative results---i.e., the system performs worse under nominal operating conditions~\cite{Schinkel:2006, Chakraborty:2012}.
 \end{enumerate}
 
 The first limitation substantially narrows the applicability of the proposed design techniques, since the vast majority of real-world controllers include a dynamical part (e.g., an integrator to remove stationary errors, or a filter to estimate states or remove measurement noise).
@@ -67,11 +63,11 @@ The example shows that, while the static controller inherently provides robustne
                 \begin{bmatrix}
                     0 & 1 \\
                     -0.8 & 1.8
-                \end{bmatrix} x_k + 
+                \end{bmatrix}\,x_k + 
                 \begin{bmatrix}
                     0 \\
                     1
-                \end{bmatrix} u_k \\
+                \end{bmatrix}\,u_k \\
                 y_k &= x_k.
                  \end{aligned}
             \right.
@@ -81,21 +77,19 @@ The example shows that, while the static controller inherently provides robustne
     The plant $\plant$ consists of a stable pole and an integrator, which is compatible with several real-world applications, e.g., a cart on a rail or a joint of a robotic arm.
     To regulate the plant, we first consider the static controller $\ctrler_1$:
     \begin{equation*}
-       % \label{eq:example-ctrler1}
         {\setlength\arraycolsep{3pt}
         \begin{aligned}
             \ctrler_1: \,\, 
             u_{k+1} = 
             \begin{bmatrix}
-                %0.2555 & -0.3721
                 0.256 & -0.372
-            \end{bmatrix} y_k.
+            \end{bmatrix}\,y_k.
         \end{aligned}
         }
     \end{equation*}
-    The system is sampled and actuated using a sample time of $T = 0.1$~s.
+    The system is sampled and actuated using a sample time of $\Ts = 0.1$~s.
     We consider a scenario where the ECU executing the control law is experiencing sporadic CPU overloads, resulting in 25\% of the control jobs missing their corresponding deadlines.
-    The initial state of the plant is $x_0 = [1, 1]^T$, and we want the controller to move it to the final position $x_\mathit{f} = [0, 0]^T$.
+    The initial state of the plant is $x_0 = [1, 1]^\T$, and we want the controller to move it to the final position $x_{f} = [0, 0]^\T$.
     In Figure~\ref{fig:lqr-lqg}, we show only the second component of the state vector $x$: the other component follows a very similar trajectory and is thus not plotted (for clarity).
     The behaviour of the plant controlled by $\ctrler_1$ without deadline overruns is the solid blue line.
     The dashed blue line instead corresponds to the state evolution in the presence of deadline misses.
@@ -104,7 +98,6 @@ The example shows that, while the static controller inherently provides robustne
     
     Practically, in all industrial applications, the control law $\ctrler_1$ would be preceded by a noise filter or a state estimator, which introduces dynamic behaviour in the controller. 
     Thus, we now consider the LQG controller $\ctrler_2$, which contains a Kalman filter designed to suppress noise: 
-    %As can be seen from the following equation, this controller includes a state $z$, making it dynamic:
     \begin{equation*}
         %\label{eq:example-lqg}
         {\setlength\arraycolsep{3pt}
@@ -114,18 +107,18 @@ The example shows that, while the static controller inherently provides robustne
             \begin{bmatrix}
                 -0.151 & 0.810 \\
                 -0.711 & 1.206
-            \end{bmatrix} z_k + 
+            \end{bmatrix}\,z_k + 
             \begin{bmatrix}
                 0.151 & 0.190 \\
                 0.166 & 0.221
-            \end{bmatrix} y_k \\
+            \end{bmatrix}\,y_k \\
             u_{k+1} &=
             \begin{bmatrix}
                 0.226 & -0.242
-            \end{bmatrix} z_{k} +
+            \end{bmatrix}\,z_{k} +
             \begin{bmatrix}
                 -0.023 & -0.034
-            \end{bmatrix} y_k .
+            \end{bmatrix}\,y_k .
             \end{aligned}
         \right.}
     \end{equation*}
@@ -136,7 +129,7 @@ The example shows that, while the static controller inherently provides robustne
 
 \begin{figure}[t]
     \centerline{\input{\figdir/example-figs/lqr-lqg.tex}}
-    \caption{The state $x_2$ corresponding to $\plant$ (sampled with $T=0.1$s) being controlled by the static controller $\mathcal{C}_1$ (dashed blue) or the LQG controller $\mathcal{C}_2$ (dashed green) during an interval of sporadic overloads ($\times$).
+    \caption{The state $x_2$ corresponding to $\plant$ (sampled with $\Ts=0.1$s) being controlled by the static controller $\mathcal{C}_1$ (dashed blue) or the LQG controller $\mathcal{C}_2$ (dashed green) during an interval of sporadic overloads ($\times$).
         The corresponding ideal behaviours (system not subject to overruns) for the static (solid blue) and LQG (solid green) controllers are also plotted.
         The state $x_1$ follows a very similar trajectory and is not plotted for readability.}
     \label{fig:lqr-lqg}
@@ -148,15 +141,6 @@ This is a consequence of the increased development time needed to design the con
 When the complexity of the controller increases, the cost of the system upkeep increases due to the expert knowledge required. 
 The most popular controllers in industry are thus simple ones that still perform adequately (e.g., the PI controller~\cite{Sun:2016, Desborough:2002, Astrom:1984}).
 
-%This type of analysis is complex to construct and compute, \revise{and results rely on the use of Lyapunov theory~\cite{Khalil:2015}}.
-%While being \revise{very generally applicable}, the theory only provides \emph{sufficient} conditions for stability.
-%As a consequence, there could be cases that are stable but, since the theory does not reach a certain verdict, are not considered as such.
-%This results in a conservative analysis.
-%An alternative is the use of the joint spectral radius~\cite{Maggio:2020, Pazzaglia:2021} (note that the latter is the only previous work that considers dynamic controllers).
-%However, the joint spectral radius cannot be exactly computed and approximations are needed, resulting again in conservative results.
-%
-%In general, stability certificates for dynamic controllers are a complex topic.
-
 Considering the third limitation, introducing additional overhead for fault-prone systems risks even more deadline misses. 
 Depending on the plant or task model, there are cases where increasing the overhead might be acceptable, e.g., if deadline misses appear sporadically in bursts. 
 However, for many task models, increasing the execution time after a deadline miss could have severe consequences, causing domino effects where subsequent jobs also miss their deadlines.
@@ -167,7 +151,6 @@ However, in most real-world applications, the controllers are dynamic, e.g., an 
 The a priori guarantees provided for the static controller are hence lost.
 Additionally, if the model of the controlled plant is unknown, no a priori stability guarantees could be achieved.
 However, the resulting closed-loop system could be analysed a posteriori using any existing general method (see Section~\ref{sec:stability}).
-%\revise{ assuming an accurate model of the plant}. \revise{This analysis is inherently conservative, as it only provides sufficient conditions for stability under \emph{worst-case} conditions.}
 
 \subsubsection*{Research Objective}
 Tackling all the shortcomings mentioned above in a holistic manner is a complex task that does not necessarily have a general solution.
