@@ -69,6 +69,14 @@
 %\usetikzlibrary{positioning}
 \usepgfplotslibrary{fillbetween}
 
+\pgfplotsset{
+    ylabel rightb/.style={
+        after end axis/.append code={
+            \node [anchor=north, rotate=90, yshift=-2mm] at (rel axis cs:1,0.5) {#1};
+        }
+    }
+}
+
 \tikzset{Dom Node/.style={draw,
                         thick, 
                         circle, 

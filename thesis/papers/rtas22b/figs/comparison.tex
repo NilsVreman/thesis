@@ -16,15 +16,14 @@
 \end{center}
 
 \begin{tikzpicture}
-            
     \pgfplotstableread[col sep=comma]{\figdir/data/parsed-julia-any-hit-10-20-mean.csv}{\table}
     \pgfplotstabletranspose{\data}{\table}
-
+    %
     \begin{axis}[% plotting options
-	width = 0.265\textwidth,
-	height = 0.3\textwidth,
-	title style={align=center},
-        title = {\tool{}\\\tAH{}\\(baseline $3.7 \mu$s)},
+        width = 0.45\textwidth,
+        height = 0.455\textwidth,
+        title style={align=center},
+        title = {\tool{}\\(baseline $3.7 \mu$s)},
         xlabel = {$i=k-x$},
         ylabel = {$\frac{\text{execution time}}{\text{baseline}}$ (log scale)},
         cycle list name=blue10,   % force me to follow my color list
@@ -40,7 +39,6 @@
         grid style={black!70, densely dotted},
         minor grid style={black!10, densely dotted},
         ]
-
         % the actual plot in a foreach
         \pgfplotsforeachungrouped \n in {\xstart,...,\xend}{
             \addplot+ table [x expr=\coordindex-1, y index=\n] {\data};
@@ -48,19 +46,17 @@
     \end{axis}
 \end{tikzpicture}
 %
-\hspace{-5mm}
-%
 \begin{tikzpicture}
-
     \pgfplotstableread[col sep=comma]{\figdir/data/parsed-matlab-any-hit-10-20-mean.csv}{\table}
     \pgfplotstabletranspose{\data}{\table}
-
+    %
     \begin{axis}[% plotting options
-	width = 0.265\textwidth,
-	height = 0.3\textwidth,
-	title style={align=center},
-        title = {\toolLinsenmayer{}~\cite{Linsenmayer:2017}\\\tAH{}\\(baseline $32.4$ms)},
+        width = 0.45\textwidth,
+        height = 0.455\textwidth,
+        title style={align=center},
+        title = {\toolLinsenmayer{}\\(baseline $32.4$ms)},
         xlabel = {$i=k-x$},
+        ylabel rightb = {\tAH{}},
         %ylabel = {$\frac{\text{execution time}}{\text{baseline}}$ (logarithmic scale)},
         cycle list name=blue10,   % force me to follow my color list
         xmin=\xstart-1, xmax=\xend, % 1 is to ignore the first data which is the x value
@@ -75,27 +71,24 @@
         grid style={black!70, densely dotted},
         minor grid style={black!10, densely dotted},
         ]
-
-	\addplot {-1};
+        \addplot {-1};
         % the actual plot in a foreach
         \pgfplotsforeachungrouped \n in {2,...,\xend}{
             \addplot+ table [x expr=\coordindex-1, y index=\n] {\data};
         }
     \end{axis}
 \end{tikzpicture}
-%
-\hspace{-5mm}
-%
-\begin{tikzpicture}
 
+\begin{tikzpicture}
     \pgfplotstableread[col sep=comma]{\figdir/data/parsed-julia-row-hit-10-20-mean.csv}{\table}
     \pgfplotstabletranspose{\data}{\table}
-
+    %
     \begin{axis}[% plotting options
-	width = 0.265\textwidth,
-	height = 0.3\textwidth,
-	title style={align=center},
-        title = {\tool{}\\\tRH{}\\(baseline $3.2 \mu$s)},
+        width = 0.45\textwidth,
+        height = 0.455\textwidth,
+        title style={align=center},
+        title = {\tool{}\\(baseline $3.2 \mu$s)},
+        ylabel = {$\frac{\text{execution time}}{\text{baseline}}$ (log scale)},
         xlabel = {$i=k-x$},
         %ylabel = {$\frac{\text{execution time}}{\text{baseline}}$ (logarithmic scale)},
         cycle list name=blue10,   % force me to follow my color list
@@ -111,7 +104,7 @@
         grid style={black!70, densely dotted},
         minor grid style={black!10, densely dotted},
         ]
-
+        %
         % the actual plot in a foreach
         \pgfplotsforeachungrouped \n in {\xstart,...,\xend}{
             \addplot+ table [x expr=\coordindex-1, y index=\n] {\data};
@@ -119,19 +112,17 @@
     \end{axis}
 \end{tikzpicture}
 %
-\hspace{-5mm}
-%
 \begin{tikzpicture}
-
     \pgfplotstableread[col sep=comma]{\figdir/data/parsed-matlab-row-hit-10-20-mean.csv}{\table}
     \pgfplotstabletranspose{\data}{\table}
-
+    %
     \begin{axis}[% plotting options
-	width = 0.265\textwidth,
-	height = 0.3\textwidth,
-	title style={align=center},
-        title = {\toolLinsenmayer{}~\cite{Linsenmayer:2017}\\\tRH{}\\(baseline $17.7$ms)},
+        width = 0.45\textwidth,
+        height = 0.455\textwidth,
+        title style={align=center},
+        title = {\toolLinsenmayer{}\\(baseline $17.7$ms)},
         xlabel = {$i=k-x$},
+        ylabel rightb = {\tRH{}},
         %ylabel = {$\frac{\text{execution time}}{\text{baseline}}$ (logarithmic scale)},
         cycle list name=blue10,   % force me to follow my color list
         xmin=\xstart-1, xmax=\xend, % 1 is to ignore the first data which is the x value
@@ -146,8 +137,8 @@
         grid style={black!70, densely dotted},
         minor grid style={black!10, densely dotted},
         ]
-
-	\addplot {-1};
+        %
+        \addplot {-1};
         % the actual plot in a foreach
         \pgfplotsforeachungrouped \n in {2,...,\xend}{
             \addplot+ table [x expr=\coordindex-1, y index=\n] {\data};
