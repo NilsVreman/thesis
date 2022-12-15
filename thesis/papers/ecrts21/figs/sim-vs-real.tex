@@ -1,4 +1,4 @@
-\begin{tikzpicture}
+\begin{tikzpicture}[ultra thick, mark options={fill=white}, mark=none]
 \small
 
 \def \fkhj {\figdir/data/experiment-JT-data/KH.csv}
@@ -19,11 +19,7 @@
      grid = both,
      grid style = {dashed, black!20},
      xlabel near ticks,
-     ylabel near ticks,
-     cyan,
-     ultra thick,
-     mark=none,
-     mark options={fill=white}]
+     ylabel near ticks]
 
     \nextgroupplot[ylabel = \textbf{$J_k/J_\infty$ Simulated}, ymax=57, ymin=-5, ytick={1,10,30,50}]
     \node[clip=false, anchor=south] at (axis cs:1,57) {\textbf{\textcolor{white}{p}Kill\&Hold\textcolor{white}{p}}};
