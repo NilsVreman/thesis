@@ -14,7 +14,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 % libraries
-\pgfplotsset{compat=1.16}
+\pgfplotsset{compat=1.18}
 \usetikzlibrary{shapes}
 \usetikzlibrary{fit}
 \usetikzlibrary{arrows, arrows.meta}
@@ -22,12 +22,15 @@
 \usepgfplotslibrary{groupplots}
 
 % Extracts the max value from the input and marks it in the plot
+\makeatletter
 \pgfplotsset{
+%  every axis plot/.append style =
+%    {cyan, ultra thick, mark=none, mark options={fill=white}},
   mark max/.style={
     scatter/@pre marker code/.code={%
     \ifx\pgfplotspointmeta\pgfplots@metamax
         \def\markopts{}%
-        \node [anchor=south, xshift=1mm] { \pgfmathprintnumber[precision=1, fixed zerofill, ultra thick]{\pgfplotspointmeta} };
+        \node [anchor=south, xshift=1mm] { \pgfmathprintnumber[precision=1, fixed zerofill]{\pgfplotspointmeta} };
     \else
         \def\markopts{mark=none}
     \fi
@@ -36,6 +39,20 @@
     scatter/@post marker code/.code={ \endscope },
     scatter
   }
+}
+% Style to select only points from #1 to #2 (inclusive)
+\pgfplotsset{select coords between index/.style 2 args={
+    x filter/.code={
+        \ifnum\coordindex<#1\def\pgfmathresult{}\fi
+        \ifnum\coordindex>#2\def\pgfmathresult{}\fi
+    }
+}}
+\makeatother
+
+\newcommand{\findmax}[1]{
+    \pgfmathsetmacro\buffer{0.0}
+    \pgfplotstableforeachcolumnelement{#1}\of\extdata\as\cellValue{%
+    \pgfmathsetmacro{\buffer}{max(\buffer,\cellValue)}}
 }
 
 % Read element from specific place in data table

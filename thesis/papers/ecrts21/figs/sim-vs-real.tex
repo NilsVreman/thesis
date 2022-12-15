@@ -21,12 +21,12 @@
      xlabel near ticks,
      ylabel near ticks]
 
-    \nextgroupplot[ylabel = \textbf{$J_k/J_\infty$ Simulated}, ymax=57, ymin=-5, ytick={1,10,30,50}]
+    \nextgroupplot[ylabel = \textbf{$J_k/J_\infty$ Simulated}, ymax=62, ymin=-5, ytick={1,10,30,50}]
     \node[clip=false, anchor=south] at (axis cs:1,57) {\textbf{\textcolor{white}{p}Kill\&Hold\textcolor{white}{p}}};
     \pgfplotstableread[header=true,col sep=comma]{\fkhj}\extdata;
     \addplot[mark max, blue, ultra thick, mark options={fill=white}] table[x expr=\thisrow{T}*0.01, y=J, col sep=comma] {\extdata};
 
-    \nextgroupplot[ymax=57, ymin=-5,ytick={1,10,30,50}]
+    \nextgroupplot[ymax=62, ymin=-5,ytick={1,10,30,50}]
     \node[clip=false, anchor=south] at (axis cs:1,57) {\textbf{Skip\&Hold}};
     \pgfplotstableread[header=true,col sep=comma]{\fshj}\extdata;
     \addplot[mark max, pink!75!black, ultra thick, mark options={fill=white}] table[x expr=\thisrow{T}*0.01, y=J, col sep=comma] {\extdata};
@@ -41,11 +41,11 @@
     \pgfplotstableread[header=true,col sep=comma]{\fszj}\extdata;
     \addplot[mark max, red, ultra thick, mark options={fill=white}] table[x expr=\thisrow{T}*0.01, y=J, col sep=comma] {\extdata};
       
-    \nextgroupplot[xlabel = {Time [s]}, ylabel = \textbf{$J_k/J_\infty$ Real}, ymax=57, ymin=-5, ytick={1,10,30,50}]
+    \nextgroupplot[xlabel = {Time [s]}, ylabel = \textbf{$J_k/J_\infty$ Real}, ymax=62, ymin=-5, ytick={1,10,30,50}]
     \pgfplotstableread[header=true,col sep=comma]{\fkhr}\extdata;
     \addplot[mark max, blue, ultra thick, mark options={fill=white}] table[x expr=\thisrow{T}*0.01, y=J, col sep=comma] {\extdata};
 
-    \nextgroupplot[xlabel = {Time [s]}, ymax=57, ymin=-5,ytick={1,10,30,50}]
+    \nextgroupplot[xlabel = {Time [s]}, ymax=62, ymin=-5,ytick={1,10,30,50}]
     \pgfplotstableread[header=true,col sep=comma]{\fshr}\extdata;
     \addplot[mark max, pink!75!black, ultra thick, mark options={fill=white}] table[x expr=\thisrow{T}*0.01, y=J, col sep=comma] {\extdata};
 
