@@ -46,7 +46,7 @@ Assuming the sampling period $\Ts = 0.01$~s, a discrete-time plant model $\plant
     \end{matrix}
     \right.
 \end{equation*}
-where the four components of $x_k$ represent the ball position, ball velocity, beam velocity, and ball reference, respectively. The external signal vector $w_k$ is assumed to be white noise with variance $R = \diag(1,1,1,1)$. Under this state-space model, the objective is to regulate both outputs $y_k$ to zero, with the performance weighting matrix $Q = \diag(1,1)$.
+where the four components of $x_k$ represent the ball position, ball velocity, beam velocity, and ball reference, respectively. The external signal vector $w_k$ is assumed to be white noise with variance $R = \diag(1,1,1,1)$. \textcolor{red}{\textbf{Error with diag command, parenthesis mess.}} Under this state-space model, the objective is to regulate both outputs $y_k$ to zero, with the performance weighting matrix $Q = \diag(1,1)$.
 
 To control $\plant$ we design a cascaded P--PID controller.
 Cascaded controllers are frequently applied to systems with multiple measurements where one measured quantity affects another, but not vice versa.
