@@ -8,5 +8,6 @@ the repository of my PhD thesis, using the LTH thesis template
 * [Tikzexternalize_Hyperref](https://wiki.control.lth.se/Computer/Latex/Tikzexternalize_Hyperref): for tikz externalize issues with large files
 
 # To Do
+* ~~Insert all papers~~
+* Unify notation
 * Write Cappa
-* Insert all papers

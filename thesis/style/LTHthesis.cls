@@ -60,6 +60,7 @@
 \LoadClass{memoir}
 \PassOptionsToPackage{tbtags}{amsmath}
 \RequirePackage{amsmath,amsfonts,amssymb}
+\DeclareMathAlphabet{\mathcal}{OMS}{cmsy}{m}{n} % NOTE: This is added by Nils for proper caligraphic lettering using xelatex
 \AtBeginDocument{\RequirePackage{graphicx}}
 \if@lth@babel \RequirePackage{babel}\fi
 
