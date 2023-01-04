@@ -120,13 +120,6 @@ Notice that minimality comes from the fact that we include a vertex in $\GG{\lam
 In fact, each new vertex added to the automaton represents a feasible sequence that no other vertex is already encoding.
 If a potential new vertex represents a sequence that is \emph{equivalent} to another existing vertex, the algorithm connects the existing vertex instead of creating a new one.
 
-\begin{figure*}[t]
-    \centering
-    \input{\figdir/dominant-set.tex}
-    \caption{\fix{Ask Martina to help fix these to be on top of one another} Minimal automata $\GG{\lambda_1}$, $\GG{\lambda_2}$, and $\GG{\Lambda}$ representing respectively $\lambda_1$, $\lambda_2$, and $\Lambda = \{\lambda_1, \lambda_2\}$ from the Example in Section~\ref{sec:tool:example}.}%{ex:tool:set}.}
-    \label{fig:dominant-set}
-\end{figure*}
-
 \subsection{Scalable automata generation}%
 \label{sec:tool:scalability}%
 
@@ -171,6 +164,13 @@ Specifically,
 In contrast to the \tAH{} or \tAM{} constraints, the size of the minimal automaton corresponding to the \tRH{} constraint is linear in the window length $k_{rh}$ in stationarity, i.e., when $k_{rh} \geq 3x_{rh}$.
 The linearity property also holds for the \tRM{} constraint.
 Intuitively, since the size of the minimal automaton is directly correlated to the scalability, \tRH{} and \tRM{} constraints are preferred for large problems.
+
+\begin{figure*}[t]
+    \centering
+    \input{\figdir/dominant-set.tex}
+    \caption{Minimal automata $\GG{\lambda_1}$, $\GG{\lambda_2}$, and $\GG{\Lambda}$ representing respectively $\lambda_1$, $\lambda_2$, and $\Lambda = \{\lambda_1, \lambda_2\}$ from the Example in Section~\ref{sec:tool:example}.}%{ex:tool:set}.}
+    \label{fig:dominant-set}
+\end{figure*}
 
 \subsection{Example}%
 \label{sec:tool:example}%
