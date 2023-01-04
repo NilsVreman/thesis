@@ -24,8 +24,8 @@ We formally define this behaviour as follows:
         \left\{\begin{aligned}
             z_{k+\counter+1} &= \Ac^{\counter+1}\,z_{k} + \textstyle\sum_{i=0}^{\counter} \Ac^i \Bc \,y_{k+\counter-i}\\
             u_{k+q+1} &= \Cc\, \Ac^{q}\,\,z_k + \\
-                       &\hspace{-2em}+ \Cc\, \textstyle\sum\nolimits_{i=1}^{q}\, \left[ \Ac^{i-1}\, \Bc\, y_{k+q-i}\right] 
-                       + \Dc\, y_{k+q}.
+            &\hspace{-2em}+ \Cc\, \textstyle\sum\nolimits_{i=1}^{q}\, \left[ \Ac^{i-1}\, \Bc\, y_{k+q-i}\right] 
+            + \Dc\, y_{k+q}.
         \end{aligned}\right.
     \end{equation}
 \end{definition}
@@ -68,7 +68,7 @@ We approximate the missing measurement values using a linear interpolation betwe
 %
 \begin{equation}
     \label{eq:interpolation}
-    \hat y_{k+\counter-i} = \frac{i y_{k-1} + (\counter+1-i) y_{k+\counter}}{\counter+1} .
+    \hat y_{k+\counter-i} = \frac{i\, y_{k-1} + (\counter+1-i)\, y_{k+\counter}}{\counter+1} .
 \end{equation}
 %
 If we substitute the values of $y$ that are missing in the ideal controller, Equation~\eqref{eq:ctrler-ideal}, with the corresponding interpolated ones $\hat y$ from Equation~\eqref{eq:interpolation}, we obtain an adaptive controller as follows:
@@ -78,8 +78,8 @@ If we substitute the values of $y$ that are missing in the ideal controller, Equ
     After the hit, the state and output are
     \begin{equation}
         \label{eq:adaptive}
-           \ctrler^a\funof{\counter}: \,\,
-            \left\{
+        \ctrler^a\funof{\counter}: \,\,
+        \left\{
             \begin{aligned}
                 z_{k+\counter+1} &= F_z(\counter)\,z_{k} +  F_y(\counter)\,y_{k-1} + G_y(\counter)\,y_{k+\counter} \\
                 u_{k+\counter+1} &= H_z(\counter)\,z_{k} + H_y(\counter)\,y_{k-1} + K_y(\counter)\,y_{k+\counter},
@@ -88,13 +88,13 @@ If we substitute the values of $y$ that are missing in the ideal controller, Equ
     where
     \begin{equation*}
         \begin{aligned}
-         \Ac_z(\counter) &= \Ac^{\counter+1} \\
-         \Ac_y(\counter) &= \textstyle\sum\nolimits_{i=0}^{\counter}\, \tfrac{i}{\counter+1}\, \Ac^{i}\, \Bc \\
-         \Bc_y(\counter) &= \textstyle\sum\nolimits_{i=0}^{\counter}\, \tfrac{\counter+1-i}{\counter+1}\, \Ac^{i}\, \Bc \\
-         \Cc_z(\counter) &= \Cc\, \Ac^\counter \\
-         \Cc_y(\counter) &= \Cc\, \textstyle\sum\nolimits_{i=1}^{\counter}\, \tfrac{i}{\counter+1}\, \Ac^{i-1}\, \Bc \\
-         \Dc_y(\counter) &= \Dc + \Cc\, \textstyle\sum\nolimits_{i=1}^{\counter}\, \tfrac{\counter+1-i}{\counter+1}\, \Ac^{i-1}\, \Bc.
-         \end{aligned}
+            \Ac_z(\counter) &= \Ac^{\counter+1} \\
+            \Ac_y(\counter) &= \textstyle\sum\nolimits_{i=0}^{\counter}\, \tfrac{i}{\counter+1}\, \Ac^{i}\, \Bc \\
+            \Bc_y(\counter) &= \textstyle\sum\nolimits_{i=0}^{\counter}\, \tfrac{\counter+1-i}{\counter+1}\, \Ac^{i}\, \Bc \\
+            \Cc_z(\counter) &= \Cc\, \Ac^\counter \\
+            \Cc_y(\counter) &= \Cc\, \textstyle\sum\nolimits_{i=1}^{\counter}\, \tfrac{i}{\counter+1}\, \Ac^{i-1}\, \Bc \\
+            \Dc_y(\counter) &= \Dc + \Cc\, \textstyle\sum\nolimits_{i=1}^{\counter}\, \tfrac{\counter+1-i}{\counter+1}\, \Ac^{i-1}\, \Bc.
+        \end{aligned}
     \end{equation*}
 \end{definition}
 Note that for $\counter = 0$ we recover the original controller.
@@ -118,7 +118,7 @@ Hence, the execution time of the adaptive controller will be independent of $\co
 \begin{figure}[tp!]
     \centerline{\input{\figdir/example-figs/lqg-ada.tex}}
     \caption{The state $x_2$ corresponding to $\plant$ being controlled by the LQG controller $\ctrler_2$ (dashed green) or adaptive LQG (dashed orange) controller during an interval of sporadic overloads ($\times$).
-        The corresponding ideal behaviour (system not subject to overruns, solid green) is also plotted.}
+    The corresponding ideal behaviour (system not subject to overruns, solid green) is also plotted.}
     \label{fig:lqgs-lqgd}
 \end{figure}
 
@@ -149,7 +149,7 @@ The analysis offered here is inspired by~\cite{Nilsson:1998}, which in turn reli
 
 The control performance is measured in terms of the weighted stationary variance of the plant output $y$,
 \begin{equation}
-\label{eq:cost}
+    \label{eq:cost}
     J = \E{ y_k^{\T} Q y_k },
 \end{equation}
 where $Q \in \R^{n_y \times n_y}$ is a positive semidefinite weighting matrix\footnote{Without loss of generality, we assume that zero is the desired plant output. A non-zero reference value can be modelled as an exogenous signal that is stored in the plant and offset in the measurement signal.}.
@@ -159,13 +159,13 @@ Additionally, the closed loop is guaranteed to be \emph{stable} in the mean-squa
 The state of the complete system consists of the plant and the controller in feedback interconnection, together with the buffered previous measurement value and the calculated next control signal.
 Accordingly, we define the closed-loop state vector as
 \begin{equation*}
-    \xi_k = \begin{bmatrix} x_k \\ z_k \\ y_{k-1} \\ u_k \end{bmatrix} .
+    \tilde{x}_k = \begin{bmatrix} x_k \\ z_k \\ y_{k-1} \\ u_k \end{bmatrix} .
 \end{equation*}
 As seen in Figure~\ref{fig:ctrl-loop}, the only external input of the closed-loop system is the disturbance $w$.
 Hence, the state of the closed loop evolves according to the time-varying linear system
 \begin{equation}
     \label{eq:cl-system}
-    \xi_{k+1} = \Phi_{k} \xi_k + \Gamma w_k.
+    \tilde{x}_{k+1} = \Phi_{k} \tilde{x}_k + \Gamma w_k.
 \end{equation}
 Here,
 \begin{equation*}
@@ -174,25 +174,24 @@ Here,
 while $\Phi_k$ can be either $\Phi_{hit}(\counter)$ or $\Phi_{miss}$, depending on whether the current deadline was hit or missed, and defined as
 \begin{equation*}
     \Phi_{hit}(\counter) = \begin{bmatrix} \Ap & 0 & 0 & \Bp \\
-    \Bc_y(\counter) \, \Cp & \Ac_z(\counter) & \Ac_y(\counter) & \Bc_y(\counter) \, \Dp \\
-    \Cp & 0 & 0 & \Dp \\
-    \Dc_y(\counter) \, \Cp & \Cc_z(\counter) & \Cc_y(\counter) & \Dc_y(\counter) \, \Dp
+        \Bc_y(\counter) \, \Cp & \Ac_z(\counter) & \Ac_y(\counter) & \Bc_y(\counter) \, \Dp \\
+        \Cp & 0 & 0 & \Dp \\
+        \Dc_y(\counter) \, \Cp & \Cc_z(\counter) & \Cc_y(\counter) & \Dc_y(\counter) \, \Dp
     \end{bmatrix},
 \end{equation*}
 where $\counter$ denotes the number of consecutive deadline misses since the last hit, and
 \begin{equation*}
     \Phi_{miss} = \begin{bmatrix} \Ap & 0 & 0 & \Bp \\
-    0 & I_{n_z} & 0 & 0 \\
-    0 & 0 & I_{n_y} & 0 \\
+        0 & I_{n_z} & 0 & 0 \\
+        0 & 0 & I_{n_y} & 0 \\
     0 & 0 & 0 & I_{n_u} \end{bmatrix}.
 \end{equation*}
 
-Assuming that $w$ is a zero-mean white noise process with known covariance matrix $R = \E{w_k \cdot w_k^{\T}} \in \R^{n_w \times n_w}$, we can calculate how the state covariance, $\Pi_k = \E{\xi_k\cdot \xi_k^{\T}}$, evolves over time. Evaluating the covariance of both sides in 
-\fix{Change $\Pi_k$ to $P_k$ and $\xi_k$ to $\tilde x_k$ (or the other way around)}
-Equation~\eqref{eq:cl-system} we obtain (see, e.g., \cite{AstWit:1984})
+Assuming that $w$ is a zero-mean white noise process with known covariance matrix $R = \E{w_k \cdot w_k^{\T}} \in \R^{n_w \times n_w}$, we can calculate how the state covariance, $P_k = \E{\tilde{x}_k\cdot \tilde{x}_k^{\T}}$, evolves over time.
+Evaluating the covariance of both sides in Equation~\eqref{eq:cl-system} we obtain (see, e.g., \cite{AstWit:1984})
 \begin{equation}
-\label{eq:covariance}
-    \Pi_{k+1} = \Phi_k \Pi_k \Phi_k^{\T} + \Gamma R \Gamma^{\T} .
+    \label{eq:covariance}
+    P_{k+1} = \Phi_k P_k \Phi_k^{\T} + \Gamma R \Gamma^{\T} .
 \end{equation}
 
 \begin{figure}[t]
@@ -208,19 +207,19 @@ In each interval, the system will experience $\counter$ deadline misses followed
 \begin{equation*}
     \label{eq:intervalP}
     \begin{aligned}
-    \Pi_{k+q+1} &= \Phi_{hit}(\counter)  \Bigl((\Phi_{miss})^\counter \Pi_k (\Phi_{miss}^{\T})^\counter \Bigr.\\
-    &\Bigl.+ \textstyle\sum_{i=0}^{q-1} (\Phi_{miss})^i \Gamma R \Gamma^{\T} (\Phi_{miss}^{\T})^i \Bigr)\Phi_{hit}^{\T}(\counter)  \\
-    &+ \Gamma R \Gamma^{\T} .
+        P_{k+q+1} &= \Phi_{hit}(\counter)  \Bigl((\Phi_{miss})^\counter P_k (\Phi_{miss}^{\T})^\counter \Bigr.\\
+        &\Bigl.+ \textstyle\sum_{i=0}^{q-1} (\Phi_{miss})^i \Gamma R \Gamma^{\T} (\Phi_{miss}^{\T})^i \Bigr)\Phi_{hit}^{\T}(\counter)  \\
+        &+ \Gamma R \Gamma^{\T} .
     \end{aligned}
 \end{equation*}
-The time-varying closed-loop system together with the Markov model define a \emph{discrete-time Markov jump linear system} for which well-established results exist (e.g., \cite{Blair:1975,Nilsson:1998,Lincoln:2002}). Using this theory, it is possible to calculate the \emph{stationary} (time-averaged) state covariance, denoted $\overbar\Pi$. With this, the performance \eqref{eq:cost} can finally be obtained as
+The time-varying closed-loop system together with the Markov model define a \emph{discrete-time Markov jump linear system} for which well-established results exist (e.g., \cite{Blair:1975,Nilsson:1998,Lincoln:2002}). Using this theory, it is possible to calculate the \emph{stationary} (time-averaged) state covariance, denoted $\overbar{P}$. With this, the performance \eqref{eq:cost} can finally be obtained as
 \begin{equation*}
-    J = \operatorname{trace} \funof{ \overbar{\Pi} \, \overbar{Q} },
+    J = \trace{ \overbar{P} \, \overbar{Q} },
 \end{equation*}
 where
 \begin{equation*}
     \overbar{Q} = \begin{bmatrix}
-    C^{\T}Q C & 0 \\ 0 & 0_{n_z+n_y+n_u}
+        C^{\T}Q C & 0 \\ 0 & 0_{n_z+n_y+n_u}
     \end{bmatrix}.
 \end{equation*}
 
@@ -233,24 +232,24 @@ We then obtain the \emph{relative performance degradation} of an arbitrary contr
 This can be found by analysing both systems in parallel when driven by the same noise sequence $w_k$:
 \begin{equation*}
     \begin{bmatrix}
-    \xi_{k+1}^\dagger \\ \xi_{k+1}%^b 
+        \tilde{x}_{k+1}^\dagger \\ \tilde{x}_{k+1}%^b 
     \end{bmatrix} =
     \begin{bmatrix}
-    \Phi_k^\dagger & 0 \\ 0 & \Phi_k%^b
+        \Phi_k^\dagger & 0 \\ 0 & \Phi_k%^b
     \end{bmatrix}
     \begin{bmatrix}
-    \xi_k^\dagger \\ \xi_k%^b 
+        \tilde{x}_k^\dagger \\ \tilde{x}_k%^b 
     \end{bmatrix} +
     \begin{bmatrix}
-    \Gamma \\ \Gamma
+        \Gamma \\ \Gamma
     \end{bmatrix} w_k
 \end{equation*}
-After finding the stationary state covariance $\overbar{\Pi}_e$ of this extended system (using the same technique as referred to above), we can retrieve the absolute performance difference as
+After finding the stationary state covariance $\overbar{P}_e$ of this extended system (using the same technique as referred to above), we can retrieve the absolute performance difference as
 \begin{equation*}
     \label{eq:deltaJ}
- \Delta J^{\dagger} = \operatorname{trace} \funof{ \overbar{\Pi}_e  \begin{bmatrix}
-    \phantom{-}\overbar{Q} & -\overbar{Q}\phantom{,} \\
-    -\overbar{Q} & \phantom{-}\overbar{Q}\phantom{,}
+    \Delta J^{\dagger} = \trace{ \overbar{P}_e  \begin{bmatrix}
+        \phantom{-}\overbar{Q} & -\overbar{Q}\phantom{,} \\
+        -\overbar{Q} & \phantom{-}\overbar{Q}\phantom{,}
     \end{bmatrix} }.
 \end{equation*}
 
