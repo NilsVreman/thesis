@@ -10,10 +10,10 @@
                  node distance =1.3cm},
     >=stealth]
         \node[] (hw) at (0,0) {\textbf{ECU}};
-        \node[task, below of=hw, xshift=-7,yshift=7, opacity=.3] (task-3) [align=center]{};
-        \node[task, below of=hw, xshift=-5,yshift=5, opacity=.5] (task-2) [align=center]{};
-        \node[task, below of=hw, xshift=-3,yshift=3, opacity=.7] (task-1) [align=center]{};
-        \node[task, below of=hw] (task-c)[align=left]{Control Task $\ctrler$ \\[0.5mm]
+        \node[task, below of=hw, yshift=6, xshift=-7, opacity=.3] (task-3) [align=center]{};
+        \node[task, below of=hw, yshift=4, xshift=-5, opacity=.5] (task-2) [align=center]{};
+        \node[task, below of=hw, yshift=2, xshift=-3, opacity=.7] (task-1) [align=center]{};
+        \node[task, below of=hw, yshift=-1] (task-c)[align=left]{Control Task $\ctrler$ \\[0.5mm]
                                                     \small
                                                       \texttt{y = read\_input();}\\
                                                       \texttt{u = ctrl\_comp();}\\
