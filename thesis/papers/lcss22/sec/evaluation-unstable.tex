@@ -1,23 +1,24 @@
 \begin{table}
 \setlength{\tabcolsep}{5pt}
-\renewcommand{\arraystretch}{1.175}
-\caption{Results obtained for the unstable system $P_2$, when controlled using $C_2$.}\label{table:unstable}
-%\rowcolors{2}{gray!25}{white}
+\renewcommand{\arraystretch}{1.25}
+\caption{Results obtained for the unstable system $\plant_2$, when controlled using $\ctrler_2$.\fix{centering on page}}\label{table:unstable}
+\rowcolors{2}{blue!10}{white}
 \begin{center}
+\resizebox{1.5\textwidth}{!}{%
 \begin{tabular}{|cc|lllll|lllll|lllll|lllll|}
 \hline
 % \rowcolor{gray!50}
 % &&\multicolumn{3}{c}{Dense $d=1$}&\multicolumn{3}{c}{Sparse $d=1$} &\multicolumn{2}{c}{JSR\_toolbox}\\
 % \rowcolor{gray!50}
 % \multirow{-2}*{$m$}&\multirow{-2}*{$k$}&$ub$&time&$mb$&$ub$&time&$mb$&$lb$&$ub$\\
-\rowcolor{gray!50}
+\rowcolor{blue!20}
 & & \multicolumn{5}{c|}{\textbf{Kill and Zero}} & \multicolumn{5}{c|}{\textbf{Kill and Hold}} & \multicolumn{5}{c|}{\textbf{Skip-Next and Zero}} & \multicolumn{5}{c|}{\textbf{Skip-Next and Hold}} \\
-\rowcolor{gray!50}
+\rowcolor{blue!20}
 \multicolumn{2}{|c|}{$\anymiss{}$} & \multicolumn{2}{c}{JSR} & \multicolumn{1}{c}{Dense} & \multicolumn{2}{c|}{Sparse}
 & \multicolumn{2}{c}{JSR} & \multicolumn{1}{c}{Dense} & \multicolumn{2}{c|}{Sparse}
 & \multicolumn{2}{c}{JSR} & \multicolumn{1}{c}{Dense} & \multicolumn{2}{c|}{Sparse}
 & \multicolumn{2}{c}{JSR} & \multicolumn{1}{c}{Dense} & \multicolumn{2}{c|}{Sparse} \\
-\rowcolor{gray!50}
+\rowcolor{blue!20}
 $x$ & $k$
 % kill and zero
 & \multicolumn{1}{c}{LB} & \multicolumn{1}{c}{UB} & \multicolumn{1}{c}{UB} & \multicolumn{1}{c}{UB} & \multicolumn{1}{c|}{$\times$}
@@ -103,6 +104,7 @@ $x$ & $k$
 & 0.995 & 1.419 & 1.166 & 1.178 & 2.12
 & 0.995 & 1.414 & \multicolumn{1}{c}{--} & \multicolumn{1}{c}{--} & \multicolumn{1}{c|}{--}\\
 \hline
-\end{tabular}
+\end{tabular}%
+}%
 \end{center}
 \end{table}

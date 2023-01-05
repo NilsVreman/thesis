@@ -1,3 +1,5 @@
+\fix{Maybe change 0 and 1 for $\cM$ and $\cH$?}
+
 In this section we introduce \tool{}\footnote{\url{https://github.com/NilsVreman/WeaklyHard.jl}}, a scalable tool for analysing (sets of) weakly-hard constraints of different types.
 The tool facilitates the analysis of weakly-hard tasks providing functions to:
 %
@@ -71,7 +73,7 @@ The words $w_1 = 11$ and $w_2 = 01$ are equivalent since they share the same dir
 Intuitively, the fact that it is possible to combine vertices comes from the realisation that a task's history, prior to the last $k$ job outcomes, is irrelevant. 
 Combining the equivalent vertices results in a new vertex representing the word $w = w_1 \BitAnd w_2$.
 
-Finally, for sets of weakly-hard constraints $\Lambda$ we construct the graph $\GG{\Lambda^*}$ for the dominant set $\Lambda^* \subseteq \Lambda$. 
+Finally, for sets of weakly-hard constraints $\Lambda$ we construct the automaton $\GG{\Lambda^*}$ for the dominant set $\Lambda^* \subseteq \Lambda$. 
 Since $\sset{}{\Lambda^*} = \sset{}{\Lambda}$, it also follows that $\GG{\Lambda^*} \equiv \GG{\Lambda}$.
 
 \begin{algorithm}[t]\normalsize%
@@ -197,5 +199,5 @@ Additionally, for real systems it is often easier to constrain hits (e.g., via e
 %
 The most relevant functions provided by \tool{} are summarised in Table~\ref{tab:tool:functionality}.\footnote{The package includes a README file that guides the user through the setup of the package and provides simple usage examples. The only prerequisite is the Julia interpreter and compiler, available at \url{https://julialang.org}.}
 In addition to the automata generation, the toolbox provides functions to compare constraints and obtain answers about their dominance and equivalence, to reduce a set of constraints to their dominant subset, and to generate sequences of arbitrary length satisfying sets of weakly-hard constraints.
-We also included a function that generate the satisfaction set $\sset{N}{\Lambda}$ from a graph $\GG{\Lambda}$.
+We also included a function that generate the satisfaction set $\sset{N}{\Lambda}$ from an automaton $\GG{\Lambda}$.
 In addition to the functions presented in Table~\ref{tab:tool:functionality}, additional functions are included as syntactic sugar for a better user experience.

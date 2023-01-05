@@ -1,55 +1,51 @@
 \subsection{Control Systems}
 \label{ssec:systemmodel}
-In this paper, we consider an arbitrary \emph{discrete-time} sampled linear time invariant (LTI) system~\cite{Astrom:1997}, expressed as follows:
+In this paper, we consider a controllable and fully observable \emph{discrete-time} sampled linear time invariant system, expressed as:
 %
 \begin{equation}
     \label{eq:plant}
-    \plant:\quad
-    \begin{cases}
-        x_{t+1} &= A_p\,x_t + B_p\,u_t \\
-        y_{t} &= C_p\,x_t + D_p\,u_t.
-    \end{cases}
+    \plant: \,\, \left\{
+    \begin{aligned}
+        x_{t+1} &= \Ap\,x_t + \Bp\,u_t \\
+        y_{t} &= \Cp\,x_t + \Dp\,u_t
+    \end{aligned}
+    \right.
 \end{equation}
 %
-Here $t\in\N$ is a positive integer value.
-The system is sampled with sampling period $T$.
-The vector $x_t\in\R^{n_x}$ contains the plant's internal states, $u_t\in\R^{n_u}$ contains the signals controlling the plant, and $y_t\in\R^{n_y}$ is the vector of measurement values acquired from the plant at time $t\cdot T$. Finally $A_p$, $B_p$, $C_p$ and $D_p$ are real-valued matrices of appropriate size defining the dynamics of the plant.
-In line with standard assumptions, we assume the system in~\eqref{eq:plant} to be controllable and the state to be fully observable.
-
-The plant is controlled by a stabilising, LTI, one-step delay, discrete-time controller producing $u_t$ and defined as:
+Here $x_t\in\R^{n_x}$, $u_t\in\R^{n_u}$, and $y_t\in\R^{n_y}$ are the plant state, the control signal and the plant output, sampled at time $t\cdot \Ts$, $\Ts$ is the sampling period, and $t\in\N$.
+The plant is controlled by a stabilising, LTI, one-step delay discrete-time controller
 %
 \begin{equation}
     \label{eq:controller}
-    \ctrler:\quad
-    \begin{cases}
-        z_{t+1} &= A_c\,z_t + B_c\,e_t \\
-        u_{t+1} &= C_c\,z_t + D_c\,e_t.
-    \end{cases}
+    \ctrler: \,\, \left\{
+    \begin{aligned}
+        z_{t+1} &= \Ac\,z_t + \Bc\,\left(r_t - y_t\right) \\
+        u_{t+1} &= \Cc\,z_t + \Dc\,\left(r_t - y_t\right).
+    \end{aligned}
+    \right.
 \end{equation}
 %
-Here, $z_t\in\R^{n_z}$ is the controller's internal state and $e_t\in\R^{n_y}$, $e_t= r_t - y_t$ is the tracking error of the controller (where $r_t$ is the reference signal to track).
-Without loss of generality, we will be treating the regulator problem ($r_t = 0$).
+where $z_t\in\R^{n_z}$ is the controller's internal state and $r_t\in\R^{n_y}$ is the setpoint.
+Without loss of generality, we consider $r_t = 0$.
 
-\subsection{Real-time tasks that may miss deadlines}
+\subsection{Real-Time Tasks That May Miss Deadlines}
 \label{ssec:whalgebra}
-
-The controller in~\eqref{eq:controller} is implemented as a real-time task $\tau$, and designed to be executed periodically with period $T$ in a real-time embedded platform.
+%
+The controller in~\eqref{eq:controller} is implemented as a real-time task $\tau$, and designed to be executed periodically with period $\Ts$ in a real-time embedded platform.
 Under nominal conditions the task releases an instance (called \emph{job}) in each period, that should be completed before the release of the next instance.
-We denote the sequence of activation instants for $\tau$ with $(a_i)_{i \in \N}$, such that, in nominal conditions, $a_{i+1} = a_i+T$,  the sequence of completion instants $(f_i)_{i \in \N}$, and the sequence of job deadlines with $(d_i)_{i \in \N}$, such that $d_i = a_i + T$ (also called \emph{implicit} deadline).
+We denote the sequence of activation instants for $\tau$ with $(a_i)_{i \in \N}$, such that, in nominal conditions, $a_{i+1} = a_i+\Ts$,  the sequence of completion instants $(f_i)_{i \in \N}$, and the sequence of job deadlines with $(d_i)_{i \in \N}$, such that $d_i = a_i + \Ts$ (also called \emph{implicit} deadline).
 This requirement can be either satisfied or not, leading respectively to deadline hits and misses.
 %
-\begin{definition}[Deadline hit]%
+\fix{Space at start of definitions, theorems, rules, you name it...}
+\begin{definition}[Deadline hit and miss]%
 \label{def:hit}%
-    The $i$-th job of a periodic task $\tau$ with period $T$ hits its deadline when $f_i \leq d_i$.
-\end{definition}
-
-\begin{definition}[Deadline miss]%
-\label{def:miss}%
-    The $i$-th job of a periodic task $\tau$ with period $T$ misses its deadline when $f_i > d_i$.
+    The $i$-th job of a periodic task $\tau$ with period $T$ hits its deadline when $f_i \leq d_i$ and misses its deadline when $f_i > d_i$.
 \end{definition}
 %
 We refer to both deadline hits and misses using the term \emph{outcome} of a job.
-In order to provide some guarantees on how the computation is distributed in the application and therefore how misses and hits are interleaved, \emph{weakly-hard task models} have been introduced in the past~\cite{Bernat:2001}.
+Intuitively, each job's outcome is dependent on the characteristics of the remaining tasks executing in the real-time system and the chosen scheduling algorithm.
+Given a taskset and a (worst-case) schedule, it is possible to bound the worst-case behaviour of the job outcomes~\cite{Bernat:2001, Ernst:2015}.
+This bound is generally denoted using the \emph{weakly-hard model}~\cite{Bernat:2001}.
 
 \begin{definition}[Weakly-hard task models]%
 \label{def:weakly-hard}%
@@ -63,17 +59,11 @@ In order to provide some guarantees on how the computation is distributed in the
     \end{enumerate}
     with $x\in \N$, $k \in \N\setminus \left\{ 0 \right\}$, and $x\leq k$.
 \end{definition}
-
-The model expressed in \ref{item:hk} was first introduced in~\cite{Hamdaoui:1995}, but its complementary version \ref{item:mk} -- often referred to as the $(m,k)$ model -- has gained the most research traction~\cite{pazzaglia2020generalized, Hammadeh:2019, Natarajan:2019}.
-For the model in~\ref{item:cons} it has been proven that the window size becomes irrelevant~\cite{Bernat:2001}, hence it is commonly referred to as $\overbar{\left<x\right>}$ (a notation also adopted in this paper).
-A useful result presented in~\cite{Maggio:2020} is that $\overbar{\left<x\right>} = \overbar{\binom{x}{x+1}}$.
-
-These models convey different information about the deadline miss properties of the task, and can also be used jointly, stating that a task $\tau$ satisfies a \emph{set} of constraints (possibly of different types).
-However, this has generally been overlooked by the research literature, which often considers timing models defined by a single weakly-hard constraint.
+\fix{Unify $\N$ notation.}
 %
-In the following we will refer to a generic weakly-hard constraint using the symbol $\lambda$, while a set of $L$ weakly hard constraints will be referred as $\Lambda = \{ \lambda_1, \lambda_2, \dots, \lambda_L \}$.
+A generic weakly-hard constraint is hereafter denoted with the symbol $\lambda$, while a set of $L$ constraints will be referred to as $\Lambda = \{ \lambda_1, \lambda_2, \dots, \lambda_L \}$.
 
-We define a word $\aword= \{\alpha_1, \alpha_2, \dots, \alpha_N\}$ representing a sequence of $N$ consecutive outcomes.
+We define a word $w= \langle \alpha_1, \alpha_2, \dots, \alpha_N \rangle$ representing a sequence of $N$ consecutive outcomes.
 Each element $\alpha_i$ in the word is a character that belongs to the alphabet of job outcomes $\Sigma$, defined as follows.
 
 \begin{definition}[Alphabet $\Sigma$ of job outcomes]%
@@ -82,96 +72,76 @@ Each element $\alpha_i$ in the word is a character that belongs to the alphabet 
     Commonly, $\Sigma = \{ \cM, \cH \}$ where $\cM$ and $\cH$ denotes respectively a deadline miss or hit.
 \end{definition}
 
-We use $\aword \vdash \lambda$ to denote that the word $\aword$ satisfies the constraint $\lambda$. 
+We use $w \vdash \lambda$ to denote that the word $w$ satisfies the constraint $\lambda$. 
 Stating that $\tau \vdash \lambda$ means that all the possible sequences of outcomes (hits and misses) that $\tau$ can experience satisfy the corresponding constraint $\lambda$.
 The set of such sequences naturally results from the definition of $\lambda$, and is formally defined as the \emph{satisfaction set} as follows~\cite{Bernat:2001}.
 
 \begin{definition}[Satisfaction set $\sset{N}{\lambda}$]%
     \label{def:satisfaction}%
     We denote with $\sset{N}{\lambda}$ the set of sequences of length $N \geq 1$ that satisfy a constraint $\lambda$.
-    Formally, $\sset{N}{\lambda} = \{ \aword \in \Sigma^N \mid \aword \vdash \lambda \}$.
+    Formally, $\sset{N}{\lambda} = \{ w \in \Sigma^N \mid w \vdash \lambda \}$.
 \end{definition}
-Taking the limit to infinity, the set $\sset{\infty}{\lambda}$ contains all the sequences of infinite length that satisfy $\lambda$.
-We will henceforth denote $\sset{}{\lambda} \equiv \sset{\infty}{\lambda}$.
+Taking the limit to infinity, the set $\sset{}{\lambda} \equiv \sset{\infty}{\lambda}$ contains all the sequences of infinite length that satisfy $\lambda$.
 %
-By leveraging the definition of satisfaction sets, it is possible to determine how two constraints $\lambda_i$ and $\lambda_j$ relate to one another~\cite{Bernat:2001, Wu:2020}.
-In particular, we can define a \emph{domination} notion between constraints~\cite{Bernat:2001}.
-
+The notion of \emph{domination} between constraints then follows~\cite{Bernat:2001}.
 \begin{definition}[Constraint domination]%
     \label{def:domination}%
-    Given two constraints $\lambda_i$ and $\lambda_j$, we say that $\lambda_i$ \emph{dominates} $\lambda_j$ if all sequences satisfying $\lambda_i$ also satisfy $\lambda_j$.
-    Formally, $\lambda_i \preceq \lambda_j \Leftrightarrow \sset{}{ \lambda_i } \subseteq \sset{}{ \lambda_j }$. 
+    Constraint $\lambda_i$ \emph{dominates} $\lambda_j$ (formally, $\lambda_i \preceq \lambda_j$) if $\sset{}{\lambda_i} \subseteq \sset{}{\lambda_j}$. 
 \end{definition}
-The notion of constraint domination introduces a partial ordering between constraints~\cite{Bernat:2001}.
-In Section~\ref{sec:analytic_results}, we relate the real-time concept of constraint dominance to the control theoretical notion of stability.
 
 
-\subsection{Control tasks that may miss deadlines}
+\subsection{Control Tasks That May Miss Deadlines}
 \label{sec:back_deadline_miss}
 %While the considerations above apply to generic tasks,
-This paper considers the special case of $\tau$ being a \emph{control task} (e.g., PID, LQG, etc) subject to weakly-hard constraints.
-%
-Particularly, this model applies to control tasks implemented on embedded platforms with limited computational power, alongside other concurrent applications~\cite{pazzaglia2021adaptive}. 
+When a control task $\tau$ is implemented on an embedded platform with limited computational power, alongside other applications, it is not uncommon for it to experience deadline misses, even in case of simple control designs (PID, LQG, etc)~\cite{akesson2020empirical,pazzaglia2021adaptive}.
 In this context, even a simple controller may be subject to computational overruns~\cite{akesson2020empirical} caused by, e.g., bursts of high priority interrupts, cache misses, variable execution times of ancillary functions, such as data filtering or coordinate transformations (e.g., Park-Clarke transforms in electric motors), or other complex interactions.
 If such events are rare or temporary, choosing a longer period for a sampled controller may result in worse performance and stability margins for nominal conditions~\cite{Pazzaglia:2019}.
 
 Since the fundamental properties of stability and performance of a controller depend on the actual pattern of control commands, it is necessary to precisely define what happens when a control deadline is missed.
-This led to several suggestions in literature for \emph{deadline miss handling strategies} and \emph{actuator modes}.
-The handling strategy manages the fate of the job that missed the deadline (and possibly the next ones), while the actuator mode deals with the loss of control signal and decides whether it should be held constant, or zeroed~\cite{schenato09}.
-A few handling strategies for periodic controllers have been proposed in the past~\cite{Cervin:2005,Pazzaglia:2018, Pazzaglia:2019, Maggio:2020,pazzaglia2020generalized}, the most important being \emph{Kill}, \emph{Skip-Next}, and \emph{Queue} (also denoted as \emph{Continue}).
-Other strategies exist for server-based systems, e.g., the server approach~\cite{cervin2005control} or the continuous stream model~\cite{fontanelli2013continuous}.
-However, they require elastic modifications of periods and deadlines, and are thus more suited for soft deadlines and a probabilistic framework.
-The results of~\cite{Cervin:2005,Pazzaglia:2019,Cervin:2019,Maggio:2020} suggest that the Queue strategy (i.e., letting each job executing until completion, queuing newly released jobs) may create chain effects of missed deadlines, negatively affecting stability and performance.
-Thus, Kill and Skip-Next will be the focus of this paper.
-The following definitions hold for a task $\tau$, with period $T$.
+In particular, we need a \emph{deadline miss handling strategy} to decide the fate of the job that missed the deadline (and possibly the next ones), and an \emph{actuator mode} to deal with the loss of a new control signal, for example by holding the previous value constant or zeroing it~\cite{schenato09}.
+A few handling strategies for periodic controllers have been proposed in literature, the most interesting being \emph{Kill} and \emph{Skip-Next}~\cite{Cervin:2005,Pazzaglia:2019,Maggio:2020}.
 
 \begin{definition}[Kill strategy]%
     \label{def:kill}%
-    The Kill strategy terminates the job that misses the deadline immediately.
+    Under the Kill strategy, a job that misses its deadline is terminated immediately. 
     Formally, for the~$i$-th job of $\tau$ either $f_i\leq d_i$ or $f_i=\infty$.
-    If the $i$-th job is killed, the $(i+1)$-th job is immediately released, i.e., $a_{i+1} = a_{i} + T$.
 \end{definition}
 
 \begin{definition}[Skip-Next strategy]%
     \label{def:skip}%
-    The Skip-Next strategy allows the job that misses its deadline to continue during the following period.
-    Formally, if the $i$-th job of $\tau$ misses its deadline $d_i$, a new deadline $d^{+}_i = d_i + T$ is set for the job.
-    The $(i+1)$-th job activation is set to $a_{i+1} = d^{+}_i$.
+    Under the Skip-Next strategy, a job that misses its deadline is allowed to continue during the following period.
+    Formally, if the $i$-th job of $\tau$ misses its deadline $d_i$, a new deadline $d^{+}_i = d_i + \Ts$ is set for the job, and $a_{i+1} = d^{+}_i$.
 \end{definition}
 
-\subsection{Stability analysis techniques based on JSR}
-\label{sec:existing}
-A control task that may experience deadline misses requires a proper analysis to check its asymptotic stability in all possible timing conditions. 
-In this paragraph we introduce existing analytic techniques from the control literature, which can be adapted to deal with this problem.
 
-In~\cite{Maggio:2020}, the authors identify a set of subsequences of hit and missed deadlines, which can be arbitrarily combined to obtain all possible sequences in $\sset{}{\overbar{\left<x\right>}}$.
+\subsection{Stability Analysis Techniques Based on JSR}
+\label{sec:existing}
+A control task that may experience deadline misses requires a proper analysis to check its asymptotic stability under different timing conditions. 
+In~\cite{Maggio:2020}, the authors identify a set of subsequences of hit and missed deadlines, which can be arbitrarily combined to obtain all possible sequences in $\sset{}{\rowmiss{}}$.
 After assigning to each subsequence its corresponding dynamic matrix, the stability analysis of the resulting arbitrary switching system can then be obtained by leveraging the \emph{Joint Spectral Radius} (JSR)~\cite{Jungers2009}, which is briefly presented here.
 %
-Given $\ell\in\N\setminus \left\{ 0 \right\} $ and a set of matrices $\Aa = \{A_1, \ldots, A_\ell \} \subseteq \R^{n\times n}$, under the hypothesis of arbitrary switching over any sequence $s=\{a_1,a_2,\dots\}$ of indices of matrices in $\Aa$, the JSR of $\Aa$ is defined by:
+Given $\ell\in\N\setminus \left\{ 0 \right\} $ and a set of matrices $\Aa = \{A_1, \ldots, A_\ell \} \subseteq \R^{n\times n}$, under the hypothesis of arbitrary switching over any sequence $s=\langle a_1,a_2,\dots \rangle$ of indices of matrices in $\Aa$, the JSR of $\Aa$ is defined by:
 \begin{equation}
     \label{jsr}
-    \rho\left(\Aa\right)= \lim_{k\rightarrow\infty} \max_{s\in\{1,\ldots,\ell\}^k} \norm{A_{a_k} \cdots A_{a_2}A_{a_1}}^{\frac{1}{k}} \,.
+    \rho\left(\Aa\right)= \lim_{k\rightarrow\infty} \max_{s\in\{1,\ldots,\ell\}^k} \norm{A_{a_k} \cdots A_{a_2}A_{a_1}}^{1/k} \,.
 \end{equation}
 The number $\rho\left(\Aa\right)$ characterizes the maximal asymptotic growth rate of products of matrices from $\Aa$ (thus  $\rho(\Aa)<1$ means that the system is asymptotically stable), and is independent of the norm $\norm{\cdot}$ used in \eqref{jsr}.
-
+%
 The JSR was introduced in \cite{rota} and is applied in several important contexts, including switched dynamical systems stability and combinatorics~\cite{Jungers2009}.
-Existing practical tools such as the JSR Matlab toolbox~\cite{vankeerberghen2014jsr} allow one to compute both upper and lower bounds on $\rho\left(\Aa\right)$, leveraging multiple algorithms.
+Existing practical tools such as the JSR Matlab toolbox~\cite{vankeerberghen2014jsr} allow one to compute both upper and lower bounds on $\rho\left(\Aa\right)$.
 
-The JSR approach can be generalized for the case where the switching sequences between the different dynamics of $\Aa$ are not arbitrary, but constrained by a given graph $\GG{}$, with the so called \emph{constrained joint spectral radius} (CJSR)~\cite{dai2012gelfand}.
-Consider again a set of matrices $\Aa$ and define ${S}_k(\GG{})$ as the set of all possible switching sequences $s$ of length $k$ that satisfy the constraints of graph $\GG{}$.
-Then, the CJSR of $\Aa$ is defined by
+When the switching sequences between the dynamics of $\Aa$ are not arbitrary, but constrained by a graph $\GG{}$, the so called \emph{constrained joint spectral radius} (CJSR)~\cite{dai2012gelfand} can be applied.
+Introducing ${S}_k(\GG{})$ as the set of all possible switching sequences $s$ of length $k$ that satisfy the constraints of a graph $\GG{}$, the CJSR of $\Aa$ is defined by
 \begin{equation}
 \label{cjsr}
-    \rho\left(\Aa,\GG{}\right)= \lim_{k\rightarrow\infty} \max_{s\in{S}_k(\GG{})} \norm{A_{a_k} \cdots A_{a_2}A_{a_1}}^{\frac{1}{k}} \,.
+    \rho\left(\Aa,\GG{}\right)= \lim_{k\rightarrow\infty} \max_{s\in{S}_k(\GG{})} \norm{A_{a_k} \cdots A_{a_2}A_{a_1}}^{1/k} \,.
 \end{equation}
 In general, computing or approximating the CJSR is not an easy task, and noticeably fewer works exist for CJSR with respect to JSR.
-In~\cite{philippe2016stability}, the authors propose a multinorm-based method to approximate with arbitrary accuracy the CJSR.
-An ad-hoc branch-and-bound algorithm is proposed in~\cite{dercole2017simple}.
-Another approach~\cite{kozyakin2014berger, wang2014stability, xu2020approximation} is based on the creation of an arbitrary switching system such that its JSR is equal to the CJSR of the original system, based on a Kronecker lifting method.
+In~\cite{philippe2016stability}, the authors propose a multinorm-based method to approximate the CJSR with arbitrary accuracy.
+Other works~\cite{kozyakin2014berger, wang2014stability, xu2020approximation} propose the creation of an arbitrary switching system such that its JSR is equal to the CJSR of the original system, based on a Kronecker lifting method.
 This will be also our approach, as detailed later.
 
 In~\cite{parrilo}, the authors propose upper bounds for the JSR based on positive polynomials which be can decomposed as \emph{sum of squares} (SOS) of polynomials.
-This approximation method is particularly interesting in terms of performance and has been chosen as primary approach in our tests. 
 %
 It consists of considering a hierarchy of relaxations indexed by $d\in\N\setminus \left\{ 0 \right\}$, which in turn yields a sequence of upper bounds for $\rho\left(\Aa\right)$:
 \begin{align}
@@ -186,16 +156,15 @@ It consists of considering a hierarchy of relaxations indexed by $d\in\N\setminu
 %
 The optimal value of this optimization problem can be computed by combining a bisection procedure on $\gamma$ together with \emph{semidefinite programming} (SDP)~\cite{wolkowicz2012handbook}.
 Finding the coefficients of a polynomial being SOS boils down to solving an SDP~\cite{re2, parrilo2000structured, lasserre2001global}.
-A typical SDP solver (e.g.~Mosek) based on interior-point methods requires $O(n_{\text{sdp}}^3 + n_{\text{sdp}}^2 m_{\text{sdp}}^2 + m_{\text{sdp}}^3)$ arithmetic operations per iteration and $O(n_{\text{sdp}}^2 + n_{\text{sdp}} m_{\text{sdp}} + m_{\text{sdp}}^2)$ memory where $n_{\text{sdp}}$ is the size of PSD matrices and $m_{\text{sdp}}$ is the number of affine constraints.
+A typical SDP solver based on interior-point methods requires $O(n_{\text{sdp}}^3 + n_{\text{sdp}}^2 m_{\text{sdp}}^2 + m_{\text{sdp}}^3)$ arithmetic operations per iteration and $O(n_{\text{sdp}}^2 + n_{\text{sdp}} m_{\text{sdp}} + m_{\text{sdp}}^2)$ memory where $n_{\text{sdp}}$ is the size of PSD matrices and $m_{\text{sdp}}$ is the number of affine constraints.
 Here, the set $\Aa$ involves $m$ matrices of size $n$.
 For the SDP relaxation given in Equation \eqref{densesos}, with $d = 1$, one has $n_{\text{sdp}} = O(n)$ and $m_{\text{sdp}} = O(m n^2)$.
 Thus, in total the SDP solver requires $O(m^3 n^6)$ arithmetic operations per iteration and $O(m^2 n^4)$ memory.
-%
-To reduce both the time and space complexity associated with this procedure, a \emph{sparse} variant, called \texttt{SparseJSR}, has been proposed in \cite{sparsejsr} to exploit the sparsity of the input matrices from $\Aa$, based on the \emph{term sparsity} SOS (TSSOS) framework \cite{tssos}.
+
+To reduce both the time and space complexity associated with this procedure, a tool, called \code{SparseJSR}~\cite{sparsejsr}, has been proposed to exploit the sparsity of the input matrices from $\Aa$, based on the \emph{term sparsity} SOS (TSSOS) framework~\cite{tssos}.
 This allows the authors to provide SOS decompositions of polynomials with arbitrary sparse support.
 By contrast, the procedure defined in~\eqref{densesos} will be denoted hereafter as \emph{dense}.
 
-Let $\rho_{\textrm{TSSOS},2d}\left(\Aa\right)$ be the upper bound provided by \texttt{SparseJSR}.
+Let $\rho_{\textrm{TSSOS},2d}\left(\Aa\right)$ be the upper bound provided by \code{SparseJSR}.
 From Theorem 4.1 of~\cite{sparsejsr}, one has $\rho\left(\Aa\right) \leq \rho_{\textrm{SOS},2d}\left(\Aa\right) \leq \rho_{\textrm{TSSOS},2d}\left(\Aa\right)$, yielding a hierarchy of upper bounds for the JSR $\rho\left(\Aa\right)$.
-By contrast with the dense case, the sparse upper bound can be obtained significantly faster if the matrices from $\Aa$ are sparse.
-This is relevant for the specific application we are considering, as the matrices that we have to analyse (introduced in Section~\ref{sec:stability}) are sparse and it is possible to exploit their structure to reduce computation times.
+While providing a more conservative result, the sparse upper bound can be obtained significantly faster than the dense upper bound if the matrices from $\Aa$ are sparse~\cite{sparsejsr}, e.g., the matrices we analyse in Section~\ref{sec:stability}.
