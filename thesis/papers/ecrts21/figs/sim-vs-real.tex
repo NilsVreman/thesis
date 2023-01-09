@@ -10,7 +10,7 @@
 \def \fshr {\figdir/data/experiment-data/skip-hold-20-480.csv}
 \def \fszr {\figdir/data/experiment-data/skip-zero-20-480.csv}
 
-\begin{groupplot}[%clip mode=individual,
+\begin{groupplot}[clip mode=individual,
      group style = {group size = 4 by 2, horizontal sep = 7mm, vertical sep=5mm},
      height = 0.3\textwidth,
      width = 0.3\textwidth,
@@ -22,17 +22,17 @@
      ylabel near ticks]
 
     \nextgroupplot[ylabel = \textbf{$J_k/J_\infty$}, ymax=62, ymin=-5, ytick={1,10,30,50}]
-    \node[clip=false, anchor=south] at (axis cs:1,57) {\textbf{\textcolor{white}{p}Kill\&Hold\textcolor{white}{p}}};
+    \node[clip=false, anchor=south] at (axis cs:1,62) {\phantom{p}\textbf{Kill\&Hold}\phantom{p}};
     \pgfplotstableread[header=true,col sep=comma]{\fkhj}\extdata;
     \addplot[mark max, blue, ultra thick, mark options={fill=white}] table[x expr=\thisrow{T}*0.01, y=J, col sep=comma] {\extdata};
 
     \nextgroupplot[ymax=62, ymin=-5,ytick={1,10,30,50}]
-    \node[clip=false, anchor=south] at (axis cs:1,57) {\textbf{Skip\&Hold}};
+    \node[clip=false, anchor=south] at (axis cs:1,62) {\textbf{Skip\&Hold}};
     \pgfplotstableread[header=true,col sep=comma]{\fshj}\extdata;
     \addplot[mark max, pink!75!black, ultra thick, mark options={fill=white}] table[x expr=\thisrow{T}*0.01, y=J, col sep=comma] {\extdata};
 
     \nextgroupplot[ymax=10, ytick={1,3,5,7}]
-    \node[clip=false, anchor=south] at (axis cs:1,10) {\textbf{\textcolor{white}{p}Kill\&Zero\textcolor{white}{p}}};
+    \node[clip=false, anchor=south] at (axis cs:1,10) {\phantom{p}\textbf{Kill\&Zero}\phantom{p}};
     \pgfplotstableread[header=true,col sep=comma]{\fkzj}\extdata;
     \addplot[mark max, cyan, ultra thick, mark options={fill=white}] table[x expr=\thisrow{T}*0.01, y=J, col sep=comma] {\extdata};
 
