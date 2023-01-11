@@ -3,10 +3,10 @@ We identify one matrix for each dynamics corresponding to an interval $\pi_t$ as
 
 \textbf{\tK{}: }%
 %
-We define $\tilde x_t^{\,\text{K}} = \left[ x_t^\T{}\,\, z_t^\T{}\,\, u_t^\T{} \right]^\T{}$ as the closed-loop state vector and compute the closed-loop dynamics $\clmat{}^{\,\text{K}}_{\cH}$, corresponding to the character $\cH$.
+We define $\tilde x_t^{K} = \left[ x_t^\T{}\,\, z_t^\T{}\,\, u_t^\T{} \right]^\T{}$ as the closed-loop state vector and compute the closed-loop dynamics $\clmat{}^{K}_{\cH}$, corresponding to the character $\cH$.
 \begin{equation*}
-    \tilde x_{t+1}^{\,\text{K}} = \clmat{}^{\,\text{K}}_{\cH}\,\tilde x_t^{\,\text{K}}, \quad
-    \clmat{}^{\,\text{K}}_{\cH} = \begin{bmatrix}
+    \tilde x_{t+1}^{K} = \clmat{}^{K}_{\cH}\,\tilde x_t^{K}, \quad
+    \clmat{}^{K}_{\cH} = \begin{bmatrix}
         \Ap       & 0    & \Bp       \\
         -\Bc\Cp   & \Ac  & -\Bc\Dp   \\
         -\Dc\Cp   & \Cc  & -\Dc\Dp   \\
@@ -15,28 +15,28 @@ We define $\tilde x_t^{\,\text{K}} = \left[ x_t^\T{}\,\, z_t^\T{}\,\, u_t^\T{} \
 %
 For the case of $\cM$, the controller execution terminates prematurely, thus not updating its states ($z_{t+1} = z_t$).
 Depending on the actuation mode, the controller output is either zeroed ($u_{t+1} = 0$) or held ($u_{t+1} = u_t$).
-The resulting closed-loop system in state-space form is denoted with $\clmat{}^{\,\text{K}}_{\cM}$:
+The resulting closed-loop system in state-space form is denoted with $\clmat{}^{K}_{\cM}$:
 \begin{equation*}
-    \tilde x_{t+1}^{\,\text{K}} = \clmat{}^{\,\text{K}}_{\cM}\,\tilde x_t^{\,\text{K}}, \quad
-    \clmat{}^{\,\text{K}}_{\cM} = \begin{bmatrix}
+    \tilde x_{t+1}^{K} = \clmat{}^{K}_{\cM}\,\tilde x_t^{K}, \quad
+    \clmat{}^{K}_{\cM} = \begin{bmatrix}
         \Ap & 0  & \Bp \\
         0   & I  & 0   \\
         0   & 0  & \Delta
     \end{bmatrix}
 \end{equation*}
 Here, $\Delta = I$ (identity matrix) if the control signal is held and $\Delta = 0$ if it is zeroed.
-The set of dynamic matrices that a controlled system under the \tK{} strategy may experience is then $\Aa^{\text{\tK{}}}=\left\{\clmat{}^{\,\text{K}}_{\cH},\clmat{}^{\,\text{K}}_{\cM}\right\}$.
+The set of dynamic matrices that a controlled system under the \tK{} strategy may experience is then $\Aa^{K}=\left\{\clmat{}^{K}_{\cH},\clmat{}^{K}_{\cM}\right\}$.
 
 \textbf{\tS{}: }%
 %
 For the \tS{} strategy, we introduce two additional states $\hat x_t$ and $\hat u_t$ storing the old values of $x_t$ and $u_t$ while the controller awaits an update.
-The resulting state vector then becomes $\tilde x_t^{\,\text{S}} = \left[ x_t^\T{}\,\,z_t^\T{}\,\, u_t^\T{}\,\, \hat{x}_t^\T{}\,\, \hat{u}_t^\T{} \right]^\T{}$.
+The resulting state vector then becomes $\tilde x_t^{S} = \left[ x_t^\T{}\,\,z_t^\T{}\,\, u_t^\T{}\,\, \hat{x}_t^\T{}\,\, \hat{u}_t^\T{} \right]^\T{}$.
 When $\pi_t$ is associated to $\cH$, the two additional states mirror the behaviour of the states of which they are storing data.
-The resulting closed-loop system is described using $\clmat{}^{\,\text{S}}_{\cH}$:
+The resulting closed-loop system is described using $\clmat{}^{S}_{\cH}$:
 %
 \begin{equation*}
-    \tilde x_{t+1}^{\,\text{S}} = \clmat{}^{\,\text{S}}_{\cH}\,\tilde x_t^{\,\text{S}}, \quad
-    \clmat{}^{\,\text{S}}_{\cH} = \begin{bmatrix}
+    \tilde x_{t+1}^{S} = \clmat{}^{S}_{\cH}\,\tilde x_t^{S}, \quad
+    \clmat{}^{S}_{\cH} = \begin{bmatrix}
         \Ap       & 0    & \Bp      & 0 & 0 \\
         -\Bc\Cp   & \Ac  & -\Bc\Dp  & 0 & 0 \\
         -\Dc\Cp   & \Cc  & -\Dc\Dp  & 0 & 0 \\
@@ -46,11 +46,11 @@ The resulting closed-loop system is described using $\clmat{}^{\,\text{S}}_{\cH}
 \end{equation*}
 %
 For the case of $\cM$ in $\pi_t$ the two augmented states hold their previous values.
-The resulting closed-loop system is described by $\clmat{}^{\,\text{S}}_{\cM}$:
+The resulting closed-loop system is described by $\clmat{}^{S}_{\cM}$:
 %
 \begin{equation*}
-    \tilde x_{t+1}^{\,\text{S}} = \clmat{}^{\,\text{S}}_{\cM}\,\tilde x_t^{\,\text{S}}, \quad
-    \clmat{}^{\,\text{S}}_{\cM}=\begin{bmatrix}
+    \tilde x_{t+1}^{S} = \clmat{}^{S}_{\cM}\,\tilde x_t^{S}, \quad
+    \clmat{}^{S}_{\cM}=\begin{bmatrix}
         \Ap & 0  & \Bp & 0 & 0 \\
         0   & I  & 0   & 0 & 0 \\
         0   & 0  & \Delta   & 0 & 0 \\
@@ -60,11 +60,11 @@ The resulting closed-loop system is described by $\clmat{}^{\,\text{S}}_{\cM}$:
 \end{equation*}
 %
 Finally, for the case of recovery $\cR$ in $\pi_t$, the new control command is calculated using the values stored in $\hat x_t$ and $\hat u_t$.
-The resulting closed-loop system is described by $\clmat{}^{\,\text{S}}_{\cR}$:
+The resulting closed-loop system is described by $\clmat{}^{S}_{\cR}$:
 %
 \begin{equation*}
-    \tilde x_{t+1}^{\,\text{S}} = \clmat{}^{\,\text{S}}_{\cR} \, \tilde x_{t}^{\,\text{S}}, \quad
-    \clmat{}^{\,\text{S}}_{\cR} = \begin{bmatrix}
+    \tilde x_{t+1}^{S} = \clmat{}^{S}_{\cR} \, \tilde x_{t}^{S}, \quad
+    \clmat{}^{S}_{\cR} = \begin{bmatrix}
         \Ap & 0    & \Bp & 0       & 0 \\
         0   & \Ac  & 0   & -\Bc\Cp & -\Bc\Dp \\
         0   & \Cc  & 0   & -\Dc\Cp & -\Dc\Dp \\
@@ -73,7 +73,7 @@ The resulting closed-loop system is described by $\clmat{}^{\,\text{S}}_{\cR}$:
     \end{bmatrix}.
 \end{equation*}
 %
-The set of dynamic matrices under the \tS{} strategy is then defined as $\Aa^{\text{\tS{}}}=\left\{\clmat{}^{\,\text{S}}_{\cH},\clmat{}^{\,\text{S}}_{\cM},\clmat{}^{\,\text{S}}_{\cR}\right\}$.
+The set of dynamic matrices under the \tS{} strategy is then defined as $\Aa^{S}=\left\{\clmat{}^{S}_{\cH},\clmat{}^{S}_{\cM},\clmat{}^{S}_{\cR}\right\}$.
 
 \subsection{Kronecker Lifted Switching System}%
 \label{sec:system_dynamics}
