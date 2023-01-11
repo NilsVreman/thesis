@@ -165,15 +165,15 @@ As seen in Figure~\ref{fig:ctrl-loop}, the only external input of the closed-loo
 Hence, the state of the closed loop evolves according to the time-varying linear system
 \begin{equation}
     \label{eq:cl-system}
-    \tilde{x}_{k+1} = \Phi_{k} \tilde{x}_k + \Gamma w_k.
+    \tilde{x}_{k+1} = \clmat{}_{k} \tilde{x}_k + \clinp{} w_k.
 \end{equation}
 Here,
 \begin{equation*}
-    \Gamma = \begin{bmatrix} \Wp \\ 0_{(n_z+n_y+n_u) \times n_w} \end{bmatrix},
+    \clinp{} = \begin{bmatrix} \Wp \\ 0_{(n_z+n_y+n_u) \times n_w} \end{bmatrix},
 \end{equation*}
-while $\Phi_k$ can be either $\Phi_{hit}(\counter)$ or $\Phi_{miss}$, depending on whether the current deadline was hit or missed, and defined as\fix{Consider changing $\Phi$ here to match other papers.}
+while $\clmat{}_k$ can be either $\clmat{}_{hit}(\counter)$ or $\clmat{}_{miss}$, depending on whether the current deadline was hit or missed, and defined as
 \begin{equation*}
-    \Phi_{hit}(\counter) = \begin{bmatrix} \Ap & 0 & 0 & \Bp \\
+    \clmat{}_{hit}(\counter) = \begin{bmatrix} \Ap & 0 & 0 & \Bp \\
         \Bc_y(\counter) \, \Cp & \Ac_z(\counter) & \Ac_y(\counter) & \Bc_y(\counter) \, \Dp \\
         \Cp & 0 & 0 & \Dp \\
         \Dc_y(\counter) \, \Cp & \Cc_z(\counter) & \Cc_y(\counter) & \Dc_y(\counter) \, \Dp
@@ -181,7 +181,7 @@ while $\Phi_k$ can be either $\Phi_{hit}(\counter)$ or $\Phi_{miss}$, depending 
 \end{equation*}
 where $\counter$ denotes the number of consecutive deadline misses since the last hit, and
 \begin{equation*}
-    \Phi_{miss} = \begin{bmatrix} \Ap & 0 & 0 & \Bp \\
+    \clmat{}_{miss} = \begin{bmatrix} \Ap & 0 & 0 & \Bp \\
         0 & I_{n_z} & 0 & 0 \\
         0 & 0 & I_{n_y} & 0 \\
     0 & 0 & 0 & I_{n_u} \end{bmatrix}.
@@ -191,7 +191,7 @@ Assuming that $w$ is a zero-mean white noise process with known covariance matri
 Evaluating the covariance of both sides in Equation~\eqref{eq:cl-system} we obtain (see, e.g., \cite{AstWit:1984})
 \begin{equation}
     \label{eq:covariance}
-    P_{k+1} = \Phi_k P_k \Phi_k^{\T} + \Gamma R \Gamma^{\T} .
+    P_{k+1} = \clmat{}_k P_k \clmat{}_k^{\T} + \clinp{} R \clinp{}^{\T} .
 \end{equation}
 
 \begin{figure}[t]
@@ -207,9 +207,9 @@ In each interval, the system will experience $\counter$ deadline misses followed
 \begin{equation*}
     \label{eq:intervalP}
     \begin{aligned}
-        P_{k+q+1} &= \Phi_{hit}(\counter)  \Bigl((\Phi_{miss})^\counter P_k (\Phi_{miss}^{\T})^\counter \Bigr.\\
-        &\Bigl.+ \textstyle\sum_{i=0}^{q-1} (\Phi_{miss})^i \Gamma R \Gamma^{\T} (\Phi_{miss}^{\T})^i \Bigr)\Phi_{hit}^{\T}(\counter)  \\
-        &+ \Gamma R \Gamma^{\T} .
+        P_{k+q+1} &= \clmat{}_{hit}(\counter)  \Bigl((\clmat{}_{miss})^\counter P_k (\clmat{}_{miss}^{\T})^\counter \Bigr.\\
+        &\Bigl.+ \textstyle\sum_{i=0}^{q-1} (\clmat{}_{miss})^i \clinp{} R \clinp{}^{\T} (\clmat{}_{miss}^{\T})^i \Bigr)\clmat{}_{hit}^{\T}(\counter)  \\
+        &+ \clinp{} R \clinp{}^{\T} .
     \end{aligned}
 \end{equation*}
 The time-varying closed-loop system together with the Markov model define a \emph{discrete-time Markov jump linear system} for which well-established results exist (e.g., \cite{Blair:1975,Nilsson:1998,Lincoln:2002}). Using this theory, it is possible to calculate the \emph{stationary} (time-averaged) state covariance, denoted $\overbar{P}$. With this, the performance \eqref{eq:cost} can finally be obtained as
@@ -235,13 +235,13 @@ This can be found by analysing both systems in parallel when driven by the same 
         \tilde{x}_{k+1}^\dagger \\ \tilde{x}_{k+1}%^b 
     \end{bmatrix} =
     \begin{bmatrix}
-        \Phi_k^\dagger & 0 \\ 0 & \Phi_k%^b
+        \clmat{}_k^\dagger & 0 \\ 0 & \clmat{}_k%^b
     \end{bmatrix}
     \begin{bmatrix}
         \tilde{x}_k^\dagger \\ \tilde{x}_k%^b 
     \end{bmatrix} +
     \begin{bmatrix}
-        \Gamma \\ \Gamma
+        \clinp{} \\ \clinp{}
     \end{bmatrix} w_k
 \end{equation*}
 After finding the stationary state covariance $\overbar{P}_e$ of this extended system (using the same technique as referred to above), we can retrieve the absolute performance difference as
