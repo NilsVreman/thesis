@@ -59,16 +59,16 @@ The example shows that, while the static controller inherently provides robustne
         {\setlength\arraycolsep{3pt}
             \plant: \,\, \left\{
             \begin{aligned}
-                x_{k+1} &= 
+                x_{t+1} &= 
                 \begin{bmatrix}
                     0 & 1 \\
                     -0.8 & 1.8
-                \end{bmatrix}\,x_k + 
+                \end{bmatrix}\,x_t + 
                 \begin{bmatrix}
                     0 \\
                     1
-                \end{bmatrix}\,u_k \\
-                y_k &= x_k.
+                \end{bmatrix}\,u_t \\
+                y_t &= x_t.
                  \end{aligned}
             \right.
         }
@@ -80,10 +80,10 @@ The example shows that, while the static controller inherently provides robustne
         {\setlength\arraycolsep{3pt}
         \begin{aligned}
             \ctrler_1: \,\, 
-            u_{k+1} = 
+            u_{t+1} = 
             \begin{bmatrix}
                 0.256 & -0.372
-            \end{bmatrix}\,y_k.
+            \end{bmatrix}\,y_t.
         \end{aligned}
         }
     \end{equation*}
@@ -103,22 +103,22 @@ The example shows that, while the static controller inherently provides robustne
         {\setlength\arraycolsep{3pt}
         \ctrler_2 : \left\{
         \begin{aligned}
-            z_{k+1} &=
+            z_{t+1} &=
             \begin{bmatrix}
                 -0.151 & 0.810 \\
                 -0.711 & 1.206
-            \end{bmatrix}\,z_k + 
+            \end{bmatrix}\,z_t + 
             \begin{bmatrix}
                 0.151 & 0.190 \\
                 0.166 & 0.221
-            \end{bmatrix}\,y_k \\
-            u_{k+1} &=
+            \end{bmatrix}\,y_t \\
+            u_{t+1} &=
             \begin{bmatrix}
                 0.226 & -0.242
-            \end{bmatrix}\,z_{k} +
+            \end{bmatrix}\,z_{t} +
             \begin{bmatrix}
                 -0.023 & -0.034
-            \end{bmatrix}\,y_k .
+            \end{bmatrix}\,y_t .
             \end{aligned}
         \right.}
     \end{equation*}

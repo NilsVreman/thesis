@@ -25,28 +25,28 @@ Assuming the sampling period $\Ts = 0.01$~s, a discrete-time plant model $\plant
     \plant : 
     \left\{
     \begin{matrix}
-        x_{k+1} &=& 
+        x_{t+1} &=& 
         \begin{bmatrix}
             1 & 0.015 & 0.0003 & 0\\
             0 & 1 & 0.045 & 0\\
             0 & 0 & 1 & 0 \\
             0 & 0 & 0 & 1
-        \end{bmatrix}\,x_k &+ 
+        \end{bmatrix}\,x_t &+ 
         \begin{bmatrix}
             2.9\!\cdot\!10^{-5} \\
             0.0058 \\
             0.256 \\
             0
-        \end{bmatrix}\,u_k + w_k \\ \vspace{-3mm} \\
-        y_k &=& 
+        \end{bmatrix}\,u_t + w_t \\ \vspace{-3mm} \\
+        y_t &=& 
         \begin{bmatrix}
             0.5 & 0 & 0 & -1\\
             0 & 0 & 0.25 & 0
-        \end{bmatrix}\,x_k, & 
+        \end{bmatrix}\,x_t, & 
     \end{matrix}
     \right.
 \end{equation*}
-where the four components of $x_k$ represent the ball position, ball velocity, beam velocity, and ball reference, respectively. The external signal vector $w_k$ is assumed to be white noise with variance $R = \diag{1,1,1,1}$. Under this state-space model, the objective is to regulate both outputs $y_k$ to zero, with the performance weighting matrix $Q = \diag{1,1}$.
+where the four components of $x_t$ represent the ball position, ball velocity, beam velocity, and ball reference, respectively. The external signal vector $w_t$ is assumed to be white noise with variance $R = \diag{1,1,1,1}$. Under this state-space model, the objective is to regulate both outputs $y_t$ to zero, with the performance weighting matrix $Q = \diag{1,1}$.
 
 To control $\plant$ we design a cascaded P--PID controller.
 Cascaded controllers are frequently applied to systems with multiple measurements where one measured quantity affects another, but not vice versa.
@@ -62,22 +62,22 @@ The state-space representation of our controller is
     \ctrler : \,\,
     \left\{
     \begin{aligned}
-        z_{k+1} &= 
+        z_{t+1} &= 
         \begin{bmatrix}
             1 & 0  \\
             0 & 0.9685 \\
-        \end{bmatrix}\,z_k + 
+        \end{bmatrix}\,z_t + 
         \begin{bmatrix}
             0.025 & 0 \\
             -0.2608 & 0
-        \end{bmatrix}\,y_k, \\ \vspace{-4mm} \\
-        u_{k+1} &= 
+        \end{bmatrix}\,y_t, \\ \vspace{-4mm} \\
+        u_{t+1} &= 
         \begin{bmatrix}
             -0.108 & -0.2608
-        \end{bmatrix}\,z_k +
+        \end{bmatrix}\,z_t +
         \begin{bmatrix}
             -2.43 & -3
-        \end{bmatrix}\,y_k.
+        \end{bmatrix}\,y_t.
         \end{aligned}
     \right.
 \end{equation*}
@@ -159,7 +159,7 @@ However, we emphasise that these results do \emph{not} imply that the system wil
 We conducted experiments on the physical ball and beam plant to evaluate the performance of the controller on a real system.\footnote{A video, showing experiments with the real ball and beam system can be viewed at \texttt{https://youtu.be/6y\_C7NIzXto}. The video provides a real-world comparison between the nominal and adaptive controllers for $\rho = \left\{30\%, 50\%, 70\%\right\}$.}
 Each experiment is run for $10$ minutes, where the control objective is for the ball to follow a square-wave reference across the beam.
 The square wave has a period of $50$~s and alternates between position $0$ and $15$~cm.
-Differently from the analytical evaluation, it is impossible to obtain the same exogenous signal $w_k$ in the different experiments.
+Differently from the analytical evaluation, it is impossible to obtain the same exogenous signal $w_t$ in the different experiments.
 While the reference changes can be exactly repeated, the real stochastic disturbances (in the form of electrical noise, mechanical glitches, etc.) are not repeatable.
 This means that the empirical cost relative to the ideal case, as measured by Equation~\eqref{eq:relcost}, is not expected to be zero even in the complete absence of deadline misses.
 

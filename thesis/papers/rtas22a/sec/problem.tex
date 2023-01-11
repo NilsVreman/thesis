@@ -29,13 +29,13 @@ However, for control design and implementation purposes, they are commonly trans
     \label{eq:plant}
     \plant: \,\, \left\{
     \begin{aligned}
-        x_{k+1} &= \Ap\,x_k + \Bp\,u_k + \Wp\,w_k \\
-        y_k &= \Cp\,x_k + \Dp\,u_k 
+        x_{t+1} &= \Ap\,x_t + \Bp\,u_t + \Wp\,w_t \\
+        y_t &= \Cp\,x_t + \Dp\,u_t 
     \end{aligned}
     \right.
 \end{equation}
-Here, the variable $k$ counts the number of discrete time steps that have passed since the system started executing. 
-Furthermore, the variable $x_k \in \R^{n_x}$ represents the \emph{plant state}, $u_k \in \R^{n_u}$ corresponds to the \emph{control signal} computed in order to affect the plant, $w_k \in \R^{n_w}$ models disturbances and reference signals, and $y_k \in \R^{n_y}$ is the \emph{measurement signal} available to the controller. 
+Here, the variable $t$ counts the number of discrete time steps that have passed since the system started executing. 
+Furthermore, the variable $x_t \in \R^{n_x}$ represents the \emph{plant state}, $u_t \in \R^{n_u}$ corresponds to the \emph{control signal} computed in order to affect the plant, $w_t \in \R^{n_w}$ models disturbances and reference signals, and $y_t \in \R^{n_y}$ is the \emph{measurement signal} available to the controller. 
 For what concerns the matrices, $\Ap \in \R^{n_x \times n_x}$ captures the relation between the current state and the next state, while $\Bp \in \R^{n_x \times n_u}$ and $\Wp \in \R^{n_x \times n_w}$ respectively capture how the control signal and the exogenous signals affect the state at the next time step.
 Furthermore, $\Cp \in \R^{n_y \times n_x}$ and $\Dp \in \R^{n_y \times n_u}$ respectively describe how the current state and control signal relate to the measurements.
 
@@ -54,18 +54,18 @@ Adopting this paradigm, the sensors are read at the beginning of the task period
 This minimises the effect of fluctuations in the execution pattern of the control algorithm (called jitter) at the cost of introducing a one-step delay in the actuation.
 
 While they are sometimes specified as transfer functions~\cite{Astrom:2008}, controllers are often \emph{implemented} as discrete-time state-space systems.
-More specifically, we assume that the controller is an LTI system that takes the measurement $y_k$ as input and produces the control signal $u_{k+1}$ as output:\footnote{Note that we adopt a positive feedback convention.}
+More specifically, we assume that the controller is an LTI system that takes the measurement $y_t$ as input and produces the control signal $u_{t+1}$ as output:\footnote{Note that we adopt a positive feedback convention.}
 \begin{equation}
     \label{eq:ctrler}
     \ctrler: \,\, \left\{
     \begin{aligned}
-        z_{k+1} &= \Ac\,z_k + \Bc\,y_k \\
-        u_{k+1} &= \Cc\,z_{k} + \Dc\,y_k.
+        z_{t+1} &= \Ac\,z_t + \Bc\,y_t \\
+        u_{t+1} &= \Cc\,z_{t} + \Dc\,y_t.
     \end{aligned}
     \right.
 \end{equation}
-Here, $z_k \in \R^{n_z}$ represents the internal state of the controller.
-The second equation, specifying the control action at step $k+1$, captures the one-step delay introduced by the LET paradigm.
+Here, $z_t \in \R^{n_z}$ represents the internal state of the controller.
+The second equation, specifying the control action at step $t+1$, captures the one-step delay introduced by the LET paradigm.
 The matrices $\Ac \in \R^{n_z \times n_z}$, $\Bc \in \R^{n_z \times n_y}$, $\Cc \in \R^{n_u \times n_z}$, and $\Dc \in \R^{n_u \times n_y}$ govern the behaviour of the controller.
 
 In conjunction with Equation~\eqref{eq:ctrler}, we define two types of controllers: \emph{static} and \emph{dynamic}.
@@ -78,14 +78,14 @@ In conjunction with Equation~\eqref{eq:ctrler}, we define two types of controlle
     We denote a \emph{dynamic controller} as any controller $\ctrler$ that is \emph{stateful} (i.e., it has an internal state $z$;\, $n_z\geq 1$).
 \end{definition}
 
-From the definitions above, we note that a static controller can be written as a fixed gain matrix times the input (i.e., $\ctrler \,:\, u_{k+1} = \Dc y_k$), while a dynamic controller is equivalent to~\eqref{eq:ctrler} with non-empty matrices $\Ac$, $\Bc$, $\Cc$, and $\Dc$.
+From the definitions above, we note that a static controller can be written as a fixed gain matrix times the input (i.e., $\ctrler \,:\, u_{t+1} = \Dc y_t$), while a dynamic controller is equivalent to~\eqref{eq:ctrler} with non-empty matrices $\Ac$, $\Bc$, $\Cc$, and $\Dc$.
 Examples of static controllers include proportional (P) controllers, state feedback controllers, and linear--quadratic regulators (LQR), while dynamic controllers include proportional--integral--derivative (PID) controllers, lead--lag compensators, and linear--quadratic--Gaussian (LQG) regulators~\cite{Astrom:2008}.
 
 \subsection{Control Systems Subject to Deadline Misses}
 
 We assume that the controller $\ctrler$ is implemented as a periodic task with period $\Ts$ and implicit deadlines. 
-Intuitively, each execution period of the control task corresponds to one time step $k$.
-At the start of period $k$, the task releases a \emph{job} that should be completed before the deadline at time $(k+1) \Ts$.
+Intuitively, each execution period of the control task corresponds to one time step $t$.
+At the start of period $t$, the task releases a \emph{job} that should be completed before the deadline at time $(t+1) \Ts$.
 
 Faults in the real-time system can affect the timely execution of the control task~\cite{Steinbauer:2013}.
 We denote the outcome of a job's execution as either a deadline \emph{hit} or \emph{miss}, corresponding to whether the job completed its execution before its deadline or not. 
@@ -100,13 +100,13 @@ In particular, three aspects need to be considered:
     \item how the operating system handles a job that misses its deadline~\cite{Pazzaglia:2019, Cervin:2005}.
 \end{enumerate*}
 The first item refers to what happens to the internal state $z$ when the controller is unable to finish its execution ahead of its dedicated deadline.
-Henceforth, we assume that when the controller misses its deadline, the controller state is \emph{not} updated (implying $z_{k+1} = z_k$). 
-This is motivated by the possibility to roll back $z_k$ to a previous state~\cite{akesson:2020, Seong:2001, Zhang:2003} and by the impossibility to guarantee that the state update was finished if the job was only partially completed.
+Henceforth, we assume that when the controller misses its deadline, the controller state is \emph{not} updated (implying $z_{t+1} = z_t$). 
+This is motivated by the possibility to roll back $z_t$ to a previous state~\cite{akesson:2020, Seong:2001, Zhang:2003} and by the impossibility to guarantee that the state update was finished if the job was only partially completed.
 
 Regarding the second item, mainly two actuator models have previously been considered in the literature: \emph{Zero} and \emph{Hold} \cite{Schenato:2009}.
-Under the Zero model, if the job released at time $k\Ts$ misses its deadline at time  $(k+1)\Ts$, the actuator outputs $u_{k+1} = 0$.
+Under the Zero model, if the job released at time $t\Ts$ misses its deadline at time  $(t+1)\Ts$, the actuator outputs $u_{t+1} = 0$.
 This strategy is uncommon in practice, because it performs well only in very specific cases~\cite{Vreman:2021ecrts}. 
-Instead, the more common actuator model is to hold the control signal in the case of a missed deadline: $u_{k+1} = u_k$.
+Instead, the more common actuator model is to hold the control signal in the case of a missed deadline: $u_{t+1} = u_t$.
 Although our proposed adaptation is in itself independent of the actuator model, the Hold model has been adopted in the analysis and examples of this paper.
 
 % For the final item, there exists at least three different employable strategies dealing with missed deadlines: 

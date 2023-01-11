@@ -22,16 +22,16 @@ We formally define this behaviour as follows:
         \label{eq:ctrler-ideal}
         \ctrler\funof{\counter}:\,\, 
         \left\{\begin{aligned}
-            z_{k+\counter+1} &= \Ac^{\counter+1}\,z_{k} + \textstyle\sum_{i=0}^{\counter} \Ac^i \Bc \,y_{k+\counter-i}\\
-            u_{k+q+1} &= \Cc\, \Ac^{q}\,\,z_k + \\
-            &\hspace{-2em}+ \Cc\, \textstyle\sum\nolimits_{i=1}^{q}\, \left[ \Ac^{i-1}\, \Bc\, y_{k+q-i}\right] 
-            + \Dc\, y_{k+q}.
+            z_{t+\counter+1} &= \Ac^{\counter+1}\,z_{t} + \textstyle\sum_{i=0}^{\counter} \Ac^i \Bc \,y_{t+\counter-i}\\
+            u_{t+q+1} &= \Cc\, \Ac^{q}\,\,z_t + \\
+            &\hspace{-2em}+ \Cc\, \textstyle\sum\nolimits_{i=1}^{q}\, \left[ \Ac^{i-1}\, \Bc\, y_{t+q-i}\right] 
+            + \Dc\, y_{t+q}.
         \end{aligned}\right.
     \end{equation}
 \end{definition}
 With $\counter=0$ we obtain the ideal controller behaviour over a single time step.
 
-From the definition above, we see how the quantities of interest, $z$ and $u$, are computed using the values of $y$ in the interval $\left[ k, k+\counter \right]$. 
+From the definition above, we see how the quantities of interest, $z$ and $u$, are computed using the values of $y$ in the interval $\left[ t, t+\counter \right]$. 
 These values correspond to the periodic measurements coming from the sensors.
 %
 In the presence of deadline misses, the control task discards the measurements and does not update the controller's state.
@@ -45,30 +45,30 @@ Applying Equation~\eqref{eq:ctrler} to a scenario of $\counter$ consecutive dead
         \label{eq:ctrler-miss}
         \ctrler^n\funof{\counter}:\,\, 
         \left\{\begin{aligned}
-            z_{k+\counter+1} &= \Ac\,z_{k} + \Bc\,y_{k+\counter}\\
-            u_{k+\counter+1} &= \Cc\,z_{k} + \Dc\,y_{k+\counter}.
+            z_{t+\counter+1} &= \Ac\,z_{t} + \Bc\,y_{t+\counter}\\
+            u_{t+\counter+1} &= \Cc\,z_{t} + \Dc\,y_{t+\counter}.
         \end{aligned}\right.
     \end{equation}
     In the absence of deadline misses, we have $\ctrler^n\funof{0} = \ctrler$.
 \end{definition}
 
-By comparing \eqref{eq:ctrler-ideal} and~\eqref{eq:ctrler-miss} we see that, when deadline misses occur, the controller state $z_{k+\counter+1}$ and control action $u_{k+\counter+1}$ diverge from the ideal values, i.e., the ones that would be obtained in the presence of only deadline hits. 
+By comparing \eqref{eq:ctrler-ideal} and~\eqref{eq:ctrler-miss} we see that, when deadline misses occur, the controller state $z_{t+\counter+1}$ and control action $u_{t+\counter+1}$ diverge from the ideal values, i.e., the ones that would be obtained in the presence of only deadline hits. 
 To compensate for this error (and consequently minimise it), we propose to dynamically alter the controller's computations in real time according to the number of deadline misses. 
 
 Ideally, we would like an adaptive controller $\ctrler^a\funof{\counter}$ that mimics the ideal controller $\ctrler\funof{\counter}$ for any $\counter$.
 However, this is infeasible due to how the controller's dynamics evolves during an interval of deadline misses.
-More specifically, Equation~\eqref{eq:ctrler-ideal} shows that $\ctrler\funof{\counter}$ depends on the values of $y_{k+i}$ for $i \in \left\{ 0, 1, \ldots, \counter-1 \right\}$.
-When the control task is subjected to faults, the corresponding jobs $j_{k+i}$ miss their respective deadline. 
-Thus, the unfinished jobs are terminated prematurely, a new job is released, and the corresponding measurement values $y_{k+i}$ are lost.
-The nominal controller, after a series of misses, has access only to the sample $y_{k+\counter}$.
+More specifically, Equation~\eqref{eq:ctrler-ideal} shows that $\ctrler\funof{\counter}$ depends on the values of $y_{t+i}$ for $i \in \left\{ 0, 1, \ldots, \counter-1 \right\}$.
+When the control task is subjected to faults, the corresponding jobs $j_{t+i}$ miss their respective deadline. 
+Thus, the unfinished jobs are terminated prematurely, a new job is released, and the corresponding measurement values $y_{t+i}$ are lost.
+The nominal controller, after a series of misses, has access only to the sample $y_{t+\counter}$.
 This fundamentally limits how well the controller's ideal behaviour can be reconstructed.
 
 Hence, we propose the use of an interpolation scheme to minimise the effect of the lost measurement values.
-We approximate the missing measurement values using a linear interpolation between $y_{k-1}$ and $y_{k+\counter}$ according to
+We approximate the missing measurement values using a linear interpolation between $y_{t-1}$ and $y_{t+\counter}$ according to
 %
 \begin{equation}
     \label{eq:interpolation}
-    \hat y_{k+\counter-i} = \frac{i\, y_{k-1} + (\counter+1-i)\, y_{k+\counter}}{\counter+1} .
+    \hat y_{t+\counter-i} = \frac{i\, y_{t-1} + (\counter+1-i)\, y_{t+\counter}}{\counter+1} .
 \end{equation}
 %
 If we substitute the values of $y$ that are missing in the ideal controller, Equation~\eqref{eq:ctrler-ideal}, with the corresponding interpolated ones $\hat y$ from Equation~\eqref{eq:interpolation}, we obtain an adaptive controller as follows:
@@ -81,8 +81,8 @@ If we substitute the values of $y$ that are missing in the ideal controller, Equ
         \ctrler^a\funof{\counter}: \,\,
         \left\{
             \begin{aligned}
-                z_{k+\counter+1} &= F_z(\counter)\,z_{k} +  F_y(\counter)\,y_{k-1} + G_y(\counter)\,y_{k+\counter} \\
-                u_{k+\counter+1} &= H_z(\counter)\,z_{k} + H_y(\counter)\,y_{k-1} + K_y(\counter)\,y_{k+\counter},
+                z_{t+\counter+1} &= F_z(\counter)\,z_{t} +  F_y(\counter)\,y_{t-1} + G_y(\counter)\,y_{t+\counter} \\
+                u_{t+\counter+1} &= H_z(\counter)\,z_{t} + H_y(\counter)\,y_{t-1} + K_y(\counter)\,y_{t+\counter},
             \end{aligned}\right.
     \end{equation}
     where
@@ -104,7 +104,7 @@ Compared to the nominal controller, the two matrices $F_y$ and $H_y$ of size $n_
 The memory requirement thus grows linearly with $\counter_{max}$.
 %the number $\counter$ of maximum tolerated misses.
 %This is exactly $\counter_{max}$ times the size of the non-adaptive controller expanded with $F_y$ and $H_y$.
-The adaptive controller also needs to store the old measurement value $y_{k-1}$, which makes it marginally more complex.
+The adaptive controller also needs to store the old measurement value $y_{t-1}$, which makes it marginally more complex.
 
 % How we overcome the limitations of previous work
 We now briefly discuss how the limitations described in Section~\ref{sec:problem-form} are addressed.
@@ -150,7 +150,7 @@ The analysis offered here is inspired by~\cite{Nilsson:1998}, which in turn reli
 The control performance is measured in terms of the weighted stationary variance of the plant output $y$,
 \begin{equation}
     \label{eq:cost}
-    J = \E{ y_k^{\T} Q y_k },
+    J = \E{ y_t^{\T} Q y_t },
 \end{equation}
 where $Q \in \R^{n_y \times n_y}$ is a positive semidefinite weighting matrix\footnote{Without loss of generality, we assume that zero is the desired plant output. A non-zero reference value can be modelled as an exogenous signal that is stored in the plant and offset in the measurement signal.}.
 A smaller value of the cost $J$ is better, as it means that the controller can suppress the disturbance $w$ more effectively.
@@ -159,19 +159,19 @@ Additionally, the closed loop is guaranteed to be \emph{stable} in the mean-squa
 The state of the complete system consists of the plant and the controller in feedback interconnection, together with the buffered previous measurement value and the calculated next control signal.
 Accordingly, we define the closed-loop state vector as
 \begin{equation*}
-    \tilde{x}_k = \begin{bmatrix} x_k \\ z_k \\ y_{k-1} \\ u_k \end{bmatrix} .
+    \tilde{x}_t = \begin{bmatrix} x_t \\ z_t \\ y_{t-1} \\ u_t \end{bmatrix} .
 \end{equation*}
 As seen in Figure~\ref{fig:ctrl-loop}, the only external input of the closed-loop system is the disturbance $w$.
 Hence, the state of the closed loop evolves according to the time-varying linear system
 \begin{equation}
     \label{eq:cl-system}
-    \tilde{x}_{k+1} = \clmat{}_{k} \tilde{x}_k + \clinp{} w_k.
+    \tilde{x}_{t+1} = \clmat{}_{t} \tilde{x}_t + \clinp{} w_t.
 \end{equation}
 Here,
 \begin{equation*}
     \clinp{} = \begin{bmatrix} \Wp \\ 0_{(n_z+n_y+n_u) \times n_w} \end{bmatrix},
 \end{equation*}
-while $\clmat{}_k$ can be either $\clmat{}_{hit}(\counter)$ or $\clmat{}_{miss}$, depending on whether the current deadline was hit or missed, and defined as
+while $\clmat{}_t$ can be either $\clmat{}_{hit}(\counter)$ or $\clmat{}_{miss}$, depending on whether the current deadline was hit or missed, and defined as
 \begin{equation*}
     \clmat{}_{hit}(\counter) = \begin{bmatrix} \Ap & 0 & 0 & \Bp \\
         \Bc_y(\counter) \, \Cp & \Ac_z(\counter) & \Ac_y(\counter) & \Bc_y(\counter) \, \Dp \\
@@ -187,11 +187,11 @@ where $\counter$ denotes the number of consecutive deadline misses since the las
     0 & 0 & 0 & I_{n_u} \end{bmatrix}.
 \end{equation*}
 
-Assuming that $w$ is a zero-mean white noise process with known covariance matrix $R = \E{w_k \cdot w_k^{\T}} \in \R^{n_w \times n_w}$, we can calculate how the state covariance, $P_k = \E{\tilde{x}_k\cdot \tilde{x}_k^{\T}}$, evolves over time.
+Assuming that $w$ is a zero-mean white noise process with known covariance matrix $R = \E{w_t \cdot w_t^{\T}} \in \R^{n_w \times n_w}$, we can calculate how the state covariance, $P_t = \E{\tilde{x}_t\cdot \tilde{x}_t^{\T}}$, evolves over time.
 Evaluating the covariance of both sides in Equation~\eqref{eq:cl-system} we obtain (see, e.g., \cite{AstWit:1984})
 \begin{equation}
     \label{eq:covariance}
-    P_{k+1} = \clmat{}_k P_k \clmat{}_k^{\T} + \clinp{} R \clinp{}^{\T} .
+    P_{t+1} = \clmat{}_t P_t \clmat{}_t^{\T} + \clinp{} R \clinp{}^{\T} .
 \end{equation}
 
 \begin{figure}[t]
@@ -207,7 +207,7 @@ In each interval, the system will experience $\counter$ deadline misses followed
 \begin{equation*}
     \label{eq:intervalP}
     \begin{aligned}
-        P_{k+q+1} &= \clmat{}_{hit}(\counter)  \Bigl((\clmat{}_{miss})^\counter P_k (\clmat{}_{miss}^{\T})^\counter \Bigr.\\
+        P_{t+q+1} &= \clmat{}_{hit}(\counter)  \Bigl((\clmat{}_{miss})^\counter P_t (\clmat{}_{miss}^{\T})^\counter \Bigr.\\
         &\Bigl.+ \textstyle\sum_{i=0}^{q-1} (\clmat{}_{miss})^i \clinp{} R \clinp{}^{\T} (\clmat{}_{miss}^{\T})^i \Bigr)\clmat{}_{hit}^{\T}(\counter)  \\
         &+ \clinp{} R \clinp{}^{\T} .
     \end{aligned}
@@ -224,25 +224,25 @@ where
 \end{equation*}
 
 To compare the performance of different implementations, we first define the \emph{ideal performance} as the cost $J$ obtained when there are no deadline misses (i.e., $p_0 = 1$ and $p_i = 0$, $i \geq 1$).
-We then obtain the \emph{relative performance degradation} of an arbitrary controller $\ctrler^{\dagger}$ by calculating the weighted mean-square difference between the actual and ideal systems' outputs, $y^{\dagger}_k$ and $y_k$ respectively, and normalising it with respect to the ideal performance $J$:
+We then obtain the \emph{relative performance degradation} of an arbitrary controller $\ctrler^{\dagger}$ by calculating the weighted mean-square difference between the actual and ideal systems' outputs, $y^{\dagger}_t$ and $y_t$ respectively, and normalising it with respect to the ideal performance $J$:
 \begin{equation}
     \label{eq:relcost}
-    \frac{\Delta J^{\dagger}}{J} = \frac{\E{ (y^{\dagger}_k - y_k)^{\T} Q (y^{\dagger}_k - y_k) }}{ \E{ y_k^{\T} Q y_k }}.
+    \frac{\Delta J^{\dagger}}{J} = \frac{\E{ (y^{\dagger}_t - y_t)^{\T} Q (y^{\dagger}_t - y_t) }}{ \E{ y_t^{\T} Q y_t }}.
 \end{equation}
-This can be found by analysing both systems in parallel when driven by the same noise sequence $w_k$:
+This can be found by analysing both systems in parallel when driven by the same noise sequence $w_t$:
 \begin{equation*}
     \begin{bmatrix}
-        \tilde{x}_{k+1}^\dagger \\ \tilde{x}_{k+1}%^b 
+        \tilde{x}_{t+1}^\dagger \\ \tilde{x}_{t+1}%^b 
     \end{bmatrix} =
     \begin{bmatrix}
-        \clmat{}_k^\dagger & 0 \\ 0 & \clmat{}_k%^b
+        \clmat{}_t^\dagger & 0 \\ 0 & \clmat{}_t%^b
     \end{bmatrix}
     \begin{bmatrix}
-        \tilde{x}_k^\dagger \\ \tilde{x}_k%^b 
+        \tilde{x}_t^\dagger \\ \tilde{x}_t%^b 
     \end{bmatrix} +
     \begin{bmatrix}
         \clinp{} \\ \clinp{}
-    \end{bmatrix} w_k
+    \end{bmatrix} w_t
 \end{equation*}
 After finding the stationary state covariance $\overbar{P}_e$ of this extended system (using the same technique as referred to above), we can retrieve the absolute performance difference as
 \begin{equation*}
