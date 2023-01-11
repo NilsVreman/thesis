@@ -103,27 +103,27 @@ The first item refers to what happens to the internal state $z$ when the control
 Henceforth, we assume that when the controller misses its deadline, the controller state is \emph{not} updated (implying $z_{t+1} = z_t$). 
 This is motivated by the possibility to roll back $z_t$ to a previous state~\cite{akesson:2020, Seong:2001, Zhang:2003} and by the impossibility to guarantee that the state update was finished if the job was only partially completed.
 
-Regarding the second item, mainly two actuator models have previously been considered in the literature: \emph{Zero} and \emph{Hold} \cite{Schenato:2009}.
-Under the Zero model, if the job released at time $t\Ts$ misses its deadline at time  $(t+1)\Ts$, the actuator outputs $u_{t+1} = 0$.
+Regarding the second item, mainly two actuator models have previously been considered in the literature: \emph{\tZ{}} and \emph{\tH{}} \cite{Schenato:2009}.
+Under the \tZ{} model, if the job released at time $t\Ts$ misses its deadline at time  $(t+1)\Ts$, the actuator outputs $u_{t+1} = 0$.
 This strategy is uncommon in practice, because it performs well only in very specific cases~\cite{Vreman:2021ecrts}. 
 Instead, the more common actuator model is to hold the control signal in the case of a missed deadline: $u_{t+1} = u_t$.
-Although our proposed adaptation is in itself independent of the actuator model, the Hold model has been adopted in the analysis and examples of this paper.
+Although our proposed adaptation is in itself independent of the actuator model, the \tH{} model has been adopted in the analysis and examples of this paper.
 
 % For the final item, there exists at least three different employable strategies dealing with missed deadlines: 
 For what concerns the handling of the job that missed the deadline, there exist at least three different employable strategies:
 \begin{enumerate*}[label=(\alph*)] % roman already used for the three aspects
-    \item \emph{Kill}
-    \item \emph{Skip-Next}, and 
-    \item \emph{Queue}.
+    \item \emph{\tK{}}
+    \item \emph{\tS{}}, and 
+    \item \emph{\tQ{}}.
 \end{enumerate*}
-When using the Kill strategy, the job that missed its deadline gets terminated, the controller state is rolled back, and the next job is released. 
-The Skip-Next strategy does not terminate the job that missed its deadline. 
+When using the \tK{} strategy, the job that missed its deadline gets terminated, the controller state is rolled back, and the next job is released. 
+The \tS{} strategy does not terminate the job that missed its deadline. 
 Instead, it lets the job continue its execution, not releasing subsequent jobs until the active one has finished executing.
-Queue behaves similarly to the Skip-Next strategy: it does not kill the current job, but it does release the subsequent jobs to the job queue.
-Both the Skip-Next and Queue strategies allow jobs to work with outdated input data, since they do not terminate jobs that miss their deadline.
-Thus, they introduce a lag in the actuation of the control law, which in most cases reduces the control performance with respect to what could be achieved with the Kill strategy.
+\tQ{} behaves similarly to the \tS{} strategy: it does not kill the current job, but it does release the subsequent jobs to the job queue.
+Both the \tS{} and \tQ{} strategies allow jobs to work with outdated input data, since they do not terminate jobs that miss their deadline.
+Thus, they introduce a lag in the actuation of the control law, which in most cases reduces the control performance with respect to what could be achieved with the \tK{} strategy.
 
-For the remainder of this paper we will use the Kill strategy, since it
+For the remainder of this paper we will use the \tK{} strategy, since it
 \begin{enumerate*}[label=(\alph*)]
     \item introduces explicit breakpoints in which to adapt the controller,
     \item supplies the controller with the latest sensor measurement after an overrun,
@@ -131,7 +131,7 @@ For the remainder of this paper we will use the Kill strategy, since it
     \item is a common choice in both industry and literature~\cite{akesson:2020, Bernat:2001, Hertneck:2019}.
 \end{enumerate*}
 Furthermore, we note that in~\cite{Vreman:2021ecrts} it has been observed that the actuator model is of greater relevance than the handling of the deadline overrun.
-We also note that an effective implementation of the kill strategy that includes state roll-back requires the implementation of checkpointing mechanisms~\cite{Zhang:2003,Seong:2001}, which might not be implemented by default in a real-time system.
+We also note that an effective implementation of the \tK{} strategy that includes state roll-back requires the implementation of checkpointing mechanisms~\cite{Zhang:2003,Seong:2001}, which might not be implemented by default in a real-time system.
 
 We conclude this section by mentioning that various models have been proposed to describe tasks
 that may experience deadline misses, e.g., soft~\cite{Marchand:2008} or weakly hard models~\cite{Bernat:2001, hammadeh:2017}.

@@ -13,22 +13,22 @@
     xtick distance=1, enlarge x limits=0.05,
     extra x ticks={1}]
 
-    \nextgroupplot[title={\textbf{\textcolor{white}{p}Kill\&Hold\textcolor{white}{p}}}, ymax=70, ylabel={\textbf{$\,\,$Batch 1}},
+    \nextgroupplot[title={\textcolor{white}{p}\tKH{}\textcolor{white}{p}}, ymax=70, ylabel={\textbf{$\,\,$Batch 1}},
     xtick distance=3, enlarge x limits=0.02]
     \addplot[thin, black, fill=blue] table[x=ID, y=HITS, col sep=comma]
     {\figdir/data/processed/B1_KH_10.csv};
 
-    \nextgroupplot[title={\textbf{Skip\&Hold}}, ymax=70,
+    \nextgroupplot[title={\tSH{}}, ymax=70,
     xtick distance=3, enlarge x limits=0.02]
     \addplot[thin, black, fill=pink!75!black] table[x=ID, y=HITS, col sep=comma]
     {\figdir/data/processed/B1_SH_10.csv};
 
-    \nextgroupplot[title={\textbf{\textcolor{white}{p}Kill\&Zero\textcolor{white}{p}}}, ymax=70,
+    \nextgroupplot[title={\textcolor{white}{p}\tKZ{}\textcolor{white}{p}}, ymax=70,
     xtick distance=3, enlarge x limits=0.02]
     \addplot[thin, black, fill=cyan] table[x=ID, y=HITS, col sep=comma]
     {\figdir/data/processed/B1_KZ_10.csv};
 
-    \nextgroupplot[title={\textbf{Skip\&Zero}}, ymax=70,
+    \nextgroupplot[title={\tSZ{}}, ymax=70,
     xtick distance=3, enlarge x limits=0.02]
     \addplot[thin, black, fill=red] table[x=ID, y=HITS, col sep=comma]
     {\figdir/data/processed/B1_SZ_10.csv};

@@ -26,8 +26,7 @@ More precisely, we offer the following contributions:
     \item We propose a new type of weakly hard task model, which specifies a \emph{consecutive} deadline miss interval followed by a minimum \emph{consecutive} deadline hit (recovery) interval.
         This model is crucial to properly assess the performance effect of a burst of deadline misses, as the ones reported by practitioners~\cite{Akesson:2020}.
 
-    \item We provide an analysis methodology for stability and performance of control tasks executing under this task model using a variety of implementation choices to handle deadline misses (Kill vs.
-        Skip-Next, Zero vs. Hold).
+    \item We provide an analysis methodology for stability and performance of control tasks executing under this task model using a variety of implementation choices to handle deadline misses (\tK{} vs. \tS{}, \tZ{} vs. \tH{}).
         In particular, we separately consider the two cases in which a miss pattern is repeated (which fits an increased workload situation---for example due to a different mode of execution), and in which it is not possible to specify constraints on the repetition of the miss pattern.
 
     \item We compare experimental results obtained with a real process---a Furuta pendulum that is stabilised in the upright position---with simulation results based on a linear model of the same process, using the same controller. 

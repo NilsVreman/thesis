@@ -11,24 +11,24 @@ To analyse the system, we need to clarify three aspects about the miss behaviour
     \item The computational model used for the analysis (how many deadlines can we miss, and in what pattern).
 \end{enumerate}
 
-For the first item, the actuator can either output a \emph{zero} ($u_t = 0_{n_u \times 1}$), or \emph{hold} the previous value ($u_t = u_{t-1}$).
+For the first item, the actuator can either output a \emph{\tZ{}} ($u_t = 0_{n_u \times 1}$), or \emph{\tH{}} the previous value ($u_t = u_{t-1}$).
 The choice depends on both the plant dynamics and on the controller, as no strategy in general dominates the other one \cite{schenato09}.
 For controllers with integral action, it makes sense to hold the previous control value, under the presumption that the system is still disturbed and that a non-zero control signal is needed to keep the plant close to its operating point.
-On the other hand, the zero strategy may be preferred for plants with unstable or integrator dynamics, where outputting a zero control action may be the safer option.
+On the other hand, the \tZ{} strategy may be preferred for plants with unstable or integrator dynamics, where outputting a zero control action may be the safer option.
 
 Considering the second item, at least three different strategies can be employed to deal with a control task that misses its deadline~\cite{Cervin:2005}:
 \begin{enumerate*}[label=(\roman*)]
-    \item \emph{Kill},
-    \item \emph{Skip-Next},
-    \item and \emph{Queue$\funof{\sigma}$} ($\sigma \in \left\{ 1, 2, 3, \ldots \right\}$).
+    \item \emph{\tK{}},
+    \item \emph{\tS{}},
+    \item and \emph{\tQ{}$\funof{\sigma}$} ($\sigma \in \left\{ 1, 2, 3, \ldots \right\}$).
 \end{enumerate*}
 %
-When the Kill strategy is used, the job that missed its deadline is terminated, its changes are rolled back, and the next job is released.
-Following the Skip-Next strategy, the job that missed its deadline continues its execution.
+When the \tK{} strategy is used, the job that missed its deadline is terminated, its changes are rolled back, and the next job is released.
+Following the \tS{} strategy, the job that missed its deadline continues its execution.
 No new control task jobs are released until the currently running one completes its execution.
-Queue$\funof{\sigma}$ behaves similarly to Skip-Next in allowing the current job to complete execution, but also allows the activation of new jobs (the queue of active jobs holds up to the most recent $\sigma$ instances of the control task).
-In this paper we only analyse Kill and Skip-Next.
-In fact, the results presented in~\cite{Cervin:2005,Maggio:2020} suggest that Queue$\funof{\sigma}$ is not a feasible strategy to handle misses.
+\tQ{}$\funof{\sigma}$ behaves similarly to \tS{} in allowing the current job to complete execution, but also allows the activation of new jobs (the queue of active jobs holds up to the most recent $\sigma$ instances of the control task).
+In this paper we only analyse \tK{} and \tS{}.
+In fact, the results presented in~\cite{Cervin:2005,Maggio:2020} suggest that \tQ{}$\funof{\sigma}$ is not a feasible strategy to handle misses.
 The presence of two or more active jobs in the same period creates a chain effect that is hard to recover from and that deteriorates stability and performance.
 %verloads the system, that loses the ability of
 %withstanding even a few misses.

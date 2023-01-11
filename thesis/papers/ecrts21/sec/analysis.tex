@@ -11,10 +11,10 @@ When the fault is resolved, then the original situation is recovered (possibly a
 Specifically, given a system $\clsys$, we define a \emph{burst interval} $\miss$ as an interval of controller activations in which the control task executing $\ctrler$ consecutively misses $\nummisses$ deadlines, regardless of the strategy used to handle the misses.
 We assume that the burst interval $\miss$ is followed by a \emph{recovery interval} $\recovery$, defined as an interval in which the control task consecutively hits $\numhits$ deadlines.
 
-During the burst interval, the deadline misses of the control task are handled using a \emph{deadline handling strategy} $\dstrat$ (Kill, $K$, or Skip-Next, $S$).
-The control signal $u_t$ is selected in accordance with the \emph{actuation strategy} $\hstrat$ (Zero, $Z$, or Hold, $H$).
+During the burst interval, the deadline misses of the control task are handled using a \emph{deadline handling strategy} $\dstrat$ (\tK{}, $K$, or \tS{}, $S$).
+The control signal $u_t$ is selected in accordance with the \emph{actuation strategy} $\hstrat$ (\tZ{}, $Z$, or \tH{}, $H$).
 We denote the combination of $\dstrat$ and $\hstrat$ with~$\strat = \left(\dstrat,\hstrat\right)$.
-For example $\strat$ could be $SZ$ to indicate that the Skip-Next deadline handling strategy is paired with the Zero actuation strategy.
+For example $\strat$ could be $SZ$ to indicate that the \tS{} deadline handling strategy is paired with the \tZ{} actuation strategy.
 The system \emph{recovers} once it operates close to steady-state.
 
 %%%%%%%%%%%%%%% Nils' Version %%%%%%%%%%%%%%%
@@ -52,7 +52,7 @@ In this section we derive the system dynamics for a closed-loop control system u
 Under \emph{normal operating conditions} the system is not experiencing any deadline misses.
 In other words, the system evolves according to the closed-loop system dynamics~\eqref{eq:feedback-basic}.
 
-\textbf{Kill\&Zero: }%
+\textbf{\tKZ{}: }%
 %
 If a control task deadline miss occurs at time instant $t$, the plant states $x_t$ still evolve as normal.
 However, the controller terminates its execution prematurely by killing the job, thus not updating its states ($z_{t+1} = z_t$).
@@ -74,7 +74,7 @@ The resulting closed-loop system in state-space form is
         \Ap                                         & 0_{n_x \times n_z}  & \Bp \\
         0_{n_z \times n_x}    & I                                         & 0_{n_z \times n_u} \\
         0_{n_u \times n_x}   & 0_{n_u \times n_z}   & 0_{n_u \times n_u}
-    \end{bmatrix}^{\nummisses}}_{\clmat{}_{tZ}\funof{\nummisses}}
+    \end{bmatrix}^{\nummisses}}_{\clmat{}_{KZ}\funof{\nummisses}}
     \begin{bmatrix}
         x_{t} \\
         z_{t} \\
@@ -82,15 +82,15 @@ The resulting closed-loop system in state-space form is
     \end{bmatrix},
 \end{equation}
 %
-where $\clmat{}_{tZ}\funof{\nummisses}$ represents the system matrix for $\nummisses$ misses under the Kill\&Zero strategy, followed by a single hit (the matrix $\clmat{}$ that is multiplied to the left of the equation).
+where $\clmat{}_{KZ}\funof{\nummisses}$ represents the system matrix for $\nummisses$ misses under the \tKZ{} strategy, followed by a single hit (the matrix $\clmat{}$ that is multiplied to the left of the equation).
 The matrix $\clmat{}$ is the same specified in~\eqref{eq:matrixA}, and represents the first hit that follows the $\nummisses$ misses, hence, we determine how $\tilde{x}_t$ influences $\tilde{x}_{t+m+1}$ ($\nummisses$ misses and one hit).
 
-\textbf{Kill\&Hold: }%
+\textbf{\tKH{}: }%
 %
-Changing the actuation strategy to Hold, slightly alters the system matrix we derived for the Kill\&Zero case.
+Changing the actuation strategy to \tH{}, slightly alters the system matrix we derived for the \tKZ{} case.
 The plant states $x_t$ evolve as normal and the control states $z_t$ are still not updated ($z_{t+1} = z_t$).
 However, due to the change in actuation strategy, the last actuated value is instead held ($u_{t+1} = u_t$).
-The resulting closed-loop state-space form can be seen in~\eqref{eq:KH}, where $\clmat{}_{tH}\funof{\nummisses}$ is used to represent the system matrix for $\nummisses$ misses under the Kill\&Hold strategy and matrix $\clmat{}$ is specified in~\eqref{eq:matrixA}.
+The resulting closed-loop state-space form can be seen in~\eqref{eq:KH}, where $\clmat{}_{KH}\funof{\nummisses}$ is used to represent the system matrix for $\nummisses$ misses under the \tKH{} strategy and matrix $\clmat{}$ is specified in~\eqref{eq:matrixA}.
 %
 \begin{equation}
     \setlength\arraycolsep{2pt}
@@ -104,7 +104,7 @@ The resulting closed-loop state-space form can be seen in~\eqref{eq:KH}, where $
         \Ap                                         & 0_{n_x \times n_z}  & \Bp \\
         0_{n_z \times n_x}    & I                                         & 0_{n_z \times n_u} \\
         0_{n_u \times n_x}   & 0_{n_u \times n_z}   & I
-    \end{bmatrix}^{\nummisses}}_{\clmat{}_{tH}\funof{\nummisses}}
+    \end{bmatrix}^{\nummisses}}_{\clmat{}_{KH}\funof{\nummisses}}
     \begin{bmatrix}
         x_{t} \\
         z_{t} \\
@@ -112,14 +112,14 @@ The resulting closed-loop state-space form can be seen in~\eqref{eq:KH}, where $
     \end{bmatrix}
 \end{equation}
 
-\textbf{Skip-Next\&Zero: }%
+\textbf{\tSZ{}: }%
 %
-When the control task misses a deadline under the Skip-Next strategy, the job missing the deadline is allowed to continue its execution until completion.
+When the control task misses a deadline under the \tS{} strategy, the job missing the deadline is allowed to continue its execution until completion.
 However, no subsequent job of the control task is released until the current job has finished executing.
 If the currently active job terminates during period $t$, the next control job is released at the start of the $t+1$-th period.
 We can then write the evolution of the system where the control job experiences $\nummisses$ misses before completing its execution, meaning that there is a subsequent hit that uses old information for the error measurements.
 While the controller executed only once to completion, the plant evolved for $\nummisses+1$ steps.
-The resulting closed-loop state-space form can be seen in~\eqref{eq:SZ}, where $\clmat{}_{SZ}\funof{\nummisses}$ is used to represent the system matrix under the Skip-Next\&Zero strategy for $\nummisses$ misses and one completion using old measurements.
+The resulting closed-loop state-space form can be seen in~\eqref{eq:SZ}, where $\clmat{}_{SZ}\funof{\nummisses}$ is used to represent the system matrix under the \tSZ{} strategy for $\nummisses$ misses and one completion using old measurements.
 %
 \begin{equation}
 \setlength\arraycolsep{2pt}
@@ -141,12 +141,12 @@ The resulting closed-loop state-space form can be seen in~\eqref{eq:SZ}, where $
     \end{bmatrix}
 \end{equation}
 
-\textbf{Skip-Next\&Hold: }%
+\textbf{\tSH{}: }%
 %
-Similar to Skip-Next\&Zero, one job finishes execution after $\nummisses$ consecutive misses.
+Similar to \tSZ{}, one job finishes execution after $\nummisses$ consecutive misses.
 However, the actuation strategy holds the previous control value during the entire burst interval.
 Therefore, the plant evolution is affected by a cumulative sum over the prior control values.
-The resulting closed-loop state-space form can be seen in~\eqref{eq:SH}, where $\clmat{}_{SH}\funof{\nummisses}$ is used to represent the system matrix for $\nummisses$ misses under the Skip-Next\&Hold strategy.
+The resulting closed-loop state-space form can be seen in~\eqref{eq:SH}, where $\clmat{}_{SH}\funof{\nummisses}$ is used to represent the system matrix for $\nummisses$ misses under the \tSH{} strategy.
 %
 \begin{equation}
 \setlength\arraycolsep{2pt}
@@ -210,7 +210,7 @@ In other words, a system is \switchingstability{} stable if and only if it is st
 \end{equation}
 %
 Switching stability is unfortunately quite involved.\footnote{We have devoted some research effort into the investigation of a suitable stability analysis for control tasks subject to a set of weakly-hard constraints (of the type presented in Defintion~\ref{def:wh-models}). A summary of our findings can be found at \url{https://arxiv.org/abs/2101.11312}.}
-However, many excellent tools have been developed to simplify this analysis (e.g., \texttt{MJSR}~\cite{Maggio:2020} or the \texttt{JSR toolbox}~\cite{Jungers:2014} for MATLAB).
+However, many excellent tools have been developed to simplify this analysis (e.g., \code{MJSR}~\cite{Maggio:2020} or the \code{JSR toolbox}~\cite{Jungers:2014} for MATLAB).
 
 \paragraph*{Performance}%
 %\label{sec:performance}
@@ -236,13 +236,13 @@ where
         \end{bmatrix}, \\
         j_{\nummisses} &= 
         \begin{cases} 
-            \nummisses - 1 & \text{ if } \dstrat = K\,\, \text{(Kill),} \\ 
-            \nummisses & \text{ if } \dstrat = S\,\,\,\, \text{(Skip-Next),} 
+            \nummisses - 1 & \text{ if } \dstrat = K\,\, \text{(\tK{}),} \\ 
+            \nummisses & \text{ if } \dstrat = S\,\,\,\, \text{(\tS{}),} 
         \end{cases} \\
         j_{\numhits} &= 
         \begin{cases} 
-            1 \phantom{||222} & \text{ if } \dstrat = K\,\, \text{(Kill),} \\ 
-            0 & \text{ if } \dstrat = S\,\,\,\, \text{(Skip-Next).}
+            1 \phantom{||222} & \text{ if } \dstrat = K\,\, \text{(\tK{}),} \\ 
+            0 & \text{ if } \dstrat = S\,\,\,\, \text{(\tS{}).}
         \end{cases}
         \end{aligned}
 \end{equation}
@@ -277,10 +277,10 @@ where $\varepsilon> 0$ is the \emph{recovery threshold}.
 \begin{figure}[t]
     \centering
     \input{\figdir/performance-example} 
-    \caption{Illustration of normalised cost ($J_t/J_\infty$), performance recovery interval $\recoverylengthinterval_{\strat}$ and maximum normalised cost $J_{M,\strat}$ on a data trace. The example uses $\strat = \text{Kill\&Zero}$ and $\varepsilon=0.1$.}
+    \caption{Illustration of normalised cost ($J_t/J_\infty$), performance recovery interval $\recoverylengthinterval_{\strat}$ and maximum normalised cost $J_{M,\strat}$ on a data trace. The example uses $\strat = \text{\tKZ{}}$ and $\varepsilon=0.1$.}
     \label{fig:recoveryandpeak}
 \end{figure}
-Figure~\ref{fig:recoveryandpeak} gives a graphical representation of $\recoverylengthinterval_{\strat}$ and $J_{M,\strat}$ for an execution trace in which the controller experiences 3 misses and uses Kill\&Zero as strategy $\strat$.
+Figure~\ref{fig:recoveryandpeak} gives a graphical representation of $\recoverylengthinterval_{\strat}$ and $J_{M,\strat}$ for an execution trace in which the controller experiences 3 misses and uses \tKZ{} as strategy $\strat$.
 
 Compared to the stability analysis, the performance analysis also takes into account state deviations and uncertainty due to disturbances.
 In Section~\ref{sec:derivation} we used the system dynamics to analyse the stability of the system.

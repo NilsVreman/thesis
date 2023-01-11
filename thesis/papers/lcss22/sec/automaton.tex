@@ -16,24 +16,24 @@ In particular, all the walks in the automaton corresponds to \emph{all} words in
 
 The \tool{} automaton model only operate on the binary alphabet $\Sigma = \left\{\cM, \cH\right\}$. 
 To deal with the discrepancy between the \tool{} automaton model and the \ewhc{}, we introduce an additional auxiliary character $\cT$ to represent all outcomes where a job is completed (ergo; $\cT = \left\{ \cH,\, \cR \right\}$).
-Thus, we first construct the automaton using the binary alphabet $\Sigma = \{\cM, \cT\}$ and then perform a post-processing step where Rule~\ref{rule:R} is enforced (for the Skip-Next strategy) and the transitions are corrected, i.e., switching the labels on some edges from $\cT$ to $\cH$ or $\cR$ respectively. 
+Thus, we first construct the automaton using the binary alphabet $\Sigma = \{\cM, \cT\}$ and then perform a post-processing step where Rule~\ref{rule:R} is enforced (for the \tS{} strategy) and the transitions are corrected, i.e., switching the labels on some edges from $\cT$ to $\cH$ or $\cR$ respectively. 
 
 \begin{example}%
     \label{ex:auto-kill}%
-    Given an \ewhc{}, $\lambda^{\strat} = \overbar{\binom{1}{3}}^{\text{Kill}}$, the automaton $\GG{\lambda^{\strat}}$ is shown in the left-hand side of Figure~\ref{fig:min-graph}.
+    Given an \ewhc{}, $\lambda^{\strat} = \overbar{\binom{1}{3}}^{\tK{}}$, the automaton $\GG{\lambda^{\strat}}$ is shown in the left-hand side of Figure~\ref{fig:min-graph}.
     The vertex represented by the word $\cX\cH\cH$ is obtained by merging $\cH\cH\cH$ and $\cM\cH\cH$.
 \end{example}
 
 \begin{example}%
     \label{ex:auto-skip}%
-    Given an \ewhc{}, $\lambda^{\strat} = \overbar{\binom{1}{3}}^{\text{Skip-Next}}$, the automaton $\GG{\lambda^{\strat}}$ is shown in the right-hand side of Figure~\ref{fig:min-graph}.
+    Given an \ewhc{}, $\lambda^{\strat} = \overbar{\binom{1}{3}}^{\tS{}}$, the automaton $\GG{\lambda^{\strat}}$ is shown in the right-hand side of Figure~\ref{fig:min-graph}.
 \end{example}
 
-The minimal automaton for Kill and Skip-Next in Figure~\ref{fig:min-graph} have identical number of vertices but slightly different transitions.
+The minimal automaton for \tK{} and \tS{} in Figure~\ref{fig:min-graph} have identical number of vertices but slightly different transitions.
 This is not a coincidence, but follows directly from Definition~\ref{def:new-mk} and the extended alphabet $\Sigma\left(\strat\right)$.
 Since we build the automaton using the job completion character $\cT$, both automata will always have the same structure.
 It is only the first job completion, after a period of no job completions ($\cM$), that differ.
-We emphasise that despite the extended automaton model appear similar for the Kill and Skip-Next strategies, the differing transitions of the two automata significantly affect the corresponding closed-loop systems, as will be clear in Section~\ref{sec:stability}.
+We emphasise that despite the extended automaton model appear similar for the \tK{} and \tS{} strategies, the differing transitions of the two automata significantly affect the corresponding closed-loop systems, as will be clear in Section~\ref{sec:stability}.
 
 The \tool{} automaton model can also handle the case where a task $\tau$ is subject to a set of multiple constraints.
 Intuitively, building upon Definition~\ref{def:satisfaction}, the satisfaction set of $\Lambda^{\strat}$ can be derived as follows:

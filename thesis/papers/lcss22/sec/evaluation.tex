@@ -1,7 +1,7 @@
 We now apply the lifted dynamics model presented in Section~\ref{sec:stability} to two representative case studies.
 The corresponding controllers are designed to stabilise the closed loop in ideal conditions, i.e., without deadline misses.
 Numerical experiments are performed to analyse the stability of the control systems subject to different constraints, particularly the $\eanymiss{}{\strat}$ constraints.
-We consider all combinations of strategy (Kill or Skip-Next) and actuator mode (Zero or Hold).
+We consider all combinations of strategy (\tK{} or \tS{}) and actuator mode (\tZ{} or \tH{}).
 
 For each combination of control system and \ewhc{}, $\lambda^{\strat}$, the lifted set $\Alifted_{\lambda^\strat}$ is generated.
 We approximate the JSR of $\Alifted_{\lambda^\strat}$ using three different algorithms.
@@ -62,7 +62,7 @@ We here analyse a stable discrete-time plant $\plant_1$, representative of the p
     \clearpage
 }
 
-Table~\ref{table:stable} displays the results obtained with all combinations of strategy (Kill or Skip-Next) and actuator mode (zeroing or holding).
+Table~\ref{table:stable} displays the results obtained with all combinations of strategy (\tK{} or \tS{}) and actuator mode (\tZ{} or \tH{}).
 
 Lower and upper bounds are denoted ``LB'' and ``UB''. 
 The symbol ``$-$'' means that the SDP solver runs out of memory.
@@ -74,13 +74,13 @@ Starred values represent stable systems inferred from Corollary~\ref{cor:rho_dom
 All the upper bounds computed by \code{JSR toolbox} are greater than 1, while all lower bounds are \emph{below} 1, thus we cannot draw any conclusion about the stability of the considered system using the \code{JSR toolbox}.
 In contrast, the dense/sparse SOS method finds better upper bounds but takes more time.
 
-The speedup ratio between the dense and sparse SOS is growing when $k$ increases, yielding a particularly high benefit of exploiting sparsity for the Skip-Next strategy and Zero actuation.
+The speedup ratio between the dense and sparse SOS is growing when $k$ increases, yielding a particularly high benefit of exploiting sparsity for the \tS{} strategy and \tZ{} actuation.
 For instance, with $x=1$ the computing time of the sparse upper bound goes from 0.43 ($k=2$) to 13.1 seconds ($k=6$).
 %
 Furthermore, the complexity of the analysis increases with the value of $x$.
 This follows from the higher number of vertices in the corresponding automaton, thus increasing the sizes of the matrices in $\Alifted_{\lambda}$. 
 %
-As a consequence, the tests using the dense SOS ran out of memory for $\eanymiss{}{\strat} = \overbar{\binom{x}{6}}^{\text{Skip-Next}}, x \in \left\{ 2, 3, 4 \right\}$ using both Hold and Zero actuation.
+As a consequence, the tests using the dense SOS ran out of memory for $\eanymiss{}{\strat} = \overbar{\binom{x}{6}}^{\text{\tS{}}}, x \in \left\{ 2, 3, 4 \right\}$ using both \tH{} and \tZ{} actuation.
 Despite the dense memory failures, it takes less than 2 minutes to obtain the sparse upper bounds.
 
 
@@ -112,7 +112,7 @@ The dynamics are given by an unstable discrete-time model $\plant_2$, which is s
 \end{equation*}
 
 Table~\ref{table:unstable} displays the results.
-Again, applying Corollary~\ref{cor:rho_dominance_mk}, the stability of the case $\overbar{\binom{1}{2}}^{\strat}$ guarantees that the system is stable for $x=1$ and $k>2$, under both the Kill and Skip-Next strategies.
+Again, applying Corollary~\ref{cor:rho_dominance_mk}, the stability of the case $\overbar{\binom{1}{2}}^{\strat}$ guarantees that the system is stable for $x=1$ and $k>2$, under both the \tK{} and \tS{} strategies.
 Almost all reported sparse SOS upper bounds have been obtained with the first relaxation order $d=1$, using the same notation as for Table~\ref{table:stable}.
 However, we extend the notation by underlining values computed with the second relaxation order $d=2$.
 These values correspond to tighter upper bounds on the joint spectral radii, but come with a much higher computational cost.

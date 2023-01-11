@@ -73,7 +73,7 @@ We first apply the stability analyses presented in Section~\ref{sec:derivation} 
     \label{fig:stability_extended}
 \end{figure}
 Figure~\ref{fig:stability_extended} shows the results. Each square in the figure represents a combination of (at most) $m$ deadline misses (on the vertical axis) and (at least) $n$ deadline hits (on the horizontal axis).
-If a square is coloured with a dark colour, the corresponding combination of misses and hits is both \nilsstability{} and \switchingstability{} stable, found using the \texttt{JSR Toolbox}~\cite{Jungers:2014}. 
+If a square is coloured with a dark colour, the corresponding combination of misses and hits is both \nilsstability{} and \switchingstability{} stable, found using the \code{JSR Toolbox}~\cite{Jungers:2014}. 
 The light squares in the figure show combinations for which the system only satisfies the \nilsstability{} stability condition. 
 The white squares mark configurations for which stability cannot be guaranteed.
 
@@ -81,16 +81,16 @@ We remark on the presence of peaks in the \nilsstability{} stability region of $
 Similar peaks are also found for the other strategies, but for different values of $\numhits$.
 These peaks indicate that the system would be stable if that particular burst and recovery interval length would be repeated indefinitely.
 However, this assumption is not robust to variations in the burst or recovery interval lengths as can be seen from the \switchingstability{} stability region being more conservative with its guarantees.
-Instead, the peaks in the \nilsstability{} region can be explained by stable modes occurring due to the natural frequencies of the open-loop (for the Zero actuation mode) and closed-loop (for the Hold actuation mode) systems.
-It is also interesting to note that Kill seems to consistently yield a larger stability region than Skip-Next, while neither Zero nor Hold dominate each other in terms of stability guarantees. An example of the latter fact was given already in~\cite{schenato09}.
+Instead, the peaks in the \nilsstability{} region can be explained by stable modes occurring due to the natural frequencies of the open-loop (for the \tZ{} actuation mode) and closed-loop (for the \tH{} actuation mode) systems.
+It is also interesting to note that \tK{} seems to consistently yield a larger stability region than \tS{}, while neither \tZ{} nor \tH{} dominate each other in terms of stability guarantees. An example of the latter fact was given already in~\cite{schenato09}.
 
 For the performance analysis, we considered a one-shot burst fault of a specific length $m$, followed by a long period of normal execution. 
-Assuming that the pendulum starts close to the upright equilibrium, with stationary cost $J_\infty$, we calculate how the covariance $P_t$ and performance cost $J_t$ evolve during and after the burst interval using Equations~\eqref{eq:covariance-evolution}--\eqref{eq:evolutionparameters}.\footnote{The analysis is implemented using \texttt{JitterTime}~\cite{Cervin:2019}, \url{https://www.control.lth.se/jittertime}.} 
+Assuming that the pendulum starts close to the upright equilibrium, with stationary cost $J_\infty$, we calculate how the covariance $P_t$ and performance cost $J_t$ evolve during and after the burst interval using Equations~\eqref{eq:covariance-evolution}--\eqref{eq:evolutionparameters}.\footnote{The analysis is implemented using \code{JitterTime}~\cite{Cervin:2019}, \url{https://www.control.lth.se/jittertime}.} 
 These calculations assume an ideal, linear model of the pendulum. 
 The simulation results for different strategies and bursts of length $m=20$ are shown in the upper half of Figure~\ref{fig:cost_simvsreal}. 
-For Hold, it is seen that the cost grows exponentially during the initial fault interval (the first $20\,\Ts=0.2\,$s). 
-This is true also for Zero, although the growth rate is too small to be visible.
-The reason for the poor performance of Hold is that any non-zero held control signal will actively push the pendulum away from its unstable upright equilibrium even further than either disturbances or noise would already do without a proper control action.
+For \tH{}, it is seen that the cost grows exponentially during the initial fault interval (the first $20\,\Ts=0.2\,$s). 
+This is true also for \tZ{}, although the growth rate is too small to be visible.
+The reason for the poor performance of \tH{} is that any non-zero held control signal will actively push the pendulum away from its unstable upright equilibrium even further than either disturbances or noise would already do without a proper control action.
 %
 \begin{figure}
     \centering
@@ -103,11 +103,11 @@ The reason for the poor performance of Hold is that any non-zero held control si
 
 
 The large spike in cost comes when the controller is reactivated at time $0.2\,$s. 
-Here, the Hold strategy again shows much worse performance than Zero, with the peak cost being almost an order of magnitude worse. 
-The difference between Kill and Skip-Next is relatively small, with the latter strategy consistently performing slightly worse than the former. 
-This is due to the small extra delay caused by using old data in the Skip-Next strategy.
+Here, the \tH{} strategy again shows much worse performance than \tZ{}, with the peak cost being almost an order of magnitude worse. 
+The difference between \tK{} and \tS{} is relatively small, with the latter strategy consistently performing slightly worse than the former. 
+This is due to the small extra delay caused by using old data in the \tS{} strategy.
 
-We conducted experiments on a Furuta pendulum, using the same controller for the real plant rather than its model.\footnote{A video, showing experiments with the real system and bursts of deadline misses can be viewed at \url{https://youtu.be/0P0K_7lvKVU}. The video shows a comparison of all the strategies for bursts of $(m = 20, n=480)$. Furthermore, we have included additional experiments with $(m=50, n=450)$ and $(m=75, n=425)$ for the Skip\&Hold strategy. The results of the additional experiments with higher values of $m$ are not described in the paper, as stability could not be guaranteed (and in fact the pendulum is not at all times kept in the upright position).}
+We conducted experiments on a Furuta pendulum, using the same controller for the real plant rather than its model.\footnote{A video, showing experiments with the real system and bursts of deadline misses can be viewed at \url{https://youtu.be/0P0K_7lvKVU}. The video shows a comparison of all the strategies for bursts of $(m = 20, n=480)$. Furthermore, we have included additional experiments with $(m=50, n=450)$ and $(m=75, n=425)$ for the \tSH{} strategy. The results of the additional experiments with higher values of $m$ are not described in the paper, as stability could not be guaranteed (and in fact the pendulum is not at all times kept in the upright position).}
 Initially, we performed 500 experiments with 500 jobs each and no deadline misses, to determine the nominal variance of the system---i.e., the stationary variance used to find the static cost $J_\infty$.
 For each strategy $\strat$ we then ran 500 identically set up experiments. 
 In each experiment, the control task operated according to the task model from Definition~\ref{def:task-model}, experiencing a burst of length $\nummisses=20$ misses, followed by by a recovery interval with $\numhits=480$ deadline hits.
@@ -121,14 +121,14 @@ The covariance matrix $P_t$ was derived by calculating the variance of the close
 The resulting performance cost can be seen in the lower half of Figure~\ref{fig:cost_simvsreal}, where the cost $J_t$ was calculated according to Equation~\eqref{eq:covartocost} and normalised using the stationary cost $J_\infty$. 
 Comparing the simulated (upper) and real (lower) performance costs in Figure~\ref{fig:cost_simvsreal}, we notice the similarities between the simulated analysis and the analysis performed on the physical plant. 
 %
-Particularly, the strategies involving Hold actuation show similar behaviours. 
+Particularly, the strategies involving \tH{} actuation show similar behaviours. 
 For these strategies, the simulated and real values are very close for the transient burst interval, the secondary cost peak (seen around time $0.4\,$s), and the maximum normalised cost $J_{M, \strat}$.
 However, the real cost is recovering slower than in the simulations---an effect that arises due to the nonlinear effects present in the real process, but unmodelled in the simulated environment.
 %
-Instead, comparing the Zero actuation strategies, the performance cost of the physical experiments during the burst interval seem to improve compared to the simulations.
+Instead, comparing the \tZ{} actuation strategies, the performance cost of the physical experiments during the burst interval seem to improve compared to the simulations.
 This is again likely due to the unmodelled dynamics (e.g., friction) appearing in the physical experiment but not in the simulations.
 The stiction component of the friction reduces the variance of the states when the actuation signal becomes zero.
-With longer burst intervals, a similar behaviour as for the Hold actuation strategies would appear.
+With longer burst intervals, a similar behaviour as for the \tH{} actuation strategies would appear.
 Despite this difference, both the recovery interval, the secondary cost peak (around $0.4\,$s), and the maximum normalised costs $J_{M,\strat}$ are comparable.
 
 We conclude that the results of the experiments performed on the physical process support the validity of the performance analysis presented in Section~\ref{sec:derivation}.
@@ -169,19 +169,19 @@ Figure~\ref{fig:overview10} shows the results for $\nummisses=10$.
 The first result that the figure shows is that the plant dynamics plays an important role in how the system reacts to misses.
 For example, the plants in Batch 4 and Batch 8 need around 20 hits to recover from a burst of 10 misses.
 On the contrary, the plants in Batch~6 and Batch 7 need a higher number of hits to recover from the same burst interval.
-The second result that is apparent from the figure is that the Hold actuation strategy recovers much better (performance-wise) than Zero.
-The reason why Hold outperforms Zero can be explained by the brown noise.
+The second result that is apparent from the figure is that the \tH{} actuation strategy recovers much better (performance-wise) than \tZ{}.
+The reason why \tH{} outperforms \tZ{} can be explained by the brown noise.
 The control signal will actively counteract the integrated noise dynamics, meaning that zeroing the control signal removes the compensation against the integrated noise.
 %
-Finally, comparing the deadline handling strategies, Kill performs marginally better than Skip-Next.
-Under Kill, the controller uses fresh data at the beginning of the recovery interval, while Skip-Next uses old data.
-However, we assumed ideal rollback (i.e., zero additional computation time for the rollback and clean state) for the Kill strategy.
-In real systems, rollback is difficult to realise and the advantage provided by Kill over Skip-Next may therefore become unimportant.
+Finally, comparing the deadline handling strategies, \tK{} performs marginally better than \tS{}.
+Under \tK{}, the controller uses fresh data at the beginning of the recovery interval, while \tS{} uses old data.
+However, we assumed ideal rollback (i.e., zero additional computation time for the rollback and clean state) for the \tK{} strategy.
+In real systems, rollback is difficult to realise and the advantage provided by \tK{} over \tS{} may therefore become unimportant.
 %
 These findings are consistent throughout all the plants in the experimental set, regardless of the burst interval length $\nummisses$.
 
 The plant dynamics and noise affect the behaviour and performance of the strategies.
-Comparing the results of Section~\ref{sec:example} with the aggregate results, it becomes apparent that the actuation strategy (Zero or Hold) affects control performance significantly more than the deadline handling strategy.
-For the Furuta pendulum (an unstable, nonlinear plant influenced by white noise) Zero performed the best, but for the process industrial systems (stable, linear plants influenced by brown noise) Hold outperformed Zero.
+Comparing the results of Section~\ref{sec:example} with the aggregate results, it becomes apparent that the actuation strategy (\tZ{} or \tH{}) affects control performance significantly more than the deadline handling strategy.
+For the Furuta pendulum (an unstable, nonlinear plant influenced by white noise) \tZ{} performed the best, but for the process industrial systems (stable, linear plants influenced by brown noise) \tH{} outperformed \tZ{}.
 These results were apparent even with no consideration taken to the deadline handling strategies.
 Thus, we conclude that the plant and noise model should be the ruling factor when choosing the actuation strategy, while the deadline handling strategy is mainly limited by the constraints imposed by the real-time implementation.

@@ -1,6 +1,6 @@
 When applied to physical systems, the original weakly-hard model is not sufficiently descriptive to model the dynamics of, e.g., a control task.
 The discrepancy is represented by the strategy used to handle the control task's deadline misses directly affecting the control actuation pattern.
-For instance, under the Kill strategy, a missed deadline represents a job that will never be completed, while in the case of the Skip-Next strategy, it represents a job that will complete \emph{later}.
+For instance, under the \tK{} strategy, a missed deadline represents a job that will never be completed, while in the case of the \tS{} strategy, it represents a job that will complete \emph{later}.
 
 To provide a comprehensive analysis framework, we therefore need to examine what occurs in each time interval $(\pi_i)_{i \in \N}$, with $\pi_i = [a_0 + i\cdot \Ts, a_0 + (i+1)\cdot \Ts)$. 
 In this context, the alphabet $\Sigma$ introduced in Definition~\ref{def:basic-alphabet} and the weakly-hard model need to be extended to account for the specific deadline miss handling procedure, denoted with the symbol $\strat$.
@@ -20,11 +20,11 @@ In this context, the alphabet $\Sigma$ introduced in Definition~\ref{def:basic-a
 The definition above differs from Definition~\ref{def:weakly-hard} in two points:
 \begin{enumerate*}[label=(\roman*)]
     \item it explicitly introduces the handling strategy $\strat$; and
-    \item it focuses on the presence of a new control command at the end of each time interval $\pi_i$, instead of checking the deadline outcome, thus guaranteeing its applicability also for strategies different than Kill.
+    \item it focuses on the presence of a new control command at the end of each time interval $\pi_i$, instead of checking the deadline outcome, thus guaranteeing its applicability also for strategies different than \tK{}.
 \end{enumerate*}
 
 The strategy dependence necessitates a more expressive alphabet $\Sigma\funof{\strat}$ to characterise the behaviour of task $\tau$ in each possible time interval.
-For both the Kill and Skip-Next strategies, each interval $\pi_i$ contains at most one activated and one completed job.
+For both the \tK{} and \tS{} strategies, each interval $\pi_i$ contains at most one activated and one completed job.
 This restricts the possible behaviours to three cases:
 %
 \begin{enumerate}[label=(\roman*)]
@@ -33,9 +33,9 @@ This restricts the possible behaviours to three cases:
     \item a time interval in which no job is released, but a job (released in a previous interval) is completed, is denoted by $\cR$ (\emph{recovery}).
 \end{enumerate}
 %
-By checking all unique combinations of job activations and completions in each interval, we obtain the alphabets for Kill and Skip-Next as $\Sigma\left(\text{Kill}\right) = \{ \cM, \cH \}$ and $\Sigma\left(\text{Skip-Next}\right) = \{ \cM, \cH, \cR \}$, respectively.
-Trivially, $\Sigma\left(\text{Kill}\right)$ uses the basic alphabet from Definition~\ref{def:basic-alphabet}.
-The recovery character $\cR$ is used in the Skip-Next alphabet to identify the \emph{late completion} of a job.
+By checking all unique combinations of job activations and completions in each interval, we obtain the alphabets for \tK{} and \tS{} as $\Sigma\left(\text{\tK{}}\right) = \{ \cM, \cH \}$ and $\Sigma\left(\text{\tS{}}\right) = \{ \cM, \cH, \cR \}$, respectively.
+Trivially, $\Sigma\left(\text{\tK{}}\right)$ uses the basic alphabet from Definition~\ref{def:basic-alphabet}.
+The recovery character $\cR$ is used in the \tS{} alphabet to identify the \emph{late completion} of a job.
 As a consequence, $\cR$ is treated equivalently to $\cH$ when verifying the extended weakly hard constraints (\ewhc{}).
 
 The algebra presented in Section~\ref{ssec:whalgebra} is extended to the new alphabet.
@@ -45,7 +45,7 @@ To enforce only feasible sequences, we introduce an ordering constraint for the 
 %
 \begin{rule_}[Outcome Ordering]%
     \label{rule:R}%
-    For any word $w \in \Sigma\left(\text{Skip-Next}\right)^N$, $\cR$ may only directly follow $\cM$, or be the initial element of the word.
+    For any word $w \in \Sigma\left(\text{\tS{}}\right)^N$, $\cR$ may only directly follow $\cM$, or be the initial element of the word.
 \end{rule_}
 
 The extended weakly hard model also inherits all the properties of the original weakly hard model.

@@ -96,18 +96,18 @@ In this context, even a simple controller may be subject to computational overru
 If such events are rare or temporary, choosing a longer period for a sampled controller may result in worse performance and stability margins for nominal conditions~\cite{Pazzaglia:2019}.
 
 Since the fundamental properties of stability and performance of a controller depend on the actual pattern of control commands, it is necessary to precisely define what happens when a control deadline is missed.
-In particular, we need a \emph{deadline miss handling strategy} to decide the fate of the job that missed the deadline (and possibly the next ones), and an \emph{actuator mode} to deal with the loss of a new control signal, for example by holding the previous value constant or zeroing it~\cite{schenato09}.
-A few handling strategies for periodic controllers have been proposed in literature, the most interesting being \emph{Kill} and \emph{Skip-Next}~\cite{Cervin:2005,Pazzaglia:2019,Maggio:2020}.
+In particular, we need a \emph{deadline miss handling strategy} to decide the fate of the job that missed the deadline (and possibly the next ones), and an \emph{actuator mode} to deal with the loss of a new control signal, for example by \tH{}ing the previous value constant or \tZ{}ing it~\cite{schenato09}.
+A few handling strategies for periodic controllers have been proposed in literature, the most interesting being \emph{\tK{}} and \emph{\tS{}}~\cite{Cervin:2005,Pazzaglia:2019,Maggio:2020}.
 
-\begin{definition}[Kill strategy]%
+\begin{definition}[\tK{} strategy]%
     \label{def:kill}%
-    Under the Kill strategy, a job that misses its deadline is terminated immediately. 
+    Under the \tK{} strategy, a job that misses its deadline is terminated immediately. 
     Formally, for the~$i$-th job of $\tau$ either $f_i\leq d_i$ or $f_i=\infty$.
 \end{definition}
 
-\begin{definition}[Skip-Next strategy]%
+\begin{definition}[\tS{} strategy]%
     \label{def:skip}%
-    Under the Skip-Next strategy, a job that misses its deadline is allowed to continue during the following period.
+    Under the \tS{} strategy, a job that misses its deadline is allowed to continue during the following period.
     Formally, if the $i$-th job of $\tau$ misses its deadline $d_i$, a new deadline $d^{+}_i = d_i + \Ts$ is set for the job, and $a_{i+1} = d^{+}_i$.
 \end{definition}
 
