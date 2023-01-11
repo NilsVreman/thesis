@@ -28,7 +28,7 @@
 \newcommand{\abs}[1]{\left|#1\right|}
 \newcommand{\norm}[1]{\lVert#1\rVert}
 \newcommand{\E}[1]{\mathbb{E}\left[ #1 \right]}
-\newcommand{\trace}[1]{\mathrm{tr}\left(#1\right)}
+\newcommand{\trace}[1]{\mathrm{tr}\funof{#1}}
 \newcommand{\diag}[1]{\mathrm{diag}\left\{#1\right\}}
 \DeclareMathOperator*{\argmax}{argmax}
 \DeclareMathOperator*{\argmin}{argmin}
@@ -37,6 +37,8 @@
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
 \newcommand{\overbar}[1]{\mkern 1.5mu\overline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}
 \newcommand{\fact}[1]{#1!}
+\newcommand{\eig}[2]{\mathrm{eig}_{#1}\funof{#2}}
+
 
 %% Control
 \newcommand{\plant}{\mathcal{P}}
@@ -52,7 +54,9 @@
 \newcommand{\Cc}{H} 
 \newcommand{\Dc}{K} 
 
-\newcommand{\clsys}{\mathcal{S}} 
+\newcommand{\clsys}{\mathcal{S}_{\text{cl}}}
+\newcommand{\clmat}{\Phi}
+\newcommand{\clinp}{\Gamma}
 
 \newcommand{\Ts}{T} 
 
@@ -63,6 +67,11 @@
 %% Real-Time
 % Strategies
 \newcommand{\strat}{\mathcal{H}} 
+
+\newcommand{\tK}{\texttt{Kill}}
+\newcommand{\tS}{\texttt{Skip}}
+\newcommand{\tZ}{\texttt{Zero}}
+\newcommand{\tH}{\texttt{Zero}}
 
 % Constraint names
 \newcommand{\tAH}{\code{AnyHit}}
