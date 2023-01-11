@@ -70,11 +70,11 @@ The resulting closed-loop system in state-space form is
         z_{k+\nummisses+1} \\
         u_{k+\nummisses+1}
     \end{bmatrix} = 
-    \underbrace{ \tilde A \begin{bmatrix}
+    \underbrace{ \clmat{} \begin{bmatrix}
         \Ap                                         & 0_{n_x \times n_z}  & \Bp \\
         0_{n_z \times n_x}    & I                                         & 0_{n_z \times n_u} \\
         0_{n_u \times n_x}   & 0_{n_u \times n_z}   & 0_{n_u \times n_u}
-    \end{bmatrix}^{\nummisses}}_{\tilde A_{KZ}\funof{\nummisses}}
+    \end{bmatrix}^{\nummisses}}_{\clmat{}_{KZ}\funof{\nummisses}}
     \begin{bmatrix}
         x_{k} \\
         z_{k} \\
@@ -82,15 +82,15 @@ The resulting closed-loop system in state-space form is
     \end{bmatrix},
 \end{equation}
 %
-where $\tilde A_{KZ}\funof{\nummisses}$ represents the system matrix for $\nummisses$ misses under the Kill\&Zero strategy, followed by a single hit (the matrix $\tilde A$ that is multiplied to the left of the equation).
-The matrix $\tilde A$ is the same specified in~\eqref{eq:matrixA}, and represents the first hit that follows the $\nummisses$ misses, hence, we determine how $\tilde{x}_k$ influences $\tilde{x}_{k+m+1}$ ($\nummisses$ misses and one hit).
+where $\clmat{}_{KZ}\funof{\nummisses}$ represents the system matrix for $\nummisses$ misses under the Kill\&Zero strategy, followed by a single hit (the matrix $\clmat{}$ that is multiplied to the left of the equation).
+The matrix $\clmat{}$ is the same specified in~\eqref{eq:matrixA}, and represents the first hit that follows the $\nummisses$ misses, hence, we determine how $\tilde{x}_k$ influences $\tilde{x}_{k+m+1}$ ($\nummisses$ misses and one hit).
 
 \textbf{Kill\&Hold: }%
 %
 Changing the actuation strategy to Hold, slightly alters the system matrix we derived for the Kill\&Zero case.
 The plant states $x_k$ evolve as normal and the control states $z_k$ are still not updated ($z_{k+1} = z_k$).
 However, due to the change in actuation strategy, the last actuated value is instead held ($u_{k+1} = u_k$).
-The resulting closed-loop state-space form can be seen in~\eqref{eq:KH}, where $\tilde A_{KH}\funof{\nummisses}$ is used to represent the system matrix for $\nummisses$ misses under the Kill\&Hold strategy and matrix $\tilde A$ is specified in~\eqref{eq:matrixA}.
+The resulting closed-loop state-space form can be seen in~\eqref{eq:KH}, where $\clmat{}_{KH}\funof{\nummisses}$ is used to represent the system matrix for $\nummisses$ misses under the Kill\&Hold strategy and matrix $\clmat{}$ is specified in~\eqref{eq:matrixA}.
 %
 \begin{equation}
     \setlength\arraycolsep{2pt}
@@ -100,11 +100,11 @@ The resulting closed-loop state-space form can be seen in~\eqref{eq:KH}, where $
         z_{k+\nummisses+1} \\
         u_{k+\nummisses+1}
     \end{bmatrix} = 
-    \underbrace{ \tilde A \begin{bmatrix}
+    \underbrace{ \clmat{} \begin{bmatrix}
         \Ap                                         & 0_{n_x \times n_z}  & \Bp \\
         0_{n_z \times n_x}    & I                                         & 0_{n_z \times n_u} \\
         0_{n_u \times n_x}   & 0_{n_u \times n_z}   & I
-    \end{bmatrix}^{\nummisses}}_{\tilde A_{KH}\funof{\nummisses}}
+    \end{bmatrix}^{\nummisses}}_{\clmat{}_{KH}\funof{\nummisses}}
     \begin{bmatrix}
         x_{k} \\
         z_{k} \\
@@ -119,7 +119,7 @@ However, no subsequent job of the control task is released until the current job
 If the currently active job terminates during period $k$, the next control job is released at the start of the $k+1$-th period.
 We can then write the evolution of the system where the control job experiences $\nummisses$ misses before completing its execution, meaning that there is a subsequent hit that uses old information for the error measurements.
 While the controller executed only once to completion, the plant evolved for $\nummisses+1$ steps.
-The resulting closed-loop state-space form can be seen in~\eqref{eq:SZ}, where $\tilde A_{SZ}\funof{\nummisses}$ is used to represent the system matrix under the Skip-Next\&Zero strategy for $\nummisses$ misses and one completion using old measurements.
+The resulting closed-loop state-space form can be seen in~\eqref{eq:SZ}, where $\clmat{}_{SZ}\funof{\nummisses}$ is used to represent the system matrix under the Skip-Next\&Zero strategy for $\nummisses$ misses and one completion using old measurements.
 %
 \begin{equation}
 \setlength\arraycolsep{2pt}
@@ -133,7 +133,7 @@ The resulting closed-loop state-space form can be seen in~\eqref{eq:SZ}, where $
         \Ap^{\nummisses+1}  & 0_{n_x \times n_z}  & \Ap^\nummisses \Bp \\
         -\Bc\Cp             & \Ac                                       & -\Bc\Dp \\
         -\Dc\Cp             & \Cc                                       & -\Dc\Dp
-    \end{bmatrix}}_{\tilde A_{SZ}\funof{\nummisses}}
+    \end{bmatrix}}_{\clmat{}_{SZ}\funof{\nummisses}}
     \begin{bmatrix}
         x_{k} \\
         z_{k} \\
@@ -146,7 +146,7 @@ The resulting closed-loop state-space form can be seen in~\eqref{eq:SZ}, where $
 Similar to Skip-Next\&Zero, one job finishes execution after $\nummisses$ consecutive misses.
 However, the actuation strategy holds the previous control value during the entire burst interval.
 Therefore, the plant evolution is affected by a cumulative sum over the prior control values.
-The resulting closed-loop state-space form can be seen in~\eqref{eq:SH}, where $\tilde A_{SH}\funof{\nummisses}$ is used to represent the system matrix for $\nummisses$ misses under the Skip-Next\&Hold strategy.
+The resulting closed-loop state-space form can be seen in~\eqref{eq:SH}, where $\clmat{}_{SH}\funof{\nummisses}$ is used to represent the system matrix for $\nummisses$ misses under the Skip-Next\&Hold strategy.
 %
 \begin{equation}
 \setlength\arraycolsep{2pt}
@@ -160,7 +160,7 @@ The resulting closed-loop state-space form can be seen in~\eqref{eq:SH}, where $
         \Ap^{\nummisses+1}  & 0_{n_x \times n_z}  & \sum_{i=0}^\nummisses \Ap^i\Bp \\
         -\Bc\Cp             & \Ac                                       & -\Bc\Dp \\
         -\Dc\Cp             & \Cc                                       & -\Dc\Dp
-    \end{bmatrix}}_{\tilde A_{SH}\funof{\nummisses}}
+    \end{bmatrix}}_{\clmat{}_{SH}\funof{\nummisses}}
     \begin{bmatrix}
         x_{k} \\
         z_{k} \\
@@ -177,16 +177,16 @@ Furthermore, we simplify the calculations by reducing the number of states $\til
 \paragraph*{Stability}%
 
 We now describe how the system matrices above can be used to analyse stability. 
-Recall that a closed-loop control system is stable if and only if the (fixed) system matrix $\tilde A$ is Schur stable. 
-This criterion is also valid for cyclic patterns, where $\tilde A$ represents the product of all closed-loop state matrices experienced in a full burst--recovery cycle. 
+Recall that a closed-loop control system is stable if and only if the (fixed) system matrix $\clmat{}$ is Schur stable. 
+This criterion is also valid for cyclic patterns, where $\clmat{}$ represents the product of all closed-loop state matrices experienced in a full burst--recovery cycle. 
 Hence, we can search for the shortest recovery interval length $\numhits$ such that
 %
 \begin{equation}
 \label{eq:stability-cond}
-    \underset{i}{\max}{\abs{\eig{i}{\tilde A^{\numhits-1}\tilde A_{\strat}\funof{\nummisses}}}} < 1, \quad \strat \in  \{ KZ, KH, SZ, SH \}.
+    \underset{i}{\max}{\abs{\eig{i}{\clmat{}^{\numhits-1}\clmat{}_{\strat}\funof{\nummisses}}}} < 1, \quad \strat \in  \{ KZ, KH, SZ, SH \}.
 \end{equation}
 %
-Recall that $\tilde A_{\strat}\funof{m}$ already includes one hit, thus the left multiplication with $\tilde A^{n-1}$. 
+Recall that $\clmat{}_{\strat}\funof{m}$ already includes one hit, thus the left multiplication with $\clmat{}^{n-1}$. 
 This is a sufficient condition and not necessary, meaning that a miss occurring during the recovery interval does not immediately imply that the closed-loop system is destabilised. 
 We summarise the analysis in the following definition.
 
@@ -206,7 +206,7 @@ To foster generality, we complement the stability evaluation with a less restric
 In other words, a system is \switchingstability{} stable if and only if it is stable under arbitrary switching of the closed-loop matrices in the set
 %
 \begin{equation}
-    \left\{ \tilde A^{\numtotalanalysed-1}\tilde A_\strat\funof{1},\, \tilde A^{\numtotalanalysed-2}\tilde A_\strat\funof{2},\, \ldots,\, \tilde A^{\numtotalanalysed-\nummisses}\tilde A_\strat\funof{\nummisses},\, \tilde A \right\}.
+    \left\{ \clmat{}^{\numtotalanalysed-1}\clmat{}_\strat\funof{1},\, \clmat{}^{\numtotalanalysed-2}\clmat{}_\strat\funof{2},\, \ldots,\, \clmat{}^{\numtotalanalysed-\nummisses}\clmat{}_\strat\funof{\nummisses},\, \clmat{} \right\}.
 \end{equation}
 %
 Switching stability is unfortunately quite involved.\footnote{We have devoted some research effort into the investigation of a suitable stability analysis for control tasks subject to a set of weakly-hard constraints (of the type presented in Defintion~\ref{def:wh-models}). A summary of our findings can be found at \url{https://arxiv.org/abs/2101.11312}.}
@@ -222,7 +222,7 @@ When a burst interval of $\nummisses$ missed deadlines occurs, the system will b
 %
 \begin{equation}
 \label{eq:covariance-evolution}
-    P_{k+\nummisses+1} = \tilde A_{\strat}\funof{m} P_k \left( \tilde A_{\strat}\funof{m} \right)^\T + \tilde A^{j_{\numhits}} R_w \left( \tilde A^{j_{\numhits}} \right)^\T,
+    P_{k+\nummisses+1} = \clmat{}_{\strat}\funof{m} P_k \left( \clmat{}_{\strat}\funof{m} \right)^\T + \clmat{}^{j_{\numhits}} R_w \left( \clmat{}^{j_{\numhits}} \right)^\T,
 \end{equation}
 where
 \begin{equation}
@@ -247,7 +247,7 @@ where
         \end{aligned}
 \end{equation}
 
-$\Ap$ and $\Wp$ are matrices from the plant evolution in~\eqref{eq:background:plant}, $R$ is the noise intensity from~\eqref{eq:covevolution}, and $\tilde A$ is the closed-loop matrix from~\eqref{eq:matrixA}.
+$\Ap$ and $\Wp$ are matrices from the plant evolution in~\eqref{eq:background:plant}, $R$ is the noise intensity from~\eqref{eq:covevolution}, and $\clmat{}$ is the closed-loop matrix from~\eqref{eq:matrixA}.
 The cost will simultaneously change following~\eqref{eq:covartocost}.
 In the recovery interval, the covariance is again governed by the normal closed-loop evolution described in~\eqref{eq:covevolution}.
 The system is said to have recovered once the cost is arbitrarily close to the steady-state cost.
