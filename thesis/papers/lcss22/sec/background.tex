@@ -36,10 +36,9 @@ Under nominal conditions the task releases an instance (called \emph{job}) in ea
 We denote the sequence of activation instants for $\tau$ with $(a_i)_{i \in \N}$, such that, in nominal conditions, $a_{i+1} = a_i+\Ts$,  the sequence of completion instants $(f_i)_{i \in \N}$, and the sequence of job deadlines with $(d_i)_{i \in \N}$, such that $d_i = a_i + \Ts$ (also called \emph{implicit} deadline).
 This requirement can be either satisfied or not, leading respectively to deadline hits and misses.
 %
-\fix{Space at start of definitions, theorems, rules, you name it...}
 \begin{definition}[Deadline hit and miss]%
 \label{def:hit}%
-    The $i$-th job of a periodic task $\tau$ with period $T$ hits its deadline when $f_i \leq d_i$ and misses its deadline when $f_i > d_i$.
+    The $i$-th job of a periodic task $\tau$ with period $\Ts$ hits its deadline when $f_i \leq d_i$ and misses its deadline when $f_i > d_i$.
 \end{definition}
 %
 We refer to both deadline hits and misses using the term \emph{outcome} of a job.
@@ -59,7 +58,6 @@ This bound is generally denoted using the \emph{weakly-hard model}~\cite{Bernat:
     \end{enumerate}
     with $x\in \N$, $k \in \N\setminus \left\{ 0 \right\}$, and $x\leq k$.
 \end{definition}
-\fix{Unify $\N$ notation.}
 %
 A generic weakly-hard constraint is hereafter denoted with the symbol $\lambda$, while a set of $L$ constraints will be referred to as $\Lambda = \{ \lambda_1, \lambda_2, \dots, \lambda_L \}$.
 
@@ -120,10 +118,10 @@ A control task that may experience deadline misses requires a proper analysis to
 In~\cite{Maggio:2020}, the authors identify a set of subsequences of hit and missed deadlines, which can be arbitrarily combined to obtain all possible sequences in $\sset{}{\rowmiss{}}$.
 After assigning to each subsequence its corresponding dynamic matrix, the stability analysis of the resulting arbitrary switching system can then be obtained by leveraging the \emph{Joint Spectral Radius} (JSR)~\cite{Jungers2009}, which is briefly presented here.
 %
-Given $\ell\in\N\setminus \left\{ 0 \right\} $ and a set of matrices $\Aa = \{A_1, \ldots, A_\ell \} \subseteq \R^{n\times n}$, under the hypothesis of arbitrary switching over any sequence $s=\langle a_1,a_2,\dots \rangle$ of indices of matrices in $\Aa$, the JSR of $\Aa$ is defined by:
+Given $\ell\in\N\setminus \left\{ 0 \right\} $ and a set of matrices $\Aa = \{\clmat{}_1, \ldots, \clmat{}_\ell \} \subseteq \R^{n\times n}$, under the hypothesis of arbitrary switching over any sequence $s=\langle a_1,a_2,\dots \rangle$ of indices of matrices in $\Aa$, the JSR of $\Aa$ is defined by:
 \begin{equation}
     \label{jsr}
-    \rho\left(\Aa\right)= \lim_{k\rightarrow\infty} \max_{s\in\{1,\ldots,\ell\}^k} \norm{A_{a_k} \cdots A_{a_2}A_{a_1}}^{1/k} \,.
+    \rho\left(\Aa\right)= \lim_{k\rightarrow\infty} \max_{s\in\{1,\ldots,\ell\}^k} \norm{\clmat{}_{a_k} \cdots \clmat{}_{a_2}\clmat{}_{a_1}}^{1/k} \,.
 \end{equation}
 The number $\rho\left(\Aa\right)$ characterizes the maximal asymptotic growth rate of products of matrices from $\Aa$ (thus  $\rho(\Aa)<1$ means that the system is asymptotically stable), and is independent of the norm $\norm{\cdot}$ used in \eqref{jsr}.
 %
@@ -134,7 +132,7 @@ When the switching sequences between the dynamics of $\Aa$ are not arbitrary, bu
 Introducing ${S}_k(\GG{})$ as the set of all possible switching sequences $s$ of length $k$ that satisfy the constraints of a graph $\GG{}$, the CJSR of $\Aa$ is defined by
 \begin{equation}
 \label{cjsr}
-    \rho\left(\Aa,\GG{}\right)= \lim_{k\rightarrow\infty} \max_{s\in{S}_k(\GG{})} \norm{A_{a_k} \cdots A_{a_2}A_{a_1}}^{1/k} \,.
+    \rho\left(\Aa,\GG{}\right)= \lim_{k\rightarrow\infty} \max_{s\in{S}_k(\GG{})} \norm{\clmat{}_{a_k} \cdots \clmat{}_{a_2}\clmat{}_{a_1}}^{1/k} \,.
 \end{equation}
 In general, computing or approximating the CJSR is not an easy task, and noticeably fewer works exist for CJSR with respect to JSR.
 In~\cite{philippe2016stability}, the authors propose a multinorm-based method to approximate the CJSR with arbitrary accuracy.
@@ -150,7 +148,7 @@ It consists of considering a hierarchy of relaxations indexed by $d\in\N\setminu
     &\textrm{ s.t.} 
     \begin{cases} 
         p\left(x\right)\in\sos_{2d},\\
-        \gamma^{2d}p\left(x\right)-p\left(A_ix\right)\in\sos_{2d},\ 1 \leq i \leq \ell.
+        \gamma^{2d}p\left(x\right)-p\left(\clmat{}_ix\right)\in\sos_{2d},\ 1 \leq i \leq \ell.
     \end{cases} \nonumber
 \end{align}
 %

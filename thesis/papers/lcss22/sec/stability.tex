@@ -3,11 +3,11 @@ We identify one matrix for each dynamics corresponding to an interval $\pi_t$ as
 
 \textbf{Kill: }%
 %
-We define $\tilde x_t^{\,\text{K}} = \left[ x_t^\T{}\,\, z_t^\T{}\,\, u_t^\T{} \right]^\T{}$ as the closed-loop state vector and compute the closed-loop dynamics $A^{\,\text{K}}_{\cH}$, corresponding to the character $\cH$.
+We define $\tilde x_t^{\,\text{K}} = \left[ x_t^\T{}\,\, z_t^\T{}\,\, u_t^\T{} \right]^\T{}$ as the closed-loop state vector and compute the closed-loop dynamics $\clmat{}^{\,\text{K}}_{\cH}$, corresponding to the character $\cH$.
 \fix{change to positive feedback convention in order to make the papers more coherent?}
 \begin{equation*}
-    \tilde x_{t+1}^{\,\text{K}} = A^{\,\text{K}}_{\cH}\,\tilde x_t^{\,\text{K}}, \quad
-    A^{\,\text{K}}_{\cH} = \begin{bmatrix}
+    \tilde x_{t+1}^{\,\text{K}} = \clmat{}^{\,\text{K}}_{\cH}\,\tilde x_t^{\,\text{K}}, \quad
+    \clmat{}^{\,\text{K}}_{\cH} = \begin{bmatrix}
         \Ap       & 0    & \Bp       \\
         -\Bc\Cp   & \Ac  & -\Bc\Dp   \\
         -\Dc\Cp   & \Cc  & -\Dc\Dp   \\
@@ -16,28 +16,28 @@ We define $\tilde x_t^{\,\text{K}} = \left[ x_t^\T{}\,\, z_t^\T{}\,\, u_t^\T{} \
 %
 For the case of $\cM$, the controller execution terminates prematurely, thus not updating its states ($z_{t+1} = z_t$).
 Depending on the actuation mode, the controller output is either zeroed ($u_{t+1} = 0$) or held ($u_{t+1} = u_t$).
-The resulting closed-loop system in state-space form is denoted with $A^{\,\text{K}}_{\cM}$:
+The resulting closed-loop system in state-space form is denoted with $\clmat{}^{\,\text{K}}_{\cM}$:
 \begin{equation*}
-    \tilde x_{t+1}^{\,\text{K}} = A^{\,\text{K}}_{\cM}\,\tilde x_t^{\,\text{K}}, \quad
-    A^{\,\text{K}}_{\cM} = \begin{bmatrix}
+    \tilde x_{t+1}^{\,\text{K}} = \clmat{}^{\,\text{K}}_{\cM}\,\tilde x_t^{\,\text{K}}, \quad
+    \clmat{}^{\,\text{K}}_{\cM} = \begin{bmatrix}
         \Ap & 0  & \Bp \\
         0   & I  & 0   \\
         0   & 0  & \Delta
     \end{bmatrix}
 \end{equation*}
 Here, $\Delta = I$ (identity matrix) if the control signal is held and $\Delta = 0$ if it is zeroed.
-The set of dynamic matrices that a controlled system under the Kill strategy may experience is then $\Aa^{\text{Kill}}=\left\{A^{\,\text{K}}_{\cH},A^{\,\text{K}}_{\cM}\right\}$.
+The set of dynamic matrices that a controlled system under the Kill strategy may experience is then $\Aa^{\text{Kill}}=\left\{\clmat{}^{\,\text{K}}_{\cH},\clmat{}^{\,\text{K}}_{\cM}\right\}$.
 
 \textbf{Skip-Next: }%
 %
 For the Skip-Next strategy, we introduce two additional states $\hat x_t$ and $\hat u_t$ storing the old values of $x_t$ and $u_t$ while the controller awaits an update.
 The resulting state vector then becomes $\tilde x_t^{\,\text{S}} = \left[ x_t^\T{}\,\,z_t^\T{}\,\, u_t^\T{}\,\, \hat{x}_t^\T{}\,\, \hat{u}_t^\T{} \right]^\T{}$.
 When $\pi_t$ is associated to $\cH$, the two additional states mirror the behaviour of the states of which they are storing data.
-The resulting closed-loop system is described using $A^{\,\text{S}}_{\cH}$:
-\fix{change to positive feedback convention in order to make the papers more coherent?}
+The resulting closed-loop system is described using $\clmat{}^{\,\text{S}}_{\cH}$:
+%
 \begin{equation*}
-    \tilde x_{t+1}^{\,\text{S}} = A^{\,\text{S}}_{\cH}\,\tilde x_t^{\,\text{S}}, \quad
-    A^{\,\text{S}}_{\cH} = \begin{bmatrix}
+    \tilde x_{t+1}^{\,\text{S}} = \clmat{}^{\,\text{S}}_{\cH}\,\tilde x_t^{\,\text{S}}, \quad
+    \clmat{}^{\,\text{S}}_{\cH} = \begin{bmatrix}
         \Ap       & 0    & \Bp      & 0 & 0 \\
         -\Bc\Cp   & \Ac  & -\Bc\Dp  & 0 & 0 \\
         -\Dc\Cp   & \Cc  & -\Dc\Dp  & 0 & 0 \\
@@ -47,11 +47,11 @@ The resulting closed-loop system is described using $A^{\,\text{S}}_{\cH}$:
 \end{equation*}
 %
 For the case of $\cM$ in $\pi_t$ the two augmented states hold their previous values.
-The resulting closed-loop system is described by $A^{\,\text{S}}_{\cM}$:
+The resulting closed-loop system is described by $\clmat{}^{\,\text{S}}_{\cM}$:
 %
 \begin{equation*}
-    \tilde x_{t+1}^{\,\text{S}} = A^{\,\text{S}}_{\cM}\,\tilde x_t^{\,\text{S}}, \quad
-    A^{\,\text{S}}_{\cM}=\begin{bmatrix}
+    \tilde x_{t+1}^{\,\text{S}} = \clmat{}^{\,\text{S}}_{\cM}\,\tilde x_t^{\,\text{S}}, \quad
+    \clmat{}^{\,\text{S}}_{\cM}=\begin{bmatrix}
         \Ap & 0  & \Bp & 0 & 0 \\
         0   & I  & 0   & 0 & 0 \\
         0   & 0  & \Delta   & 0 & 0 \\
@@ -61,11 +61,11 @@ The resulting closed-loop system is described by $A^{\,\text{S}}_{\cM}$:
 \end{equation*}
 %
 Finally, for the case of recovery $\cR$ in $\pi_t$, the new control command is calculated using the values stored in $\hat x_t$ and $\hat u_t$.
-The resulting closed-loop system is described by $A^{\,\text{S}}_{\cR}$:
+The resulting closed-loop system is described by $\clmat{}^{\,\text{S}}_{\cR}$:
 %
 \begin{equation*}
-    \tilde x_{t+1}^{\,\text{S}} = A^{\,\text{S}}_{\cR} \, \tilde x_{t}^{\,\text{S}}, \quad
-    A^{\,\text{S}}_{\cR} = \begin{bmatrix}
+    \tilde x_{t+1}^{\,\text{S}} = \clmat{}^{\,\text{S}}_{\cR} \, \tilde x_{t}^{\,\text{S}}, \quad
+    \clmat{}^{\,\text{S}}_{\cR} = \begin{bmatrix}
         \Ap & 0    & \Bp & 0       & 0 \\
         0   & \Ac  & 0   & -\Bc\Cp & -\Bc\Dp \\
         0   & \Cc  & 0   & -\Dc\Cp & -\Dc\Dp \\
@@ -74,7 +74,7 @@ The resulting closed-loop system is described by $A^{\,\text{S}}_{\cR}$:
     \end{bmatrix}.
 \end{equation*}
 %
-The set of dynamic matrices under the Skip-Next strategy is then defined as $\Aa^{\text{Skip-Next}}=\left\{A^{\,\text{S}}_{\cH},A^{\,\text{S}}_{\cM},A^{\,\text{S}}_{\cR}\right\}$.
+The set of dynamic matrices under the Skip-Next strategy is then defined as $\Aa^{\text{Skip-Next}}=\left\{\clmat{}^{\,\text{S}}_{\cH},\clmat{}^{\,\text{S}}_{\cM},\clmat{}^{\,\text{S}}_{\cR}\right\}$.
 
 \subsection{Kronecker Lifted Switching System}%
 \label{sec:system_dynamics}
@@ -96,7 +96,7 @@ By construction, $\xi_t$ is then a vector composed of $n_{\VV{}}$ blocks of size
 Then, we build a set of lifted matrices $P_{\alpha} ( \GG{\Lambda^\strat} )\in\R^{n\cdot n_{\VV{}}\times n\cdot n_{\VV{}}}$ that includes information about both the system dynamics and the possible transitions given a certain outcome $\alpha \in \Sigma\left(\strat\right)$:
 %
 \begin{equation*}
-    P_{\alpha} ( \GG{\Lambda^\strat} ) = F_{\alpha} ( \GG{\Lambda^\strat} )\otimes A_\alpha^\strat,\quad \alpha \in \Sigma \left( \strat \right).
+    P_{\alpha} ( \GG{\Lambda^\strat} ) = F_{\alpha} ( \GG{\Lambda^\strat} )\otimes \clmat{}_\alpha^\strat,\quad \alpha \in \Sigma \left( \strat \right).
 \end{equation*}
 %
 The lifted dynamics of the closed loop system then become%
@@ -104,89 +104,6 @@ The lifted dynamics of the closed loop system then become%
 \begin{equation*}
     \xi_{t+1} = P_{\alpha} ( \GG{\Lambda^\strat} )\,\xi_t.
 \end{equation*}
-%
-%\begin{example}
-%    \emph{Consider the graph of Example~$1$ in Figure X (left). The transition matrices $F_{\cH}$ and $F_{\cM}$, computed using Definition X, are:}
-%    \begin{equation}
-%        F_{\cH} =
-%        \begin{bmatrix}
-%            1 & 0 & 1 \\
-%            0 & 0 & 0 \\
-%            0 & 1 & 0
-%        \end{bmatrix}, \quad
-%        F_{\cM} =
-%        \begin{bmatrix}
-%            0 & 0 & 0 \\
-%            1 & 0 & 0 \\
-%            0 & 0 & 0
-%        \end{bmatrix}.
-%    \end{equation}
-%    \emph{The lifted matrices corresponding to $\cH$ and $\cM$ are then computed using Equation X as follows:}
-%    \begin{equation}
-%        P_{\cH} =
-%        \begin{bmatrix}
-%            A_\cH & 0 & A_\cH \\
-%            0 & 0 & 0 \\
-%            0 &  A_\cH & 0
-%        \end{bmatrix}, \quad
-%        P_{\cM} =
-%        \begin{bmatrix}
-%            0 & 0 & 0 \\
-%            A_\cM & 0 & 0 \\
-%            0 & 0 & 0
-%        \end{bmatrix}.
-%    \end{equation}
-%    \emph{Let consider an initial G-state $q_1 = \left[ 1,\, 0,\, 0 \right]^T$ and an initial plant state $x_1$.  Given a sequence $\alpha = \cH\cM$, we obtain:}
-%    \begin{equation*}
-%        \begin{aligned}
-%            \xi_3 &= P_\cM\, P_\cH\, \xi_1 \\
-%            &=\begin{bmatrix}
-%                0 & 0 & 0 \\
-%                A_\cM & 0 & 0 \\
-%                0 & 0 & 0
-%            \end{bmatrix}
-%            \begin{bmatrix}
-%                A_\cH & 0 & A_\cH \\
-%                0 & 0 & 0 \\
-%                0 &  A_\cH & 0
-%            \end{bmatrix}
-%            \begin{bmatrix}
-%                x_1 \\
-%                0   \\
-%                0
-%            \end{bmatrix} =
-%            \begin{bmatrix}
-%                0 \\
-%                A_\cM\, A_\cH\, x_1 \\
-%                0
-%            \end{bmatrix}
-%        \end{aligned}
-%    \end{equation*}
-%    \emph{Instead, if the sequence $\alpha = \cM\cM$ was given, which is infeasible for this example (}$\alpha \notin \satis \left((1,3)_{\text{Kill}} \right)$\emph{), the dynamics will converge to $\xi=0$}.
-%    \begin{equation*}
-%        \xi_3 = P_\cM\, P_\cM\, \xi_1 =
-%        \begin{bmatrix}
-%            0 & 0 & 0 \\
-%            A_\cM & 0 & 0 \\
-%            0 & 0 & 0
-%        \end{bmatrix}
-%        \begin{bmatrix}
-%            0 & 0 & 0 \\
-%            A_\cM & 0 & 0 \\
-%            0 & 0 & 0
-%        \end{bmatrix}
-%        \begin{bmatrix}
-%            x_1 \\
-%            0   \\
-%            0
-%        \end{bmatrix} =
-%        \begin{bmatrix}
-%            0 \\
-%            0 \\
-%            0
-%        \end{bmatrix}
-%    \end{equation*}%\qed
-%\end{example}}%
 %
 Formally, we obtain an equivalent closed-loop system composed of a set of lifted dynamic matrices, $\Alifted_{\Lambda^\strat}$.
 %
@@ -202,7 +119,6 @@ Formally, we obtain an equivalent closed-loop system composed of a set of lifted
 %
 By leveraging the mixed-product property~\cite{horn2012matrix} of $\otimes$ and by introducing a proper submultiplicative norm, it is possible to prove that $\rho\left(\Alifted_{\Lambda^\strat}\right)= \rho\,(\Aa^{\strat},\GG{\Lambda^\strat})$.
 For more details and a formal proof we refer the interested reader to~\cite{xu2020approximation}.
-\fix{Maybe include the example from the "longpaper". Currently included as a comment}
 
 
 \subsection{Extended Weakly Hard and JSR Properties}
@@ -219,17 +135,18 @@ We now provide a general relation between \emph{all} \ewhc{}s in terms of the jo
     \end{equation*}
 
     \begin{proof}
+        \fix{Add an explanation that the second part of the equation below holds because of the mixed-product property of $\otimes$, because otherwise $\clmat{}$ might be confusing}
         From Equation~\eqref{jsr}, for a generic \ewhc{} $\lambda^\strat$,
         \begin{equation*}
-            \rho\left(\Alifted_{\lambda^\strat}\right) = \lim_{\ell\rightarrow \infty}\rho_\ell\left(\Alifted_{\lambda^\strat}\right), \quad \rho_\ell\left(\Alifted_{\lambda^\strat}\right) = \max_{w \in \sset{\ell}{\lambda^\strat}}\norm{A_{w}}^{1/\ell}.
+            \rho\left(\Alifted_{\lambda^\strat}\right) = \lim_{\ell\rightarrow \infty}\rho_\ell\left(\Alifted_{\lambda^\strat}\right), \quad \rho_\ell\left(\Alifted_{\lambda^\strat}\right) = \max_{w \in \sset{\ell}{\lambda^\strat}}\norm{\clmat{}_{w}}^{1/\ell}.
         \end{equation*}
         According to Definition~\ref{def:domination}, it holds that $\lambda^\strat_1 \preceq \lambda^\strat_2$ if and only if $\sset{}{\lambda^\strat_1} \subseteq \sset{}{\lambda^\strat_2}$.
         Thus, if for a word $a$ it holds that $a \in \sset{\ell}{\lambda^\strat_1}$, then it also holds that $a \in \sset{\ell}{\lambda^\strat_2}$.
-        The set of all possible $A_{a}$ is thus included in the set of all possible $A_{b},\, b \in \sset{\ell}{\lambda^\strat_2}$.
+        The set of all possible $\clmat{}_{a}$ is thus included in the set of all possible $\clmat{}_{b},\, b \in \sset{\ell}{\lambda^\strat_2}$.
         As a consequence it holds that
         \begin{equation*}
-            \max_{a \in \sset{\ell}{\lambda^\strat_1}}\norm{A_{a}}^{1/\ell} \leq
-            \max_{b \in \sset{\ell}{\lambda^\strat_2}}\norm{A_{b}}^{1/\ell}, \quad
+            \max_{a \in \sset{\ell}{\lambda^\strat_1}}\norm{\clmat{}_{a}}^{1/\ell} \leq
+            \max_{b \in \sset{\ell}{\lambda^\strat_2}}\norm{\clmat{}_{b}}^{1/\ell}, \quad
             \forall \ell\in\mathbb{N}^{>}.
         \end{equation*}
         The theorem follows immediately when $\ell\rightarrow \infty$.
@@ -290,17 +207,18 @@ We now extend the results of Theorem~\ref{th:rho_dominance_general} by relating 
     \end{equation*}
     %
     \begin{proof}
+        \fix{Add an explanation that the second part of the equation below holds because of the mixed-product property of $\otimes$, because otherwise $\clmat{}$ might be confusing}
         For an arbitrary \ewhc{} set $\Lambda^\strat = \{\lambda^\strat_1, \dots, \lambda^\strat_N\}$, its satisfaction set is $\sset{\ell}{\Lambda^\strat} = \bigcap_{i \in \{1,\dots, N\}} \sset{\ell}{\lambda^\strat_i}$.
         Thus, for any $\lambda^\strat \in \Lambda^\strat$ it holds that 
         \begin{equation*}
             \sset{\ell}{\Lambda^\strat} \subseteq \sset{\ell}{\lambda^\strat}
         \end{equation*}
         If a word $a$ is in $\sset{\ell}{\Lambda^\strat}$ it also belongs to $\sset{\ell}{\lambda^\strat}$. 
-        The set of all possible $A_{a}$ is thus included in the set of all possible $A_{b},\, b \in \sset{\ell}{\lambda^\strat}$.
+        The set of all possible $\clmat{}_{a}$ is thus included in the set of all possible $\clmat{}_{b},\, b \in \sset{\ell}{\lambda^\strat}$.
         As a consequence it holds that
         \begin{equation*}
-            \max_{a \in \sset{\ell}{\Lambda^\strat }} \norm{A_{a}}^{1/\ell} \leq
-            \max_{b \in \sset{\ell}{\lambda^\strat }} \norm{A_{b}}^{1/\ell}, \quad
+            \max_{a \in \sset{\ell}{\Lambda^\strat }} \norm{\clmat{}_{a}}^{1/\ell} \leq
+            \max_{b \in \sset{\ell}{\lambda^\strat }} \norm{\clmat{}_{b}}^{1/\ell}, \quad
             \forall \ell\in\mathbb{N}^{>}.
         \end{equation*}
         The theorem follows immediately when $\ell\rightarrow \infty$.

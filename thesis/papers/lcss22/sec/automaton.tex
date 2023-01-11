@@ -35,16 +35,6 @@ Since we build the automaton using the job completion character $\cT$, both auto
 It is only the first job completion, after a period of no job completions ($\cM$), that differ.
 We emphasise that despite the extended automaton model appear similar for the Kill and Skip-Next strategies, the differing transitions of the two automata significantly affect the corresponding closed-loop systems, as will be clear in Section~\ref{sec:stability}.
 
-%\afterpage{%
-%    \clearpage
-%    \begin{figure*}[h]
-%        \input{\figdir/multi-graph}
-%        \caption{Automata $\GG{\lambda^{\strat}_1}$, $\GG{\lambda^{\strat}_2}$, and $\GG{\Lambda^{\strat}_0}$ for Example~\ref{ex:auto-comb}.}
-%        \label{fig:multi-graphs}
-%    \end{figure*}
-%    \clearpage
-%}
-
 The \tool{} automaton model can also handle the case where a task $\tau$ is subject to a set of multiple constraints.
 Intuitively, building upon Definition~\ref{def:satisfaction}, the satisfaction set of $\Lambda^{\strat}$ can be derived as follows:
 %
@@ -55,13 +45,6 @@ Intuitively, building upon Definition~\ref{def:satisfaction}, the satisfaction s
 %
 With the notion of a satisfaction sets for sets of \ewhc{}, it is trivial to see that the domination relations also hold (Definition~\ref{def:domination}).
 Since the stability analysis presented in this paper is invariant to the type (and amount) of constraints acting on the control task $\tau$, we henceforth say that $\tau$ is subject to a set of \ewhc{} $\Lambda^\strat$ (unless stated otherwise).
-%
-%\begin{example}%
-%    \label{ex:auto-comb}%
-%    Given two \ewhc{}, $\lambda^{\strat}_1 = \overbar{\left<2\right>}^{\text{Kill}}$ and $\lambda^{\strat}_2 = \overbar{\binom{3}{5}}^{\text{Kill}}$, the automata $\GG{\lambda^{\strat}_1}$ and $\GG{\lambda^{\strat}_2}$ are shown as the leftmost and middle automata of Figure~\ref{fig:multi-graphs}.
-%    Generating the automaton $\GG{\Lambda^{\strat}_0}$ from the set $\Lambda^{\strat} = \{ \lambda^{\strat}_1, \lambda^{\strat}_2 \}$ results in the rightmost automaton of Figure~\ref{fig:multi-graphs}, satisfying both $\lambda^{\strat}_1$ and $\lambda^{\strat}_2$.
-%    \fix{}
-%\end{example}
 
 
 \subsection{Dynamic Model of an Automaton}
