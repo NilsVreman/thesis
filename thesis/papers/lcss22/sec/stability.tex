@@ -133,11 +133,11 @@ We now provide a general relation between \emph{all} \ewhc{}s in terms of the jo
     \end{equation*}
 
     \begin{proof}
-        \fix{Add an explanation that the second part of the equation below holds because of the mixed-product property of $\otimes$, because otherwise $\clmat{}$ might be confusing}
         From Equation~\eqref{jsr}, for a generic \ewhc{} $\lambda^\strat$,
         \begin{equation*}
-            \rho\left(\Alifted_{\lambda^\strat}\right) = \lim_{\ell\rightarrow \infty}\rho_\ell\left(\Alifted_{\lambda^\strat}\right), \quad \rho_\ell\left(\Alifted_{\lambda^\strat}\right) = \max_{w \in \sset{\ell}{\lambda^\strat}}\norm{\clmat{}_{w}}^{1/\ell}.
+            \rho\funof{\Alifted_{\lambda^\strat}} = \lim_{\ell\rightarrow \infty}\rho_\ell\funof{\Alifted_{\lambda^\strat}}, \quad \rho_\ell\funof{\Alifted_{\lambda^\strat}} = \max_{w \in \sset{\ell}{\lambda^\strat}}\norm{\clmat{}_{w}}^{1/\ell}.
         \end{equation*}
+        \textcolor{red}{The second equality here follows from $\rho_\ell\funof{\Alifted_{\lambda^\strat}} = \rho_{\ell}\funof{\Aa, \GG{\lambda^\strat}}$, i.e., due to the mixed-product property of $\otimes$.}
         According to Definition~\ref{def:domination}, it holds that $\lambda^\strat_1 \preceq \lambda^\strat_2$ if and only if $\sset{}{\lambda^\strat_1} \subseteq \sset{}{\lambda^\strat_2}$.
         Thus, if for a word $a$ it holds that $a \in \sset{\ell}{\lambda^\strat_1}$, then it also holds that $a \in \sset{\ell}{\lambda^\strat_2}$.
         The set of all possible $\clmat{}_{a}$ is thus included in the set of all possible $\clmat{}_{b},\, b \in \sset{\ell}{\lambda^\strat_2}$.
