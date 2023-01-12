@@ -91,17 +91,16 @@ By leveraging the vector $q_t$ of Definition~\ref{def:qt}, we introduce the \emp
 where $n$ is the number of closed-loop states $\tilde x_t$, $n_{\VV{}} = \abs{\VV{\Lambda^\strat}}$, and $\otimes$ is the Kronecker product operator.
 By construction, $\xi_t$ is then a vector composed of $n_{\VV{}}$ blocks of size $n$, where at most one block is equal to $\tilde x_t$ and all other blocks are equal to the $0$ vector.
 %
-\fix{P is problematic here}
-Then, we build a set of lifted matrices $P_{\alpha} ( \GG{\Lambda^\strat} )\in\R^{n\cdot n_{\VV{}}\times n\cdot n_{\VV{}}}$ that includes information about both the system dynamics and the possible transitions given a certain outcome $\alpha \in \Sigma\left(\strat\right)$:
+Then, we build a set of lifted matrices $L_{\alpha} ( \GG{\Lambda^\strat} )\in\R^{n\cdot n_{\VV{}}\times n\cdot n_{\VV{}}}$ that includes information about both the system dynamics and the possible transitions given a certain outcome $\alpha \in \Sigma\left(\strat\right)$:
 %
 \begin{equation*}
-    P_{\alpha} ( \GG{\Lambda^\strat} ) = F_{\alpha} ( \GG{\Lambda^\strat} )\otimes \clmat{}_\alpha^\strat,\quad \alpha \in \Sigma \left( \strat \right).
+    L_{\alpha} ( \GG{\Lambda^\strat} ) = F_{\alpha} ( \GG{\Lambda^\strat} )\otimes \clmat{}_\alpha^\strat,\quad \alpha \in \Sigma \left( \strat \right).
 \end{equation*}
 %
 The lifted dynamics of the closed loop system then become%
 %
 \begin{equation*}
-    \xi_{t+1} = P_{\alpha} ( \GG{\Lambda^\strat} )\,\xi_t.
+    \xi_{t+1} = L_{\alpha} ( \GG{\Lambda^\strat} )\,\xi_t.
 \end{equation*}
 %
 Formally, we obtain an equivalent closed-loop system composed of a set of lifted dynamic matrices, $\Alifted_{\Lambda^\strat}$.
@@ -112,7 +111,7 @@ Formally, we obtain an equivalent closed-loop system composed of a set of lifted
     Formally,
     %
     \begin{equation*}
-        \Alifted_{\Lambda^\strat} = \left\{ P_{\alpha} ( \GG{\Lambda^\strat} ) \,\, | \,\, \alpha \in \Sigma\left(\strat\right) \right\}.
+        \Alifted_{\Lambda^\strat} = \left\{ L_{\alpha} ( \GG{\Lambda^\strat} ) \,\, | \,\, \alpha \in \Sigma\left(\strat\right) \right\}.
     \end{equation*}
 \end{definition}
 %
