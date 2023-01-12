@@ -40,10 +40,10 @@ The authors of~\cite{Bernat:2001} propose four definitions for a weakly hard rea
     \label{def:wh-models}%
     A task $\tau$ may satisfy any of these four weakly hard constraints:
     \begin{enumerate}[label=(\roman*)]
-        \item $\tau \vdash \binom{n}{\!\:\!\:\numtotalanalysed\!\:\!\:}$: there are at least $n$ hits for every $\numtotalanalysed$ jobs,
-        \item $\tau \vdash \overbar{\binom{m}{\numtotalanalysed}}$: there are at most $m$ misses for every $\numtotalanalysed$ jobs, 
-        \item $\tau \vdash \genfrac{<}{>}{0pt}{}{n}{\!\:\!\:\numtotalanalysed\!\:\!\:}$: there are at least $n$ consecutive hits for every $\numtotalanalysed$ jobs,
-        \item $\tau \vdash \overbar{\genfrac{<}{>}{0pt}{}{m}{\numtotalanalysed}}$: there are at most $m$ consecutive misses for every $\numtotalanalysed$ jobs.
+        \item $\tau \vdash \anyhit{}$: there are at least $x$ hits for every $\numtotalanalysed$ jobs,
+        \item $\tau \vdash \anymiss{}$: there are at most $x$ misses for every $\numtotalanalysed$ jobs, 
+        \item $\tau \vdash \rowhit{}$: there are at least $x$ consecutive hits for every $\numtotalanalysed$ jobs,
+        \item $\tau \vdash \rowmiss{}$: there are at most $x$ consecutive misses for every $\numtotalanalysed$ jobs.
     \end{enumerate}
 \end{definition}
 
