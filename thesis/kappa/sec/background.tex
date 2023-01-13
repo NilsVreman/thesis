@@ -1,1 +1,69 @@
-\chapter{Background}
+\chapter{Background}%
+\label{ch:background}%
+
+\nv{%
+
+\section*{Cyber-Physical Systems}%
+%
+\begin{itemize}
+    \item Refer to figure from Chapter~\ref{ch:intro} and then ``zoom'' in on the
+        different aspects treated in the different subsections.
+    \item Simple description of hardware components: Plant, Sensors, Network
+        (wired/wireless), control hardware, actuators.
+    \item Simple description of software components: network protocol, RTOS,
+        tasks, memory, interrupts, etc.
+    \item Maybe create a simple practical example (e.g., breaks in a car) that
+        can be followed throughout this section.
+\end{itemize}
+
+
+\subsection*{Real-Time Model}%
+%
+\begin{itemize}
+    \item Start with a historical perspective
+    \item Hard, Soft, Weakly-Hard, More expressive (\cite{Stigge:2011}), other?
+    \item Describe advantages and disadvantages with each of the models
+    \item recall great example of real-time system in rust book
+\end{itemize}
+
+\subsubsection*{Modelling Execution using Automata}%
+%
+\begin{itemize}
+    \item This section should maybe be moved?
+    \item Entire subsubsection requested by KE
+    \item More automata theory
+    \item Difference from timed automata
+    \item Include markov theory here?
+\end{itemize}
+
+
+\subsection*{Control System Model}%
+%
+\begin{itemize}
+    \item Start from plant, non-linear model, linearisation
+    \item Sensors and actuator models included here.
+    \item Control model (non-linear, more common ones), relate to real-time
+        tasks
+    \item MPC discussion?
+    \item Switching systems? Markov Jump Linear Systems?
+\end{itemize}
+
+
+\subsubsection*{Stability Analysis}%
+%
+\begin{itemize}
+    \item Binary: Stable or not
+    \item Stability definitions: nominal, MS, MSS, JSR, Lyapunov
+    \item differences (e.g., JSR vs. Lyapunov), applicability
+\end{itemize}
+
+
+\subsubsection*{Performance Analysis}%
+%
+\begin{itemize}
+    \item Gradient: varying degree of performance
+    \item Why Performance Analysis?
+    \item Metrics
+\end{itemize}
+
+}%
