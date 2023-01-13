@@ -9,5 +9,5 @@ the repository of my PhD thesis, using the LTH thesis template
 
 # To Do
 * ~~Insert all papers~~
-* Unify notation
-* Write Cappa
+* ~~Unify notation~~
+* Write Kappa
