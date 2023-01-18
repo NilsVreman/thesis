@@ -8,6 +8,10 @@ In Section~\ref{sec:paper-summaries}, we provide a succinct summary of the scien
 Additionally, each author's contribution to the specific paper is stated.
 We conclude the chapter with Section~\ref{sec:additional-publications}, listing additional publications by the thesis' author that were excluded from the thesis.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage %%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \section{Summary of Papers}%
 \label{sec:paper-summaries}%
 %
@@ -17,10 +21,31 @@ We conclude the chapter with Section~\ref{sec:additional-publications}, listing 
     \fullcite{Vreman:2021}
 \end{quote}
 
-\subsubsection*{Authors' Contribution:}%
-%
 \subsubsection*{Scientific Contribution:}%
 %
+In this paper, linear control system stability and performance is analysed when the controller experiences persistent computational blackouts.
+Historically, the models to analyse such events have been either stochastic or overly conservative.
+These models have been thoroughly investigated in the literature, but few have been shown to achieve similar results on industrial applications.
+
+Instead, the paper proposes a new fault model that handles consecutive computational overruns whilst also encapsulating the graceful recovery back to nominal execution conditions.
+The fault model is coupled together with different actuator (\tZ{} and \tH{}) and scheduling strategies (\tK{} and \tS{}) to provide a holistic system model.
+A methodology for analysing the stability and performance of systems subject to this specific fault model is also derived.
+
+To reinforce the analysis methodology's applicability to industrial application, an experimental campaign is carried out.
+We show, for a physical system, that the analysis -- performed on a \emph{linear model} of the \emph{non-linear physical system} -- is enough to draw conclusions about the physical process'.
+
+\subsubsection*{Authors' Contribution:}%
+%
+M. Maggio proposed the idea of analysing control system stability for fault models that are well-suited for industrial use.
+The physical testing environment and the experiments were implemented and executed by N. Vreman, who also developed the new fault model.
+After discussions between M. Maggio and N. Vreman the switching stability analysis presented in the paper was derived.
+Together, A. Cervin and N. Vreman derived a method for analysing the performance of systems subject to the proposed fault model.
+The manuscript writing was shared among all three authors.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage %%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection*{Paper II}%
 %
@@ -28,10 +53,16 @@ We conclude the chapter with Section~\ref{sec:additional-publications}, listing 
     \fullcite{Vreman:2022a}
 \end{quote}
 
-\subsubsection*{Authors' Contribution:}%
-%
 \subsubsection*{Scientific Contribution:}%
 %
+
+\subsubsection*{Authors' Contribution:}%
+%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage %%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection*{Paper III}%
 %
@@ -39,21 +70,31 @@ We conclude the chapter with Section~\ref{sec:additional-publications}, listing 
     \fullcite{Vreman:2022b}
 \end{quote}
 
-\subsubsection*{Authors' Contribution:}%
-%
 \subsubsection*{Scientific Contribution:}%
 %
+\subsubsection*{Authors' Contribution:}%
+%
     
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage %%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \subsection*{Paper IV}%
 %
 \begin{quote}
     \fullcite{Vreman:2022c}
 \end{quote}
 
-\subsubsection*{Authors' Contribution:}%
-%
 \subsubsection*{Scientific Contribution:}%
 %
+\subsubsection*{Authors' Contribution:}%
+%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage %%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection*{Paper V}%
 %
@@ -61,10 +102,15 @@ We conclude the chapter with Section~\ref{sec:additional-publications}, listing 
     \fullcite{Vreman:2023}
 \end{quote}
 
-\subsubsection*{Authors' Contribution:}%
-%
 \subsubsection*{Scientific Contribution:}%
 %
+\subsubsection*{Authors' Contribution:}%
+%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage %%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Additional Publications}%
 \label{sec:additional-publications}%
