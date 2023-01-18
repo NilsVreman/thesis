@@ -29,10 +29,10 @@ These models have been thoroughly investigated in the literature, but few have b
 
 Instead, the paper proposes a new fault model that handles consecutive computational overruns whilst also encapsulating the graceful recovery back to nominal execution conditions.
 The fault model is coupled together with different actuator (\tZ{} and \tH{}) and scheduling strategies (\tK{} and \tS{}) to provide a holistic system model.
-A methodology for analysing the stability and performance of systems subject to this specific fault model is also derived.
+A methodology for analysing the stability and performance of systems subject to this specific fault model is also derived. \nv{I should write more specifics about the analysis here maybe?}
 
-To reinforce the analysis methodology's applicability to industrial application, an experimental campaign is carried out.
-We show, for a physical system, that the analysis -- performed on a \emph{linear model} of the \emph{non-linear physical system} -- is enough to draw conclusions about the physical process'.
+To reinforce the analysis methodology's applicability to industrial application, an experimental campaign is carried out.\nv{Also be more clear about what experiments are performed}
+We show that, for a physical system, the analysis -- performed on a \emph{linear model} of the \emph{non-linear physical system} -- is enough to draw conclusions about the physical process'.
 
 \subsubsection*{Authors' Contribution:}%
 %
@@ -55,6 +55,30 @@ The manuscript writing was shared among all three authors.
 
 \subsubsection*{Scientific Contribution:}%
 %
+Many different robust controllers exists, specifically targeting control systems where the controller can experience timing faults.
+The main advantage of using these synthesis methods is that they can guarantee a priori system stability, under their respective fault model.
+However, this paper identifies some limitations of previous work, such as
+\begin{enumerate*}[label=(\roman*)]
+    \item complex design methods,
+    \item poor performance in nominal conditions, and
+    \item strong assumptions on the control law's structure.
+\end{enumerate*}
+
+To address the shortcomings of previous synthesis methods, we propose an adaptive control law that
+\begin{enumerate*}[label=(\roman*)]
+    \item is simple to design and implement,
+    \item requires minimal system knowledge, and
+    \item does not affect the nominal control performance.
+\end{enumerate*}
+The adaptive controller assumes that there exists a controller that has been synthesised with respect to a specific control system's specification under nominal conditions.
+Based on the number of computational overruns, the adaptation then alters the controller matrices to quickly restore nominal control performance.
+\nv{Mention something about \tK{}}.
+The proposed method does not guarantee any a priori stability guarantees; thus, we also derive a stochastic mean-square stability analysis to be performed a posteriori.
+
+\nv{Write something about the experimental campaign}
+
+
+
 
 \subsubsection*{Authors' Contribution:}%
 %
