@@ -3,7 +3,7 @@
 
 \nv{%
 
-\section*{Cyber-Physical Systems}%
+\section*{Embedded real-time control Systems}%
 %
 \begin{itemize}
     \item Refer to figure from Chapter~\ref{ch:intro} and then ``zoom'' in on the
@@ -12,7 +12,7 @@
         (wired/wireless), control hardware, actuators.
     \item Simple description of software components: network protocol, RTOS,
         tasks, memory, interrupts, etc.
-    \item Maybe create a simple practical example (e.g., breaks in a car) that
+    \item Maybe create a simple practical example (e.g., taxi of a plane) that
         can be followed throughout this section.
 \end{itemize}
 
@@ -26,14 +26,20 @@
     \item recall great example of real-time system in rust book
 \end{itemize}
 
-\subsubsection*{Modelling Execution using Automata}%
+\subsubsection*{Modelling Execution using finite state-machine}%
 %
 \begin{itemize}
     \item This section should maybe be moved?
     \item Entire subsubsection requested by KE
     \item More automata theory
-    \item Difference from timed automata
-    \item Include markov theory here?
+    \item "typically in control fsm have been used to design highlevel control
+        (e.g., taxi takeoff and landing), in principle (computer science)
+        automata have been used to represent more complicated things (for
+        instance regular languages). This is the basis of what the WeaklyHard.jl
+        does."
+    \item Include markov theory here. "In CS when the transition was
+        non-deterministic, i.e., probabilistic, then you have the concept of
+        Markov chains."
 \end{itemize}
 
 
@@ -44,8 +50,7 @@
     \item Sensors and actuator models included here.
     \item Control model (non-linear, more common ones), relate to real-time
         tasks
-    \item MPC discussion?
-    \item Switching systems? Markov Jump Linear Systems?
+    \item Switching systems! Markov Jump Linear Systems!
 \end{itemize}
 
 
