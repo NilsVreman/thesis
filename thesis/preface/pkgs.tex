@@ -4,13 +4,6 @@
 \usepackage{graphicx}
 
 % To include all authors in \fullcite command
-\DeclareCiteCommand{\fullcite}
-    {\usebibmacro{prenote}}
-    {\usedriver
-        {}
-        {\thefield{entrytype}}}
-    {\multicitedelim}
-    {\usebibmacro{postnote}}
 \preto\fullcite{\AtNextCite{\defcounter{maxnames}{99}}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
