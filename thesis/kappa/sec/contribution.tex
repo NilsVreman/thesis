@@ -23,24 +23,27 @@ We conclude the chapter with Section~\ref{sec:additional-publications}, listing 
 
 \subsubsection*{Scientific Contribution:}%
 %
-In this paper, linear control system stability and performance is analysed when the controller experiences persistent computational blackouts.
+In Paper I, linear control system stability and performance is analysed when the controller experiences persistent computational blackouts.
 Historically, the models to analyse such events have been either stochastic or overly conservative.
 These models have been thoroughly investigated in the literature, but few have been shown to achieve similar results on industrial applications.
 
-Instead, the paper proposes a new fault model that handles consecutive computational overruns whilst also encapsulating the graceful recovery back to nominal execution conditions.
+Instead, Paper I proposes a new fault model that handles consecutive computational overruns whilst also encapsulating graceful recovery back to nominal execution conditions.
 The fault model is coupled together with different actuator (\tZ{} and \tH{}) and scheduling strategies (\tK{} and \tS{}) to provide a holistic system model.
-A methodology for analysing the stability and performance of systems subject to this specific fault model is also derived. \nv{I should write more specifics about the analysis here maybe?}
+To properly analyse the specific fault model, a methodology for analysing the stability and performance is also derived.
+The stability analysis is based on a switched system stability approach, whilst the performance analysis is based on evolving a quadratic cost function in time.
 
-To reinforce the analysis methodology's applicability to industrial application, an experimental campaign is carried out.\nv{Also be more clear about what experiments are performed}
-We show that, for a physical system, the analysis -- performed on a \emph{linear model} of the \emph{non-linear physical system} -- is enough to draw conclusions about the physical process'.
+To reinforce the analysis methodology's applicability to industrial application, an experimental campaign is carried out.
+We analyse both a non-linear physical system (a Furuta pendulum) and a set of linear system models representative for the process industry.
+From the analysis performed on the physical system, we show that it is possible to draw accurate conclusions about the physical process' behaviour.
 
 \subsubsection*{Authors' Contribution:}%
 %
 M. Maggio proposed the idea of analysing control system stability for fault models that are well-suited for industrial use.
 The physical testing environment and the experiments were implemented and executed by N. Vreman, who also developed the new fault model.
-After discussions between M. Maggio and N. Vreman the switching stability analysis presented in the paper was derived.
+After discussions between M. Maggio and N. Vreman the switching stability analysis was derived.
 Together, A. Cervin and N. Vreman derived a method for analysing the performance of systems subject to the proposed fault model.
 The manuscript writing was shared among all three authors.
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -57,7 +60,7 @@ The manuscript writing was shared among all three authors.
 %
 Many different robust controllers exists, specifically targeting control systems where the controller can experience timing faults.
 The main advantage of using these synthesis methods is that they can guarantee a priori system stability, under their respective fault model.
-However, this paper identifies some limitations of previous work, such as
+However, Paper II identifies some limitations of previous work, such as
 \begin{enumerate*}[label=(\roman*)]
     \item complex design methods,
     \item poor performance in nominal conditions, and
@@ -71,17 +74,21 @@ To address the shortcomings of previous synthesis methods, we propose an adaptiv
     \item does not affect the nominal control performance.
 \end{enumerate*}
 The adaptive controller assumes that there exists a controller that has been synthesised with respect to a specific control system's specification under nominal conditions.
-Based on the number of computational overruns, the adaptation then alters the controller matrices to quickly restore nominal control performance.
-\nv{Mention something about \tK{}}.
-The proposed method does not guarantee any a priori stability guarantees; thus, we also derive a stochastic mean-square stability analysis to be performed a posteriori.
+Assuming that the \tK{} strategy is employed, the adaptation then alters the controller matrices (based on the number of computational overruns) to quickly restore nominal control performance.
+To analyse the performance gain of the adaptive controller, we extend existing stochastic performance analyses based on Markov jump linear system's theory to compute the \emph{relative performance degradation}, i.e., the performance degradation following from using a controller other than the ideal controller.
 
-\nv{Write something about the experimental campaign}
-
-
-
+We validate the adaptive controller on a physical process (a Ball and Beam) and the set of process industrial models from Paper I.
+Significant performance gain is shown despite having an immense number of computational overruns.
+Additionally, since the proposed method does not guarantee any a priori stability guarantees, we also analyse the switched system stability a posteriori.
 
 \subsubsection*{Authors' Contribution:}%
 %
+The initial observation, that many fault-tolerant controllers are restricted to overly specific system conditions, was made by C. Mandrioli.
+After discussions between C. Mandrioli and N. Vreman a set of limitations was identified; together, they derived the adaptive controller addressing the set of limitations.
+A. Cervin derived the performance analysis to validate the controller.
+The adaptive controller was implemented on the Ball and Beam by N. Vreman and the data was collected by both N. Vreman and C. Mandrioli.
+The three authors shared the manuscript writing.
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -96,9 +103,28 @@ The proposed method does not guarantee any a priori stability guarantees; thus, 
 
 \subsubsection*{Scientific Contribution:}%
 %
+Ever since their introduction, the weakly-hard models have been steadily increasing in both academic and industrial popularity.
+The existing tools and research have focused on single constraints, in particular the \tAM{} constraint.
+In certain domains, e.g., control systems, this choice is likely motivated by the \tAM{} constraints popularity rather than its fitness to the problem statement.
+
+Paper III aspires to
+\begin{enumerate*}[label=(\roman*)]
+    \item change the focus from the \tAM{} constraint to the \tRH{} constraint and
+    \item propose a scalable, open-source tool (\tool{}) that can be used to analyse \emph{all} the weakly-hard constraints. 
+\end{enumerate*}
+In order to switch the attention to the \tRH{} constraint, we provide two novel theorems on the relation between it and the \tAH{} constraint, finalising the relationship graph between all the weakly-hard constraints.
+The \tool{} tool employ an automaton model to describe the discrete-time execution of a task subject to a specific weakly-hard constraint.
+Additionally, \tool{} is the first tool to address \emph{sets} of weakly-hard constraints.
+\note{Don't know if I should mention anything about the experimental campaign here?}
+
 \subsubsection*{Authors' Contribution:}%
 %
-    
+The tool and its underlying algorithm was fully developed by N. Vreman, with input from discussions with M. Maggio.
+N. Vreman came up with the idea for the theoretical results.
+Together, N. Vreman and R. Pates formulated the theorems relating the \tAH{} and \tRH{} constraints, which R. Pates proved mathematically.
+The manuscript was written by N. Vreman and M. Maggio with revisions from R. Pates.  
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage %%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
