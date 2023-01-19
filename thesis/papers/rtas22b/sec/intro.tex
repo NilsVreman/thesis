@@ -42,7 +42,7 @@ Most analysis methods only take into account a single constraint, e.g.,~\cite{Pa
 In some cases, one of the two constraints \emph{dominates} the other, meaning that satisfying the dominant constraint also guarantees the satisfaction of the dominated one. 
 But this is not always the case.
 Consider for example two constraints $\lambda_1$ and $\lambda_2$, where $\lambda_1$ specifies that the task may miss a maximum of 2 deadlines in every window of 5 consecutive jobs, and $\lambda_2$ that it may miss a maximum of 3 deadlines in every window of 7 consecutive jobs.
-On the one hand the sequence 0011100, where 0 represents a deadline miss and 1, satisfies $\lambda_1$ but fails $\lambda_2$, meaning that $\lambda_2$ does not dominate $\lambda_1$.
+On the one hand the sequence 0011100, where 0 represents a deadline miss and 1 a deadline hit, satisfies $\lambda_1$ but fails $\lambda_2$, meaning that $\lambda_2$ does not dominate $\lambda_1$.
 On the other hand the sequence 0001111 satisfies $\lambda_2$ but fails $\lambda_1$, and so $\lambda_1$ does not dominate $\lambda_2$ either.
 If the analysis can only be conducted with a single constraint, the choice of which constraint is to be used is left to the practitioner, while it would be best to consider \emph{both} constraints simultaneously.
 
