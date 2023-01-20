@@ -110,7 +110,7 @@ In certain domains, e.g., control systems, this choice is likely motivated by th
 Paper III aspires to
 \begin{enumerate*}[label=(\roman*)]
     \item change the focus from the \tAM{} constraint to the \tRH{} constraint and
-    \item propose a scalable, open-source tool (\tool{}) that can be used to analyse \emph{all} the weakly-hard constraints. 
+    \item propose a scalable, open-source tool (\tool{}) that can be used to analyse \emph{all} the weakly-hard constraints.
 \end{enumerate*}
 In order to switch the attention to the \tRH{} constraint, we provide two novel theorems on the relation between it and the \tAH{} constraint, finalising the relationship graph between all the weakly-hard constraints.
 The \tool{} tool employ an automaton model to describe the discrete-time execution of a task subject to a specific weakly-hard constraint.
@@ -122,7 +122,7 @@ Additionally, \tool{} is the first tool to address \emph{sets} of weakly-hard co
 The tool and its underlying algorithm was fully developed by N. Vreman, with input from discussions with M. Maggio.
 N. Vreman came up with the idea for the theoretical results.
 Together, N. Vreman and R. Pates formulated the theorems relating the \tAH{} and \tRH{} constraints, which R. Pates proved mathematically.
-The manuscript was written by N. Vreman and M. Maggio with revisions from R. Pates.  
+The manuscript was written by N. Vreman and M. Maggio with revisions from R. Pates.
 
 
 
@@ -138,8 +138,25 @@ The manuscript was written by N. Vreman and M. Maggio with revisions from R. Pat
 
 \subsubsection*{Scientific Contribution:}%
 %
+In Paper IV, we identify that despite the weakly-hard models having steadily gained more traction, they are lacking when it comes to describing more expressive implementation details, e.g., deadline handling strategies.
+We rectify this discrepancy by extending the formal language defining the weakly-hard constraints, improving the models' real implementability.
+
+The \tool{} tool, introduced in Paper III, unveiled new possibilities for analysing real-time control systems under weakly-hard constraints.
+Utilising this automaton model, we propose a post-processing step refactoring the automaton according to the formal language specifications in order to facilitate the new \emph{extended weakly-hard constraints}.
+For the refactored automaton, we present a switched linear systems stability analysis.
+
+The dynamics of the linear control system is Kronecker lifted with the adjacency matrix of the automaton to obtain an equivalent system model, but now also subject to the extended weakly-hard constraint.
+This system model can then be analysed using any method applicable to arbitrary switching systems; Paper IV utilises a JSR approach.
+In addition to the stability analysis, we propose two novel theorems relating the real-time constraints with the control system stability.
+
 \subsubsection*{Authors' Contribution:}%
 %
+P. Pazzaglia came up with the idea to the paper after discussions with N. Vreman; together, they derived the theoretical results presented in the paper.
+N. Vreman refactored the \tool{} tool to also facilitate a more expressive formal language.
+The discussions around the JSR analysis and evaluation were led by V. Magron and M. Maggio.
+J. Wang implemented the JSR evaluation presented in the paper.
+The manuscript was then written by P. Pazzaglia and N. Vreman with input and revisions from V. Magron and M. Maggio.
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
