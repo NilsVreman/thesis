@@ -1,36 +1,32 @@
 \def \delta {0.15}
 
 \begin{tikzpicture}
-\tikzstyle{task} = [draw, fill=white,align=center]
-
-%%%%%%%%%%%
-%%% CPS %%%
-%%%%%%%%%%%
+\tikzstyle{task} = [draw,thick,fill=white,align=center]
 
 %%% TASKS %%%
 
-\node[task,] (t1) at (-2+0*\delta,1.6-0*\delta) {Task $\#1$ \\\faFileCode[regular]};
-\node[task,] (t2) at (-2+1*\delta,1.6-1*\delta) {Task $\#2$ \\\faFileCode[regular]};
-\node[task,] (t3) at (-2+2*\delta,1.6-2*\delta) {Task $\#3$ \\\faFileCode[regular]};
+\node[task,opacity=0.4] (t1) at (-2+0*\delta,1.6-0*\delta) {Task $\#1$ \\\faFileCode[regular]};
+\node[task,opacity=0.7] (t2) at (-2+1*\delta,1.6-1*\delta) {Task $\#2$ \\\faFileCode[regular]};
+\node[task,opacity=1.0] (t3) at (-2+2*\delta,1.6-2*\delta) {Task $\#3$ \\\faFileCode[regular]};
 
-\node[task,] (ct1) at (1+0*\delta,1.6-0*\delta) {Control-Task $\#1$ \\\faFileCode[regular]};
-\node[task,] (ct2) at (1+1*\delta,1.6-1*\delta) {Control-Task $\#2$ \\\faFileCode[regular]};
-\node[task,] (ct3) at (1+2*\delta,1.6-2*\delta) {Control-Task $\#3$ \\\faFileCode[regular]};
+\node[task,opacity=0.4] (ct1) at (1+0*\delta,1.6-0*\delta) {Control-Task $\#1$ \\\faFileCode[regular]};
+\node[task,opacity=0.7] (ct2) at (1+1*\delta,1.6-1*\delta) {Control-Task $\#2$ \\\faFileCode[regular]};
+\node[task,opacity=1.0] (ct3) at (1+2*\delta,1.6-2*\delta) {Control-Task $\#3$ \\\faFileCode[regular]};
 
 %%% CYBER %%%
 
-\node[align=center] (rtos) at (-0.2,0.15) {Real-Time Operating System};
-\node[draw, align=center, rotate=90, text width=3.0cm] (hw) at (3.15,0.775) {HW interfaces};
-\node[fit=(rtos)(t1)(ct1)(ct3),draw,yshift=1.5mm] (sw) {};
-\node[draw, above left] (clock) at (sw.south east) {\faClock[regular]};
+\node[thick, align=center] (rtos) at (-0.2,0.15) {Real-Time Operating System};
+\node[thick, draw, align=center, rotate=90, text width=2.92cm] (hw) at (3.15,0.775) {HW interfaces};
+\node[thick, fit=(rtos)(t1)(ct1)(ct3),draw,yshift=1.5mm] (sw) {};
+\node[thick, draw, above left] (clock) at (sw.south east) {\faClock[regular]};
 \node[thick, fit=(sw)(hw), inner sep=5pt, draw] (board) {};
-\node[above left, xshift=1.8cm] (borad-label) at (board.south west) {Board};
-\node[draw, above right] (clockboard) at (board.south west)  {\faClock[regular]};
+\node[thick, above left, xshift=1.8cm] (borad-label) at (board.south west) {Board};
+\node[thick, draw, above right] (clockboard) at (board.south west)  {\faClock[regular]};
 
 %%% PHYSICAL %%%
 
 \node[thick, draw ,align=center] (phys) at (6,0.775) {\includegraphics[scale=4]{\figdir/airplane.jpg}};
-\node[draw, above left] (time) at (phys.south east)  {\faClock[regular]};
+\node[thick, draw, above left] (time) at (phys.south east) {\faClock[regular]};
 
 %%% ARROWS %%%
 
