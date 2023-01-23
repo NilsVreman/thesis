@@ -1,10 +1,18 @@
 % from template
-\usepackage[T1]{fontenc}
-\usepackage{mathptmx, helvet}
-\usepackage{graphicx}
+\usepackage[T1]{fontenc}%
+\usepackage{mathptmx, helvet}%
+\usepackage{graphicx}%
 
 % To include all authors in \fullcite command
-\preto\fullcite{\AtNextCite{\defcounter{maxnames}{99}}}
+\preto\fullcite{\AtNextCite{\defcounter{maxnames}{99}}}%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% packages from:
+%%%    kappa/
+%%% as you add the papers you'll have to adjust them
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{fontawesome5}%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 %%% packages copy pasted from:
@@ -12,10 +20,10 @@
 %%% as you add the papers you'll have to adjust them
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
-\usepackage{amssymb, mathtools}
-\usepackage[inline]{enumitem} %inline enumeration
-\usepackage[table]{xcolor} %The 'table' option for 'xcolor' loads the 'colortbl' package, so there's no need to load it separately.
-\usepackage{afterpage}
+\usepackage{amssymb, mathtools}%
+\usepackage[inline]{enumitem}%      %inline enumeration
+\usepackage[table]{xcolor}%         %The 'table' option for 'xcolor' loads the 'colortbl' package, so there's no need to load it separately.
+\usepackage{afterpage}%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 %%% packages copy pasted from:
@@ -23,7 +31,7 @@
 %%% as you add the papers you'll have to adjust them
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
-\usepackage{xfrac} % For nice fractions
+\usepackage{xfrac}%                 % For nice fractions
 %\usepackage{colortbl} % For colourful tables % NOTE: Not needed after the table option was introduced for xcolor
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
@@ -32,8 +40,8 @@
 %%% as you add the papers you'll have to adjust them
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
-\usepackage{algorithm} % Algorithm related
-\usepackage[noend]{algpseudocode} % Algorithm related
+\usepackage{algorithm}%             % Algorithm related
+\usepackage[noend]{algpseudocode}%  % Algorithm related
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 %%% packages copy pasted from:
@@ -41,16 +49,16 @@
 %%% as you add the papers you'll have to adjust them
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
-\usepackage{lscape}
+\usepackage{lscape}%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Tikz definitions and libraries
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
-\input{preface/includes/tikzfmt}
+\input{preface/includes/tikzfmt}%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Theorem formats
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
-\input{preface/includes/thmfmt}
+\input{preface/includes/thmfmt}%
