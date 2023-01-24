@@ -31,50 +31,79 @@ In this section, I'll try to portray my ``elevator pitch''.
 \end{enumerate}
 }%
 
-\subsection*{Embedded Systems}%
+
+%\nv{%
+%\textbf{The What:}
+%\begin{itemize}
+%    \item Connectivity, Distributed systems, NCS, IoT, Wireless
+%    \item Communication hiccups
+%    \item packet drops
+%    \item deadline misses
+%\end{itemize}
+%}%
+%
+%\nv{%
+%\textbf{The why:}
+%\begin{itemize}
+%    \item Huge costs, damages
+%    \item Safety
+%    \item Security
+%    \item Paper by~\cite{Akesson:2020}
+%\end{itemize}
+%}%
+
+%%% WHAT
+% Introduction to digitalisation
+Entering the digital age has forever changed how we interact with the world and how it interacts with us.
+Unlike only 20 years ago, from the moment we wake up in the morning till the moment we close our eyes at night, we interact with advanced computer systems.
+Our cellphones, work computers, and even our cars going contain many computational devices, performing everything from menial tasks, such as checking the weather and accessing mail clients, to safety critical tasks, such as the car's ABS breaks and most of the engine's functionality.
+Just to put the digital growth rate in perspective, the semiconductor\footnote{Semiconductors are components constituting the foundation of generally \emph{all} electronic devices.} market share has more than quadrupled over the last 20 years~\cite{statista:2022}.
+
+% The hardware architecture is getting more powerful and cheaper to use
+Not only is the number of computational devices increasing, but their independent capabilities, functionalities, and complexities are growing steadily, while the cost to buy and manufacture them has generally become cheaper.
+Obviously, the increased efficiency and reduced cost opened up new businesses and domains, in particular within the IT-domain, whilst also consolidating and automating preexisting industry.
+The integration of software in (generally) any domain help monitor systems, log and transmit important data, orchestrate the execution of different parts, and remotely micromanage system updates.
+When everything behaves as intended, software integration is a powerful tool that improve both efficiency and increase revenue.
+
+\note{Should I explain what type of issues I'm working with already here?}
+
+% The complexity and reduced prices increase error surfaces
+Interconnecting multiple systems is, however, not a trivial task.
+When the systems are getting increasingly more complex, the surface for possible errors is also growing.
+In addition to the components' individual faults, we can after connecting two components encounter problems with either the coupling or even introduce problems in the individual components.
+Imagine a motorbike; it can experience all the component issues that can arise on a normal bike (punctured tire, loose chain, etc.), but it can also experience issues for connecting the bike together with a motor (electric clutch, battery, sensor networks, etc.).
+Similarly to the motorbike, systems relying on data transmissions can easily be delayed or stall indefinitely if the data is lost, an orchestrator can get overloaded, and systems with remote updates have the potential to break every time a new patch is installed.
+These problems are neither easy to detect nor troubleshoot; particularly since their origin can be obfuscated by complex software and hardware interconnections.
+
+%%% WHY
+% Costs
+The effects of such errors can be extremely expensive and in certain cases cause companies to lose billions of dollars, even though such cases may be rare.
+Typically the outcome of system faults is that the normal operation of the device (or machine) is degraded.
+The degradation can over time accumulate and either wear down the device or affect the end product.
+Obviously, if it is possible to extend a device's lifetime by fixing software-induced errors, a lot of money could be gained.
+Furthermore, if the end product is inferior to the promised product, the consumers would go elsewhere -- no matter whether the product is a service, such as cloud storage, or a physical product, such as a cellphone.
+
+% Safety and security
+Arguably more important than the economic consequences are the risks to personal safety, security, and privacy.
+One of the modern era's most famous examples are the Boeing's 737 MAX\footnote{\url{https://en.wikipedia.org/wiki/Boeing_737_MAX_groundings}} crashes, killing 346 people in two subsequent crashes; the crashes were caused by erroneous sensor readings being misinterpreted by the flight control system, resulting in the planes nosediving into the ground.
+Another relevant (although less lethal) example is the famous malicious Stuxnet worm\footnote{\url{https://en.wikipedia.org/wiki/Stuxnet}}; it infiltrated the system controlling the gas-centrifuges in multiple Iranian nuclear plants, significantly damaging them whilst also collecting critical information. 
+
+\nv{Maybe conclude this part with a paragraph properly introducing the problem?}
+
+
+
+\subsection*{Control Theoretical Benefits}%
 %
 \nv{%
 Figure (somewhere) of a general embedded setup with a brief introduction to the different
 parts of the figure (nothing technical).
 }%
-
-Entering the digital age has forever changed how we interact with the world and how it interacts with us.
-Unlike only 20 years ago, from the moment we wake up in the morning till the moment we close our eyes at night, we interact with advanced computer systems.
-Our cellphones, work computers, and even our cars going to and from work contain a lot of computational devices.
-To give an indication of how fast technology has advanced since the start of the millennium, we can look at the semiconductors\footnote{Semiconductors are components which constitute the foundation of generally \emph{all} electronic devices.} market share; in 2002 this was 141 billion US dollars, a number which have more than quadrupled to 614 billion US dollars in 2022~\cite{statista:2022}.
-
-
-
 \begin{figure}[t]
     \centering
     \input{\figdir/embedded-system}%
     \caption{\fix{Add caption, and maybe change font? Change "Board" to something else? Change "HW Interfaces to something else?"}}%
     \label{fig:embedded-system}%
 \end{figure}
-
-\nv{%
-\textbf{The What:}
-\begin{itemize}
-    \item Connectivity, Distributed systems, NCS, IoT, Wireless
-    \item Communication hiccups
-    \item packet drops
-    \item deadline misses
-\end{itemize}
-}%
-
-\nv{%
-\textbf{The why:}
-\begin{itemize}
-    \item Huge costs, damages
-    \item Safety
-    \item Security
-    \item Paper by~\cite{Akesson:2020}
-\end{itemize}
-}%
-
-
-\subsection*{Control Theoretical Benefits}%
-%
 \nv{%
 Short introduction to what has historically been done to mitigate the problems
 }%
