@@ -121,26 +121,51 @@ By treating accessibility, clarity, and generalisability as first-class citizens
 
 \subsection*{Real-Time Control Systems \fix{Need a header that better fits}}%
 %
+\note{Should I add sensor and actuator blocks to the plant in Figure~\ref{fig:high-level-abstraction}?}
+%
 Fundamentally all systems today contain a certain level of automation, whether it is automatic heat control in buildings or memory allocation in the cloud for storing photos.
 Abstracting a system to a common mathematical language and making it behave according to predefined specifications is called \emph{automatic control}.
 A specific class of automatic control systems (\emph{control systems} for short) are real-time control systems, which are defined by being time critical.
 The word ``real-time'' is often used synonymously with ``being very fast'', however, a more accurate synonym might be ``timely''.
 In fact, a real-time system is not required to be fast, but it is required to execute according to some temporal constraints.
-Figure~\ref{fig:rt-sys} depict a general setup of a real-time control system
+These constraints are generally enforced by a \emph{real-time operating system} (RTOS).
 
+A high-level abstraction of a real-time control system is depicted in Figure~\ref{fig:high-level-abstraction}.
+%
 \begin{figure}[t]
     \centering
-    \input{\figdir/rt-sys}%
+    \input{\figdir/high-level-abstraction}%
     \caption{\fix{Add caption, and maybe change font? Change ``Board'' to something else? Change ``HW Interfaces to something else?''}}%
-    \label{fig:rt-sys}%
+    \label{fig:high-level-abstraction}%
 \end{figure}
+% Plant, sensors, HW interface
+The right part of the figure depict the process we are trying to control (usually denoted the \emph{plant}); this could be anything from an airplane's taxiing system (as the figure suggests), the flow through a dam, or the load on a server in a data centre.
+In this and following chapters, the taxiing system will be used as a recurring example to illustrate the different concepts.
+To and from the plant we have arrows indicating the flow of data; actuation data goes into the plant and sensor data is collected on the plant.
+These signals are transmitted to and from the plant via the hardware interfaces on the computational unit responsible for controlling the plant.
+How the signals are transmitted depend on the application, i.e., either via wired or wireless communication.
 
-\nv{%
-Figure (somewhere) of a general embedded setup with a brief introduction to the different
-parts of the figure (nothing technical).
+% Board
+Depending on the application, the hardware can be anything from logic-based systems (e.g., programmable logic controllers) to general purpose computers (e.g., laptops or server systems).
+We will mainly refer to the hardware as a \emph{microcontroller} (MCU), i.e., a small computer with integrated memory, computational processing unit (CPU), graphical processing units (GPU), and programmable input/output peripherals (GPIO) all on a single chip; however, we emphasise that the presented results do not discriminate between hardware architectures.
 
-Short introduction to what has historically been done to mitigate the problems
-}%
+% RTOS, Tasks, and control task
+The defining characteristics of a real-time control system is that it relies on a real-time operating system to schedule and constraint the temporal execution of \emph{tasks}.
+All real-time applications can be structured as a set of tasks, where each task has a dedicated function (a piece of code) it is supposed to execute, e.g., compute a value, transmit data, or log data.
+Typically there are more than one task executing in the RTOS.
+For this reason there exist a \emph{scheduler} in the RTOS to
+\begin{enumerate*}[label=(\roman*)]
+    \item swap tasks in and out,
+    \item wake up tasks that are currently not executing but who should start executing, and
+    \item interrupt tasks that are currently executing when something with higher priority requires the processor.
+\end{enumerate*}
+Additionally, the tasks are not supposed to have any information about the RTOS orchestration and it is thus the RTOS responsibility to ensure that the task has access to its own \emph{context}, i.e., the resource it requires. 
+
+
+
+% Controller and Actuator
+
+% Clocks
 
 
 \subsection*{Outline}%

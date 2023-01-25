@@ -16,12 +16,12 @@
 %%% CYBER %%%
 
 \node[thick, align=center] (rtos) at (-0.1,0.25) {Real-Time Operating System};
-\node[thick, draw, align=center, rotate=90, text width=2.75cm] (hw) at (3.15,0.87) {HW Interfaces};
+\node[thick, draw, align=center, rotate=90, text width=2.75cm] (hwi) at (3.15,0.87) {HW Interfaces};
 \node[thick, fit=(rtos)(t1)(ct1)(ct3),draw,yshift=1.5mm,xshift=0.75mm] (sw) {};
 \node[thick, draw, above left] (clock) at (sw.south east) {\faClock[regular]};
-\node[thick, fit=(sw)(hw), inner sep=5pt, draw] (board) {};
-\node[thick, above left, xshift=1.8cm] (borad-label) at (board.south west) {Board};
-\node[thick, draw, above right] (clockboard) at (board.south west)  {\faClock[regular]};
+\node[thick, fit=(sw)(hwi), inner sep=7pt, draw] (hw) {};
+\node[thick, above left, xshift=2.3cm, yshift=0.5mm] (hw-label) at (hw.south west) {Hardware};
+\node[thick, draw, above right] (hwclock) at (hw.south west)  {\faClock[regular]};
 
 %%% PHYSICAL %%%
 
@@ -30,7 +30,7 @@
 
 %%% ARROWS %%%
 
-\draw[-latex] ([yshift=0.65cm]hw.south) to node[yshift=0.85cm,rotate=90] {Actuation} ([yshift=0.65cm]phys.west);
-\draw[-latex] ([yshift=-0.65cm]phys.west) to node[yshift=-0.85cm, rotate=90] {Sensing} ([yshift=-0.65cm]hw.south);
+\draw[thick, -latex] ([yshift=0.65cm]hwi.south) to node[yshift=0.85cm,xshift=1mm,rotate=90] {Actuation} ([yshift=0.65cm]phys.west);
+\draw[thick, -latex] ([yshift=-0.65cm]phys.west) to node[yshift=-0.75cm,xshift=1mm,rotate=90] {Sensing} ([yshift=-0.65cm]hwi.south);
 
 \end{tikzpicture}
