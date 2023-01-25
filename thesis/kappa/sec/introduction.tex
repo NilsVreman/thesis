@@ -161,11 +161,16 @@ For this reason there exist a \emph{scheduler} in the RTOS to
 \end{enumerate*}
 Additionally, the tasks are not supposed to have any information about the RTOS orchestration and it is thus the RTOS responsibility to ensure that the task has access to its own \emph{context}, i.e., the resource it requires. 
 
-
-
 % Controller and Actuator
+As can be seen in Figure~\ref{fig:high-level-abstraction}, we distinguish \emph{control tasks} from normal tasks.
+From the perspective of the RTOS, there is no discernible difference between these tasks, however, programmatically there is.
+The control tasks are all the tasks responsible for controlling the plant, while the normal tasks take care of everything else.
+Taking the taxiing system as an example, the control tasks can be two tasks where one is controlling the velocity of the landing gear while the other is controlling the retraction mechanism; additionally, there are other tasks communicating the sensor data (e.g., tire-pressure, temperature, etc.) to the aircraft's central computer.
+The tasks are divided into two categories because we are only interested in analysing the control tasks' effect on the system when their temporal execution is unreliable; this will be elaborated in Chapter~\ref{ch:background}.
 
 % Clocks
+\nv{Continue here}
+
 
 
 \subsection*{Outline}%
