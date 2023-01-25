@@ -51,6 +51,24 @@ In this section, I'll try to portray my ``elevator pitch''.
 %    \item Paper by~\cite{Akesson:2020}
 %\end{itemize}
 %}%
+%
+%\nv{%
+%\textbf{The Statement:}
+%\begin{itemize}
+%    \item Theoretical and practical tools for analysing and synthesising
+%        fault-tolerant controllers, with significant performance gains.
+%    \item Lowering the entry-level knowledge for applying the tools to real
+%        processes.
+%\end{itemize}
+%}%
+%
+%\nv{%
+%\textbf{The Consequences:}
+%\begin{itemize}
+%    \item Decoupling and clarifying real-time and control theoretical models.
+%    \item Making them more accessible to a broader class of practitioners.
+%\end{itemize}
+%}%
 
 %%% WHAT
 % Introduction to digitalisation
@@ -60,9 +78,9 @@ Our cellphones, work computers, and even our cars going contain many computation
 Just to put the digital growth rate in perspective, the semiconductor\footnote{Semiconductors are components constituting the foundation of generally \emph{all} electronic devices.} market share has more than quadrupled over the last 20 years~\cite{statista:2022}.
 
 % The hardware architecture is getting more powerful and cheaper to use
-Not only is the number of computational devices increasing, but their independent capabilities, functionalities, and complexities are growing steadily, while the cost to buy and manufacture them has generally become cheaper.
+Not only is the number of computational devices increasing, but their independent capabilities, functionalities, and complexities are growing steadily, while the cost to buy and manufacture them has become cheaper.
 Obviously, the increased efficiency and reduced cost opened up new businesses and domains, in particular within the IT-domain, whilst also consolidating and automating preexisting industry.
-The integration of software in (generally) any domain help monitor systems, log and transmit important data, orchestrate the execution of different parts, and remotely micromanage system updates.
+The integration of software in generally any domain help monitor systems, log and transmit important data, orchestrate the execution of different parts, and remotely micromanage system updates.
 When everything behaves as intended, software integration is a powerful tool that improve both efficiency and increase revenue.
 
 \note{Should I explain what type of issues I'm working with already here?}
@@ -87,44 +105,37 @@ Furthermore, if the end product is inferior to the promised product, the consume
 Arguably more important than the economic consequences are the risks to personal safety, security, and privacy.
 One of the modern era's most famous examples are the Boeing's 737 MAX\footnote{\url{https://en.wikipedia.org/wiki/Boeing_737_MAX_groundings}} crashes, killing 346 people in two subsequent crashes; the crashes were caused by erroneous sensor readings being misinterpreted by the flight control system, resulting in the planes nosediving into the ground.
 Another relevant (although less lethal) example is the famous malicious Stuxnet worm\footnote{\url{https://en.wikipedia.org/wiki/Stuxnet}}; it infiltrated the system controlling the gas-centrifuges in multiple Iranian nuclear plants, significantly damaging them whilst also collecting critical information. 
+Generally it is impossible to guarantee that today's complex computer systems are absolutely safe, secure and performs according to specifications under all conditions.
+Additionally, testing for all possible future problems is expensive and time consuming at best and infeasible in practice.
+It is therefore crucial to develop easy-to-use, powerful tools to simplify the analysis of both the systems' performance and safety properties.
 
-\nv{Maybe conclude this part with a paragraph properly introducing the problem?}
+%%% STATEMENT & CONSEQUENCES
+% Concluding paragraph summarising what the thesis is tackling and what the consequences of this might be
+It is the purpose of this thesis to provide tools and methods for analysing systems experiencing faults.
+In particular, the focus is to analyse software integrated systems where the faults are occurring in the interconnection between software and hardware.
+By treating accessibility, clarity, and generalisability as first-class citizens we aim to lower the threshold for using the powerful tools provided.
+
+\nv{Add something more to the end here?}
 
 
 
-\subsection*{Control Theoretical Benefits}%
+\subsection*{Real-Time Control Systems \fix{Need a header that better fits}}%
 %
-\nv{%
-Figure (somewhere) of a general embedded setup with a brief introduction to the different
-parts of the figure (nothing technical).
-}%
 \begin{figure}[t]
     \centering
     \input{\figdir/embedded-system}%
     \caption{\fix{Add caption, and maybe change font? Change "Board" to something else? Change "HW Interfaces to something else?"}}%
     \label{fig:embedded-system}%
 \end{figure}
+
+
 \nv{%
+Figure (somewhere) of a general embedded setup with a brief introduction to the different
+parts of the figure (nothing technical).
+
 Short introduction to what has historically been done to mitigate the problems
 }%
 
-\nv{%
-\textbf{The Statement:}
-\begin{itemize}
-    \item Theoretical and practical tools for analysing and synthesising
-        fault-tolerant controllers, with significant performance gains.
-    \item Lowering the entry-level knowledge for applying the tools to real
-        processes.
-\end{itemize}
-}%
-
-\nv{%
-\textbf{The Consequences:}
-\begin{itemize}
-    \item Decoupling and clarifying real-time and control theoretical models.
-    \item Making them more accessible to a broader class of practitioners.
-\end{itemize}
-}%
 
 \subsection*{Outline}%
 %
