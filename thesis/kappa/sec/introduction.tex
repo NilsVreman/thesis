@@ -99,7 +99,7 @@ The effects of such errors can be extremely expensive and in certain cases cause
 Typically the outcome of system faults is that the normal operation of the device (or machine) is degraded.
 The degradation can over time accumulate and either wear down the device or affect the end product.
 Obviously, if it is possible to extend a device's lifetime by fixing software-induced errors, a lot of money could be gained.
-Furthermore, if the end product is inferior to the promised product, the consumers would go elsewhere -- no matter whether the product is a service, such as cloud storage, or a physical product, such as a cellphone.
+Furthermore, if the end product is inferior to the promised product, the consumers would go elsewhere --- no matter whether the product is a service, such as cloud storage, or a physical product, such as a cellphone.
 
 % Safety and security
 Arguably more important than the economic consequences are the risks to personal safety, security, and privacy.
@@ -121,13 +121,19 @@ By treating accessibility, clarity, and generalisability as first-class citizens
 
 \subsection*{Real-Time Control Systems \fix{Need a header that better fits}}%
 %
+Fundamentally all systems today contain a certain level of automation, whether it is automatic heat control in buildings or memory allocation in the cloud for storing photos.
+Abstracting a system to a common mathematical language and making the system behave according to predefined specifications is called \emph{automatic control}.
+A specific class of automatic control systems (\emph{control systems} for short) are real-time control systems, which are defined by being time critical.
+The word ``real-time'' is often used synonymously with ``being very fast'', however, a more accurate synonym might be ``timely''.
+In fact, a real-time system is not required to be fast, but it is required to execute according to some temporal constraints.
+
+
 \begin{figure}[t]
     \centering
     \input{\figdir/embedded-system}%
-    \caption{\fix{Add caption, and maybe change font? Change "Board" to something else? Change "HW Interfaces to something else?"}}%
+    \caption{\fix{Add caption, and maybe change font? Change ``Board'' to something else? Change ``HW Interfaces to something else?''}}%
     \label{fig:embedded-system}%
 \end{figure}
-
 
 \nv{%
 Figure (somewhere) of a general embedded setup with a brief introduction to the different

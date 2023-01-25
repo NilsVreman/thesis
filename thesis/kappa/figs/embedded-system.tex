@@ -5,18 +5,18 @@
 
 %%% TASKS %%%
 
-\node[task,opacity=0.4] (t1) at (-2+0*\delta,1.6-0*\delta) {\textcolor{white}{Task $\#3$} \\\textcolor{white}{\faFileCode[regular]}};
-\node[task,opacity=0.7] (t2) at (-2+1*\delta,1.6-1*\delta) {\textcolor{white}{Task $\#2$} \\\textcolor{white}{\faFileCode[regular]}};
+\node[task,opacity=0.3] (t1) at (-2+0*\delta,1.6-0*\delta) {\textcolor{white}{Task $\#3$} \\\textcolor{white}{\faFileCode[regular]}};
+\node[task,opacity=0.6] (t2) at (-2+1*\delta,1.6-1*\delta) {\textcolor{white}{Task $\#2$} \\\textcolor{white}{\faFileCode[regular]}};
 \node[task,opacity=1.0] (t3) at (-2+2*\delta,1.6-2*\delta) {Task $\#1$ \\\faFileCode[regular]};
 
-\node[task,opacity=0.4] (ct1) at (1+0*\delta,1.6-0*\delta) {\textcolor{white}{Control-Task $\#3$} \\\textcolor{white}{\faFileCode[regular]}};
-\node[task,opacity=0.7] (ct2) at (1+1*\delta,1.6-1*\delta) {\textcolor{white}{Control-Task $\#2$} \\\textcolor{white}{\faFileCode[regular]}};
+\node[task,opacity=0.3] (ct1) at (1+0*\delta,1.6-0*\delta) {\textcolor{white}{Control-Task $\#3$} \\\textcolor{white}{\faFileCode[regular]}};
+\node[task,opacity=0.6] (ct2) at (1+1*\delta,1.6-1*\delta) {\textcolor{white}{Control-Task $\#2$} \\\textcolor{white}{\faFileCode[regular]}};
 \node[task,opacity=1.0] (ct3) at (1+2*\delta,1.6-2*\delta) {Control-Task $\#1$ \\\faFileCode[regular]};
 
 %%% CYBER %%%
 
 \node[thick, align=center] (rtos) at (-0.2,0.15) {Real-Time Operating System};
-\node[thick, draw, align=center, rotate=90, text width=2.92cm] (hw) at (3.15,0.775) {HW interfaces};
+\node[thick, draw, align=center, rotate=90, text width=2.92cm] (hw) at (3.15,0.775) {HW Interfaces};
 \node[thick, fit=(rtos)(t1)(ct1)(ct3),draw,yshift=1.5mm] (sw) {};
 \node[thick, draw, above left] (clock) at (sw.south east) {\faClock[regular]};
 \node[thick, fit=(sw)(hw), inner sep=5pt, draw] (board) {};
@@ -30,7 +30,7 @@
 
 %%% ARROWS %%%
 
-\draw[-latex] ([yshift=0.65cm]hw.south) to node[yshift=0.85cm,rotate=90]{actuation} ([yshift=0.65cm]phys.west);
-\draw[-latex] ([yshift=-0.65cm]phys.west) to node[yshift=-0.85cm, rotate=90]{sensing} ([yshift=-0.65cm]hw.south);
+\draw[-latex] ([yshift=0.65cm]hw.south) to node[yshift=0.85cm,rotate=90] {Actuation} ([yshift=0.65cm]phys.west);
+\draw[-latex] ([yshift=-0.65cm]phys.west) to node[yshift=-0.85cm, rotate=90] {Sensing} ([yshift=-0.65cm]hw.south);
 
 \end{tikzpicture}
