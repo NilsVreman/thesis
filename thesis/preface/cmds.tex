@@ -116,3 +116,14 @@
 \newcommand{\nv}[1]{\color{green!60!blue}\textbf{NV:} #1\color{black}}
 \newcommand{\mm}[1]{\color{red!60!blue}\textbf{MM:} #1\color{black}}
 \newcommand{\note}[1]{\color{red}\textbf{#1} \color{black}}
+\newcommand{\question}[2]{%
+    \color{red}\textbf{Q: }%
+    #1 %
+    \color{black}%
+    \color{blue}\textbf{A: }%
+    \ifthenelse{%
+        \equal{#2}{}}%
+        {TODO}%
+        {#2}%
+    \color{black}}%
+\newcommand{\addref}{\color{red}\textbf{[R]}\color{black}}%

@@ -83,7 +83,7 @@ Obviously, the increased efficiency and reduced cost opened up new businesses an
 The integration of software in generally any domain help monitor systems, log and transmit important data, orchestrate the execution of different parts, and remotely micromanage system updates.
 When everything behaves as intended, software integration is a powerful tool that improve both efficiency and increase revenue.
 
-\note{Should I explain what type of issues I'm working with already here?}
+\question{Should I explain what type of issues I'm working with already here?}{}
 
 % The complexity and reduced prices increase error surfaces
 Interconnecting multiple systems is, however, not a trivial task.
@@ -115,17 +115,18 @@ It is the purpose of this thesis to provide tools and methods for analysing syst
 In particular, the focus is to analyse software integrated systems where the faults are occurring in the interconnection between software and hardware.
 By treating accessibility, clarity, and generalisability as first-class citizens we aim to lower the threshold for using the powerful tools provided.
 
-\nv{Add something more to the end here?}
+\question{Add something more to the end here?}{}
 
 
 
-\subsection*{Real-Time Control Systems \fix{Need a header that better fits}}%
+\section*{Real-Time Control Systems}%
 %
-\note{Should I add sensor and actuator blocks to the plant in Figure~\ref{fig:high-level-abstraction}?}
-%
+\question{Should I add sensor and actuator blocks to the plant in Figure~\ref{fig:high-level-abstraction}?}{}
+
 Fundamentally all systems today contain a certain level of automation, whether it is automatic heat control in buildings or memory allocation in the cloud for storing photos.
 Abstracting a system to a common mathematical language and making it behave according to predefined specifications is called \emph{automatic control}.
-A specific class of automatic control systems (\emph{control systems} for short) are real-time control systems, which are defined by being time critical.
+Common among all automatic control systems (\emph{control systems} for short) is that they employ \emph{feedback}, e.g., if the actual temperature in a room is known, it can be used (fed back) to determine whether the heating should be turned up or down to meet the desired temperature.
+A specific class of control systems are the real-time control systems, which are defined by being time critical.
 The word ``real-time'' is often used synonymously with ``being very fast'', however, a more accurate synonym might be ``timely''.
 In fact, a real-time system is not required to be fast, but it is required to execute according to some temporal constraints.
 These constraints are generally enforced by a \emph{real-time operating system} (RTOS).
@@ -135,44 +136,76 @@ A high-level abstraction of a real-time control system is depicted in Figure~\re
 \begin{figure}[t]
     \centering
     \input{\figdir/high-level-abstraction}%
-    \caption{\fix{Add caption, and maybe change font? Change ``Board'' to something else? Change ``HW Interfaces to something else?''}}%
+    \caption{\fix{Maybe change font? Change ``HW Interfaces''?}.}%
     \label{fig:high-level-abstraction}%
 \end{figure}
 % Plant, sensors, HW interface
-The right part of the figure depict the process we are trying to control (usually denoted the \emph{plant}); this could be anything from an airplane's taxiing system (as the figure suggests), the flow through a dam, or the load on a server in a data centre.
+The right part of the figure depict the process we are trying to control (denoted the \emph{plant}); this could be anything from an airplane's taxiing system, indoor heating systems, or the load on a server in a data centre.
 In this and following chapters, the taxiing system will be used as a recurring example to illustrate the different concepts.
-To and from the plant we have arrows indicating the flow of data; actuation data goes into the plant and sensor data is collected on the plant.
-These signals are transmitted to and from the plant via the hardware interfaces on the computational unit responsible for controlling the plant.
-How the signals are transmitted depend on the application, i.e., either via wired or wireless communication.
+The arrows going to and from the plant indicate the flow of data; actuation data goes into the plant and sensor data is collected on the plant.
+Actuation data refers to the commands sent to the components responsible for movement or change in the plant, i.e., the actuators.
+Similarly, the sensor data is all data collected by the sensors, e.g., the rotational velocity of the wheel or the friction between the wheel and the ground in the taxiing system.
+The signals are transmitted via the hardware interfaces on the computational unit responsible for controlling the plant.
+Historically, these signals were transmitted via wire, but in the last couple of decades wireless communication has been adopted more frequently.
 
-% Board
-Depending on the application, the hardware can be anything from logic-based systems (e.g., programmable logic controllers) to general purpose computers (e.g., laptops or server systems).
+% Hardware
+Depending on the application, the hardware used to control the plant can be anything from a logic-based system (e.g., programmable logic controllers) to a general purpose computer (e.g., laptops or server systems).
 We will mainly refer to the hardware as a \emph{microcontroller} (MCU), i.e., a small computer with integrated memory, computational processing unit (CPU), graphical processing units (GPU), and programmable input/output peripherals (GPIO) all on a single chip; however, we emphasise that the presented results do not discriminate between hardware architectures.
+It is also common to connect multiple levels of control hardware together.
+For instance, having a high-level trajectory planner communicate with a low-level control structure whose objective is to enforce that the desired trajectory is followed, e.g., the taxiways on the airfield.
+\question{Write something more about this, like distributed control?}{}
 
 % RTOS, Tasks, and control task
 The defining characteristics of a real-time control system is that it relies on a real-time operating system to schedule and constraint the temporal execution of \emph{tasks}.
-All real-time applications can be structured as a set of tasks, where each task has a dedicated function (a piece of code) it is supposed to execute, e.g., compute a value, transmit data, or log data.
-Typically there are more than one task executing in the RTOS.
-For this reason there exist a \emph{scheduler} in the RTOS to
+All real-time applications can be structured as a set of tasks.
+Each task is assigned a \emph{priority} (i.e., a value to describe how important it is), a dedicated function to execute (e.g., compute a value, transmit data, or log data), and a \emph{deadline} before which the function is supposed to complete its execution.
+Typically there exists more than one task executing in the RTOS.
+To guarantee that each task is assigned the correct amount of processor time, a \emph{scheduler} is used to orchestrate the tasks' execution.
+Specifically, the scheduler
 \begin{enumerate*}[label=(\roman*)]
-    \item swap tasks in and out,
-    \item wake up tasks that are currently not executing but who should start executing, and
+    \item swaps tasks in and out,
+    \item wakes up tasks that are currently not executing but should start executing, and
     \item interrupt tasks that are currently executing when something with higher priority requires the processor.
 \end{enumerate*}
-Additionally, the tasks are not supposed to have any information about the RTOS orchestration and it is thus the RTOS responsibility to ensure that the task has access to its own \emph{context}, i.e., the resource it requires. 
+The orchestration is based on a scheduling algorithm, where some of the most popular algorithms include fixed-priority, earliest-deadline-first, and round-robin.
+Additionally, the tasks are not supposed to have any information about the RTOS orchestration and it is thus the RTOS responsibility to ensure that the task has access to its own \emph{context}, i.e., the resources it requires. 
+\question{Mention something about jobs and deadline overruns?}{}
 
 % Controller and Actuator
 As can be seen in Figure~\ref{fig:high-level-abstraction}, we distinguish \emph{control tasks} from normal tasks.
 From the perspective of the RTOS, there is no discernible difference between these tasks, however, programmatically there is.
 The control tasks are all the tasks responsible for controlling the plant, while the normal tasks take care of everything else.
-Taking the taxiing system as an example, the control tasks can be two tasks where one is controlling the velocity of the landing gear while the other is controlling the retraction mechanism; additionally, there are other tasks communicating the sensor data (e.g., tire-pressure, temperature, etc.) to the aircraft's central computer.
-The tasks are divided into two categories because we are only interested in analysing the control tasks' effect on the system when their temporal execution is unreliable; this will be elaborated in Chapter~\ref{ch:background}.
+Taking the taxiing system as an example, the control tasks can be two tasks where one is controlling the velocity of the landing gear while the other is controlling its retraction mechanism; additionally, there are other tasks communicating the sensor data (e.g., tire-pressure, temperature, etc.) to the aircraft's central computer.
+The tasks are divided into two categories because we are interested in analysing the control tasks' effect on the system when their temporal execution is unreliable; this will be elaborated in Chapter~\ref{ch:background}.
 
 % Clocks
+There exists another discrepancy between the components of the real-time control system that has so far been introduced: the time quantisation.
+The plant, hardware, and RTOS are most likely executing in different time scales, where the plant (at least in the taxiing example) is likely to execute in a continuous time scale while the hardware and RTOS are both executing (different) discrete quanta.
+Extremely simplified, the hardware contains a \emph{clock} that measures the progress of physical time in \emph{ticks} rather than seconds (like a wall-clock would).
+For the hardware clock, these ticks are physical events (typically the oscillations of a crystal) occurring with a known frequency.
+The RTOS clock is then based on the hardware clock; it reads the hardware clock at a frequency specified by the user and wraps it in a virtual layer to make it more application friendly. 
+The granularity of the RTOS clock is thus quite coarse, which in turn introduces \emph{release jitter} and \emph{execution time variations} on the tasks.
+The inconsistencies between different clocks is enough of a problem to warrant its own research domain, i.e., clock synchronisation.
+
+\subsection*{Timeliness}%
+%
+Executing a real-time control system is one thing, but executing it under suboptimal timing conditions is another.
+This thesis specifically targets systems subject to computational overruns, and to a minor extent also communication losses.
+However, historically the research focus has been to address different types of timing anomalies, such as
+%
+\begin{itemize}
+    \item input (or output) delays,
+    \item internal delays,
+    \item jitter, or
+    \item network delays (or losses).
+\end{itemize}
+%
 \nv{Continue here}
 
 
 
-\subsection*{Outline}%
+
+
+\section*{Outline}%
 %
 Thesis outline.
