@@ -60,7 +60,7 @@
 \LoadClass{memoir}
 \PassOptionsToPackage{tbtags}{amsmath}
 \RequirePackage{amsmath,amsfonts,amssymb}
-\DeclareMathAlphabet{\mathcal}{OMS}{cmsy}{m}{n} % NOTE: This is added by Nils for proper caligraphic lettering using xelatex
+\DeclareMathAlphabet{\mathcal}{OMS}{cmsy}{m}{n} % NOTE: This line was added by Nils for proper caligraphic lettering using xelatex
 \AtBeginDocument{\RequirePackage{graphicx}}
 \if@lth@babel \RequirePackage{babel}\fi
 
@@ -141,6 +141,8 @@
 \setbeforesubsubsecskip{6pt plus 2pt minus 1pt}
 \setaftersubsubsecskip{-1em}
 \setsubsubsecheadstyle{\normalsize\bfseries\itshape}
+\setsecnumdepth{subsection}     % NOTE: This line was added by Nils for numbering of subsections
+\settocdepth{subsection}        % NOTE: This line was added by Nils for numbering of subsections
 % The following tries to add a period after the title (Anton?). But, since the
 % style macro receives an already formatted title it adds the period after the
 % negative space which forces the actual title to after the first paragraph.
