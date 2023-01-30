@@ -87,9 +87,38 @@ root/
 ```
 
 ### File Description
-TBD
+* `root/papers/`: The papers written by the author.
+    - `not-thesis/`: Not included in thesis
+    - `thesis/`: Included in thesis
+* `root/thesis/preface/`: All the material relevant for latex setup and everything before Chapter 1.
+    - `abstract.tex`: The thesis' abstract 
+    - `acknowledgement.tex`: The thesis' acknowledgements 
+    - `cmds.tex`: All commands, declarations, and similar that are common throughout thesis
+    - `nomenclature.tex`: Nomenclature chapter
+    - `pkgs.tex`: All packages necessary to compile thesis (including packages necessary to compile papers)
+    - `preface.tex`: Setup file for preface
+    - `thmfmt.tex`: Declare therorem formatting
+    - `tikzfmt.tex`: Declare tikz commands, packages, and other formatting
+    - `titlepages.tex`: Information relevant to title pages (first two pages)
+* `root/thesis/kappa/`: The introductory chapters to the thesis
+    - `figs/`: Figures in kappa
+    - `kappa.bib`: Bibliography file
+    - `kappa.tex`: Setup file for kappa
+    - `sec/introduction.tex`: Kappas first chapter
+    - `sec/background.tex`: Kappas second chapter
+    - `sec/contribution.tex`: Kappas third chapter
+* `root/thesis/papers/`: The major contribution of the thesis (namely the papers)
+    - `paperX/paperX.bib`: Bibliography file
+    - `paperX/paperX.tex`: Setup file for paperX
+    - `paperX/figs/`: Figures in paperX
+    - `paperX/og/`: Setup and packages files from originally published paperX
+    - `paperX/preamble/`: The preamble files specifically for paperX (mostly paper specific commands)
+    - `paperX/sec/`: Section setup for paperX
+* `root/thesis/style/`: The style files to compile this thesis.
+* `root/thesis/thesis.tex`: The main thesis file to compile.
 
-## Usefull Links
+
+## Useful Links
 
 * [LTHthesis](https://wiki.control.lth.se/Computer/Latex/LTHthesis): instructions about template, titlepage, references, sections...
 * [LargeDocuments](https://wiki.control.lth.se/Computer/Latex/LargeDocuments): Leif's structure for large latex docs
@@ -102,3 +131,4 @@ TBD
 * Kappa: Write Chapter 2
 * ~~Kappa: Write Chapter 3~~
 * Kappa: Write nomenclature
+* Unify sequences throughout thesis (langle and rangle)
