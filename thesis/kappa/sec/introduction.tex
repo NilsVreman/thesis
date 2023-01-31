@@ -84,13 +84,11 @@ Integrating digital components and software solutions is nowadays the norm rathe
 Generally, integrating software into any domain help monitor system safety, log and transmit important data, orchestrate the execution of different components, and remotely micromanage system updates.
 Subsequently, software integration is a powerful tool that improve both efficiency and increase revenue, when everything behaves as intended.
 
-\question{Should I explain what type of issues I'm working with already here?}{No, I think the transition to your work can come a little later. Right now, you are still missing some of the basic building blocks to the story, in my opinion.}
-
 % The complexity and reduced prices increase error surfaces
 Interconnecting multiple systems is, however, not a trivial task.
 When the systems are getting increasingly more complex, the surface for possible errors is also growing.
 In addition to the components' individual faults, after connecting two components together, additional problems can be encountered; for instance, problems with the coupling of the components' or new problems in the individual components.
-Imagine a motorbike; it can experience all the same problems that a normal bike can encounter (punctured tire, loose chain, etc.), but it can also experience issues from connecting the bike together with a motor (electric clutch, battery, sensor networks, etc.). \mm{I like the example of the motorbike, but I think the language and the framing is a bit colloquial here. I think what I react to is the ``imagine'' bit. This sentence also feels too long.}
+A motorbike can experience all the same problems that a normal bike can encounter (e.g., a loose chain), but it can also experience issues from connecting the bike together with a motor (e.g., electric clutch).
 Similarly to the motorbike, systems relying on the interconnection of computational devices and digital components can experience complex coupling issues.
 For example, data transmissions can easily be delayed or stall indefinitely if data is lost, a computer's orchestrator can get overloaded, and systems with remote updates have the potential to break every time a new patch is installed.
 These problems are neither easy to detect nor troubleshoot; particularly since their origin can be obfuscated by complex software and hardware interconnections.
@@ -100,7 +98,8 @@ These problems are neither easy to detect nor troubleshoot; particularly since t
 The effects of such errors can be extremely expensive and in the worst case cause companies to lose billions of dollars.
 Typically the outcome of system faults is that the normal operation of the device (or machine) is degraded.
 The degradation can over time accumulate and either wear down the device or affect the end product.
-Obviously, if it is possible to extend a device's lifetime by fixing software-induced errors, a lot of money could be gained. \mm{I don't like the passive form in this sentence, in particular because the thesis is then about software-induced errors (in a way). I would expect you to ``own'' the topic here.}
+Obviously, there is a lot of money to be gained by extending the devices' lifetime through proper fault analysis.
+%\mm{I don't like the passive form in this sentence, in particular because the thesis is then about software-induced errors (in a way). I would expect you to ``own'' the topic here.}
 Furthermore, if the end product is inferior to the promised product, the consumers would go elsewhere --- no matter whether the product is a service, such as cloud storage, or a physical product, such as a cellphone.
 
 % Safety and security
@@ -116,27 +115,35 @@ It is therefore crucial to develop easy-to-use, powerful tools to simplify the a
 
 %%% STATEMENT & CONSEQUENCES
 % Concluding paragraph summarising what the thesis is tackling and what the consequences of this might be
-It is the purpose of this thesis to provide tools and methods for analysing systems experiencing faults. \mm{I would also flip this into its \emph{active} counterpart: The purpose of this thesis is...}
+The purpose of this thesis is to provide tools and methods for analysing systems experiencing faults.
 In particular, the focus is to analyse software integrated systems where the faults are occurring in the interconnection between software and hardware.
-By treating accessibility, clarity, and generalisability as first-class citizens we aim to lower the threshold for using the powerful tools provided.
+By treating accessibility, clarity, and generalisability as first-class citizens we aim to lower the threshold for using the powerful tools provided. \nv{Not sure I like this sentence in this context.}
+More specifically, we provide convenient tools to analyse real-time control system performance and stability when the real-time task governing the control computation is subject to deadline overruns.
+The following subsection introduces the basic context for the real-time control system constituting this thesis' principal theme.
+%These concepts are then thoroughly defined in Chapter~\ref{ch:background}.
 
-\question{Add something more to the end here? Maybe why this thesis help solve the problems stated in 3rd and 4th paragraph?}{I think you want to add something more here, yes. My take would be to add something quite technical at this point, that will be explained later. And then add a sentence that says that in the following subsection you will delve into the basic components of the technical sentence that you wrote just above. Basically, tell me why I should read the list of things below, otherwise I am not sure why I should be interested.}
-
-
+%\question%
+%{Add something more to the end here?
+%Maybe why this thesis help solve the problems stated in 3rd and 4th paragraph?}%
+%{I think you want to add something more here, yes.
+%My take would be to add something quite technical at this point, that will be explained later.
+%And then add a sentence that says that in the following subsection you will delve into the basic components of the technical sentence that you wrote just above.
+%Basically, tell me why I should read the list of things below, otherwise I am not sure why I should be interested.}
 
 \section{Real-Time Control Systems}%
 \label{sec:intro:rts}%
 %
-\question{Should I add sensor and actuator blocks to the plant in Figure~\ref{fig:high-level-abstraction}?}{I'd say not needed. The arrows are enough for me. You could have them as small boxes near the airplane box if you want, but I don't think that would add very much to the clarity of the figure.}
+\fix{This entire paragraph needs reworking!}
 %
 Fundamentally all systems today contain a certain level of automation, whether it is automatic heat control in buildings or memory allocation in the cloud for storing photos.
-Abstracting a system to a common mathematical language and making it behave according to predefined specifications is called \emph{automatic control}. \mm{I think I would try to restrict to cyber-physical systems (or control systems, or systems that interact with the environment). So far you are talking about ``all systems'' and I can imagine for example a travel booking website as a ``system''. I am not sure I would say that abstracting such a system (that still is a valid action, or thing to do) is called automatic control.}
-Common among all automatic control systems (\emph{control systems} for short) is that they employ \emph{feedback}, i.e., data collected from the system is routed back and used in the decision mechanisms to control the system.
-As an example, consider the temperature control in a room; if the actual temperature is known, it can be used (fed back) to determine whether the heating should be turned up or down to meet the desired temperature.
+Abstracting a system to a common mathematical language and making it behave according to predefined specifications is called \emph{automatic control}.
+%\mm{I think I would try to restrict to cyber-physical systems (or control systems, or systems that interact with the environment). So far you are talking about ``all systems'' and I can imagine for example a travel booking website as a ``system''. I am not sure I would say that abstracting such a system (that still is a valid action, or thing to do) is called automatic control.}\nv{But control is everything where we \emph{control} a system using predefined rules, i.e., control can be open-loop control, closed-loop control, logic control, event-based control, you name it. Shouldn't that mean that even the travel booking website is a control system (just a very loosely defined one)?}\nv{Hmm... but in that case the following sentences do not hold anymore.}
+Common among many automatic control systems (\emph{control systems} for short) is that they employ \emph{feedback}, i.e., data collected from the system is routed back and used in the decision mechanisms to control the system.
+As an example, consider the temperature control in a room, if the actual temperature is known, it can be used (fed back) to determine whether the heating should be turned up or down to meet the desired temperature.
 A specific class of control systems are the \emph{real-time control systems}, which are defined by guaranteeing the timely execution of software in the control system.
-The word ``real-time'' is often used synonymously with ``being very fast'', however, a more accurate synonym might be ``timely''. \mm{The phrasing is a bit confusing -- I would write something like the following: ``A common misconception is that real-time systems are inherently very fast. However, the definition only relate the timing of the system to a precise notion of correctness.'' and then connect it to the following sentence.}
-In fact, a real-time system is not required to be fast, but it is required to guarantee that predefined temporal constraints are met.
-These constraints are generally enforced by a \emph{real-time operating system} (RTOS).
+A common misconception is that real-time systems are inherently very fast; however, the definition only relates the timeliness of the system to a precise notion of correctness.
+The real-time system's correctness is then expressed as a guarantee that a set of predefined temporal constraints are met.
+To enforce the satisfaction of these constraints, a \emph{real-time operating system} (RTOS) is typically employed.
 
 A high-level abstraction of a real-time control system is depicted in Figure~\ref{fig:high-level-abstraction}.
 Next, the individual components seen in the figure are introduced. 
@@ -157,7 +164,7 @@ The arrows going to and from the plant indicate the flow of data; actuation data
 Actuation data refers to the commands sent to the components responsible for movement or change in the plant, i.e., the actuators.
 Similarly, the sensor data is all information collected by the sensors, e.g., the rotational velocity of the wheel or the friction between the wheel and the ground in the taxiing system.
 These signals are transmitted via the hardware interfaces on the computational unit responsible for controlling the plant.
-Historically, these signals were transmitted via wire, but in the last couple of decades wireless communication has become more common. \mm{You may need a reference for this sentence.}
+Historically, these signals were transmitted via wire, but in the last couple of decades wireless communication has become more common~\addref{}.
 
 \question{Should we add a ``hardware interface'' subsubsection that mention different communication protocols (CAN, TCP, UDP), signals, etc?}{I would only add a comment here, and mention some protocols/infrastructures (maybe even in a footnote, it is not so important for the narrative), without entering into details.}
 
@@ -169,10 +176,19 @@ It is also common to connect multiple levels of control hardware together.
 For instance, having a high-level trajectory planner communicate with a low-level control structure whose objective is to enforce that the desired trajectory is followed, e.g., the taxiways on the airfield.
 \question{Write something more about this, like distributed control?}{Yes. I think you want to state that depending on the hardware that is chosen the computer architecture can be distributed, and there could be for example sensors with their own MCUs, that execute some operations on the data before sending it to a controller etc.}
 
+\subsubsection{Clocks}% Clocks
+%
+There exists another discrepancy between the components of the real-time control system: the time quantisation.
+The plant, hardware, and RTOS are most likely executing in different time scales, where the plant (at least in the taxiing example) is likely to execute in a continuous time scale while the hardware and RTOS are both executing in (different) discrete quanta.
+Extremely simplified, the hardware contains a \emph{clock} that measures the progress of physical time in \emph{ticks} rather than seconds (like a wall-clock would).
+For the hardware clock, these ticks are physical events (typically the oscillations of a crystal) occurring with a known frequency.
+The RTOS clock is then based on the hardware clock; it reads the hardware clock at a frequency specified by the user and wraps it in a virtual layer to improve applicability. 
+The granularity of the RTOS clock is thus quite coarse, which in turn introduces \emph{release jitter} and \emph{execution time variations} on the tasks.
+Additionally, the inconsistencies between different clocks is a difficult problem and it has in fact warranted its own research domain, i.e., clock synchronisation.
+
 \subsubsection{Real-Time Operating System}% RTOS, Tasks, and control task
 %
-The defining characteristics of a real-time control system is that it relies on a real-time operating system to schedule and constraint the temporal execution of \emph{tasks}. \mm{I am not 100\% sure about this. There is certainly some aspect of task synchronisation and orchestration, but it does not have to be performed by a RTOS. I would tone it down saying that ``commonly'' control systems are implemented on top of RTOSs.}
-All real-time applications can be structured as a set of tasks.
+Commonly, real-time control system's rely on a real-time operating system to schedule and constraint the temporal execution of a set of \emph{tasks}.
 Each task is assigned a \emph{priority} (i.e., a value to describe how important the task is), a dedicated function to execute (e.g., compute a value, transmit data, or log data), and a \emph{deadline} before which the function is supposed to complete its execution.
 Typically there exists more than one task executing in the RTOS.
 To guarantee that each task is assigned the correct amount of processor time, a \emph{scheduler} is used to orchestrate the tasks' execution.
@@ -188,23 +204,12 @@ Additionally, the tasks are not supposed to have any information about the RTOS 
 
 \subsubsection{Controller}% Controller and Actuator
 %
-As can be seen in Figure~\ref{fig:high-level-abstraction}, we distinguish \emph{control tasks} from normal tasks.
-From the perspective of the RTOS, there is no discernible difference between these tasks, however, programmatically there is. \mm{I would just remove this sentence and add in the sentence above ``we conceptually distinguish control tasks from normal tasks, even though for the RTOS such a difference does not exist.''}
+As can be seen in Figure~\ref{fig:high-level-abstraction}, we conceptually distinguish \emph{control tasks} from normal tasks, even though there is no discernible difference between these tasks from the RTOS perspective.
 The control tasks are all the tasks responsible for controlling the plant, while the normal tasks take care of everything else.
 Taking the taxiing system as an example, the control tasks can be two tasks where one is controlling the velocity of the landing gear while the other is controlling its retraction mechanism.
 Additionally, there are other tasks communicating sensor data (e.g., tire-pressure, temperature, etc.) to the aircraft's central computer.
-As elaborated in Chapter~\ref{ch:background}, we partition the tasks in these two categories because we are specifically interested in analysing the control tasks' effect on the system when their temporal execution is unreliable. \mm{I would substitute ``system'' with ``physical system'' or anyway qualify it.}
-
-\subsubsection{Clocks}% Clocks
-%
-\mm{I would put this subsubsection right after ``hardware'', to close the section with the ``controller'' and with the aim of the thesis (we are specifically interested in analysing the control tasks' effect...).}
-There exists another discrepancy between the components of the real-time control system: the time quantisation.
-The plant, hardware, and RTOS are most likely executing in different time scales, where the plant (at least in the taxiing example) is likely to execute in a continuous time scale while the hardware and RTOS are both executing in (different) discrete quanta.
-Extremely simplified, the hardware contains a \emph{clock} that measures the progress of physical time in \emph{ticks} rather than seconds (like a wall-clock would).
-For the hardware clock, these ticks are physical events (typically the oscillations of a crystal) occurring with a known frequency.
-The RTOS clock is then based on the hardware clock; it reads the hardware clock at a frequency specified by the user and wraps it in a virtual layer to improve applicability. 
-The granularity of the RTOS clock is thus quite coarse, which in turn introduces \emph{release jitter} and \emph{execution time variations} on the tasks.
-Additionally, the inconsistencies between different clocks is a difficult problem and it has in fact warranted its own research domain, i.e., clock synchronisation.
+As elaborated in Chapter~\ref{ch:background}, we partition the tasks in these two categories because we are specifically interested in analysing the control tasks' effect on the real-time control system when their temporal execution is unreliable.
+In particular, the aim of the thesis is to investigate the control system's behaviour when the control tasks overrun their respective deadlines, specifically considering different RTOS implementation policies.
 
 \subsection{Timeliness}%
 \label{sec:intro:timeliness}%
@@ -217,7 +222,7 @@ The following list include some of the most general timing irregularities analys
 %
 \begin{itemize}
     \item \emph{Computational overruns} -- When there exists computational elements in the system, \note{i.e., something that takes the current state of the system and transforms it}, there is the possibility that it will not complete its execution, either on time or at all. % TODO: Skeptical about this statement
-        Typically, this is connected to a real-time system if the computation has to complete before a predetermined \emph{deadline}.
+        Generally, this is connected to a real-time system if the computation has to complete before a predetermined \emph{deadline}.
 
     \item \emph{Time delays} -- Time delays might be some of the eldest timing problems analysed in the literature.
         Nowadays, time delays involve both internal time delays and input/output delays, i.e., respectively when the plant includes time delays or when the sensing, actuation, or control contains time delays. \question{Should I expand?}{Just a tiny bit more, I believe. I think you may want to add a couple of references here, and say that control theory has developed ways of dealing with time delays (I would cite Leonid Mirkin's work for example) and also that when these time delays are unpredictable and can cause real problems, control engineers typically design controllers that take into account the delays (and here I would cite some of Anton's work).}
@@ -255,4 +260,3 @@ The first chapter presented a high-level introduction to the relevant concepts a
 Next, Chapter~\ref{ch:background} provide a rigorous presentation of the concepts that were loosely introduced in Chapter~\ref{ch:intro}.
 In addition to the proper problem description, the chapter also outlines the relevant background and related work from both the real-time and control theoretical domains.
 For each of the five papers constituting the main part of the thesis, Chapter~\ref{ch:contribution} contains a short summary of its content, a brief description of its scientific contribution, and the respective authors' individual contribution.
-The thesis is finally concluded by Papers I-V. \mm{I would remove this sentence.}
