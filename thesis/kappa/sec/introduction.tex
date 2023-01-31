@@ -226,9 +226,9 @@ Taking the taxiing system as an example, the control tasks can be two tasks wher
 Additionally, there are other tasks communicating sensor data (e.g., tire-pressure, temperature, etc.) to the aircraft's central computer.
 
 As elaborated in Chapter~\ref{ch:background}, we partition the tasks in these two categories because we are specifically interested in analysing the control tasks' effect on the real-time control system when their temporal execution is unreliable.
-In particular, the aim of the thesis is to investigate the control system's behaviour when the control tasks overrun their respective deadlines, specifically considering different RTOS implementation policies.
+In particular, the aim of the thesis is to investigate the control system's behaviour when the control tasks overrun their respective deadlines.
 This is particularly relevant for control systems, because enforcing that the control task's WCRT is shorter than its deadline (i.e., that the task \emph{never} overruns its deadline) would involve postponing the deadline.
-Holding off the deadline would result in fewer control updates, severely degrading the control system's performance.
+Holding off the deadline results in fewer control updates, hence severely degrading the control system's performance.
 Consequently, allowing a certain number of deadline overruns can improve the control system's performance.
 
 \subsection{Timeliness}%
