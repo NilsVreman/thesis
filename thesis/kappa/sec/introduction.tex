@@ -118,7 +118,7 @@ It is therefore crucial to develop easy-to-use, powerful tools to simplify the a
 The purpose of this thesis is to provide tools and methods for analysing systems experiencing faults.
 In particular, the focus is to analyse software integrated systems where the faults are occurring in the interconnection between software and hardware.
 By treating accessibility, clarity, and generalisability as first-class citizens we aim to lower the threshold for using the powerful tools provided. \nv{Not sure I like this sentence in this context.}
-More specifically, we provide convenient tools to analyse real-time control system performance and stability when the real-time task governing the control computation is subject to deadline overruns.
+More specifically, we provide tools to analyse real-time control system performance and stability when the real-time tasks governing the control computations are subject to deadline overruns.
 The following subsection introduces the basic context for the real-time control system constituting this thesis' principal theme.
 %These concepts are then thoroughly defined in Chapter~\ref{ch:background}.
 
@@ -136,13 +136,13 @@ The following subsection introduces the basic context for the real-time control 
 \fix{This entire paragraph needs reworking!}
 %
 Fundamentally all systems today contain a certain level of automation, whether it is automatic heat control in buildings or memory allocation in the cloud for storing photos.
-Abstracting a system to a common mathematical language and making it behave according to predefined specifications is called \emph{automatic control}.
+The science of making systems behave according to predefined specifications is called \emph{automatic control}.
 %\mm{I think I would try to restrict to cyber-physical systems (or control systems, or systems that interact with the environment). So far you are talking about ``all systems'' and I can imagine for example a travel booking website as a ``system''. I am not sure I would say that abstracting such a system (that still is a valid action, or thing to do) is called automatic control.}\nv{But control is everything where we \emph{control} a system using predefined rules, i.e., control can be open-loop control, closed-loop control, logic control, event-based control, you name it. Shouldn't that mean that even the travel booking website is a control system (just a very loosely defined one)?}\nv{Hmm... but in that case the following sentences do not hold anymore.}
-Common among many automatic control systems (\emph{control systems} for short) is that they employ \emph{feedback}, i.e., data collected from the system is routed back and used in the decision mechanisms to control the system.
+Characteristic for many automatic control systems (\emph{control systems} for short) is that they employ \emph{feedback}, i.e., data collected from the system is routed back and used in the decision mechanisms to control the system.
 As an example, consider the temperature control in a room, if the actual temperature is known, it can be used (fed back) to determine whether the heating should be turned up or down to meet the desired temperature.
 A specific class of control systems are the \emph{real-time control systems}, which are defined by guaranteeing the timely execution of software in the control system.
 A common misconception is that real-time systems are inherently very fast; however, the definition only relates the timeliness of the system to a precise notion of correctness.
-The real-time system's correctness is then expressed as a guarantee that a set of predefined temporal constraints are met.
+The real-time system's correctness is then expressed as guarantees that a set of predefined temporal constraints are met.
 To enforce the satisfaction of these constraints, a \emph{real-time operating system} (RTOS) is typically employed.
 
 A high-level abstraction of a real-time control system is depicted in Figure~\ref{fig:high-level-abstraction}.
@@ -165,8 +165,9 @@ Actuation data refers to the commands sent to the components responsible for mov
 Similarly, the sensor data is all information collected by the sensors, e.g., the rotational velocity of the wheel or the friction between the wheel and the ground in the taxiing system.
 These signals are transmitted via the hardware interfaces on the computational unit responsible for controlling the plant.
 Historically, these signals were transmitted via wire, but in the last couple of decades wireless communication has become more common~\addref{}.
-
-\question{Should we add a ``hardware interface'' subsubsection that mention different communication protocols (CAN, TCP, UDP), signals, etc?}{I would only add a comment here, and mention some protocols/infrastructures (maybe even in a footnote, it is not so important for the narrative), without entering into details.}
+A communication protocol\footnote{A communication protocol is a set of rules setup in order for two or more actors in a network to be able to transmit information to one another. The rules include (but are not limited to) semantics, i.e., how to format the information, and synchronisation, i.e., how much and how fast the information is transmitted.} is used for the plant to communicate with the hardware interfaces.
+The choice of protocol is domain dependent, e.g., the controller area network (CAN) is very common in the automotive industry~\addref{}.
+There exists a plethora of domain specific communication protocols, but some established ones include CAN, Profibus, Modbus, and Ethernet/IP.
 
 \subsubsection{Hardware}% Hardware
 %
@@ -174,7 +175,10 @@ Depending on the application, the hardware used to control the plant can be anyt
 We mainly refer to \emph{microcontrollers} (MCUs), i.e., small computers with integrated memory, computational processing units (CPUs), graphical processing units (GPUs), and programmable input/output peripherals (GPIOs) all on a single chip; however, we emphasise that the presented results are not bound to a specific hardware architecture.
 It is also common to connect multiple levels of control hardware together.
 For instance, having a high-level trajectory planner communicate with a low-level control structure whose objective is to enforce that the desired trajectory is followed, e.g., the taxiways on the airfield.
-\question{Write something more about this, like distributed control?}{Yes. I think you want to state that depending on the hardware that is chosen the computer architecture can be distributed, and there could be for example sensors with their own MCUs, that execute some operations on the data before sending it to a controller etc.}
+The choice of computer architecture is often flexible and can be changed depending on the plant structure.
+It is for instance not uncommon that the plant sensors include their own MCU to perform data processing before transmitting it to the central control hardware~\addref{}.
+Another common architecture choice is having many single objective, specialised MCU nodes operating together towards a global target, e.g., controlling the rotational velocity of the individual wheels of a plane to move it along the taxiway.
+%\question{Write something more about this, like distributed control?}{Yes. I think you want to state that depending on the hardware that is chosen the computer architecture can be distributed, and there could be for example sensors with their own MCUs, that execute some operations on the data before sending it to a controller etc.}
 
 \subsubsection{Clocks}% Clocks
 %
