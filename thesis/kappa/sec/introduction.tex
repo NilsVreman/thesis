@@ -30,45 +30,6 @@
 %        \end{itemize}
 %\end{enumerate}
 %}%
-%
-%
-%\nv{%
-%\textbf{The What:}
-%\begin{itemize}
-%    \item Connectivity, Distributed systems, NCS, IoT, Wireless
-%    \item Communication hiccups
-%    \item packet drops
-%    \item deadline misses
-%\end{itemize}
-%}%
-%
-%\nv{%
-%\textbf{The why:}
-%\begin{itemize}
-%    \item Huge costs, damages
-%    \item Safety
-%    \item Security
-%    \item Paper by~\cite{Akesson:2020}
-%\end{itemize}
-%}%
-%
-%\nv{%
-%\textbf{The Statement:}
-%\begin{itemize}
-%    \item Theoretical and practical tools for analysing and synthesising
-%        fault-tolerant controllers, with significant performance gains.
-%    \item Lowering the entry-level knowledge for applying the tools to real
-%        processes.
-%\end{itemize}
-%}%
-%
-%\nv{%
-%\textbf{The Consequences:}
-%\begin{itemize}
-%    \item Decoupling and clarifying real-time and control theoretical models.
-%    \item Making them more accessible to a broader class of practitioners.
-%\end{itemize}
-%}%
 
 %%% WHAT
 % Introduction to digitalisation
@@ -99,7 +60,6 @@ The effects of such errors can be extremely expensive and in the worst case caus
 Typically the outcome of system faults is that the normal operation of the device (or machine) is degraded.
 The degradation can over time accumulate and either wear down the device or affect the end product.
 Obviously, there is a lot of money to be gained by extending the devices' lifetime through proper fault analysis.
-%\mm{I don't like the passive form in this sentence, in particular because the thesis is then about software-induced errors (in a way). I would expect you to ``own'' the topic here.}
 Furthermore, if the end product is inferior to the promised product, the consumers would go elsewhere --- no matter whether the product is a service, such as cloud storage, or a physical product, such as a cellphone.
 
 % Safety and security
@@ -117,10 +77,9 @@ It is therefore crucial to develop easy-to-use, powerful tools to simplify the a
 % Concluding paragraph summarising what the thesis is tackling and what the consequences of this might be
 The purpose of this thesis is to provide tools and methods for analysing systems experiencing faults.
 In particular, the focus is to analyse software integrated systems where the faults are occurring in the interconnection between software and hardware.
-By treating accessibility, clarity, and generalisability as first-class citizens we aim to lower the threshold for using the powerful tools provided. \nv{Not sure I like this sentence in this context.}
+By treating accessibility, clarity, and generalisability as first-class citizens we aim to lower the threshold for using the powerful tools provided.
 More specifically, we provide tools to analyse real-time control system performance and stability when the real-time tasks governing the control computations are subject to deadline overruns.
 The following subsection introduces the basic context for the real-time control system constituting this thesis' principal theme.
-%These concepts are then thoroughly defined in Chapter~\ref{ch:background}.
 
 %\question%
 %{Add something more to the end here?
@@ -133,10 +92,8 @@ The following subsection introduces the basic context for the real-time control 
 \section{Real-Time Control Systems}%
 \label{sec:intro:rts}%
 %
-\fix{This entire paragraph needs reworking!}
-%
 Fundamentally all systems today contain a certain level of automation, whether it is automatic heat control in buildings or memory allocation in the cloud for storing photos.
-The science of making systems behave according to predefined specifications is called \emph{automatic control}.
+The science of making systems automatically behave according to predefined specifications is called \emph{automatic control}.
 %\mm{I think I would try to restrict to cyber-physical systems (or control systems, or systems that interact with the environment). So far you are talking about ``all systems'' and I can imagine for example a travel booking website as a ``system''. I am not sure I would say that abstracting such a system (that still is a valid action, or thing to do) is called automatic control.}\nv{But control is everything where we \emph{control} a system using predefined rules, i.e., control can be open-loop control, closed-loop control, logic control, event-based control, you name it. Shouldn't that mean that even the travel booking website is a control system (just a very loosely defined one)?}\nv{Hmm... but in that case the following sentences do not hold anymore.}
 Characteristic for many automatic control systems (\emph{control systems} for short) is that they employ \emph{feedback}, i.e., data collected from the system is routed back and used in the decision mechanisms to control the system.
 As an example, consider the temperature control in a room, if the actual temperature is known, it can be used (fed back) to determine whether the heating should be turned up or down to meet the desired temperature.
@@ -241,30 +198,35 @@ When analysing timing faults and irregularities it is thus important to properly
 The following list include some of the most general timing irregularities analysed in literature.
 %
 \begin{itemize}
-    \item \emph{Computational overruns} -- When there exists computational elements in the system, \note{i.e., something that takes the current state of the system and transforms it}, there is the possibility that it will not complete its execution, either on time or at all. % TODO: Skeptical about this statement
+    \item \emph{Computational overruns} -- When there exists computational elements in the system, i.e., something that takes the current state of the system and transforms or translates it, there is the possibility that it will not complete its execution, either on time or at all. % TODO: Skeptical about this statement
         Generally, this is connected to a real-time system if the computation has to complete before a predetermined \emph{deadline}.
 
     \item \emph{Time delays} -- Time delays might be some of the eldest timing problems analysed in the literature.
-        Nowadays, time delays involve both internal time delays and input/output delays, i.e., respectively when the plant includes time delays or when the sensing, actuation, or control contains time delays. \question{Should I expand?}{Just a tiny bit more, I believe. I think you may want to add a couple of references here, and say that control theory has developed ways of dealing with time delays (I would cite Leonid Mirkin's work for example) and also that when these time delays are unpredictable and can cause real problems, control engineers typically design controllers that take into account the delays (and here I would cite some of Anton's work).}
+        Nowadays, time delays involve both internal time delays and input/output delays, i.e., respectively when the plant includes time delays or when the sensing, actuation, or control contains time delays.
+        The control community has developed ways to both analyse and design controllers for systems with known time delays~\cite{Mirkin:2004, Mirkin:2005}.
 
-    \item \emph{Jitter} -- The variations in time delay is called jitter. \mm{While I agree with you with the definition, I think a real-time system person will immediately think of release jitter and then might be a bit confused here. You may want to explicitly state at some point that for RTOSs one source of jitter is release jitter and define it (so that people will immediately understand that release jitter is a specialisation of what you mean).}
-        For instance, when transmitting data over a network, if the latency (time delay) is constant in time, there is no jitter.
+    \item \emph{Jitter} -- Variations in the time delay are called jitter.
+        Note that the previously mentioned \emph{release jitter}, originating from the coarse granularity of the RTOS clock, is just \emph{one} type of jitter.
+        Another type of jitter appear when transmitting data over a network; if the packet latency (time delay) is constant in time, there is no jitter in the system.
         Instead, if the latency varies over time (as it usually does), there exists jitter in the system.
         The jitter intensity depends on the size of the latency fluctuations.
+        In the control literature, methods to compensate for jitter have been proposed~\cite{Cervin:2004}.
 
     \item \emph{Communication losses} -- If data packets transmitted over a network are lost along their route or too delayed to be useful, they are considered \emph{lost}.
         Another case when the packets are dropped is when the network is shut down or overloaded, either by too much traffic or an attack.
         The packet loss can occur both on the way to and from the hardware.
 \end{itemize}
 %
-Conceptually, it might be natural to view some of the timing irregularities as equivalent from a system perspective. \mm{You need a bit more explanation here -- I like the sentence but the meaning and implications at this point may not be clear unless you provide some additional details.}
-However, the different models hold unique information about the system that does not necessarily overlap.
-It is therefore crucial to analyse all the appropriate models for the specific systems.
+Conceptually, it may be natural to view some of the timing irregularities as equivalent from a system-wide perspective.
+Distinguishing time delays from jitter or communication losses from computation overruns in this context is difficult.
+For instance, both communicational losses and computational overruns affect the underlying software implementation; thus, it is only natural to assume that one can be substituted for the other when analysing the system in order to save both time and effort.
+However, the different models hold unique information that does not necessarily overlap.
+It is therefore crucial to analyse all the appropriate models in order to get a comprehensive picture of the specific system's behaviour.
 
 This thesis specifically targets systems subject to computational overruns, and (to a minor extent) communication losses.
 Of particular interest are the problems that occur in real-time control systems due to control tasks overrunning their corresponding deadlines.
-It is convenient to blame computational overruns on poor system design and programming errors; however, even a flawless system design can experience overruns due to, for instance, cache memory misses~\addref{} or alpha-induced faults~\addref{}. \mm{If you add some statements about control performance above (and the fact that one may want to shorten the period of the controller, being aware that the period is smaller than the WCRT) then this connects really well with the sentence that you have just after.}
-More commonly, it is known that the real-time control system's nominal performance is degraded if a design that completely avoids overruns is used.
+It is convenient to blame computational overruns on poor system design and programming errors; however, even a flawless system design can experience overruns due to, for instance, cache memory misses~\addref{} or alpha-induced faults~\addref{}.
+More commonly, it is known that the real-time control system's nominal performance is degraded if a design that completely avoids overruns is used, i.e., if the deadline is postponed until after the WCRT of the controller.
 Thus, with the awareness that it can cause transient faults, the control system engineers tolerate a few overruns when the control task's execution time is near its worst case, in order to improve the system's nominal performance.
 
 
