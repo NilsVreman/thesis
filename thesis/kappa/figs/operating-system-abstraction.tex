@@ -1,0 +1,81 @@
+\def \delta {0.15}
+
+\begin{tikzpicture}
+\tikzstyle{task} = [draw,thick,fill=white,align=center]
+\tikzstyle{circleconn} = [draw, fill=white, thick, circle, scale=0.5]
+
+%%% TASKS %%%
+
+\begin{scope}[on background layer]
+    \node[task,opacity=0.3] (t1) at (-1.5+0*\delta,1.6-0*\delta) {\textcolor{white}{Task $\#3$} \\\textcolor{white}{\faFileCode[regular]}};
+    \node[task,opacity=0.6] (t2) at (-1.5+1*\delta,1.6-1*\delta) {\textcolor{white}{Task $\#2$} \\\textcolor{white}{\faFileCode[regular]}};
+    \node[task,opacity=1.0] (t3) at (-1.5+2*\delta,1.6-2*\delta) {Task $\#1$ \\\faFileCode[regular]};
+
+    \node[task,opacity=0.3] (ct1) at (1+0*\delta,1.6-0*\delta) {\textcolor{white}{Control Task $\#3$} \\\textcolor{white}{\faFileCode[regular]}};
+    \node[task,opacity=0.6] (ct2) at (1+1*\delta,1.6-1*\delta) {\textcolor{white}{Control Task $\#2$} \\\textcolor{white}{\faFileCode[regular]}};
+    \node[task,opacity=1.0] (ct3) at (1+2*\delta,1.6-2*\delta) {Control Task $\#1$ \\\faFileCode[regular]};
+
+    %%% CYBER %%%
+
+    \node[thick, align=center] (rtos) at (-0.1,0.25) {Real-Time Operating System};
+    \node[thick, draw, align=center, rotate=90, text width=2.75cm] (hwi) at (3.15,0.87) {HW Interfaces};
+    \node[thick, fit=(rtos)(t1)(ct1)(ct3),draw,yshift=1.5mm,xshift=0.75mm] (sw) {};
+    \node[thick, draw, above left] (clock) at (sw.south east) {\faClock[regular]};
+    \node[thick, fit=(sw)(hwi), inner sep=7pt, draw] (hw) {};
+    \node[thick, above left, xshift=2.3cm, yshift=0.5mm] (hw-label) at (hw.south west) {Hardware};
+    \node[thick, draw, above right] (hwclock) at (hw.south west)  {\faClock[regular]};
+
+    %%% PHYSICAL %%%
+
+    \node[thick, draw ,align=center] (phys) at (6,0.87) {\includegraphics[scale=4]{\figdir/airplane.jpg}};
+    \node[thick, draw, above left] (time) at (phys.south east) {\faClock[regular]};
+\end{scope}
+
+
+%%% ZOOM %%%
+
+% Tasks
+\node[task] (vt1) at (-0.9+0*10*\delta,1.0) {Task $\#1$ \\\faFileCode[regular]};
+\node[task] (vt2) at (-0.9+1*10*\delta,1.0) {Task $\#2$ \\\faFileCode[regular]};
+\node[]           at (-0.9+2*10*\delta,1.0) {$\cdots$};
+\node[task] (vtn) at (-0.9+3*10*\delta,1.0) {Task $\#N$ \\\faFileCode[regular]};
+
+\node[circleconn] (c1) at ($(vt1)+(0,-0.75)$) {};
+\draw[thick] (c1.north) to (vt1.south);
+\node[circleconn] (c2) at ($(vt2)+(0,-0.75)$) {};
+\draw[thick] (c2.north) to (vt2.south);
+\node[circleconn] (cn) at ($(vtn)+(0,-0.75)$) {};
+\draw[thick] (cn.north) to (vtn.south);
+
+% CPU
+\node[task, minimum width=1.3cm, minimum height=1.0cm] (cpu) at (-0.9+1.5*10*\delta,-2.25) {CPU};
+
+% Memory
+\node[thick, draw, align=center, rotate=90, text width=2.25cm] (mem) at (-1.0+4*10*\delta,0.1) {Memory};
+
+% HW interfaces
+\node[thick, draw, align=center, rotate=90, text width=0.8cm] (gpio) at (-1.0+4*10*\delta,-2.15) {GPIO};
+
+% Background 
+
+\begin{scope}[on background layer]
+    \node[thick, dashed, fill=white, fit=(vt1)(vtn)(cpu)(mem),draw,inner sep=4pt] (vhw) {};
+    \draw[thick, dashed] ([yshift=-0.85cm]vhw.west) to ([yshift=-0.85cm]vhw.east);
+    \draw[thick, dashed] ([xshift=2.65cm]vhw.south) to ([xshift=2.65cm]vhw.north);
+\end{scope}
+
+\draw[thick, dashed] (hw.south west) to (vhw.south west);
+\draw[thick, dashed] (hw.north west) to (vhw.north west);
+\draw[thick, dashed] (hw.north east) to (vhw.north east);
+
+% Scheduler
+\node[task, minimum width=5cm] (sched) at (-0.9+1.5*10*\delta,-1.0) {Scheduler};
+\node[circleconn] (csched) at ($(sched)+(0,0.5)$) {};
+\draw[thick] (csched.south) to (sched.north);
+
+\draw[thick, -latex] (csched.north) to (c2.south);
+\draw[thick, dashed, -latex, opacity=0.3] (csched.north) to (c1.south);
+\draw[thick, dashed, -latex, opacity=0.3] (csched.north) to (cn.south);
+
+
+\end{tikzpicture}

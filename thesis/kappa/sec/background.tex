@@ -4,16 +4,29 @@
 This chapter presents the necessary background and motivation for the remainder of the thesis.
 We divide the chapter in two primary parts.
 First, a discussion on the real-time theoretical aspects is provided.
-An introduction to how real-time operating system operates is presented, e.g., processor sharing, task states, scheduling strategies, etc.
+An extended introduction to how real-time operating systems operates is presented, e.g., processor sharing, task states, scheduling strategies, etc.
 However, the main focus is dedicated to the most commonly used task models and their respective advantages and disadvantages, with respect to deadline overruns.
 Additionally, we provide a brief discussion on state-machine applicability to the aforementioned task models. 
 Next, the relevant control theoretical background is presented based on the theory of real-time systems.
-Two different system modelling approaches, relevant to real-time control systems, are introduced: switching systems and Markov jump linear systems.
-For these systems, we present and discuss different stability and performance analyses.
+Two different system modelling approaches are introduced: switching systems and Markov jump linear systems.
+Both models are particularly relevant for real-time systems where the control task can overrun its deadlines.
+Specifically for these systems, we present and discuss different stability and performance analyses.
 
 \section{Real-Time Systems}%
 \label{sec:background:rts}%
 %
+% A short extension to the RTS (and RTOS) precise objective
+
+% Zoom into figure and describe scheduler, tasks, contexts, task states, etc.
+%
+\begin{figure}[t]
+    \centering
+    \input{\figdir/operating-system-abstraction}%
+    \caption{\fix{Need to arrange figure so it makes more sense.}}%
+    \label{fig:operating-system-abstraction}%
+\end{figure}
+
+\nv{Maybe create a figure with different task states?}
 
 \subsection{Execution Modelling using State Machines}%
 \label{sec:background:fsm}%
