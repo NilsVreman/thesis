@@ -16,8 +16,17 @@ Specifically for these systems, we present and discuss different stability and p
 \label{sec:background:rts}%
 %
 % A short extension to the RTS (and RTOS) precise objective
-
-% Zoom into figure and describe scheduler, tasks, contexts, task states, etc.
+We begin with an introduction to real-time system fundamentals. 
+The breadth of the topic prevents a comprehensive review of the existing literature to fit within the scope of this thesis.
+In fact, real-time systems are all information processing systems which takes external input and operate on it within a predetermined deadline. 
+This includes sensors, actuators, process control, machine vision, robotics, and health care systems, to acknowledge a fraction of all real-time systems.
+Instead, we focus the attention to the elements which impact real-time control systems the most, i.e., RTOS fundamentals, periodic tasks, task models, scheduling policies, and execution models.
+\question%
+{
+    Maybe the ``RTOS fundamentals'' should be ``CPU provisioning'' and ``memory management'' instead?
+}{}
+Since the RTOS is tightly interconnected with the hardware, it is natural to illustrate them jointly.
+In Figure~\ref{fig:operating-system-abstraction}, the underlying hardware and real-time structure is expanded.
 %
 \begin{figure}[t]
     \centering
@@ -25,6 +34,30 @@ Specifically for these systems, we present and discuss different stability and p
     \caption{\fix{Need to arrange figure so it makes more sense.}}%
     \label{fig:operating-system-abstraction}%
 \end{figure}
+
+% CPU, cores, and threads
+The \emph{central processing unit} (CPU, or simply \emph{processor}) is the electronic component responsible for executing the task functions.
+Each function (or program) is translated into a list of instructions to be executed on the CPU.
+These instructions belong to the machine's language used to tell the processor what type of operation to execute, e.g., load a specific memory registry or execute an arithmetic operation.
+To execute the program instructions, the processor can contain one or more \emph{cores}, respectively denoting the processor as \emph{single-core} or \emph{multi-core}.
+Each core can execute a list of program instructions; hence, the advantage of using multi-core processors (compared to single-core processors) is the increased number of instructions that can be executed in parallel. 
+However, this gain comes at the cost of an elevated system complexity where the memory and application layout has to be adapted to the multi-core architecture~\cite{Brandenburg:2011}.
+\question{mention something about ``\#hardware threads = \#cores'' here?}{}
+
+% Memory
+Integrated with the processor is usually a \emph{cache} memory, i.e., a small but fast memory that is easy to access from the operational cores.
+The cache memory stores recently accessed instructions and data to reduce the latency induced by fetching from main memory.
+Most modern CPUs have a layered cache memory hierarchy, where the smallest and fastest layer is denoted L1, the second smallest and fastest is denoted L2, and so on.
+
+
+% Tasks (Task stats, and states)
+%
+
+% Scheduler (how it allocates resources), mechanisms, deadline handling, many paragraphs here probably
+
+% GPIO 
+% describe scheduler, tasks, contexts, task states, etc.
+
 
 \nv{Maybe create a figure with different task states?}
 

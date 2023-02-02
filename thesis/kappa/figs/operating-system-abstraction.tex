@@ -51,15 +51,15 @@
 \node[task, minimum width=1.3cm, minimum height=1.0cm] (cpu) at (-0.9+1.5*10*\delta,-2.25) {CPU};
 
 % Memory
-\node[thick, draw, align=center, rotate=90, text width=2.25cm] (mem) at (-1.0+4*10*\delta,0.1) {Memory};
+\node[task, minimum width=2.25cm, minimum height=0.6cm, rotate=90] (mem) at (-1.0+4*10*\delta,0.1) {Memory};
 
 % HW interfaces
-\node[thick, draw, align=center, rotate=90, text width=0.8cm] (gpio) at (-1.0+4*10*\delta,-2.15) {GPIO};
+\node[task, minimum width=1.0cm, minimum height=0.6cm, rotate=90] (gpio) at (-1.0+4*10*\delta,-2.2) {GPIO};
 
 % Background 
 
 \begin{scope}[on background layer]
-    \node[thick, dashed, fill=white, fit=(vt1)(vtn)(cpu)(mem),draw,inner sep=4pt] (vhw) {};
+    \node[ultra thick, fill=white, fit=(vt1)(vtn)(cpu)(mem),draw,inner sep=4pt] (vhw) {};
     \draw[thick, dashed] ([yshift=-0.85cm]vhw.west) to ([yshift=-0.85cm]vhw.east);
     \draw[thick, dashed] ([xshift=2.65cm]vhw.south) to ([xshift=2.65cm]vhw.north);
 \end{scope}
