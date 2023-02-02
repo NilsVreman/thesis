@@ -40,14 +40,35 @@ The \emph{central processing unit} (CPU, or simply \emph{processor}) is the elec
 Each function (or program) is translated into a list of instructions to be executed on the CPU.
 These instructions belong to the machine's language used to tell the processor what type of operation to execute, e.g., load a specific memory registry or execute an arithmetic operation.
 To execute the program instructions, the processor can contain one or more \emph{cores}, respectively denoting the processor as \emph{single-core} or \emph{multi-core}.
-Each core can execute a list of program instructions; hence, the advantage of using multi-core processors (compared to single-core processors) is the increased number of instructions that can be executed in parallel. 
+Each core is able to execute a list of program instructions.
+Hence, the advantage of using multi-core processors (compared to single-core processors) is the increased number of instructions that can be executed in parallel. 
 However, this gain comes at the cost of an elevated system complexity where the memory and application layout has to be adapted to the multi-core architecture~\cite{Brandenburg:2011}.
+\nv{Mention what is common in microcontrollers}
 \question{mention something about ``\#hardware threads = \#cores'' here?}{}
 
 % Memory
 Integrated with the processor is usually a \emph{cache} memory, i.e., a small but fast memory that is easy to access from the operational cores.
 The cache memory stores recently accessed instructions and data to reduce the latency induced by fetching from main memory.
 Most modern CPUs have a layered cache memory hierarchy, where the smallest and fastest layer is denoted L1, the second smallest and fastest is denoted L2, and so on.
+When the processor needs to access some data, it first examines whether it exists in the cache and otherwise it collects it from the main memory.
+
+If a task wants to access cached data (or instructions) that cannot be found, it is said to experience a \emph{cache miss}; similarly, a \emph{cache hit} occurs when the sought data is found in the cache.
+Cache misses can arise if
+%
+\begin{itemize}
+    \item the size of the requested data is too large to fetch;
+    \item the requested data is not yet loaded into the cache; or
+    \item the data have been evicted from the cache, e.g., to make room for more recently retrieved data or from the cache being flushed due to security reasons.
+\end{itemize}
+%
+Ideally, the number of cache misses that a task experiences are kept to a minimum, in particular since fetching data from the main memory can incur large timing overheads on the task execution.
+Additionally, the longer a task executes, the less likely it is to contract cache misses.
+Intuitively, the task will experience a few initial cache misses when the data is loaded into the cache, but thereafter the cache will be occupied by relevant data and the cache misses should decrease.
+This is also known as \emph{cache warming}.
+If the task continues to experience significant cache misses even after the cache warming phase, it is said to be \emph{thrashing} the cache, i.e., continuously experience cache misses.
+Thrashing can severely impact both real-time performance, energy consumption, and even collapse the execution~\cite{Wadleigh:2000}.
+In multi-core setups where different cores share a level-X cache, thrashing is a big concern; however, there exists mitigation strategies~\cite{Brandenburg:2011}.
+
 
 
 % Tasks (Task stats, and states)
