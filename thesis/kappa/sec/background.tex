@@ -18,7 +18,7 @@ Specifically for these systems, we present and discuss different stability and p
 % A short extension to the RTS (and RTOS) precise objective
 We begin with an introduction to real-time system fundamentals. 
 The breadth of the topic prevents a comprehensive review of the existing literature to fit within the scope of this thesis.
-In fact, real-time systems are all information processing systems which takes external input and operate on it within a predetermined deadline. 
+In fact, real-time systems are all information processing systems which reacts to external input within a predetermined deadline. 
 This includes sensors, actuators, process control, machine vision, robotics, and health care systems, to acknowledge a fraction of all real-time systems.
 Instead, we focus the attention to the elements which impact real-time control systems the most, i.e., RTOS fundamentals, periodic tasks, task models, scheduling policies, and execution models.
 \question%
@@ -35,7 +35,7 @@ In Figure~\ref{fig:operating-system-abstraction}, the underlying hardware and re
     \label{fig:operating-system-abstraction}%
 \end{figure}
 
-% CPU, cores, and threads
+% CPU and cores
 The \emph{central processing unit} (CPU, or simply \emph{processor}) is the electronic component responsible for executing the task functions.
 Each function (or program) is translated into a list of instructions to be executed on the CPU.
 These instructions belong to the machine's language used to tell the processor what type of operation to execute, e.g., load a specific memory registry or execute an arithmetic operation.
@@ -43,14 +43,13 @@ To execute the program instructions, the processor can contain one or more \emph
 Each core is able to execute a list of program instructions.
 Hence, the advantage of using multi-core processors (compared to single-core processors) is the increased number of instructions that can be executed in parallel. 
 However, this gain comes at the cost of an elevated system complexity where the memory and application layout has to be adapted to the multi-core architecture~\cite{Brandenburg:2011}.
-\nv{Mention what is common in microcontrollers}
 \question{mention something about ``\#hardware threads = \#cores'' here?}{}
 
 % Memory
-Integrated with the processor is usually a \emph{cache} memory, i.e., a small but fast memory that is easy to access from the operational cores.
-The cache memory stores recently accessed instructions and data to reduce the latency induced by fetching from main memory.
+Integrated with the processor is a \emph{cache} memory, i.e., a small but fast memory that is easy to access from the operational cores.
+The cache memory stores recently accessed instructions and data to reduce the latency induced by fetching from \emph{main memory}, i.e., the main hardware storage.
 Most modern CPUs have a layered cache memory hierarchy, where the smallest and fastest layer is denoted L1, the second smallest and fastest is denoted L2, and so on.
-When the processor needs to access some data, it first examines whether it exists in the cache and otherwise it collects it from the main memory.
+When the processor needs to access some data, it first examines whether the data exists in the cache and in that case fetch it from there; otherwise, it collects the data from the main memory.
 
 If a task wants to access cached data (or instructions) that cannot be found, it is said to experience a \emph{cache miss}; similarly, a \emph{cache hit} occurs when the sought data is found in the cache.
 Cache misses can arise if
@@ -69,15 +68,28 @@ If the task continues to experience significant cache misses even after the cach
 Thrashing can severely impact both real-time performance, energy consumption, and even collapse the execution~\cite{Wadleigh:2000}.
 In multi-core setups where different cores share a level-X cache, thrashing is a big concern; however, there exists mitigation strategies~\cite{Brandenburg:2011}.
 
+% GPIO 
+To interface with the external environment, the hardware contains \emph{input/output peripherals} (abbreviated \emph{I/O}).
+The peripherals are all external components connected to the hardware, e.g., sensors or actuators.
+Depending on the hardware, the peripherals can either be connected to the circuit board responsible for joining the different components together or directly into the CPU.
+Typically, each peripheral is assigned to a \emph{port} number in the device, i.e., an address to know from where to read or send data. 
+The port is then used by the tasks to identify the specific peripheral to use.
+If the link to the external environment is wireless, the I/O peripherals are not necessarily sensors or actuators, but rather radio antennas, Bluetooth transmitters, or Wi-Fi routers (depending on the wireless communication protocol) interacting with the sensors and actuators.
+\question%
+{Mention something about how to translate the data flow to messages?}%
+{}%
 
+
+
+% Microcontrollers and embedded systems
+Although this thesis does not discern different hardware architectures from one another, it is convenient to talk about \emph{microcontrollers}, in particular because of their growing recognition. 
+\nv{Continue talking about microcontrollers and embedded systems}
+
+% RTOS, threads
 
 % Tasks (Task stats, and states)
-%
 
-% Scheduler (how it allocates resources), mechanisms, deadline handling, many paragraphs here probably
-
-% GPIO 
-% describe scheduler, tasks, contexts, task states, etc.
+% Scheduler (how it allocates resources), threads, mechanisms, deadline handling, many paragraphs here probably
 
 
 \nv{Maybe create a figure with different task states?}

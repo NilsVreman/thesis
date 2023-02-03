@@ -48,10 +48,11 @@
 \draw[thick] (cn.north) to (vtn.south);
 
 % CPU
-\node[task, minimum width=1.3cm, minimum height=1.0cm] (cpu) at (-0.9+1.5*10*\delta,-2.25) {CPU};
+\node[task, minimum width=1.3cm, minimum height=1.115cm] (cpu) at (-0.9+1.5*10*\delta,-2.25) {CPU};
+\node[task, minimum width=1.0cm, minimum height=0.6cm, rotate=90] (cache) at (-0.9+2.0*10*\delta,-2.25) {Cache};
 
 % Memory
-\node[task, minimum width=2.25cm, minimum height=0.6cm, rotate=90] (mem) at (-1.0+4*10*\delta,0.1) {Memory};
+\node[task, minimum width=2.25cm, minimum height=0.6cm, rotate=90] (mem) at (-1.0+4*10*\delta,0.1) {Main Memory};
 
 % HW interfaces
 \node[task, minimum width=1.0cm, minimum height=0.6cm, rotate=90] (gpio) at (-1.0+4*10*\delta,-2.2) {GPIO};
