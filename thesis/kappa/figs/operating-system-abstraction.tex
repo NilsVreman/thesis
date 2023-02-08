@@ -48,20 +48,27 @@
 \draw[thick] (cn.north) to (vtn.south);
 
 % CPU
-\node[task, minimum width=1.3cm, minimum height=1.115cm] (cpu) at (-0.9+1.5*10*\delta,-2.25) {CPU};
-\node[task, minimum width=1.0cm, minimum height=0.6cm, rotate=90] (cache) at (-0.9+2.0*10*\delta,-2.25) {Cache};
+\node[task, minimum width=4.0cm, minimum height=1.8cm] (cpu) at (-0.9+1.5*10*\delta,-2.75) {};
+\node[task, minimum width=1.8cm, minimum height=0.6cm, rotate=90] (cache) at ([xshift=-0.3cm]cpu.east) {Cache};
+
+% Cores
+\node[task, opacity=0.7, minimum width=1.6cm, minimum height=0.6cm, rotate=90] (core1) at ([xshift=0.5cm]cpu.west) {Core $\#1$};
+\node[task, opacity=0.7, minimum width=1.6cm, minimum height=0.6cm, rotate=90] (core2) at ([xshift=0.5cm]core1.south) {Core $\#2$};
+\node[task, opacity=0.7, minimum width=1.6cm, minimum height=0.6cm, rotate=90] (coreM) at ([xshift=-0.5cm]cache.north) {Core $\#M$};
+\node[opacity=0.7] at ([xshift=-0.5cm]coreM.north) {$\cdots$};
+\node[rotate=90, above] at (cpu.west) {CPU};
 
 % Memory
-\node[task, minimum width=2.25cm, minimum height=0.6cm, rotate=90] (mem) at (-1.0+4*10*\delta,0.1) {Main Memory};
+\node[task, minimum width=2.25cm, minimum height=0.6cm, rotate=90] (mem) at (-1.0+4*10*\delta,-2.5) {Main Memory};
 
 % HW interfaces
-\node[task, minimum width=1.0cm, minimum height=0.6cm, rotate=90] (gpio) at (-1.0+4*10*\delta,-2.2) {GPIO};
+\node[task, minimum width=1.5cm, minimum height=0.6cm, rotate=90] (gpio) at (-1.0+4*10*\delta,0.4) {I/O Interface};
 
 % Background 
 
 \begin{scope}[on background layer]
     \node[ultra thick, fill=white, fit=(vt1)(vtn)(cpu)(mem),draw,inner sep=4pt] (vhw) {};
-    \draw[thick, dashed] ([yshift=-0.85cm]vhw.west) to ([yshift=-0.85cm]vhw.east);
+    \draw[thick, dashed] ([yshift=-0.45cm]vhw.west) to ([yshift=-0.45cm,xshift=-1.0cm]vhw.east);
     \draw[thick, dashed] ([xshift=2.65cm]vhw.south) to ([xshift=2.65cm]vhw.north);
 \end{scope}
 
@@ -74,9 +81,15 @@
 \node[circleconn] (csched) at ($(sched)+(0,0.5)$) {};
 \draw[thick] (csched.south) to (sched.north);
 
+\node[circleconn] (ccpu) at ($(cpu)+(0,1.23)$) {};
+\draw[thick] (sched.south) to (ccpu.north);
+
 \draw[thick, -latex] (csched.north) to (c2.south);
 \draw[thick, dashed, -latex, opacity=0.3] (csched.north) to (c1.south);
 \draw[thick, dashed, -latex, opacity=0.3] (csched.north) to (cn.south);
 
+\draw[thick, -latex] (ccpu.south) to (core1.east);
+\draw[thick, dashed, -latex, opacity=0.3] (ccpu.south) to (core2.east);
+\draw[thick, dashed, -latex, opacity=0.3] (ccpu.south) to (coreM.east);
 
 \end{tikzpicture}
