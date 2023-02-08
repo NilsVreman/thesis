@@ -64,20 +64,47 @@ Ideally, the number of cache misses that a task experiences are kept to a minimu
 Additionally, the longer a task executes, the less likely it is to contract cache misses.
 Intuitively, the task will experience a few initial cache misses when the data is loaded into the cache, but thereafter the cache will be occupied by relevant data and the cache misses should decrease.
 This is also known as \emph{cache warming}.
-If the task continues to experience significant cache misses even after the cache warming phase, it is said to be \emph{thrashing} the cache, i.e., continuously experience cache misses.
+If the task continues to experience significant cache misses even after the cache warming phase, it is said to be \emph{thrashing} the cache, i.e., continuously experiencing cache misses.
 Thrashing can severely impact both real-time performance, energy consumption, and even collapse the execution~\cite{Wadleigh:2000}.
-In multi-core setups where different cores share a level-X cache, thrashing is a big concern; however, there exists mitigation strategies~\cite{Brandenburg:2011}.
+In multi-core setups where different cores share a level-X cache, thrashing is a big concern; however, there exists strategies to mitigate frequent interference from different tasks sharing the same cache~\cite{Brandenburg:2011}.
+To help mitigate cache eviction (both in single- and multi-core setups), \emph{cache partitioning} is typically employed.
+Cache partitioning reserves specific memory addresses for specific tasks, whilst reserving others for shared data.
+Thus, cache evictions are limited to the specific cache memory regions that are shared among multiple tasks.
 
 % GPIO 
 To interface with the external environment, the hardware contains \emph{input/output peripherals} (abbreviated \emph{I/O}).
 The peripherals are all external components connected to the hardware, e.g., sensors or actuators.
 Depending on the hardware, the peripherals can either be connected to the circuit board responsible for joining the different components together or directly into the CPU.
-Typically, each peripheral is assigned to a \emph{port} number in the device, i.e., an address to know from where to read or send data. 
-The port is then used by the tasks to identify the specific peripheral to use.
 If the link to the external environment is wireless, the I/O peripherals are not necessarily sensors or actuators, but rather radio antennas, Bluetooth transmitters, or Wi-Fi routers (depending on the wireless communication protocol) interacting with the sensors and actuators.
-\question%
-{Mention something about how to translate the data flow to messages?}%
-{}%
+Typically, each peripheral is assigned to an \emph{I/O port} in the device, i.e., a unique address to communicate through. 
+The port is then used by both the peripheral and the tasks to identify where to transmit data to and read data from.
+
+Separately from the I/O port, the \emph{communication protocol} defines the rules used to decipher and encrypt the packets sent between the peripherals and the hardware over the \emph{communication channel}.
+As an analogy, consider a postcard being sent between England and France; the port is where we choose to send the letter, i.e., the address to send it to and the postage stamp, while the protocol is the content of the message, i.e., the chosen communication format.
+Communication protocols and their implementation details belong to a vast research topic which falls outside the scope of this thesis.
+However, it is an important component of real-time networked control systems and is thus briefly introduced here.
+
+% More into depth about the communication channel and what problems we might encounter here
+Information transmitted over a network (wired or wireless) is generally represented as a set of bits (ones and zeroes) to be read in series or parallel; without loss of generality as well as for simplicity, we will only mention the serial case.
+The communication protocol defines the rules determining how the transmitter should encode its data in order for the receiver to decode it using the same set of rules.
+The rules are highly dependent on the communication protocol and its application domain.
+We illustrate the idea of communication protocols with an example: consider the case where a transmitter wants to send the character \code{R} using the universal asynchronous receiver-transmitter (UART) protocol\footnote{Assuming ASCII encoding of the character, 8 data bits, no parity, and 1 stop bit, i.e., UART 8-N-1.}.
+The rules defined by this protocol states that each data packet contains exactly 8 bits of information, is prepended with a start bit ($0$), and is appended with a stop bit ($1$).
+Since the binary representation of \code{R} is $01010010$, the encoded characters packet representation (to be sent over the network) is then:
+%
+\begin{equation*}
+    0 \;\, 01010010 \;\, 1.
+\end{equation*}
+%
+Transmitting a message, such as \code{RTS}, thus involve encoding each character individually before transmitting the encoded bit stream in sequence:
+%
+\begin{equation*}
+    0\underbracket{01010010}_{\code{R}}1 \;\;
+    0\underbracket{01010100}_{\code{T}}1 \;\;
+    0\underbracket{01010011}_{\code{S}}1.
+\end{equation*}
+
+
 
 
 
