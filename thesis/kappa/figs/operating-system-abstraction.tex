@@ -48,7 +48,7 @@
 \draw[thick] (cn.north) to (vtn.south);
 
 % CPU
-\node[task, minimum width=4.0cm, minimum height=1.8cm] (cpu) at (-0.9+1.5*10*\delta,-2.75) {};
+\node[task, minimum width=4.0cm, minimum height=1.8cm] (cpu) at (-0.9+1.5*10*\delta,-2.65) {};
 \node[task, minimum width=1.8cm, minimum height=0.6cm, rotate=90] (cache) at ([xshift=-0.3cm]cpu.east) {Cache};
 
 % Cores
@@ -59,16 +59,30 @@
 \node[rotate=90, above] at (cpu.west) {CPU};
 
 % Memory
-\node[task, minimum width=2.25cm, minimum height=0.6cm, rotate=90] (mem) at (-1.0+4*10*\delta,-2.5) {Main Memory};
+\node[task, minimum width=1.8cm, minimum height=0.6cm, rotate=90] (mem) at (-1.0+4*10*\delta,-2.65) {Memory};
+
+% Cache lines
+\node[circleconn] (ccache) at ([xshift=0.25cm]cache.south) {};
+\draw[thick] (cache.south) to (ccache.west);
+
+\draw[thick, -latex] (ccache.east) to ([yshift=-2mm]mem.north);
+\draw[thick, dashed, -latex, opacity=0.3] (ccache.east) to ([yshift=5mm]mem.north);
+\draw[thick, dashed, -latex, opacity=0.3] (ccache.east) to ([yshift=-6mm]mem.north);
 
 % HW interfaces
-\node[task, minimum width=1.5cm, minimum height=0.6cm, rotate=90] (gpio) at (-1.0+4*10*\delta,0.4) {I/O Interface};
+\node[task, minimum width=1.8cm, minimum height=0.6cm, rotate=90] (gpio) at (-1.0+4*10*\delta,0.15) {I/O Interface};
+
+% Lines into memory
+\node[circleconn] (cgpio) at ([yshift=-0.5cm]gpio.west) {};
+\draw[thick] (gpio.west) to (cgpio.north);
+\draw[thick] (cgpio.south) to (mem.east);
+
 
 % Background 
-
 \begin{scope}[on background layer]
     \node[ultra thick, fill=white, fit=(vt1)(vtn)(cpu)(mem),draw,inner sep=4pt] (vhw) {};
-    \draw[thick, dashed] ([yshift=-0.45cm]vhw.west) to ([yshift=-0.45cm,xshift=-1.0cm]vhw.east);
+    %\draw[thick, dashed] ([yshift=-0.35cm]vhw.west) to ([yshift=-0.35cm,xshift=-1.0cm]vhw.east);
+    \draw[thick, dashed] ([yshift=-0.35cm]vhw.west) to ([yshift=-0.35cm]vhw.east);
     \draw[thick, dashed] ([xshift=2.65cm]vhw.south) to ([xshift=2.65cm]vhw.north);
 \end{scope}
 
@@ -77,11 +91,11 @@
 \draw[thick, dashed] (hw.north east) to (vhw.north east);
 
 % Scheduler
-\node[task, minimum width=5cm] (sched) at (-0.9+1.5*10*\delta,-1.0) {Scheduler};
-\node[circleconn] (csched) at ($(sched)+(0,0.5)$) {};
+\node[task, minimum width=4cm, minimum height=0.6cm] (sched) at (-0.9+1.5*10*\delta,-0.85) {Scheduler};
+\node[circleconn] (csched) at ($(sched)+(0,0.55)$) {};
 \draw[thick] (csched.south) to (sched.north);
 
-\node[circleconn] (ccpu) at ($(cpu)+(0,1.23)$) {};
+\node[circleconn] (ccpu) at ($(sched)+(0,-0.55)$) {};
 \draw[thick] (sched.south) to (ccpu.north);
 
 \draw[thick, -latex] (csched.north) to (c2.south);
