@@ -69,31 +69,32 @@ Thrashing can severely impact both real-time performance, energy consumption, an
 In multi-core setups where different cores share a level-X cache, thrashing is a big concern; however, there exists strategies to mitigate frequent interference from different tasks sharing the same cache~\cite{Brandenburg:2011}.
 To help mitigate cache eviction (both in single- and multi-core setups), \emph{cache partitioning} is typically employed.
 Cache partitioning reserves specific memory addresses for specific tasks, whilst reserving others for shared data.
-Thus, cache evictions are limited to the specific cache memory regions that are shared among multiple tasks.
+Thus, cache evictions are limited to the specific cache memory regions that are shared among multiple tasks; unless, the cache is flushed due to security reasons.
 
 % GPIO 
 To interface with the external environment, the hardware contains \emph{input/output peripherals} (abbreviated \emph{I/O}).
-The peripherals are all external components connected to the hardware, e.g., sensors or actuators.
+The peripherals are all external components connected to the hardware, e.g., sensors, actuators, or routers.
 Depending on the hardware, the peripherals can either be connected to the circuit board responsible for joining the different components together or directly into the CPU.
 If the link to the external environment is wireless, the I/O peripherals are not necessarily sensors or actuators, but rather radio antennas, Bluetooth transmitters, or Wi-Fi routers (depending on the wireless communication protocol) interacting with the sensors and actuators.
 Typically, each peripheral is assigned to an \emph{I/O port} in the device, i.e., a unique address to communicate through. 
 The port is then used by both the peripheral and the tasks to identify where to transmit data to and read data from.
+\nv{Mention something about DMA and how the peripheral typically writes directly into main memory}
 
-Separately from the I/O port, the \emph{communication protocol} defines the rules used to decipher and encrypt the packets sent between the peripherals and the hardware over the \emph{communication channel}.
+Separately from the I/O port, the \emph{communication protocol} defines the rules used to pack and unpack the packets sent between the peripherals and the hardware over the \emph{communication channel}.
 As an analogy, consider a postcard being sent between England and France; the port is where we choose to send the letter, i.e., the address to send it to and the postage stamp, while the protocol is the content of the message, i.e., the chosen communication format.
 Communication protocols and their implementation details belong to a vast research topic which falls outside the scope of this thesis.
 However, it is an important component of real-time networked control systems and is thus briefly introduced here.
 
 % More into depth about the communication channel and what problems we might encounter here
-Information transmitted over a network (wired or wireless) is generally represented as a set of bits (ones and zeroes) to be read in series or parallel; without loss of generality as well as for simplicity, we will only mention the serial case.
+Information transmitted over a network (wired or wireless) is generally represented as a set of bits (ones and zeroes) to be read in series or parallel; without loss of generality, we will only mention the serial case.
 The communication protocol defines the rules determining how the transmitter should encode its data in order for the receiver to decode it using the same set of rules.
 The rules are highly dependent on the communication protocol and its application domain.
 We illustrate the idea of communication protocols with an example: consider the case where a transmitter wants to send the character \code{R} using the universal asynchronous receiver-transmitter (UART) protocol\footnote{Assuming ASCII encoding of the character, 8 data bits, no parity, and 1 stop bit, i.e., UART 8-N-1.}.
 The rules defined by this protocol states that each data packet contains exactly 8 bits of information, is prepended with a start bit ($0$), and is appended with a stop bit ($1$).
-Since the binary representation of \code{R} is $01010010$, the encoded characters packet representation (to be sent over the network) is then:
+Since the binary representation of \code{R} is $01010010$ (using ASCII encoding), the encoded character's packet representation to be sent over the network is then:
 %
 \begin{equation*}
-    0 \;\, 01010010 \;\, 1.
+    \underbracket{0}_{\text{Start bit}} \;\, \underbracket{01010010}_{\text{Data bits}} \;\, \underbracket{1}_{\text{End bit}}.
 \end{equation*}
 %
 Transmitting a message, such as \code{RTS}, thus involve encoding each character individually before transmitting the encoded bit stream in sequence:
@@ -104,13 +105,32 @@ Transmitting a message, such as \code{RTS}, thus involve encoding each character
     0\underbracket{01010011}_{\code{S}}1.
 \end{equation*}
 
+The network over which the packets are transmitted, typically consist of one or more routers forwarding the packets between different target locations.
+To determine where to forward the packet to, the packet includes a \emph{network address}\footnote{The network address is an identifier to help recognise where to froward the packet to. Common examples of network addresses are IP addresses and MAC addresses.} that is read by the router before rerouting the packet according to a routing policy.
+Additionally, each router contains a buffer to store incoming packets before processing them.
+Processing the packets in the buffer is efficient, but it requires some non-negligible overhead, i.e., reading the network address and deciding where to forward the packet.
+Thus, under normal conditions the receiver will experience packet latency and jitter, but if the network traffic is heavy the buffer space can quickly be exhausted.
+In other words, if the packets arrive faster than what the router can process it becomes congested.
 
+Multiple policies have been developed to control the congestion, e.g., tail drop~\addref{} and \nv{insert something}~\addref{}.
+Common among all the congestion control strategies is that they employ intentional \emph{packet dropping}, i.e., if a packet arrives while the buffer space is exhausted, the congestion controller will remove either the arriving packet or one in the buffer (depending on the strategy).
+In addition to the congestion controller dropping packets, there are intermittent packet drops due to, e.g., packets being misrouted~\addref{}, security threats~\addref{}, software bugs~\addref{}, or wireless communication~\addref{}.
+\question%
+{Should I mention something about TCP and UDP here?}
+{}
 
-
+Regardless of the packet drops' origins, they can have dire consequences for real-time control systems.
+Losing packets on the network connecting the control hardware and the plant, is the same as loosing sensor measurements or control commands.
+Generally, this will degrade the control performance~\addref{}.
+However, if enough packets are lost it could cause critical system failures or crashes~\addref{}.
+\question%
+{Add something more here or should I discuss it further in the control section?}
+{}
 
 % Microcontrollers and embedded systems
 Although this thesis does not discern different hardware architectures from one another, it is convenient to talk about \emph{microcontrollers}, in particular because of their growing recognition. 
 \nv{Continue talking about microcontrollers and embedded systems}
+\nv{CONTINUE HERE}
 
 % RTOS, threads
 
