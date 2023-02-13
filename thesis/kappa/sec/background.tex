@@ -39,11 +39,11 @@ In Figure~\ref{fig:operating-system-abstraction}, the underlying hardware and re
 The \emph{central processing unit} (CPU, or simply \emph{processor}) is the electronic component responsible for executing the task functions.
 Each function (or program) is translated into a list of instructions to be executed on the CPU.
 These instructions belong to the machine's language used to tell the processor what type of operation to execute, e.g., load a specific memory registry or execute an arithmetic operation.
+The time it takes for the CPU to execute one instruction, i.e., fetching the instruction from memory before decoding and executing it, is typically called an \emph{instruction cycle} (or simply \emph{cycle}); this is the basic unit used to measure CPU speed.
 To execute the program instructions, the processor can contain one or more \emph{cores}, respectively denoting the processor as \emph{single-core} or \emph{multi-core}.
 Each core is able to execute a list of program instructions.
 Hence, the advantage of using multi-core processors (compared to single-core processors) is the increased number of instructions that can be executed in parallel. 
 However, this gain comes at the cost of an elevated system complexity where the memory and application layout has to be adapted to the multi-core architecture~\cite{Brandenburg:2011}.
-\question{mention something about ``\#hardware threads = \#cores'' here?}{}
 
 % Memory
 Integrated with the processor is a \emph{cache} memory, i.e., a small but fast memory that is easy to access from the operational cores.
@@ -52,7 +52,7 @@ Most modern CPUs have a layered cache memory hierarchy, where the smallest and f
 When the processor needs to access some data, it first examines whether the data exists in the cache and in that case fetch it from there; otherwise, it collects the data from the main memory.
 
 If a task wants to access cached data (or instructions) that cannot be found, it is said to experience a \emph{cache miss}; similarly, a \emph{cache hit} occurs when the sought data is found in the cache.
-Cache misses can arise if
+Cache misses can arise if:
 %
 \begin{itemize}
     \item the size of the requested data is too large to fetch;
@@ -72,13 +72,18 @@ Cache partitioning reserves specific memory addresses for specific tasks, whilst
 Thus, cache evictions are limited to the specific cache memory regions that are shared among multiple tasks; unless, the cache is flushed due to security reasons.
 
 % GPIO 
-To interface with the external environment, the hardware contains \emph{input/output peripherals} (abbreviated \emph{I/O}).
+To interface with the external environment, the hardware uses \emph{input/output peripherals} (I/O peripherals).
 The peripherals are all external components connected to the hardware, e.g., sensors, actuators, or routers.
 Depending on the hardware, the peripherals can either be connected to the circuit board responsible for joining the different components together or directly into the CPU.
 If the link to the external environment is wireless, the I/O peripherals are not necessarily sensors or actuators, but rather radio antennas, Bluetooth transmitters, or Wi-Fi routers (depending on the wireless communication protocol) interacting with the sensors and actuators.
-Typically, each peripheral is assigned to an \emph{I/O port} in the device, i.e., a unique address to communicate through. 
-The port is then used by both the peripheral and the tasks to identify where to transmit data to and read data from.
-\nv{Mention something about DMA and how the peripheral typically writes directly into main memory}
+Typically, each peripheral is assigned to an \emph{I/O port} in the device, i.e., a unique number to know which physical pin to transmit and receive data through. 
+Depending on the hardware, the port can either be accessed directly from a task or via direct memory access (DMA).
+When a task accesses a port, it fully consumes the processor until the data I/O is complete.
+Instead, DMA allows the CPU to initialise the data transfer which will progress as a background task until the transfer is finished.
+This frees up CPU cycles to be used by other tasks at the cost of complicating the cache architecture.
+\question%
+{Should the last 4 lines be removed?}
+{}
 
 Separately from the I/O port, the \emph{communication protocol} defines the rules used to pack and unpack the packets sent between the peripherals and the hardware over the \emph{communication channel}.
 As an analogy, consider a postcard being sent between England and France; the port is where we choose to send the letter, i.e., the address to send it to and the postage stamp, while the protocol is the content of the message, i.e., the chosen communication format.
@@ -121,18 +126,21 @@ In addition to the congestion controller dropping packets, there are intermitten
 
 Regardless of the packet drops' origins, they can have dire consequences for real-time control systems.
 Losing packets on the network connecting the control hardware and the plant, is the same as loosing sensor measurements or control commands.
-Generally, this will degrade the control performance~\addref{}.
-However, if enough packets are lost it could cause critical system failures or crashes~\addref{}.
+Generally, this will degrade the control performance~\addref{}, however, if enough packets are lost it could cause critical system failures or crashes~\addref{}.
 \question%
 {Add something more here or should I discuss it further in the control section?}
 {}
 
 % Microcontrollers and embedded systems
-Although this thesis does not discern different hardware architectures from one another, it is convenient to talk about \emph{microcontrollers}, in particular because of their growing recognition. 
-\nv{Continue talking about microcontrollers and embedded systems}
-\nv{CONTINUE HERE}
+\nv{Not sure if this paragraph should be higher up (in connection to the I/O), or not?}
+Although this thesis does not discern different hardware architectures from one another, it is appropriate to talk about \emph{microcontrollers} and \emph{embedded systems}, in particular because of their growing recognition. 
+Despite being two different hardware architectures, the terms embedded system and microcontroller will carelessly be used interchangeably due to their natural similarities.
+As introduced in Chapter~\ref{ch:intro}, microcontrollers (MCUs) are small computers with integrated processors, memory, and I/O peripherals.
+On the other hand, most embedded systems are based on microcontroller architectures, however, some embedded systems are based on one or more microprocessors with external memory and I/O peripherals.
+Hence, microcontrollers are embedded systems and can be used to develop more complex embedded systems, but an embedded system is not necessarily a microcontroller.
 
 % RTOS, threads
+
 
 % Tasks (Task stats, and states)
 
