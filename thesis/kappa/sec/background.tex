@@ -26,7 +26,7 @@ Instead, we focus the attention to the elements which impact real-time control s
     Maybe the ``RTOS fundamentals'' should be ``CPU provisioning'' and ``memory management'' instead?
 }{}
 Since the RTOS is tightly interconnected with the hardware, it is natural to illustrate them jointly.
-In Figure~\ref{fig:operating-system-abstraction}, the underlying hardware and real-time structure is expanded.
+Next, we describe the underlying hardware and real-time architecture seen in Figure~\ref{fig:operating-system-abstraction}.
 %
 \begin{figure}[t]
     \centering
@@ -136,18 +136,84 @@ Generally, this will degrade the control performance~\addref{}, however, if enou
 Although this thesis does not discern different hardware architectures from one another, it is appropriate to talk about \emph{microcontrollers} and \emph{embedded systems}, in particular because of their growing recognition. 
 Despite being two different hardware architectures, the terms embedded system and microcontroller will carelessly be used interchangeably due to their natural similarities.
 As introduced in Chapter~\ref{ch:intro}, microcontrollers (MCUs) are small computers with integrated processors, memory, and I/O peripherals.
-On the other hand, most embedded systems are based on microcontroller architectures, however, some embedded systems are based on one or more microprocessors with external memory and I/O peripherals.
+Most embedded systems are based on microcontroller architectures, however, some embedded systems are based on one or more microprocessors with external memory and I/O peripherals.
 Hence, microcontrollers are embedded systems and can be used to develop more complex embedded systems, but an embedded system is not necessarily a microcontroller.
 
 % RTOS, threads
+A real-time operating system is commonly employed to simplify the interface with the hardware while guaranteeing timeliness.
+The RTOS is responsible for orchestrating the tasks' execution and allocating resources (e.g., memory and CPU time) to said tasks.
+The terms ``task'', ``process'', and ``thread'' are frequently confused in many documents; to avoid this confusion we provide a definition in the context of real-time operating systems~\addref{}:
+%
+\begin{itemize}
+    \item \emph{Process} -- A process is a computer program with its own stack, control block\footnote{A task's control block (TCB) includes descriptive information about the task, for instance, the identifier used by the scheduler, its priority, and the task's state (running, ready, blocked, suspended, etc.).}, and instruction set.
 
+    \item \emph{Thread} -- A thread is an entity within a process that share the memory context with additional threads.
 
+    \item \emph{Task} -- The term \emph{task} is used analogously with \emph{process}.
+\end{itemize}
+%
+The notational confusion likely arose from the \emph{multithreading}, \emph{multiprocessing}, and \emph{multitasking} paradigms.
+In a multiprocessing environment, multiple tasks can execute concurrently, each on a separate core; multithreading is a CPU feature for executing multiple threads concurrently on a single core; and, multitasking is when a single core is executing multiple tasks concurrently.
+
+\subsubsection*{Tasks~\note{Dislike the header; Like the separation}}%
 % Tasks (Task stats, and states)
+%
+%\begin{figure}[t]
+%    \centering
+%    \input{\figdir/task-states.tex}
+%    \caption{\fix{}}
+%    \label{fig:task-states}
+%\end{figure}
+All the real-time tasks considered in this thesis are \emph{recurrent}, i.e., they do not terminate during system operation.
+The recurrent task model simplifies the \emph{a priori} analysis of the real-time workload's effect on the system execution.
+A plethora of methods have been derived to model the recurrent task execution, ranging in complexity from the classic Liu and Layland model~\cite{Liu:1973} to directed acyclic graph (DAG) models~\cite{Saifullah:2014}.
+This thesis utilise \emph{recurrent tasks} and \emph{tasks} analogously.
+
+The task model adopted in this thesis defines a task $\tau$ as a sequence of \emph{jobs} $j_t$, where each job is responsible for executing one full iteration of the task's function.
+Here, $t$ counts the number of discrete time steps since the task was created.
+Each task $\tau_i$ is characterised by the triplet $(e_i, d_i, p_i)$.
+Here, for each job; $e_i > 0$ is the \emph{worst-case execution time} (WCET); $d_i > 0$ is the relative \emph{deadline}; and, $p_i \geq d_i$ is the minimum interarrival \emph{period}.
+The RTOS scheduler releases a job $j_t$ at time $a_t$ (the job's \emph{release time}); the job then completes its execution at time $f_t$ (the job's \emph{completion time}).
+The \emph{periodic tasks} is a special class of recurrent tasks where the jobs are released at equidistant time points, i.e., $a_t = t\cdot T$ where $T$ is fixed. 
+Control tasks are typically implemented as periodic tasks, hence one job is released in every period.
+To make sure that the periodic task's jobs finish their execution before the subsequent job is released, it is common to adopt \emph{implicit deadlines}, i.e., that job $j_t$ completes its execution before the release time of job $j_{t+1}$; formally, it implies that $f_t \leq a_{t+1} = t\cdot T+T = a_t + T$ or simpler $d_i = p_i = T$.
+
+Under ideal computational conditions, each job completes its execution before its corresponding deadline, i.e., $f_t \leq a_t + d_i$.
+However, it can happen that the individual job has not yet finished executing when it reaches the end of its allotted time budget.
+We then say that the job experiences a \emph{deadline overrun} (also denoted \emph{deadline miss}).
+Respectively, if the job completes before its deadline, it \emph{meets} its deadline (experiences a \emph{deadline hit}).
+We provide a formal definition:
+%
+\begin{definition}[Deadline Overrun]%
+    \label{def:overrun}%
+    The $t$-th job ($j_t$) of a task $\tau_i$ is said to experience a deadline overrun if
+    \begin{equation}
+        f_t > a_t + d_i.
+    \end{equation}
+\end{definition}
+%
+\nv{Write why deadline overruns can occur}
+
+% task models -> soft, hard, weakly-hard
+Every real-time systems behave differently to deadline overruns.
+In particular, depending on the application some systems crash while others experience a degraded efficiency.
+Due to this individuality, all real-time systems were historically divided into two classes describing how the systems were affected by computational overruns.
+%
+\begin{itemize}
+    \item \emph{Hard real-time systems} -- It is imperative that the deadlines are met in order to prevent critical system failure.
+
+    \item \emph{Soft real-time systems} -- Performance is degraded with the possibility to overrun deadlines, but it is unlikely that the system will crash.
+\end{itemize}
+
+
+The set of $N$ tasks executing in the RTOS is generally denoted the \emph{task set}, i.e., $\taskset = \left\{ \tau_1, \tau_2, \ldots, \tau_N \right\}$.
+\nv{Write something more here about orchestration, schedules, deadline overruns, and lead it automatically into the paragraph about scheduling}
+
+
+%\note{Continue here (maybe take some inspiration from Björn)}
+%\nv{Maybe create a figure with different task states?}
 
 % Scheduler (how it allocates resources), threads, mechanisms, deadline handling, many paragraphs here probably
-
-
-\nv{Maybe create a figure with different task states?}
 
 \subsection{Execution Modelling using State Machines}%
 \label{sec:background:fsm}%

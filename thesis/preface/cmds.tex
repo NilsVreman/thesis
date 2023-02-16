@@ -4,118 +4,119 @@
 
 %% Mathematics
 % Automaton related
-\newcommand{\GG}[1]{\mathcal{G}_{#1}} % Automaton
-\newcommand{\VV}[1]{V_{#1}} % Nodes
-\newcommand{\EE}[1]{E_{#1}} % Edges
+\newcommand{\GG}[1]{\mathcal{G}_{#1}}% Automaton
+\newcommand{\VV}[1]{V_{#1}}% Nodes
+\newcommand{\EE}[1]{E_{#1}}% Edges
 
 % Language related
-\newcommand{\cM}{\texttt{M}}
-\newcommand{\cH}{\texttt{H}}
-\newcommand{\cR}{\texttt{R}}
-\newcommand{\cT}{\texttt{T}}
-\newcommand{\cX}{\texttt{X}}
+\newcommand{\cM}{\texttt{M}}% 
+\newcommand{\cH}{\texttt{H}}% 
+\newcommand{\cR}{\texttt{R}}% 
+\newcommand{\cT}{\texttt{T}}% 
+\newcommand{\cX}{\texttt{X}}% 
 
 
 % Shorthand
-\newcommand{\R}{\mathbb{R}}
-\newcommand{\N}{\mathbb{N}}
-\newcommand{\T}{\mathrm{\small{T}}}
-\newcommand{\nequiv}{\not\equiv}  
+\newcommand{\R}{\mathbb{R}}% 
+\newcommand{\N}{\mathbb{N}}% 
+\newcommand{\T}{\mathrm{\small{T}}}% 
+\newcommand{\nequiv}{\not\equiv}% 
 
 % Functions
-\newcommand{\LL}{\mathcal{L}_2}
-\newcommand{\funof}[1]{\left( #1 \right)}
-\newcommand{\abs}[1]{\left|#1\right|}
-\newcommand{\norm}[1]{\lVert#1\rVert}
-\newcommand{\E}[1]{\mathbb{E}\left[ #1 \right]}
-\newcommand{\trace}[1]{\mathrm{tr}\funof{#1}}
-\newcommand{\diag}[1]{\mathrm{diag}\left\{#1\right\}}
-\DeclareMathOperator*{\argmax}{argmax}
-\DeclareMathOperator*{\argmin}{argmin}
-\newcommand{\ourmod}[1]{\ \mathrm{mod}\ #1}
-\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
-\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
-\newcommand{\overbar}[1]{\mkern 1.5mu\overline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}
-\newcommand{\fact}[1]{#1!}
-\newcommand{\eig}[2]{\mathrm{eig}_{#1}\funof{#2}}
+\newcommand{\LL}{\mathcal{L}_2}% 
+\newcommand{\funof}[1]{\left( #1 \right)}% 
+\newcommand{\abs}[1]{\left|#1\right|}% 
+\newcommand{\norm}[1]{\lVert#1\rVert}% 
+\newcommand{\E}[1]{\mathbb{E}\left[ #1 \right]}% 
+\newcommand{\trace}[1]{\mathrm{tr}\funof{#1}}% 
+\newcommand{\diag}[1]{\mathrm{diag}\left\{#1\right\}}% 
+\DeclareMathOperator*{\argmax}{argmax}% 
+\DeclareMathOperator*{\argmin}{argmin}% 
+\newcommand{\ourmod}[1]{\ \mathrm{mod}\ #1}% 
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}% 
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}% 
+\newcommand{\overbar}[1]{\mkern 1.5mu\overline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}% 
+\newcommand{\fact}[1]{#1!}% 
+\newcommand{\eig}[2]{\mathrm{eig}_{#1}\funof{#2}}% 
 
 
 %% Control
-\newcommand{\plant}{\mathcal{P}}
-\newcommand{\Ap}{A} 
-\newcommand{\Bp}{B} 
-\newcommand{\Cp}{C} 
-\newcommand{\Dp}{D} 
-\newcommand{\Wp}{W} 
+\newcommand{\plant}{\mathcal{P}}% 
+\newcommand{\Ap}{A}% 
+\newcommand{\Bp}{B}% 
+\newcommand{\Cp}{C}% 
+\newcommand{\Dp}{D}% 
+\newcommand{\Wp}{W}% 
 
-\newcommand{\ctrler}{\mathcal{C}}
-\newcommand{\Ac}{F} 
-\newcommand{\Bc}{G} 
-\newcommand{\Cc}{H} 
-\newcommand{\Dc}{K} 
+\newcommand{\ctrler}{\mathcal{C}}% 
+\newcommand{\Ac}{F}% 
+\newcommand{\Bc}{G}% 
+\newcommand{\Cc}{H}% 
+\newcommand{\Dc}{K}% 
 
-\newcommand{\clsys}{\mathcal{S}_{\text{cl}}}
-\newcommand{\clmat}{\Phi}
-\newcommand{\clinp}{\Gamma}
+\newcommand{\clsys}{\mathcal{S}_{\text{cl}}}% 
+\newcommand{\clmat}{\Phi}% 
+\newcommand{\clinp}{\Gamma}% 
 
-\newcommand{\Ts}{T} 
+\newcommand{\Ts}{T}% 
 
 %% Code
-\newcommand{\code}[1]{\texttt{\textbf{#1}}} % code environments
-\newcommand{\tool}{\code{WeaklyHard.jl}}
+\newcommand{\code}[1]{\texttt{\textbf{#1}}}% code environments
+\newcommand{\tool}{\code{WeaklyHard.jl}}% 
 
 %% Real-Time
 % Strategies
-\newcommand{\strat}{\mathcal{H}} 
+\newcommand{\strat}{\mathcal{H}}%
+\newcommand{\taskset}{\mathcal{T}}%
 
-\newcommand{\tQ}{\code{Queue}}
-\newcommand{\tK}{\code{Kill}}
-\newcommand{\tS}{\code{Skip}}
-\newcommand{\tZ}{\code{Zero}}
-\newcommand{\tH}{\code{Hold}}
+\newcommand{\tQ}{\code{Queue}}% 
+\newcommand{\tK}{\code{Kill}}% 
+\newcommand{\tS}{\code{Skip}}% 
+\newcommand{\tZ}{\code{Zero}}% 
+\newcommand{\tH}{\code{Hold}}% 
 
-\newcommand{\tKZ}{\code{Kill\&Zero}}
-\newcommand{\tKH}{\code{Kill\&Hold}}
-\newcommand{\tSZ}{\code{Skip\&Zero}}
-\newcommand{\tSH}{\code{Skip\&Hold}}
+\newcommand{\tKZ}{\code{Kill\&Zero}}% 
+\newcommand{\tKH}{\code{Kill\&Hold}}% 
+\newcommand{\tSZ}{\code{Skip\&Zero}}% 
+\newcommand{\tSH}{\code{Skip\&Hold}}% 
 
 % Constraint names
-\newcommand{\tAH}{\code{AnyHit}}
-\newcommand{\tAM}{\code{AnyMiss}}
-\newcommand{\tRH}{\code{RowHit}}
-\newcommand{\tRM}{\code{RowMiss}}
+\newcommand{\tAH}{\code{AnyHit}}% 
+\newcommand{\tAM}{\code{AnyMiss}}% 
+\newcommand{\tRH}{\code{RowHit}}% 
+\newcommand{\tRM}{\code{RowMiss}}% 
 
 % Constraints related 
-\newcommand{\anyhit}[1]{\binom{x_{#1}}{k_{#1}}} 
-\newcommand{\anymiss}[1]{\overbar{\binom{x_{#1}}{k_{#1}}}}
-\newcommand{\rowhit}[1]{\genfrac{<}{>}{0pt}{}{x_{#1}}{k_{#1}}}
-\newcommand{\rowmiss}[1]{\overbar{\genfrac{<}{>}{0pt}{}{x_{#1}}{k_{#1}}}}
-\newcommand{\eanyhit}[2]{\binom{x_{#1}}{k_{#1}}^{#2}}
-\newcommand{\eanymiss}[2]{\overbar{\binom{x_{#1}}{k_{#1}}}^{#2}}
-\newcommand{\erowhit}[2]{\genfrac{<}{>}{0pt}{}{x_{#1}}{k_{#1}}^{#2}}
-\newcommand{\erowmiss}[2]{\overbar{\genfrac{<}{>}{0pt}{}{x_{#1}}{k_{#1}}}^{#2}}
+\newcommand{\anyhit}[1]{\binom{x_{#1}}{k_{#1}}}% 
+\newcommand{\anymiss}[1]{\overbar{\binom{x_{#1}}{k_{#1}}}}% 
+\newcommand{\rowhit}[1]{\genfrac{<}{>}{0pt}{}{x_{#1}}{k_{#1}}}% 
+\newcommand{\rowmiss}[1]{\overbar{\genfrac{<}{>}{0pt}{}{x_{#1}}{k_{#1}}}}% 
+\newcommand{\eanyhit}[2]{\binom{x_{#1}}{k_{#1}}^{#2}}% 
+\newcommand{\eanymiss}[2]{\overbar{\binom{x_{#1}}{k_{#1}}}^{#2}}% 
+\newcommand{\erowhit}[2]{\genfrac{<}{>}{0pt}{}{x_{#1}}{k_{#1}}^{#2}}% 
+\newcommand{\erowmiss}[2]{\overbar{\genfrac{<}{>}{0pt}{}{x_{#1}}{k_{#1}}}^{#2}}% 
 
-\newcommand{\lweak}{\underline{\lambda}} 
-\newcommand{\lhard}{\overbar{\lambda}}
+\newcommand{\lweak}{\underline{\lambda}}% 
+\newcommand{\lhard}{\overbar{\lambda}}% 
 
-\newcommand{\sset}[2]{\mathcal{S}_{#1}\funof{#2}}
+\newcommand{\sset}[2]{\mathcal{S}_{#1}\funof{#2}}% 
 
 %% Colour coherence
-\definecolor{dark-table-colour}{rgb}{0.88, 0.88, 1}
-\definecolor{light-table-colour}{rgb}{0.94, 0.94, 1}
-\definecolor{misscolour}{RGB}{255, 0, 0}
-\definecolor{lqrcolour}{RGB}{0,28,255}
-\definecolor{lqrnomcolour}{RGB}{0,28,255}
-\definecolor{lqgcolour}{RGB}{0,139,0}
-\definecolor{lqgnomcolour}{RGB}{0,139,0}
-\definecolor{adacolour}{RGB}{239,133,16}
+\definecolor{dark-table-colour}{rgb}{0.88, 0.88, 1}% 
+\definecolor{light-table-colour}{rgb}{0.94, 0.94, 1}% 
+\definecolor{misscolour}{RGB}{255, 0, 0}% 
+\definecolor{lqrcolour}{RGB}{0,28,255}% 
+\definecolor{lqrnomcolour}{RGB}{0,28,255}% 
+\definecolor{lqgcolour}{RGB}{0,139,0}% 
+\definecolor{lqgnomcolour}{RGB}{0,139,0}% 
+\definecolor{adacolour}{RGB}{239,133,16}% 
 
 
 %% Blame commands
-\newcommand{\fix}[1]{\color{red}\textbf{FIX! #1}\xspace\color{black}}
-\newcommand{\nv}[1]{\color{green!60!blue}\textbf{NV:} #1\xspace\color{black}}
-\newcommand{\mm}[1]{\color{red!60!blue}\textbf{MM:} #1\xspace\color{black}}
-\newcommand{\note}[1]{\color{red}\textbf{#1}\color{black}}
+\newcommand{\fix}[1]{\color{red}\textbf{FIX! #1}\xspace\color{black}}% 
+\newcommand{\nv}[1]{\color{green!60!blue}\textbf{NV:} #1\xspace\color{black}}% 
+\newcommand{\mm}[1]{\color{red!60!blue}\textbf{MM:} #1\xspace\color{black}}% 
+\newcommand{\note}[1]{\color{red}\textbf{#1}\color{black}}% 
 \newcommand{\question}[2]{%
     \color{red}\textbf{Q: }%
     #1 %
