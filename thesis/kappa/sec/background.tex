@@ -155,15 +155,37 @@ The terms ``task'', ``process'', and ``thread'' are frequently confused in many 
 The notational confusion likely arose from the \emph{multithreading}, \emph{multiprocessing}, and \emph{multitasking} paradigms.
 In a multiprocessing environment, multiple tasks can execute concurrently, each on a separate core; multithreading is a CPU feature for executing multiple threads concurrently on a single core; and, multitasking is when a single core is executing multiple tasks concurrently.
 
+% Scheduler (how it allocates resources), threads, mechanisms, ISR
+To orchestrate the tasks and to provide them with the correct resources, a scheduler is employed.
+The scheduler is responsible for switching tasks in and out, making sure that the correct task context (the task's resources) is brought into scope, handling interrupts, and ensuring fairness among the entities sharing the resources, e.g., interrupts, tasks, and kernel methods.
+Included in the scheduler is a \emph{scheduling algorithm}, responsible for deciding how to allocate the resources.
+Classical examples of scheduling algorithms are
+\begin{enumerate*}[label=(\roman*)]
+    \item fixed priority preemptive (FPP); \nv{Some description}
+    \item earliest deadline first (EDF); and \nv{Some description}
+    \item round-robin (RR). \nv{Some description}
+\end{enumerate*}
+Depending on the choice of algorithm, the real-time system's execution pattern may vastly differ.
+For single-core processors, \nv{mention something about FPP, EDF, and RR and what they do}
+
+\question%
+{What should I mention about scheduling for multi-core systems?}%
+{}
+For single-core systems this is not a trivial problem to solve, but for multi-core processors the complexity is elevated even further. 
+
+
+
 \subsubsection*{Tasks~\note{Dislike the header; Like the separation}}%
-% Tasks (Task stats, and states)
-%
-%\begin{figure}[t]
-%    \centering
-%    \input{\figdir/task-states.tex}
-%    \caption{\fix{}}
-%    \label{fig:task-states}
-%\end{figure}
+\question%
+{Should I:
+\begin{itemize}
+    \item add something about release jitter and latency?
+    \item expand on why deadline overruns occur?
+    \item discuss schedulers before tasks?
+    \item talk anything about threads?
+\end{itemize}}%
+{}
+% Tasks
 All the real-time tasks considered in this thesis are \emph{recurrent}, i.e., they do not terminate during system operation.
 The recurrent task model simplifies the \emph{a priori} analysis of the real-time workload's effect on the system execution.
 A plethora of methods have been derived to model the recurrent task execution, ranging in complexity from the classic Liu and Layland model~\cite{Liu:1973} to directed acyclic graph (DAG) models~\cite{Saifullah:2014}.
@@ -180,7 +202,7 @@ To make sure that the periodic task's jobs finish their execution before the sub
 
 Under ideal computational conditions, each job completes its execution before its corresponding deadline, i.e., $f_t \leq a_t + d_i$.
 However, it can happen that the individual job has not yet finished executing when it reaches the end of its allotted time budget.
-We then say that the job experiences a \emph{deadline overrun} (also denoted \emph{deadline miss}).
+We then say that the job experiences a \emph{deadline overrun} (also referred to as \emph{deadline miss} or \emph{computational overrun}).
 Respectively, if the job completes before its deadline, it \emph{meets} its deadline (experiences a \emph{deadline hit}).
 We provide a formal definition:
 %
@@ -192,28 +214,28 @@ We provide a formal definition:
     \end{equation}
 \end{definition}
 %
-\nv{Write why deadline overruns can occur}
+Computational overruns are present in generally all real-time domains from avionics and defence to consumer electronics~\cite{Akesson:2020}.
+Their impact on the systems' functional correctness are also largely application dependent.
+\nv{CONTINUE WITH: why do deadline misses occur?}
+
 
 % task models -> soft, hard, weakly-hard
 Every real-time systems behave differently to deadline overruns.
 In particular, depending on the application some systems crash while others experience a degraded efficiency.
-Due to this individuality, all real-time systems were historically divided into two classes describing how the systems were affected by computational overruns.
+Due to this individuality, most real-time systems were historically divided into two classes describing how the systems were affected by computational overruns.
 %
 \begin{itemize}
     \item \emph{Hard real-time systems} -- It is imperative that the deadlines are met in order to prevent critical system failure.
 
-    \item \emph{Soft real-time systems} -- Performance is degraded with the possibility to overrun deadlines, but it is unlikely that the system will crash.
+    \item \emph{Soft real-time systems} -- The perceived quality of the system is degraded with the number of overrun deadlines, but it is unlikely that it will impact system safety.
 \end{itemize}
 
 
 The set of $N$ tasks executing in the RTOS is generally denoted the \emph{task set}, i.e., $\taskset = \left\{ \tau_1, \tau_2, \ldots, \tau_N \right\}$.
-\nv{Write something more here about orchestration, schedules, deadline overruns, and lead it automatically into the paragraph about scheduling}
+\nv{Write something more here about orchestration and lead it automatically into the paragraph about deadline handling strategies}
 
+% Scheduler deadline handling
 
-%\note{Continue here (maybe take some inspiration from Björn)}
-%\nv{Maybe create a figure with different task states?}
-
-% Scheduler (how it allocates resources), threads, mechanisms, deadline handling, many paragraphs here probably
 
 \subsection{Execution Modelling using State Machines}%
 \label{sec:background:fsm}%
