@@ -156,23 +156,33 @@ The notational confusion likely arose from the \emph{multithreading}, \emph{mult
 In a multiprocessing environment, multiple tasks can execute concurrently, each on a separate core; multithreading is a CPU feature for executing multiple threads concurrently on a single core; and, multitasking is when a single core is executing multiple tasks concurrently.
 
 % Scheduler (how it allocates resources), threads, mechanisms, ISR
-To orchestrate the tasks and to provide them with the correct resources, a scheduler is employed.
+The RTOS typically employ a scheduler to orchestrate the tasks and to provide them with the appropriate resources.
 The scheduler is responsible for switching tasks in and out, making sure that the correct task context (the task's resources) is brought into scope, handling interrupts, and ensuring fairness among the entities sharing the resources, e.g., interrupts, tasks, and kernel methods.
-Included in the scheduler is a \emph{scheduling algorithm}, responsible for deciding how to allocate the resources.
-Classical examples of scheduling algorithms are
+How the scheduler assigns resources is decided by the \emph{scheduling algorithm}.
+Most scheduling algorithms adopt a \emph{preemptive} approach to assigning resources, i.e., the scheduler is run once every time slice (time quanta) to choose which task to switch in.
+Classical examples of preemptive scheduling algorithms are:
+%
 \begin{enumerate*}[label=(\roman*)]
-    \item fixed priority preemptive (FPP); \nv{Some description}
-    \item earliest deadline first (EDF); and \nv{Some description}
-    \item round-robin (RR). \nv{Some description}
+    \item fixed priority preemptive (FPP), where the task with the highest predetermined priority value is executed;
+    \item earliest deadline first (EDF), where the task with the shortest time to its corresponding deadline is executed; and
+    \item round-robin (RR), where the tasks are switched into scope in a circular order.
 \end{enumerate*}
+%
 Depending on the choice of algorithm, the real-time system's execution pattern may vastly differ.
-For single-core processors, \nv{mention something about FPP, EDF, and RR and what they do}
+For instance, two different scheduling strategies applied to one set of real-time tasks, may or may not result in the system being \emph{schedulable}, i.e., all the temporal constraints are satisfied.
+If the RTOS tasks are not schedulable there exists tasks overrunning their corresponding deadlines.
+
+In order for the scheduler to know when to stop the currently running task in favour of switching in another, the RTOS clock triggers an \emph{interrupt} at every clock tick.
+Interrupts can come from both hardware\footnote{Hardware interrupts come from events changing the state of the system, e.g., external signals triggering that they need attention from the RTOS, watchdog timers triggering an interrupt at set time intervals, or spurious interrupts (electrical anomalies)~\addref{}.} and software, but the RTOS ticks are triggered by the software clock in the RTOS.
+Attached to the interrupt is generally an \emph{interrupt service routine} (ISR), i.e., a callback function to execute when the specific interrupt is triggered.
+For instance, in the context of the scheduler's tick interrupt, the ISR may be responsible for switching out the currently active task before switching in a new task and its relevant context. 
+Since the RTOS suspend the execution of the active task whenever an interrupt is triggered (even in the middle of a time slice), it is crucial that the ISR is quick to execute to avoid stalling the processor.
+However, if the callback function takes too long to execute or if the ISR is triggered too often, it can cause significant time delays in the schedule execution.
 
 \question%
 {What should I mention about scheduling for multi-core systems?}%
 {}
 For single-core systems this is not a trivial problem to solve, but for multi-core processors the complexity is elevated even further. 
-
 
 
 \subsubsection*{Tasks~\note{Dislike the header; Like the separation}}%
