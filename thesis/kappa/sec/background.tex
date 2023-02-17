@@ -217,7 +217,27 @@ Due to this individuality, most real-time systems were historically divided into
 %
 Despite these classes covering many real-time systems, they do not cover all cases.
 Specifically prominent for real-time control systems are the \emph{firm real-time systems}, characterised by being able to overrun a few, but not too many, deadlines before causing critical system failure.
-\nv{HERE: weakly-hard constraints}
+
+Arguably the most recognised firm model is the \emph{weakly-hard} task model~\cite{Bernat:2001}.
+The weakly-hard model was originally devised to provide formal guarantees to tasks that can tolerate occasional deadline overruns, e.g., control tasks where decreasing the sampling time would improve the overall performance whilst introducing intermittent computational overruns.
+What defines a weakly-hard task is that the distribution of the deadline hits and misses during a window of $k$ jobs are precisely bounded.
+In other words, in addition to the number of overrun deadlines that a task experiences in a window, the sequence in which they appear is also affecting the task execution.
+We here compile the definitions of the weakly-hard models:
+%
+\begin{definition}[Weakly-Hard Task]%
+\label{def:weakly-hard}%
+    A weakly-hard task $\tau$ is a task that satisfies (at least) one of the following constraints:
+    \begin{enumerate}[label=(\roman*)]
+        \item \label{item:AnyHit} $\tau \vdash \anyhit{}$ (\tAH{}): in any window of $k$ consecutive jobs, the minimum number of deadline hits is $x$;
+        \item \label{item:RowHit} $\tau \vdash \rowhit{}$ (\tRH{}): in any window of $k$ consecutive jobs, the minimum number of consecutive deadline hits is $x$;
+        \item \label{item:AnyMiss} $\tau \vdash \anymiss{}$ (\tAM{}): in any window of $k$ consecutive jobs, the maximum number of deadline misses is $x$; and
+        \item \label{item:RowMiss} $\tau \vdash \rowmiss{}$ (\tRM{}): in any window of $k$ consecutive jobs, the maximum number of consecutive deadline misses is $x$;
+    \end{enumerate}
+    for some values of $x\in \N^\geq$, $k \in \N^>$, where $x\leq k$.
+\end{definition}
+%
+Here, the $\vdash$ symbol is used to indicate that all the possible sequences of deadline hits and misses of $\tau$ satisfy the right hand side.
+\nv{HERE: Continue with satisfaction set, languages, and dominations.}
 
 
 The set of $N$ tasks executing in the RTOS is generally denoted the \emph{task set}, i.e., $\taskset = \left\{ \tau_1, \tau_2, \ldots, \tau_N \right\}$.
