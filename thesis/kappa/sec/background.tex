@@ -20,11 +20,7 @@ We begin with an introduction to real-time system fundamentals.
 The breadth of the topic prevents a comprehensive review of the existing literature to fit within the scope of this thesis.
 In fact, real-time systems are all information processing systems which reacts to external input within a predetermined deadline. 
 This includes sensors, actuators, process control, machine vision, robotics, and health care systems, to acknowledge a fraction of all real-time systems.
-Instead, we focus the attention to the elements which impact real-time control systems the most, i.e., RTOS fundamentals, periodic tasks, task models, scheduling policies, and execution models.
-\question%
-{
-    Maybe the ``RTOS fundamentals'' should be ``CPU provisioning'' and ``memory management'' instead?
-}{}
+Instead, we focus the attention to the elements which impact real-time control systems the most, i.e., CPU provisioning, memory management, periodic tasks, task models, scheduling policies, and execution models.
 Since the RTOS is tightly interconnected with the hardware, it is natural to illustrate them jointly.
 Next, we describe the underlying hardware and real-time architecture seen in Figure~\ref{fig:operating-system-abstraction}.
 %
@@ -77,13 +73,16 @@ The peripherals are all external components connected to the hardware, e.g., sen
 Depending on the hardware, the peripherals can either be connected to the circuit board responsible for joining the different components together or directly into the CPU.
 If the link to the external environment is wireless, the I/O peripherals are not necessarily sensors or actuators, but rather radio antennas, Bluetooth transmitters, or Wi-Fi routers (depending on the wireless communication protocol) interacting with the sensors and actuators.
 Typically, each peripheral is assigned to an \emph{I/O port} in the device, i.e., a unique number to know which physical pin to transmit and receive data through. 
-Depending on the hardware, the port can either be accessed directly from a task or via direct memory access (DMA).
-When a task accesses a port, it fully consumes the processor until the data I/O is complete.
-Instead, DMA allows the CPU to initialise the data transfer which will progress as a background task until the transfer is finished.
-This frees up CPU cycles to be used by other tasks at the cost of complicating the cache architecture.
-\question%
-{Should the last 4 lines be removed?}
-{}
+
+% Microcontrollers and embedded systems
+\nv{Not sure if this paragraph should be higher up (in connection to the I/O), or not?}
+Although this thesis does not discern different hardware architectures from one another, it is appropriate to talk about \emph{microcontrollers} and \emph{embedded systems}, in particular because of their growing recognition. 
+Despite being two different hardware architectures, the terms embedded system and microcontroller will carelessly be used interchangeably due to their natural similarities.
+As introduced in Chapter~\ref{ch:intro}, microcontrollers (MCUs) are small computers with integrated processors, memory, and I/O peripherals.
+Most embedded systems are based on microcontroller architectures, however, some embedded systems are based on one or more microprocessors with external memory and I/O peripherals.
+Hence, microcontrollers are embedded systems and can be used to develop more complex embedded systems, but an embedded system is not necessarily a microcontroller.
+\nv{Not sure if this paragraph should be higher up (in connection to the I/O), or not?}
+
 
 Separately from the I/O port, the \emph{communication protocol} defines the rules used to pack and unpack the packets sent between the peripherals and the hardware over the \emph{communication channel}.
 As an analogy, consider a postcard being sent between England and France; the port is where we choose to send the letter, i.e., the address to send it to and the postage stamp, while the protocol is the content of the message, i.e., the chosen communication format.
@@ -120,24 +119,10 @@ In other words, if the packets arrive faster than what the router can process it
 Multiple policies have been developed to control the congestion, e.g., tail drop~\addref{} and \nv{insert something}~\addref{}.
 Common among all the congestion control strategies is that they employ intentional \emph{packet dropping}, i.e., if a packet arrives while the buffer space is exhausted, the congestion controller will remove either the arriving packet or one in the buffer (depending on the strategy).
 In addition to the congestion controller dropping packets, there are intermittent packet drops due to, e.g., packets being misrouted~\addref{}, security threats~\addref{}, software bugs~\addref{}, or wireless communication~\addref{}.
-\question%
-{Should I mention something about TCP and UDP here?}
-{}
 
 Regardless of the packet drops' origins, they can have dire consequences for real-time control systems.
 Losing packets on the network connecting the control hardware and the plant, is the same as loosing sensor measurements or control commands.
 Generally, this will degrade the control performance~\addref{}, however, if enough packets are lost it could cause critical system failures or crashes~\addref{}.
-\question%
-{Add something more here or should I discuss it further in the control section?}
-{}
-
-% Microcontrollers and embedded systems
-\nv{Not sure if this paragraph should be higher up (in connection to the I/O), or not?}
-Although this thesis does not discern different hardware architectures from one another, it is appropriate to talk about \emph{microcontrollers} and \emph{embedded systems}, in particular because of their growing recognition. 
-Despite being two different hardware architectures, the terms embedded system and microcontroller will carelessly be used interchangeably due to their natural similarities.
-As introduced in Chapter~\ref{ch:intro}, microcontrollers (MCUs) are small computers with integrated processors, memory, and I/O peripherals.
-Most embedded systems are based on microcontroller architectures, however, some embedded systems are based on one or more microprocessors with external memory and I/O peripherals.
-Hence, microcontrollers are embedded systems and can be used to develop more complex embedded systems, but an embedded system is not necessarily a microcontroller.
 
 % RTOS, threads
 A real-time operating system is commonly employed to simplify the interface with the hardware while guaranteeing timeliness.
@@ -186,35 +171,28 @@ Hence, if the callback function takes too long to execute or if the ISR is trigg
 For single-core systems this is not a trivial problem to solve, but for multi-core processors the complexity is elevated even further. 
 
 
-\subsubsection*{Tasks~\note{Dislike the header; Like the separation}}%
-\question%
-{Should I:
-\begin{itemize}
-    \item expand on why deadline overruns occur?
-    \item discuss schedulers before tasks?
-    \item talk anything about threads?
-\end{itemize}}%
-{}
+\subsubsection*{Tasks}%
+\note{Dislike the header; Like the separation}
+
 % Tasks
 All the real-time tasks considered in this thesis are \emph{recurrent}, i.e., they do not terminate during system operation.
 The recurrent task model simplifies the \emph{a priori} analysis of the real-time workload's effect on the system execution.
 A plethora of methods have been derived to model the recurrent task execution, ranging in complexity from the classic Liu and Layland model~\cite{Liu:1973} to directed acyclic graph (DAG) models~\cite{Saifullah:2014}.
-This thesis utilise \emph{recurrent tasks} and \emph{tasks} analogously.
+Henceforth, the terms \emph{recurrent tasks} and \emph{tasks} will be used analogously.
 
 The task model adopted in this thesis defines a task $\tau$ as a sequence of \emph{jobs} $j_t$, where each job is responsible for executing one full iteration of the task's function.
 Here, $t$ counts the number of discrete time steps since the task was created.
 Each task $\tau_i$ is characterised by the triplet $(e_i, d_i, p_i)$.
 Here, for each job; $e_i > 0$ is the \emph{worst-case execution time} (WCET); $d_i > 0$ is the relative \emph{deadline}; and, $p_i \geq d_i$ is the minimum interarrival \emph{period}.
-The RTOS scheduler releases a job $j_t$ at time $a_t$ (the job's \emph{release time}); the job then completes its execution at time $f_t$ (the job's \emph{completion time}).
-The \emph{periodic tasks} is a special class of recurrent tasks where the jobs are released at equidistant time points, i.e., $a_t = t\cdot T$ where $T$ is fixed. 
-Control tasks are typically implemented as periodic tasks, hence one job is released in every period.
+The RTOS scheduler releases a job $j_t$ at time $a_t$ (the job's \emph{release time}) and the job then completes its execution at time $f_t$ (the job's \emph{completion time}).
+A recurrent task is \emph{periodic} if its jobs are released at equidistant time points, i.e., $a_t = t\cdot T$ where $T$ is fixed. 
+In particular, control tasks are typically implemented as periodic tasks, hence one job is released in every period.
 To make sure that the periodic task's jobs finish their execution before the subsequent job is released, it is common to adopt \emph{implicit deadlines}, i.e., that job $j_t$ completes its execution before the release time of job $j_{t+1}$; formally, it implies that $f_t \leq a_{t+1} = t\cdot T+T = a_t + T$ or simpler $d_i = p_i = T$.
 
 Under ideal computational conditions, each job completes its execution before its corresponding deadline, i.e., $f_t \leq a_t + d_i$.
 However, it can happen that the individual job has not yet finished executing when it reaches the end of its allotted time budget.
 We then say that the job experiences a \emph{deadline overrun} (also referred to as \emph{deadline miss} or \emph{computational overrun}).
 Respectively, if the job completes before its deadline, it \emph{meets} its deadline (experiences a \emph{deadline hit}).
-We provide a formal definition:
 %
 \begin{definition}[Deadline Overrun]%
     \label{def:overrun}%
@@ -224,10 +202,7 @@ We provide a formal definition:
     \end{equation}
 \end{definition}
 %
-Computational overruns are present in generally all real-time domains from avionics and defence to consumer electronics~\cite{Akesson:2020}.
-Their impact on the systems' functional correctness are also largely application dependent.
-\nv{CONTINUE WITH: why do deadline misses occur?}
-
+Computational overruns are present in generally all real-time domains from avionics and defence to consumer electronics~\cite{Akesson:2020}, highlighting the importance of analysing their impact on the systems' functional correctness.
 
 % task models -> soft, hard, weakly-hard
 Every real-time systems behave differently to deadline overruns.
@@ -239,12 +214,17 @@ Due to this individuality, most real-time systems were historically divided into
 
     \item \emph{Soft real-time systems} -- The perceived quality of the system is degraded with the number of overrun deadlines, but it is unlikely that it will impact system safety.
 \end{itemize}
+%
+Despite these classes covering many real-time systems, they do not cover all cases.
+Specifically prominent for real-time control systems are the \emph{firm real-time systems}, characterised by being able to overrun a few, but not too many, deadlines before causing critical system failure.
+\nv{HERE: weakly-hard constraints}
 
 
 The set of $N$ tasks executing in the RTOS is generally denoted the \emph{task set}, i.e., $\taskset = \left\{ \tau_1, \tau_2, \ldots, \tau_N \right\}$.
 \nv{Write something more here about orchestration and lead it automatically into the paragraph about deadline handling strategies}
 
 % Scheduler deadline handling
+\nv{HERE: Deadline handling strategies}
 
 
 \subsection{Execution Modelling using State Machines}%
