@@ -195,18 +195,18 @@ We then say that the job experiences a \emph{deadline overrun} (also referred to
 Respectively, if the job completes before its deadline, it \emph{meets} its deadline (experiences a \emph{deadline hit}).
 %
 \begin{definition}[Deadline Overrun]%
-    \label{def:overrun}%
+    \label{def:kappa:overrun}%
     The $t$-th job ($j_t$) of a task $\tau_i$ is said to experience a deadline overrun if
     \begin{equation}
         f_t > a_t + d_i.
     \end{equation}
 \end{definition}
 %
-Computational overruns are present in generally all real-time domains from avionics and defence to consumer electronics~\cite{Akesson:2020}, highlighting the importance of analysing their impact on the systems' functional correctness.
+Computational overruns are present in generally all real-time domains from avionics and defence to consumer electronics~\cite{Akesson:2020}, thus highlighting the importance of analysing their impact on the systems' functional correctness.
 
 % task models -> soft, hard, weakly-hard
 Every real-time systems behave differently to deadline overruns.
-In particular, depending on the application some systems crash while others experience a degraded efficiency.
+Depending on the application, some systems crash while others experience a degraded efficiency.
 Due to this individuality, most real-time systems were historically divided into two classes describing how the systems were affected by computational overruns.
 %
 \begin{itemize}
@@ -216,7 +216,7 @@ Due to this individuality, most real-time systems were historically divided into
 \end{itemize}
 %
 Despite these classes covering many real-time systems, they do not cover all cases.
-Specifically prominent for real-time control systems are the \emph{firm real-time systems}, characterised by being able to overrun a few, but not too many, deadlines before causing critical system failure.
+Prominent for real-time control systems are the \emph{firm real-time systems}, characterised by being able to overrun a few, but not too many, deadlines before causing critical system failure.
 
 Arguably the most recognised firm model is the \emph{weakly-hard} task model~\cite{Bernat:2001}.
 The weakly-hard model was originally devised to provide formal guarantees to tasks that can tolerate occasional deadline overruns, e.g., control tasks where decreasing the sampling time would improve the overall performance whilst introducing intermittent computational overruns.
@@ -225,7 +225,7 @@ In other words, in addition to the number of overrun deadlines that a task exper
 We here compile the definitions of the weakly-hard models:
 %
 \begin{definition}[Weakly-Hard Task]%
-\label{def:weakly-hard}%
+\label{def:kappa:weakly-hard}%
     A weakly-hard task $\tau$ is a task that satisfies (at least) one of the following constraints:
     \begin{enumerate}[label=(\roman*)]
         \item \label{item:AnyHit} $\tau \vdash \anyhit{}$ (\tAH{}): in any window of $k$ consecutive jobs, the minimum number of deadline hits is $x$;
@@ -236,7 +236,41 @@ We here compile the definitions of the weakly-hard models:
     for some values of $x\in \N^\geq$, $k \in \N^>$, where $x\leq k$.
 \end{definition}
 %
-Here, the $\vdash$ symbol is used to indicate that all the possible sequences of deadline hits and misses of $\tau$ satisfy the right hand side.
+Here, the $\vdash$ symbol is used to indicate that all possible sequences of deadline hits and misses of $\tau$ satisfy the right hand side.
+
+To formalise which sequences of deadline hits and misses that are permitted under a specific weakly-hard constraint an alphabet is introduced.
+For historical reasons, the language used to characterise the deadline outcomes of a weakly-hard task consisted of mapping a deadline hit to one value and a deadline miss to another\footnote{In \note{Paper~IV} we extend this notation to also encompass more appropriate languages in the real-time control systems setting.}.
+Formally, the alphabet of outcomes is denoted $\Sigma = \left\{ 0, 1 \right\}$, where $0$ indicates a job overrunning its corresponding deadline and $1$ represents a job meeting its deadline.
+With the use of the \emph{alphabet} and conventional language theoretical notation~\addref{}, a \emph{character} $c_t \in \Sigma$ is defined as the outcome of the $t$-th job.
+Similarly, a \emph{word} $w$ is a sequence of $\abs{w}$ characters, i.e., $w = \seq{c_1, c_2, \ldots, c_{\abs{w}}}$.
+Hence, a word is representing a sequence of deadline hits and misses.
+The set of all all length $N$ words that can be constructed from the alphabet $\Sigma$ is denoted $\Sigma^N$.
+
+Since all of the weakly-hard constraints act on the same language it is natural to ask whether they are relatable to one another, or not.
+In~\cite{Bernat:2001}, the authors show that the constraints are in fact comparable using the sets containing all sequences satisfying the specific constraints'.
+With a slight abuse of notation we will let $w \vdash \lambda$ represent the case when the word (outcome sequence) $w$ satisfies the weakly-hard constraint $\lambda$.
+%
+\begin{definition}[Satisfaction Set]
+    The \emph{satisfaction set} $\sset{N}{\lambda}$ of an arbitrary weakly-hard constraint $\lambda$, is the set of all length $N \in \N^{>}$ words $w$ satisfying $\lambda$.
+    Formally:
+    \begin{equation}
+        \sset{N}{\lambda} = \left\{ w \mid w \in \Sigma^N, w \vdash \lambda \right\}.
+    \end{equation}
+\end{definition}
+%
+To simplify notation, the set of infinite length words satisfying a constraint will be denoted as $\sset{\infty}{\lambda} \equiv \sset{}{\lambda}$.
+Using the weakly-hard constraints' satisfaction sets it is then possible to define a partial ordering.
+%
+\begin{definition}[Constraint Dominance]
+    Given two arbitrary weakly-hard constraints $\lambda_1$ and $\lambda_2$, we say that $\lambda_1$ \emph{dominates} $\lambda_2$ (denoted $\lambda_1 \preceq \lambda_2$) if and only if all words satisfying $\lambda_1$ also satisfy $\lambda_2$.
+    Formally:
+    \begin{equation}
+        \lambda_1 \preceq \lambda_2 \Leftrightarrow \sset{}{\lambda_1} \subseteq \sset{}{\lambda_2}
+    \end{equation}
+\end{definition}
+%
+An arbitrary weakly-hard constraint will be denoted by $\lambda$ and a set of $N$ weakly-hard constraints will be denoted $\Lambda = \left\{ \lambda_1, \lambda_2, \ldots, \lambda_N \right\}$
+%
 \nv{HERE: Continue with satisfaction set, languages, and dominations.}
 
 
