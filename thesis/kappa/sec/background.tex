@@ -215,6 +215,9 @@ Due to this individuality, most real-time systems were historically divided into
     \item \emph{Soft real-time systems} -- The perceived quality of the system is degraded with the number of overrun deadlines, but it is unlikely that it will impact system safety.
 \end{itemize}
 %
+\question%
+{Should I mention something about soft real-time models as well here (since we use it in Paper 2 and 5)?}%
+{}
 Despite these classes covering many real-time systems, they do not cover all cases.
 Prominent for real-time control systems are the \emph{firm real-time systems}, characterised by being able to overrun a few, but not too many, deadlines before causing critical system failure.
 
@@ -239,7 +242,7 @@ We here compile the definitions of the weakly-hard models:
 Here, the $\vdash$ symbol is used to indicate that all possible sequences of deadline hits and misses of $\tau$ satisfy the right hand side.
 
 To formalise which sequences of deadline hits and misses that are permitted under a specific weakly-hard constraint an alphabet is introduced.
-For historical reasons, the language used to characterise the deadline outcomes of a weakly-hard task consisted of mapping a deadline hit to one value and a deadline miss to another\footnote{In \note{Paper~IV} we extend this notation to also encompass more appropriate languages in the real-time control systems setting.}.
+For historical reasons, the language used to characterise the deadline outcomes of a weakly-hard task is binary, i.e., it consisted solely of two unique character mappings to a deadline hit and a deadline miss\footnote{In \note{Paper~IV} we extend this notation to also encompass more appropriate languages in the real-time control systems setting.}.
 Formally, the alphabet of outcomes is denoted $\Sigma = \left\{ 0, 1 \right\}$, where $0$ indicates a job overrunning its corresponding deadline and $1$ represents a job meeting its deadline.
 With the use of the \emph{alphabet} and conventional language theoretical notation~\addref{}, a \emph{character} $c_t \in \Sigma$ is defined as the outcome of the $t$-th job.
 Similarly, a \emph{word} $w$ is a sequence of $\abs{w}$ characters, i.e., $w = \seq{c_1, c_2, \ldots, c_{\abs{w}}}$.
@@ -248,7 +251,7 @@ The set of all all length $N$ words that can be constructed from the alphabet $\
 
 Since all of the weakly-hard constraints act on the same language it is natural to ask whether they are relatable to one another, or not.
 In~\cite{Bernat:2001}, the authors show that the constraints are in fact comparable using the sets containing all sequences satisfying the specific constraints'.
-With a slight abuse of notation we will let $w \vdash \lambda$ represent the case when the word (outcome sequence) $w$ satisfies the weakly-hard constraint $\lambda$.
+With a slight abuse of notation we will let $w \vdash \lambda$ represent the case when the word $w$ (outcome sequence) satisfies the weakly-hard constraint $\lambda$.
 %
 \begin{definition}[Satisfaction Set]
     The \emph{satisfaction set} $\sset{N}{\lambda}$ of an arbitrary weakly-hard constraint $\lambda$, is the set of all length $N \in \N^{>}$ words $w$ satisfying $\lambda$.
@@ -259,9 +262,16 @@ With a slight abuse of notation we will let $w \vdash \lambda$ represent the cas
 \end{definition}
 %
 To simplify notation, the set of infinite length words satisfying a constraint will be denoted as $\sset{\infty}{\lambda} \equiv \sset{}{\lambda}$.
-Using the weakly-hard constraints' satisfaction sets it is then possible to define a partial ordering.
+Using the weakly-hard constraints' satisfaction sets it is then possible to define a partial ordering among the constraints, i.e., relate them to one another based on their difficulty to satisfy.
+A weakly-hard constraint is typically \emph{harder to satisfy} if it is more restrictive in what sequences satisfy the constraint.
+Consider for instance the constraint $\lambda_1 = \binom{1}{1}$, which requires that every job meets its corresponding deadline.
+The constraint is extremely restrictive in what sequences it permits; in fact, the satisfaction set of this constraint only contains one sequence, $\sset{N}{\lambda_1} = \left\{ 1^N \right\}$.
+On the other hand, the constraint $\lambda_2 = \binom{0}{1}$ requires no job deadlines to be met to be satisfied; thus, all sequences satisfy this constraint, $\sset{N}{\lambda_2} = \Sigma^N$.
+Intuitively, since $\lambda_1$ is more restrictive than $\lambda_2$, we say that $\lambda_1$ \emph{dominates} $\lambda_2$.
+We formalise the partial ordering in the following definition:
 %
-\begin{definition}[Constraint Dominance]
+\begin{definition}[Constraint Dominance]%
+    \label{def:kappa:dominance}%
     Given two arbitrary weakly-hard constraints $\lambda_1$ and $\lambda_2$, we say that $\lambda_1$ \emph{dominates} $\lambda_2$ (denoted $\lambda_1 \preceq \lambda_2$) if and only if all words satisfying $\lambda_1$ also satisfy $\lambda_2$.
     Formally:
     \begin{equation}
@@ -269,15 +279,32 @@ Using the weakly-hard constraints' satisfaction sets it is then possible to defi
     \end{equation}
 \end{definition}
 %
-An arbitrary weakly-hard constraint will be denoted by $\lambda$ and a set of $N$ weakly-hard constraints will be denoted $\Lambda = \left\{ \lambda_1, \lambda_2, \ldots, \lambda_N \right\}$
+Definition~\ref{def:kappa:dominance} confirms that $\lambda_1 = \binom{1}{1}$ dominates $\lambda_2 = \binom{0}{1}$, because $\sset{}{\lambda_1} \subseteq \sset{}{\lambda_2}$.
+Additionally, the partial ordering motivates the notion of \emph{constraint equivalence}.
+Formally
 %
-\nv{HERE: Continue with satisfaction set, languages, and dominations.}
+\begin{equation}
+    \lambda_1 \preceq \lambda_2 \land \lambda_2 \preceq \lambda_1 \Leftrightarrow \lambda_1 \equiv \lambda_2,
+\end{equation}
+%
+where $\land$ is the logical conjunction operator.
+The constraint equivalence is also expressible through the satisfaction sets, i.e., $\lambda_1 \equiv \lambda_2 \Leftrightarrow \sset{}{\lambda_1} = \sset{}{\lambda_2}$.
 
-
-The set of $N$ tasks executing in the RTOS is generally denoted the \emph{task set}, i.e., $\taskset = \left\{ \tau_1, \tau_2, \ldots, \tau_N \right\}$.
-\nv{Write something more here about orchestration and lead it automatically into the paragraph about deadline handling strategies}
+Despite not having gained a lot of traction in the research community, a real-time task can be subjected to \emph{multiple} weakly-hard constraints.
+However, the nature of the weakly-hard constraints still require that every constraint is satisfied for a particular sequence.
+Since one of the main mathematical advantages of the weakly-hard constraints is that they are fully representable by the closed set that is their respective satisfaction sets; if a task $\tau$ satisfies a set of $N$ constraints $\Lambda = \left\{ \lambda_1, \lambda_2, \ldots, \lambda_N \right\}$, the joint satisfaction set has to be the intersection of all the individual satisfaction sets.
+Formally
+%
+\begin{equation}
+    \sset{}{\Lambda} = \bigcap_{i=0}^N \, \sset{}{\lambda_i}
+\end{equation}
+%
+An arbitrary weakly-hard constraint will be denoted by $\lambda$ and a set of $N$ weakly-hard constraints will be denoted $\Lambda = \left\{ \lambda_1, \lambda_2, \ldots, \lambda_N \right\}$
 
 % Scheduler deadline handling
+The set of $N$ tasks executing in the RTOS is generally denoted the \emph{task set}, i.e., $\taskset = \left\{ \tau_1, \tau_2, \ldots, \tau_N \right\}$.
+\nv{Write something more here about orchestration and lead it automatically into the paragraph about deadline handling strategies}
+%
 \nv{HERE: Deadline handling strategies}
 
 
