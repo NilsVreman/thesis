@@ -300,6 +300,47 @@ Formally
 \end{equation}
 
 % Scheduler deadline handling
+% NOTE: This should be put after the discussion of the weakly-hard and soft models
+\begin{figure}[t]
+    \centering
+    \input{\figdir/schedule-overrun}
+    \caption{\fix{I know this figure sucks, but I wanted an inital placeholder}}
+    \label{fig:schedule}
+\end{figure}
+
+The chosen task model is important when analysing the execution pattern of the real-time task, however, implementation details, such as the scheduler's functionality, are typically not included in the analysis.
+In fact, it has been shown that the implementation's design choices affect both the performance and safety properties of the system~\cite{Cervin:2005}.
+This thesis addresses the discrepancy between the real-time models, control theoretical models, and the implementation specifications by including details about the implementation in the real-time control system analysis.
+For instance, consider the $t+3$-rd job in Figure~\ref{fig:schedule}; the behaviour of the real-time system is undefined, regardless of the chosen task model.
+Furthermore, the function that job $j_{t+3}$ is supposed to carry out remains unfinished, resulting in an unknown behaviour if the overrun deadline is left unmanaged.
+It is therefore crucial to include some details about the implementation in the system analysis.
+
+In addition to orchestrating the tasks in the RTOS, the scheduler is also responsible for supervising the tasks overrunning their deadlines (denoted the \emph{overrun handling strategy}).
+Different strategies have been developed to handle overruns in varying applications.
+In~\cite{Caccamo:2002}, the authors propose a method for avoiding deadline overruns by postponing the deadline of the job that requires more processor time to complete.
+An arbiter designed to drop certain jobs upon release (i.e., skipping them) is proposed in~\cite{Yoshimoto:2011}.
+However, three of the simplest and most commonly employed overrun handling strategies are~\cite{Cervin:2004b}:
+%
+\begin{itemize}
+    \item \tQ{} -- The naive approach involves letting the job overrunning its deadline to continue its execution whilst queueing up subsequent jobs.
+        As soon as the executing job is finished, the first instance in the job queue is immediately released and activated.
+        Instead of queuing all subsequent jobs, it is common to only queue the most recent job; this is typically denoted the \tQ{}\code{(1)} strategy.
+        However, the \tQ{} strategies risk successive jobs being delayed enough to induce domino effects in the system.
+
+    \item \tK{} -- If a job overruns its deadline under the \tK{} strategy (sometimes referred to as the \code{Abort} strategy), the job is immediately terminated allowing the subsequent job to be released and activated on time.
+        One of the main advantages with the \tK{} strategy comes from its binary outcome representation, i.e., either the job is completed or it is not.
+        This fits well together with, for instance, the weakly-hard task models' language representation.
+        On the other hand, one of the drawbacks with \tK{} are that many subsequent job deadlines can be overrun if the job iterations are not independent.
+        Additionally, if the task function depend on an internal state, the part of the computation that was completed may need to be rolled back to a previous state via, e.g., memory checkpointing~\addref{}.
+        Since such an operation requires additional overhead, it further increases the risk of missing the subsequent job's deadline.
+
+    \item \tS{} -- (also sometimes referred to as \emph{Skip-Next} or \emph{Continue})
+\end{itemize}
+%
+A method for utilising both kill and skip for packet dropping in a real-time networked control system is presented in~\addref{}.
+
+
+
 The set of $N$ tasks executing in the RTOS is generally denoted the \emph{task set}, i.e., $\taskset = \left\{ \tau_1, \tau_2, \ldots, \tau_N \right\}$.
 \nv{Write something more here about orchestration and lead it automatically into the paragraph about deadline handling strategies}
 %
