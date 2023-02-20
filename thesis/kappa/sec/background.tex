@@ -327,25 +327,23 @@ However, three of the simplest and most commonly employed overrun handling strat
         Instead of queuing all subsequent jobs, it is common to only queue the most recent job; this is typically denoted the \tQ{}\code{(1)} strategy.
         However, the \tQ{} strategies risk successive jobs being delayed enough to induce domino effects in the system.
 
+    \item \tS{} -- Under the \tS{} strategy (sometimes referred to as the \code{Skip-Next} or \code{Continue} strategy), the job overrunning its deadline is allowed to continue executing until completion.
+        Unlike the \tQ{} strategy, subsequent jobs are skipped (i.e., terminated before release) instead of being put into a job queue.
+        Hence, the domino effects that can occur under \tQ{} are avoided; this does however come at the cost of skipping a full job even in the presence of infinitesimal overruns.
+
     \item \tK{} -- If a job overruns its deadline under the \tK{} strategy (sometimes referred to as the \code{Abort} strategy), the job is immediately terminated allowing the subsequent job to be released and activated on time.
         One of the main advantages with the \tK{} strategy comes from its binary outcome representation, i.e., either the job is completed or it is not.
         This fits well together with, for instance, the weakly-hard task models' language representation.
         On the other hand, one of the drawbacks with \tK{} are that many subsequent job deadlines can be overrun if the job iterations are not independent.
         Additionally, if the task function depend on an internal state, the part of the computation that was completed may need to be rolled back to a previous state via, e.g., memory checkpointing~\addref{}.
         Since such an operation requires additional overhead, it further increases the risk of missing the subsequent job's deadline.
-
-    \item \tS{} -- (also sometimes referred to as \emph{Skip-Next} or \emph{Continue})
 \end{itemize}
 %
-A method for utilising both kill and skip for packet dropping in a real-time networked control system is presented in~\addref{}.
+A framework for switching between \tK{} and \tS{} to drop delayed packets in arbitrated networked control systems is presented in~\cite{Soudbakhsh:2018}.
+The authors of~\cite{Pazzaglia:2018} discuss the performance of real-time control systems subject to the \tAM{} constraints with respect to both the \tK{} and \tS{} strategies; additionally, the authors discuss how the overrun handling strategy affect the freshness of the control signal, i.e., the age of the actuated control signal.
+\nv{One or more references to papers using \tK{}, \tQ{}, or \tS{}}
 
-
-
-The set of $N$ tasks executing in the RTOS is generally denoted the \emph{task set}, i.e., $\taskset = \left\{ \tau_1, \tau_2, \ldots, \tau_N \right\}$.
-\nv{Write something more here about orchestration and lead it automatically into the paragraph about deadline handling strategies}
-%
-\nv{HERE: Deadline handling strategies}
-
+\nv{Concluding paragraph/sentence that leads us into the next section.}
 
 \subsection{Execution Modelling using State Machines}%
 \label{sec:background:fsm}%
@@ -355,6 +353,7 @@ The set of $N$ tasks executing in the RTOS is generally denoted the \emph{task s
 \section{Control Systems}%
 \label{sec:background:ctrl}%
 %
+\nv{mention something about data freshness}
 
 \subsection{Control System Stability}%
 \label{sec:background:stability}%
