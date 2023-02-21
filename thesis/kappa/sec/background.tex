@@ -165,15 +165,17 @@ The ISR connected to the RTOS clock tick is also one of the major culprits behin
 Since the RTOS suspends the execution of the active task whenever an interrupt is triggered (even if it happens in the middle of a time slice), it is crucial that the ISR is quick to execute to avoid stalling the processor.
 Hence, if the callback function takes too long to execute or if the ISR is triggered too often, it can cause significant time delays in the schedule execution.
 
-\question%
-{What should I mention about scheduling for multi-core systems?}%
-{}
-For single-core systems this is not a trivial problem to solve, but for multi-core processors the complexity is elevated even further. 
+Employing a scheduler for single-core processors follow the described paradigm, however, for multi-core systems additional design choices have to be made.
+Fundamentally, two different approaches have been taken to scheduling to a multi-core processor: \emph{global} or \emph{partitioned} scheduling.
+The former assumes one scheduler responsible for scheduling all the tasks in a global ready queue to the individual cores based on available and required resources.
+On the other hand, partitioned scheduling (sometimes referred to as \emph{clustered} scheduling) involves dividing the tasks into partitions that are then mapped to separate cores with individual schedulers.
+Despite having additional computational resources to work with, multi-core systems are subject to deadline overruns similarly to how single-core systems are.
+Trivially, since partitioned multi-core scheduled systems can be perceived as a set of single-core scheduled systems, they can also experience the same computational overruns that a single-core system can.
+For global multi-core schedulers, \nv{I need some help completing this sentence, I got lost in pfair schedulers and got confused}
+\fix{Concluding sentence that confirms that this thesis is relevant even for multi-core systems.}
 
 
-\subsubsection*{Tasks}%
-\note{Dislike the header; Like the separation}
-
+\subsubsection*{\note{Tasks}}%
 % Tasks
 All the real-time tasks considered in this thesis are \emph{recurrent}, i.e., they do not terminate during system operation.
 The recurrent task model simplifies the \emph{a priori} analysis of the real-time workload's effect on the system execution.
@@ -216,7 +218,7 @@ Due to this individuality, most real-time systems were historically divided into
 \end{itemize}
 %
 \question%
-{Should I mention something about soft real-time models as well here (since we use it in Paper 2 and 5)?}%
+{Should I mention something about soft real-time models here as well (since we use it in Paper 2 and 5)?}%
 {}
 Despite these classes covering many real-time systems, they do not cover all cases.
 Prominent for real-time control systems are the \emph{firm real-time systems}, characterised by being able to overrun a few, but not too many, deadlines before causing critical system failure.
