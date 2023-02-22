@@ -282,6 +282,7 @@ We formalise the partial ordering in the following definition:
 \end{definition}
 %
 Definition~\ref{def:kappa:dominance} confirms that $\lambda_1 = \binom{1}{1}$ dominates $\lambda_2 = \binom{0}{1}$, because $\sset{}{\lambda_1} \subseteq \sset{}{\lambda_2}$.
+Many constraint dominance relations have been derived in literature\footnote{In \note{Paper III} we extend the known orderings with two theorems relating the \tAH{} and \tRH{} constraints, thus making it possible to relate \emph{all} the different weakly-hard constraints.}~\cite{Bernat:2001}.
 Additionally, the partial ordering motivates the notion of \emph{constraint equivalence}.
 Formally
 %
@@ -349,7 +350,6 @@ In~\cite{Ernst:2019} the authors extend an existing method for computing weakly-
 \subsection{Execution Modelling using State Machines}%
 \label{sec:background:fsm}%
 %
-\nv{Mention UPPAAL}
 % How can we monitor/analyse the execution of real-time systems using graphs/finite state machines
 Ever since Liu and Layland proposed their simplistic task model~\cite{Liu:1973}, more expressive models have been sought to properly characterise the execution of real-time tasks.
 One of the more prominent methods to capture the task execution's expressiveness involved utilising directed acyclic graphs (DAGs)~\cite{Baruah:2003, Chakraborty:2005, Stigge:2011}.
@@ -360,21 +360,48 @@ For a task's jobs, the computational overrun process have been modelled using fi
 In~\cite{Horssen:2016} the authors model the \tAM{} weakly-hard constraint using an automaton where the transition events between states are represented by the job outcomes.
 A \emph{Markov chain} (MC) model was used in~\cite{Ling:2003} to model the dropout rate of sensor packets in a soft networked control system.
 \cite{Kwak:2001} utilise a Markov chain to select optimal time points for memory checkpointing in real-time systems where tasks may experience transient faults.
+\nv{Mention UPPAAL}
 We will henceforth sloppily refer to finite state machines as \emph{automata}\footnote{To keep notation consistent with \note{Papers III and IV}.}.
 
 % Introduce notation for the FSM
 Both automata and Markov chains are constructed from directed graphs, with the main difference that the automata transitions are deterministic in nature whilst the Markov chain requires a distribution of probabilities to model the transitions between states.
-Common for both the automata and MC is that we denote the underlying graph $\GG{}$, defined by the set of \emph{vertices} (or \emph{states}) $\VV{}$ and the set of \emph{edges} (or \emph{transitions}) $\EE{}$.
-However, the vertices and transitions symbolise different things for the two cases.
+In this thesis, both the automata and MC denotes the underlying graph $\GG{} = (\VV{}, \EE{})$, where $\VV{}$ is the set of \emph{vertices} (or \emph{states}) and $\EE{}$ is the set of \emph{edges} (or \emph{transitions}).
+However, the vertices and transitions symbolise different deadline overrun models for the automata and Markov chain.
 
-The automaton model is used to represent the feasible sequences of deadline hits and misses for the weakly-hard constraints\footnote{Related to \note{Papers III and IV}.}.
+The automaton model is used to represent the feasible sequences of deadline hits and misses for the weakly-hard constraints\footnote{\note{Papers III and IV}.}.
 Here, the underlying graph depend on the chosen constraint, i.e., $\GG{\lambda} = (\VV{\lambda}, \EE{\lambda})$.
 Each vertex $v_i \in \VV{\lambda}$ represent a word $w_i \in \sset{\abs{w_i}}{\lambda}$.
 A transition $e_{i, j} = (v_i, v_j, c_{i,j}) \in \EE{\lambda}$ is a triplet describing the transition condition $c_{i,j} \in \Sigma$ to get from vertex $v_i$ to $v_j$.
 In other words, if there exists a permissible sequence of deadline hits and misses $w_i$ which still satisfies the constraint $\lambda$ if followed by a deadline miss (i.e., $c_{i,j} = 0$), there exists a transition $e_{i,j} = (v_i, v_j, 0)$ between $v_i$ and $v_j$.
 
-In the stochastic modelling of computational overruns\footnote{Related to \note{Papers II and V}.}, the Markov chain model will instead be adopted.
-\nv{CONTINUE HERE}
+When modelling stochastic computational overruns\footnote{\note{Papers II and V}.}, the Markov chain models are naturally better-suited than the automaton model.
+The MC is represented by a set of states $v_i \in \VV{}$ where the transitions between states is again a triplet $e_{i, j} = (v_i, v_j, p_{i, j}) \in \EE{}$.
+Unlike the automata model, the transition here defines a transitional probability $p_{i, j}$ between two states $v_i$ and $v_j$, i.e., a transition from state $v_i$ to state $v_j$ occurs with probability $p_{i, j} \in [0, 1]$.
+Trivially, the cumulative probability of leaving any state $v_i$ is $1$:
+%
+\begin{equation}
+    %\sum_{j=0}^{\abs{\VV{}}}\, p_{i, j} = 1.
+    \sum_{v_j\in\VV{}}\, p_{i, j} = 1.
+\end{equation}
+%
+Note that $p_{i, i}$ is not necessarily $0$, meaning that with probability $p_{i, i}$ state $v_i$ remains the active state.
+A Markov state is said to be \emph{absorbing} if it, once entered, is never left, i.e., has probability $p_{i, i} = 1$.
+The transitional probability depends on the specific probability distribution.
+
+\begin{figure}[t]
+    \centering
+    \input{\figdir/state-machine} 
+    \caption{\fix{todo}}
+    \label{fig:kappa:state-machine}
+\end{figure}
+%
+To demonstrate the similarities and differences between the automaton and Markov chain, an example is shown in Figure~\ref{fig:kappa:state-machine}.
+Here, the automaton is constructed from a weakly-hard real-time task subject to the constraint $\anyhit{} = \binom{1}{2}$, i.e., at least one job has to meet its deadline in every window of two consecutive job activations.
+Recall that the characters $0$ and $1$ respectively represent an overrun and a met deadline in the automaton's language.
+Since the constraint does not tolerate two consecutive deadline overruns, if a deadline overrun occur from vertex $v_2$ the constraint would be violated and the fail-state is entered.
+On the other hand, the MC represent a soft real-time task where every job has an independent and identically distributed (i.i.d) probability $\rho$ of overrunning its deadline.
+Notice that the transitions in both the automaton and in the Markov chain represent the outcome of exactly one job execution.
+This is a deterministic transition (no probabilities involved) in the automaton, whilst it is stochastic for the MC.
 
 
 
