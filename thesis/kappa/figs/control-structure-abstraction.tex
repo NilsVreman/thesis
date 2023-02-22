@@ -1,0 +1,82 @@
+\def \delta {0.15}
+{\small
+\begin{myverbbox}{\ctrlCode}
+readSensors(&y);
+*u = computeCtrl(*y);
+actuateCtrl(&u);
+sleepUntil(period);
+\end{myverbbox}
+}
+
+\begin{tikzpicture}[>=latex]
+\tikzstyle{task} = [draw, thick, fill=white, align=center]
+
+%%% TASKS %%%
+
+\begin{scope}[on background layer]
+    \node[task, opacity=0.3] (t1) at (-1.5+0*\delta, 1.6-0*\delta) {\textcolor{white}{Task $\#3$} \\\textcolor{white}{\faFileCode[regular]}};
+    \node[task, opacity=0.6] (t2) at (-1.5+1*\delta, 1.6-1*\delta) {\textcolor{white}{Task $\#2$} \\\textcolor{white}{\faFileCode[regular]}};
+    \node[task, opacity=1.0] (t3) at (-1.5+2*\delta, 1.6-2*\delta) {Task $\#1$ \\\faFileCode[regular]};
+
+    \node[task, opacity=0.3] (ct1) at (1+0*\delta, 1.6-0*\delta) {\textcolor{white}{Control Task $\#3$} \\\textcolor{white}{\faFileCode[regular]}};
+    \node[task, opacity=0.6] (ct2) at (1+1*\delta, 1.6-1*\delta) {\textcolor{white}{Control Task $\#2$} \\\textcolor{white}{\faFileCode[regular]}};
+    \node[task, opacity=1.0] (ct3) at (1+2*\delta, 1.6-2*\delta) {Control Task $\#1$ \\\faFileCode[regular]};
+
+    %%% CYBER %%%
+
+    \node[thick, align=center] (rtos) at (-0.1, 0.25) {Real-Time Operating System};
+    \node[thick, draw, align=center, rotate=90, text width=2.75cm] (hwi) at (3.15, 0.87) {HW Interfaces};
+    \node[thick, fit=(rtos)(t1)(ct1)(ct3), draw, yshift=1.5mm, xshift=0.75mm] (sw) {};
+    \node[thick, draw, above left] (clock) at (sw.south east) {\faClock[regular]};
+    \node[thick, fit=(sw)(hwi), inner sep=7pt, draw] (hw) {};
+    \node[thick, above left, xshift=2.3cm, yshift=0.5mm] (hw-label) at (hw.south west) {Hardware};
+    \node[thick, draw, above right] (hwclock) at (hw.south west)  {\faClock[regular]};
+
+    %%% PHYSICAL %%%
+
+    \node[thick, draw ,align=center] (phys) at (6, 0.87) {\includegraphics[scale=4]{\figdir/airplane.jpg}};
+    \node[thick, draw, above left] (time) at (phys.south east) {\faClock[regular]};
+\end{scope}
+
+
+%%% ZOOM %%%
+
+%%% CONTROLLER
+\node[] (vct) at (-0.9-1*10*\delta, 0.0) {\ctrlCode};
+\node[align=center] (cmath) at (-0.9+1.35*10*\delta, 0.0) {%
+    $\left\{\begin{aligned}
+        z_{k+1} &= p(z_k, y_k) \\
+        u_{k+1} &= q(z_k, y_k) \\
+    \end{aligned}\right.$};
+
+\draw[thick, ->] ([yshift=0.2cm, xshift=-0.1cm]vct.east) to ([xshift=0.1cm]cmath.west);
+
+% Background 
+\begin{scope}[on background layer]
+    \node[ultra thick, fill=white, fit=(vct)(cmath), draw, inner sep=4pt] (vctrl) {};
+    \draw[dashed, thick, opacity=0.5] ([xshift=0.45cm]vctrl.north) to ([xshift=0.45cm]vctrl.south);
+
+    % dashed lines between figures
+    \draw[thick, dashed] (ct3.north west) to (vctrl.north west);
+    \draw[thick, dashed] (ct3.north east) to (vctrl.north east);
+    %\draw[thick, dashed] (ct3.south east) to (vctrl.south east);
+\end{scope}
+
+%%% PLANT
+\node[align=center] (plant) at (-0.9+4*10*\delta, 0.0) {%
+    $\left\{\begin{aligned}
+        x_{k+1} &= f(x_k, u_k) \\
+        y_{k} &= g(x_k, u_k)
+    \end{aligned}\right.$};
+
+% Background 
+\begin{scope}[on background layer]
+    \node[ultra thick, fill=white, fit=(plant), draw, inner sep=4pt] (vphys) {};
+
+    % dashed lines between figures
+    \draw[thick, dashed] (phys.north west) to (vphys.north west);
+    \draw[thick, dashed] (phys.north east) to (vphys.north east);
+    \draw[thick, dashed] (phys.south east) to (vphys.south east);
+\end{scope}
+
+\end{tikzpicture}
