@@ -1,0 +1,32 @@
+\def \statedist {1.75}
+\def \graphdist {3.5*\statedist}
+
+\begin{tikzpicture}[>=latex]
+    \tikzstyle{state} = [draw,circle,thick,fill=white,align=center,minimum size=1cm]
+
+    \coordinate (startauto) at (0, 0);
+    \coordinate (startmc) at ($(startauto) + (\graphdist, 0)$);
+
+    %%% AUTOMATON %%%
+    \node[state] (v2) at (startauto) {$v_2$};
+    \node[state] (v1) at ($(startauto) - (\statedist, 0)$) {$v_1$};
+    %\node[] at ($(startauto) - (0.5*\statedist, 0.7*\statedist)$) {Automaton};
+    \node[state, dashed, opacity=0.5] (v3) at ($(startauto) + (\statedist, 0)$) {Fail};
+    \node[] at ($(startauto) - (0, 0.75*\statedist)$) {Automaton};
+
+    \draw[thick, ->] (v1) edge [loop left] node[above, yshift=0.1cm] {$1$} (v1);
+    \draw[thick, ->] (v1) edge [bend left=45] node[above] {$0$} (v2);
+    \draw[thick, ->] (v2) edge [bend left=45] node[below] {$1$} (v1);
+    \draw[thick, ->, dashed, opacity=0.5] (v2) to node[above] {$0$} (v3);
+
+    %%% MARKOV CHAIN %%%
+    \node[state] (v2mc) at (startmc) {$v_2$};
+    \node[state] (v1mc) at ($(startmc) - (\statedist, 0)$) {$v_1$};
+    \node[] at ($(startmc) - (0.5*\statedist, 0.75*\statedist)$) {Markov Chain};
+
+    \draw[thick, ->] (v1mc) edge [loop left] node[above, yshift=0.1cm] {$1-\rho$} (v1mc);
+    \draw[thick, ->] (v1mc) edge [bend left=45] node[above] {$\rho$} (v2mc);
+    \draw[thick, ->] (v2mc) edge [bend left=45] node[below] {$1-\rho$} (v1mc);
+    \draw[thick, ->] (v2mc) edge [loop right] node[above, yshift=0.1cm] {$\rho$} (v2mc);
+
+\end{tikzpicture}

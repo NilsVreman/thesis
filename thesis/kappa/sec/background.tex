@@ -165,15 +165,17 @@ The ISR connected to the RTOS clock tick is also one of the major culprits behin
 Since the RTOS suspends the execution of the active task whenever an interrupt is triggered (even if it happens in the middle of a time slice), it is crucial that the ISR is quick to execute to avoid stalling the processor.
 Hence, if the callback function takes too long to execute or if the ISR is triggered too often, it can cause significant time delays in the schedule execution.
 
-\question%
-{What should I mention about scheduling for multi-core systems?}%
-{}
-For single-core systems this is not a trivial problem to solve, but for multi-core processors the complexity is elevated even further. 
+Employing a scheduler for single-core processors follow the described paradigm, however, for multi-core systems additional design choices have to be made.
+Fundamentally, two different approaches have been taken to scheduling to a multi-core processor: \emph{global} or \emph{partitioned} scheduling.
+The former assumes one scheduler responsible for scheduling all the tasks in a global ready queue to the individual cores based on available and required resources.
+On the other hand, partitioned scheduling (sometimes referred to as \emph{clustered} scheduling) involves dividing the tasks into partitions that are then mapped to separate cores with individual schedulers.
+Despite having additional computational resources to work with, multi-core systems are subject to deadline overruns similarly to how single-core systems are.
+Trivially, since partitioned multi-core scheduled systems can be perceived as a set of single-core scheduled systems, they can also experience the same computational overruns that a single-core system can.
+For global multi-core schedulers, \nv{I need some help completing this sentence, I got lost in pfair schedulers and got confused}
+\fix{Concluding sentence that confirms that this thesis is relevant even for multi-core systems.}
 
 
-\subsubsection*{Tasks}%
-\note{Dislike the header; Like the separation}
-
+\subsubsection*{\note{Tasks}}%
 % Tasks
 All the real-time tasks considered in this thesis are \emph{recurrent}, i.e., they do not terminate during system operation.
 The recurrent task model simplifies the \emph{a priori} analysis of the real-time workload's effect on the system execution.
@@ -216,7 +218,7 @@ Due to this individuality, most real-time systems were historically divided into
 \end{itemize}
 %
 \question%
-{Should I mention something about soft real-time models as well here (since we use it in Paper 2 and 5)?}%
+{Should I mention something about soft real-time models here as well (since we use it in Paper 2 and 5)?}%
 {}
 Despite these classes covering many real-time systems, they do not cover all cases.
 Prominent for real-time control systems are the \emph{firm real-time systems}, characterised by being able to overrun a few, but not too many, deadlines before causing critical system failure.
@@ -280,6 +282,7 @@ We formalise the partial ordering in the following definition:
 \end{definition}
 %
 Definition~\ref{def:kappa:dominance} confirms that $\lambda_1 = \binom{1}{1}$ dominates $\lambda_2 = \binom{0}{1}$, because $\sset{}{\lambda_1} \subseteq \sset{}{\lambda_2}$.
+Many constraint dominance relations have been derived in literature\footnote{In \note{Paper III} we extend the known orderings with two theorems relating the \tAH{} and \tRH{} constraints, thus making it possible to relate \emph{all} the different weakly-hard constraints.}~\cite{Bernat:2001}.
 Additionally, the partial ordering motivates the notion of \emph{constraint equivalence}.
 Formally
 %
@@ -341,14 +344,73 @@ However, three of the simplest and most commonly employed overrun handling strat
 %
 A framework for switching between \tK{} and \tS{} to drop delayed packets in arbitrated networked control systems is presented in~\cite{Soudbakhsh:2018}.
 The authors of~\cite{Pazzaglia:2018} discuss the performance of real-time control systems subject to the \tAM{} constraints with respect to both the \tK{} and \tS{} strategies; additionally, the authors discuss how the overrun handling strategy affect the freshness of the control signal, i.e., the age of the actuated control signal.
-In~\cite{Ernst:2019} the authors extend an existing method for computing weakly-hard guarantees in multi-component systems where deadlines outcomes are considered binary events (i.e., adhering to the \tK{} strategy).
+In~\cite{Ernst:2019} the authors extend an existing method for computing weakly-hard guarantees in multi-component systems where deadlines outcomes are considered binary events, i.e., adhering to the \tK{} strategy.
 
-\nv{Concluding paragraph/sentence that leads us into the next section.}
-\nv{also something about partitioned/global multi-core scheduling -> See pad}
 
 \subsection{Execution Modelling using State Machines}%
 \label{sec:background:fsm}%
 %
+% How can we monitor/analyse the execution of real-time systems using graphs/finite state machines
+Ever since Liu and Layland proposed their simplistic task model~\cite{Liu:1973}, more expressive models have been sought to properly characterise the execution of real-time tasks.
+One of the more prominent methods to capture the task execution's expressiveness involved utilising directed acyclic graphs (DAGs)~\cite{Baruah:2003, Chakraborty:2005, Stigge:2011}.
+In fact, both graphs and \emph{finite state machines} (FSM) are frequently used to monitor task execution and verify system safety~\cite{Kumar:2012, Dai:2020, Hertneck:2020}
+
+The use of finite state machines (also referred to as \emph{finite state automata}) have moreover been applied to the research of deadline overrun modelling.
+For a task's jobs, the computational overrun process have been modelled using finite state machines for both soft and firm real-time systems.
+In~\cite{Horssen:2016} the authors model the \tAM{} weakly-hard constraint using an automaton where the transition events between states are represented by the job outcomes.
+A \emph{Markov chain} (MC) model was used in~\cite{Ling:2003} to model the dropout rate of sensor packets in a soft networked control system.
+\cite{Kwak:2001} utilise a Markov chain to select optimal time points for memory checkpointing in real-time systems where tasks may experience transient faults.
+\nv{Mention UPPAAL}
+We will henceforth sloppily refer to finite state machines as \emph{automata}\footnote{To keep notation consistent with \note{Papers III and IV}.}.
+
+% Introduce notation for the FSM
+Both automata and Markov chains are constructed from directed graphs, with the main difference that the automata transitions are deterministic in nature whilst the Markov chain requires a distribution of probabilities to model the transitions between states.
+In this thesis, both the automata and MC denotes the underlying graph $\GG{} = (\VV{}, \EE{})$, where $\VV{}$ is the set of \emph{vertices} (or \emph{states}) and $\EE{}$ is the set of \emph{edges} (or \emph{transitions}).
+However, the vertices and transitions symbolise different deadline overrun models for the automata and Markov chain.
+
+The automaton model is used to represent the feasible sequences of deadline hits and misses for the weakly-hard constraints\footnote{\note{Papers III and IV}.}.
+Here, the underlying graph depend on the chosen constraint, i.e., $\GG{\lambda} = (\VV{\lambda}, \EE{\lambda})$.
+Each vertex $v_i \in \VV{\lambda}$ represent a word $w_i \in \sset{\abs{w_i}}{\lambda}$.
+A transition $e_{i, j} = (v_i, v_j, c_{i,j}) \in \EE{\lambda}$ is a triplet describing the transition condition $c_{i,j} \in \Sigma$ to get from vertex $v_i$ to $v_j$.
+In other words, if there exists a permissible sequence of deadline hits and misses $w_i$ which still satisfies the constraint $\lambda$ if followed by a deadline miss (i.e., $c_{i,j} = 0$), there exists a transition $e_{i,j} = (v_i, v_j, 0)$ between $v_i$ and $v_j$.
+
+When modelling stochastic computational overruns\footnote{\note{Papers II and V}.}, the Markov chain models are naturally better-suited than the automaton model.
+The MC is represented by a set of states $v_i \in \VV{}$ where the transitions between states is again a triplet $e_{i, j} = (v_i, v_j, p_{i, j}) \in \EE{}$.
+Unlike the automata model, the transition here defines a transitional probability $p_{i, j}$ between two states $v_i$ and $v_j$, i.e., a transition from state $v_i$ to state $v_j$ occurs with probability $p_{i, j} \in [0, 1]$.
+Trivially, the cumulative probability of leaving any state $v_i$ is $1$:
+%
+\begin{equation}
+    %\sum_{j=0}^{\abs{\VV{}}}\, p_{i, j} = 1.
+    \sum_{v_j\in\VV{}}\, p_{i, j} = 1.
+\end{equation}
+%
+Note that $p_{i, i}$ is not necessarily $0$, meaning that with probability $p_{i, i}$ state $v_i$ remains the active state.
+A Markov state is said to be \emph{absorbing} if it, once entered, is never left, i.e., has probability $p_{i, i} = 1$.
+The transitional probability depends on the specific probability distribution.
+
+\begin{figure}[t]
+    \centering
+    \input{\figdir/state-machine} 
+    \caption{\fix{todo}}
+    \label{fig:kappa:state-machine}
+\end{figure}
+%
+To demonstrate the similarities and differences between the automaton and Markov chain, an example is shown in Figure~\ref{fig:kappa:state-machine}.
+Here, the automaton is constructed from a weakly-hard real-time task subject to the constraint $\anyhit{} = \binom{1}{2}$, i.e., at least one job has to meet its deadline in every window of two consecutive job activations.
+Recall that the characters $0$ and $1$ respectively represent an overrun and a met deadline in the automaton's language.
+Since the constraint does not tolerate two consecutive deadline overruns, if a deadline overrun occur from vertex $v_2$ the constraint would be violated and the fail-state is entered.
+On the other hand, the MC represent a soft real-time task where every job has an independent and identically distributed (i.i.d) probability $\rho$ of overrunning its deadline.
+Notice that the transitions in both the automaton and in the Markov chain represent the outcome of exactly one job execution.
+This is a deterministic transition (no probabilities involved) in the automaton, whilst it is stochastic for the MC.
+
+
+
+
+% Examples of automata for monitoring and markov chains
+%    \item Include markov theory here. "In CS when the transition was
+%        non-deterministic, i.e., probabilistic, then you have the concept of
+%        Markov chains."
+
 
 
 \section{Control Systems}%
@@ -367,29 +429,28 @@ In~\cite{Ernst:2019} the authors extend an existing method for computing weakly-
 
 \nv{%
 
-\section*{Embedded real-time control Systems}%
+%\section*{Embedded real-time control Systems}%
 %
-\begin{itemize}
-    \item Refer to figure from Chapter~\ref{ch:intro} and then ``zoom'' in on the
-        different aspects treated in the different subsections.
-    \item Simple description of hardware components: Plant, Sensors, Network
-        (wired/wireless), control hardware, actuators.
-    \item Simple description of software components: network protocol, RTOS,
-        tasks, memory, interrupts, etc.
-    \item Maybe create a simple practical example (e.g., taxi of a plane) that
-        can be followed throughout this section.
-\end{itemize}
-
-
-\subsection*{Real-Time Model}%
+%\begin{itemize}
+%    \item Refer to figure from Chapter~\ref{ch:intro} and then ``zoom'' in on the
+%        different aspects treated in the different subsections.
+%    \item Simple description of hardware components: Plant, Sensors, Network
+%        (wired/wireless), control hardware, actuators.
+%    \item Simple description of software components: network protocol, RTOS,
+%        tasks, memory, interrupts, etc.
+%    \item Maybe create a simple practical example (e.g., taxi of a plane) that
+%        can be followed throughout this section.
+%\end{itemize}
 %
-\begin{itemize}
-    \item Start with a historical perspective
-    \item Hard, Soft, Weakly-Hard, More expressive (\cite{Stigge:2011}), other?
-    \item Describe advantages and disadvantages with each of the models
-    \item recall great example of real-time system in rust book
-\end{itemize}
+%
+%\subsection*{Real-Time Model}%
+%%
+%\begin{itemize}
 
+%    \item Describe advantages and disadvantages with each of the models
+%    \item recall great example of real-time system in rust book
+%\end{itemize}
+%
 \subsubsection*{Modelling Execution using finite state-machine}%
 %
 \begin{itemize}
