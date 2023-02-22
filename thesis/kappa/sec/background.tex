@@ -399,17 +399,9 @@ To demonstrate the similarities and differences between the automaton and Markov
 Here, the automaton is constructed from a weakly-hard real-time task subject to the constraint $\anyhit{} = \binom{1}{2}$, i.e., at least one job has to meet its deadline in every window of two consecutive job activations.
 Recall that the characters $0$ and $1$ respectively represent an overrun and a met deadline in the automaton's language.
 Since the constraint does not tolerate two consecutive deadline overruns, if a deadline overrun occur from vertex $v_2$ the constraint would be violated and the fail-state is entered.
-On the other hand, the MC represent a soft real-time task where every job has an independent and identically distributed (i.i.d) probability $\rho$ of overrunning its deadline.
+In comparison, the MC represent a soft real-time task where every job has an independent and identically distributed (i.i.d) probability $\rho$ of overrunning its deadline.
 Notice that the transitions in both the automaton and in the Markov chain represent the outcome of exactly one job execution.
 This is a deterministic transition (no probabilities involved) in the automaton, whilst it is stochastic for the MC.
-
-
-
-
-% Examples of automata for monitoring and markov chains
-%    \item Include markov theory here. "In CS when the transition was
-%        non-deterministic, i.e., probabilistic, then you have the concept of
-%        Markov chains."
 
 
 
@@ -423,6 +415,47 @@ This is a deterministic transition (no probabilities involved) in the automaton,
     \label{fig:control-structure-abstraction}
 \end{figure}
 %
+After abstracting away the real-time system's hardware layer and operating system, the remaining components are the mathematical models of the plant and controllers.
+Figure~\ref{fig:control-structure-abstraction} highlights how these models relate to the relevant system architecture.
+It is the purpose of computer-controlled systems theory to model and control continuous-time systems via digital components and discrete-time models~\cite{Astrom:1997}.
+The mathematical models characterise the system's behaviour in time, typically via a dynamical system of differential (or difference) equations written on \emph{state-space} form:
+%
+\begin{equation}%
+    \label{eq:state-space}%
+    \left\{\begin{aligned}
+        \dot{x}(t) &= f(x(t),\, u(t),\, t) \\
+        y(t) &= g(x(t),\, u(t),\, t) \\
+    \end{aligned}\right.
+\end{equation}
+
+Practically all real-world plants can be modelled using continuous-time, non-linear state-space equations on the same form as Equation~\eqref{eq:state-space}.
+The physical properties of the plant (e.g., velocity, position, rotation, etc.) are collected in the \emph{state vector} $x(t) \in \R^{n_x}$, the exogenous signals affecting the plant are collected in the \emph{input vector} $u(t) \in \R^{n_u}$, and the measurable quantities are collected in the \emph{output vector} $y(t) \in \R^{n_y}$.
+The dynamical behaviour of the system is described by the functions $f$ and $g$, which we say are \emph{time-variant} if they explicitly depend on the time variable $t$ and \emph{time-invariant} if they do not, i.e., if $f(x(t),\, u(t),\, t) = f(x(t),\, u(t))$ and $g(x(t),\, u(t),\, t) = g(x(t),\, u(t))$.
+A state-space system is linear if the functions $f$ and $g$ can be expressed as linear combinations of their arguments, i.e., a linear state-space system can be written as:
+%
+\begin{equation}%
+    \label{eq:linear-state-space}%
+    \left\{\begin{aligned}
+        \dot{x}(t) &= A(t)\,x(t) + B(t)\,u(t) \\
+        y(t) &= C(t)\,x(t) + D(t)\,u(t) \\
+    \end{aligned}\right.
+\end{equation}
+%
+Here, the matrices $A(t) \in \R^{n_x \times n_x}$ and $B(t) \in \R^{n_x \times n_u}$ govern the state evolution of the system while $C(t) \in \R^{n_y \times n_x}$ and $D(t) \in \R^{n_y \times n_u}$ describe the output process.
+If none of the matrices are time-dependent, the system is said to be linear time-invariant (LTI).
+
+If the plant is continuous, it is typically \emph{discretised} to simplify the control analysis, synthesis, and implementation.
+\nv{CONTINUE HERE}
+
+
+
+
+
+
+
+
+
+
 \nv{mention something about data freshness}
 
 \subsection{Control System Stability}%
@@ -458,21 +491,21 @@ This is a deterministic transition (no probabilities involved) in the automaton,
 %    \item recall great example of real-time system in rust book
 %\end{itemize}
 %
-\subsubsection*{Modelling Execution using finite state-machine}%
-%
-\begin{itemize}
-    \item This section should maybe be moved?
-    \item Entire subsubsection requested by KE
-    \item More automata theory
-    \item "typically in control fsm have been used to design highlevel control
-        (e.g., taxi takeoff and landing), in principle (computer science)
-        automata have been used to represent more complicated things (for
-        instance regular languages). This is the basis of what the WeaklyHard.jl
-        does."
-    \item Include markov theory here. "In CS when the transition was
-        non-deterministic, i.e., probabilistic, then you have the concept of
-        Markov chains."
-\end{itemize}
+%\subsubsection*{Modelling Execution using finite state-machine}%
+%%
+%\begin{itemize}
+%    \item This section should maybe be moved?
+%    \item Entire subsubsection requested by KE
+%    \item More automata theory
+%    \item "typically in control fsm have been used to design highlevel control
+%        (e.g., taxi takeoff and landing), in principle (computer science)
+%        automata have been used to represent more complicated things (for
+%        instance regular languages). This is the basis of what the WeaklyHard.jl
+%        does."
+%    \item Include markov theory here. "In CS when the transition was
+%        non-deterministic, i.e., probabilistic, then you have the concept of
+%        Markov chains."
+%\end{itemize}
 
 
 \subsection*{Control System Model}%
