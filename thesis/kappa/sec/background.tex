@@ -360,7 +360,7 @@ For a task's jobs, the computational overrun process have been modelled using fi
 In~\cite{Horssen:2016} the authors model the \tAM{} weakly-hard constraint using an automaton where the transition events between states are represented by the job outcomes.
 A \emph{Markov chain} (MC) model was used in~\cite{Ling:2003} to model the dropout rate of sensor packets in a soft networked control system.
 \cite{Kwak:2001} utilise a Markov chain to select optimal time points for memory checkpointing in real-time systems where tasks may experience transient faults.
-\nv{Mention UPPAAL}
+\note{Mention UPPAAL!~}
 We will henceforth sloppily refer to finite state machines as \emph{automata}\footnote{To keep notation consistent with \note{Papers III and IV}.}.
 
 % Introduce notation for the FSM
@@ -411,7 +411,7 @@ This is a deterministic transition (no probabilities involved) in the automaton,
 \begin{figure}[t]
     \centering
     \input{\figdir/control-structure-abstraction}
-    \caption{\fix{todo}}
+    \caption{\fix{Should the controller have the LET paradigm implemented here?}}
     \label{fig:control-structure-abstraction}
 \end{figure}
 %
@@ -442,11 +442,57 @@ A state-space system is linear if the functions $f$ and $g$ can be expressed as 
 \end{equation}
 %
 Here, the matrices $A(t) \in \R^{n_x \times n_x}$ and $B(t) \in \R^{n_x \times n_u}$ govern the state evolution of the system while $C(t) \in \R^{n_y \times n_x}$ and $D(t) \in \R^{n_y \times n_u}$ describe the output process.
-If none of the matrices are time-dependent, the system is said to be linear time-invariant (LTI).
+The system is said to be linear time-invariant (LTI) if none of the matrices in Equation~\eqref{eq:linear-state-space} are time-dependent.
 
-If the plant is continuous, it is typically \emph{discretised} to simplify the control analysis, synthesis, and implementation.
-\nv{CONTINUE HERE}
+If the plant is continuous, it is typically \emph{discretised} to simplify the analysis, synthesis, and implementation of the controllers.
+Transforming the continuous-time plant model into its discrete-time equivalent is non-trivial and generally depend on how the continuous system is sampled, i.e., how the analog-to-digital converters (ADC) and digital-to-analog converters (DAC) are designed.
+The DAC is located near the actuators and translates the discrete value received from the controller to the actuator commands.
+Similarly, the ADC transforms the sensor values to discrete signals to be sent to the controlling hardware.
+One of the most commonly applied sampling techniques is the zero-order hold (ZOH) circuit, where the DAC holds the last converted analog signal constant until a new discrete value is received and converted.
+The sensors are then frequently configured to sample the plant at the discrete time instants when the control signal to the plant changes.
+In other words, if the DAC receives and converts discrete values at time instants $\left\{\, t_i \,\right\}$, the sensors sample the system in the same time points.
+For periodically sampled systems, the sampling instants are equidistant with a sampling period of $\Ts$, i.e., $t_i = i\cdot \Ts$.
+The resulting discrete-time, LTI model of the plant $\plant$ is then:
+\newline\fix{$A$ same in discrete and continuous case.}
+\newline\fix{Subscript $t$ is problematic here}
+%
+\begin{equation}%
+    \label{eq:discrete-lti-plant}%
+    \plant \; : \; \left\{\begin{aligned}
+        x_{t+1} &= A\,x_t + B\,u_t \\
+        y_t &= C\,x_t + D\,u_t \\
+    \end{aligned}\right.
+\end{equation}
+%
+Here, the variable subscripts counts the discrete time samples since system startup, i.e., $x_t = x(t\cdot \Ts)$ and $x_{t+1} = x(t\cdot \Ts + \Ts)$.
 
+Similarly to how the plant can be described by a dynamical system on state-space form, controllers are also typically defined in the format of Equation~\eqref{eq:state-space} (denoted the controller's \emph{control law}).
+However, Section~\ref{sec:background:rts} described how the control algorithm is implemented as a function governed by a task executing in the RTOS; thus, modern controllers are unlikely to be continuous.
+The discrete, time-invariant state-space representation of a general control law is then:
+%
+\begin{equation}%
+    \label{eq:discrete-state-space}%
+    \left\{\begin{aligned}
+        z_{t+1} &= p(z_t,\, y_t) \\
+        u_t &= q(z_t,\, y_t) \\
+    \end{aligned}\right.
+\end{equation}
+%
+Here, the \emph{control state vector} $z_t \in \R^{n_z}$ represent the controller's dynamics, while the functions $p$ and $q$ govern the dynamical behaviour of the controller.
+Similar to the plant, if $p$ and $q$ can be expressed as linear combinations of their arguments, the controller $\ctrler$ is said to be linear.
+%
+\begin{equation}%
+    \label{eq:discrete-lti-ctrler}%
+    \ctrler \; : \; \left\{\begin{aligned}
+        z_{t+1} &= F\,z_t + G\,y_t \\
+        u_t &= H\,z_t + K\,y_t \\
+    \end{aligned}\right.
+\end{equation}
+
+Control theory is dedicated to developing models and algorithms for designing $p$ and $q$ such that the control system's state follows a desired trajectory while minimising undesirable effects such as noise, disturbances, and large actuator commands.
+
+There exists a vast treatise on the synthesis and analysis of both linear and non-linear control laws, the breadth of which is too large to review in any thesis.
+\nv{give a few known examples}
 
 
 
