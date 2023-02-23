@@ -34,7 +34,7 @@ Next, we describe the underlying hardware and real-time architecture seen in Fig
 % CPU and cores
 The \emph{central processing unit} (CPU, or simply \emph{processor}) is the electronic component responsible for executing the task functions.
 Each function (or program) is translated into a list of instructions to be executed on the CPU.
-These instructions belong to the machine's language used to tell the processor what type of operation to execute, e.g., load a specific memory registry or execute an arithmetic operation.
+These instructions belong to the machine's language used to tell the processor what type of operation to execute, e.g., load a specific memory register or execute an arithmetic operation.
 The time it takes for the CPU to execute one instruction, i.e., fetching the instruction from memory before decoding and executing it, is typically called an \emph{instruction cycle} (or simply \emph{cycle}); this is the basic unit used to measure CPU speed.
 To execute the program instructions, the processor can contain one or more \emph{cores}, respectively denoting the processor as \emph{single-core} or \emph{multi-core}.
 Each core is able to execute a list of program instructions.
@@ -436,40 +436,41 @@ A state-space system is linear if the functions $f$ and $g$ can be expressed as 
 \begin{equation}%
     \label{eq:linear-state-space}%
     \left\{\begin{aligned}
-        \dot{x}(t) &= A(t)\,x(t) + B(t)\,u(t) \\
-        y(t) &= C(t)\,x(t) + D(t)\,u(t) \\
+        \dot{x}(t) &= \Ap_c(t)\,x(t) + \Bp_c(t)\,u(t) \\
+        y(t) &= \Cp_c(t)\,x(t) + \Dp_c(t)\,u(t) \\
     \end{aligned}\right.
 \end{equation}
 %
-Here, the matrices $A(t) \in \R^{n_x \times n_x}$ and $B(t) \in \R^{n_x \times n_u}$ govern the state evolution of the system while $C(t) \in \R^{n_y \times n_x}$ and $D(t) \in \R^{n_y \times n_u}$ describe the output process.
-The system is said to be linear time-invariant (LTI) if none of the matrices in Equation~\eqref{eq:linear-state-space} are time-dependent.
+Here, the matrices $\Ap_c(t) \in \R^{n_x \times n_x}$ and $\Bp_c(t) \in \R^{n_x \times n_u}$ govern the state evolution of the plant while $\Cp_c(t) \in \R^{n_y \times n_x}$ and $\Dp_c(t) \in \R^{n_y \times n_u}$ describe its output process.
+The plant is said to be linear time-invariant (LTI) if none of the matrices in Equation~\eqref{eq:linear-state-space} are time-dependent, e.g., $\Ap_c(t) = \Ap_c$.
 
 If the plant is continuous, it is typically \emph{discretised} to simplify the analysis, synthesis, and implementation of the controllers.
 Transforming the continuous-time plant model into its discrete-time equivalent is non-trivial and generally depend on how the continuous system is sampled, i.e., how the analog-to-digital converters (ADC) and digital-to-analog converters (DAC) are designed.
-The DAC is located near the actuators and translates the discrete value received from the controller to the actuator commands.
-Similarly, the ADC transforms the sensor values to discrete signals to be sent to the controlling hardware.
+The DAC is located near the actuators and translates the digital value received from the controller to an analog actuator command.
+Similarly, the ADC transforms the analog sensor values to digital signals to be sent to the controlling hardware.
 One of the most commonly applied sampling techniques is the zero-order hold (ZOH) circuit, where the DAC holds the last converted analog signal constant until a new discrete value is received and converted.
-The sensors are then frequently configured to sample the plant at the discrete time instants when the control signal to the plant changes.
+The sensors are generally configured to sample the plant at the discrete time instants when the control signal to the plant changes.
 In other words, if the DAC receives and converts discrete values at time instants $\left\{\, t_i \,\right\}$, the sensors sample the system in the same time points.
 For periodically sampled systems, the sampling instants are equidistant with a sampling period of $\Ts$, i.e., $t_i = i\cdot \Ts$.
 The resulting discrete-time, LTI model of the plant $\plant$ is then:
-\newline\fix{$A$ same in discrete and continuous case.}
+%
 \newline\fix{Subscript $t$ is problematic here}
 %
 \begin{equation}%
     \label{eq:discrete-lti-plant}%
     \plant \; : \; \left\{\begin{aligned}
-        x_{t+1} &= A\,x_t + B\,u_t \\
-        y_t &= C\,x_t + D\,u_t \\
+        x_{t+1} &= \Ap\,x_t + \Bp\,u_t + \Wp\, w_t\\
+        y_t &= \Cp\,x_t + \Dp\,u_t \\
     \end{aligned}\right.
 \end{equation}
 %
 Here, the variable subscripts counts the discrete time samples since system startup, i.e., $x_t = x(t\cdot \Ts)$ and $x_{t+1} = x(t\cdot \Ts + \Ts)$.
-\fix{Add noise and disturbances here.}
+Additionally, the state's disturbance process $w_t \in \R^{n_w}$ and dynamic matrix $\Wp \in \R^{n_x \times n_w}$ are added.
+The disturbance process is typically a stochastic process with (assumed) known statistical properties, modelling the unknown plant dynamics and exogenous signals.
 
-Similarly to how the plant can be described by a dynamical system on state-space form, controllers are also typically defined in the format of Equation~\eqref{eq:state-space} (denoted the controller's \emph{control law}).
-However, Section~\ref{sec:background:rts} described how the control algorithm is implemented as a function governed by a task executing in the RTOS; thus, modern controllers are unlikely to be continuous.
-The discrete, time-invariant state-space representation of a general control law is then:
+Similarly to how the plant is described using a dynamical system on state-space form, controllers are typically also defined on the same format (denoted the controller's \emph{control law}).
+Section~\ref{sec:background:rts} described how the control algorithm is implemented as a function governed by a task executing in the RTOS; modern controllers are hence unlikely to be continuous.
+Therefore, the discrete, time-invariant state-space representation of a general control law is:
 %
 \begin{equation}%
     \label{eq:discrete-state-space}%
@@ -480,18 +481,19 @@ The discrete, time-invariant state-space representation of a general control law
 \end{equation}
 %
 Here, the \emph{control state vector} $z_t \in \R^{n_z}$ represent the controller's dynamics, the \emph{control signals} $u_t \in \R^{n_u}$ are also the inputs to the plant, and the functions $p$ and $q$ govern the dynamical behaviour of the controller.
-Similar to the plant, if $p$ and $q$ can be expressed as linear combinations of their arguments, i.e., $p(z_t,\, y_t) = F\,z_t+G\,y_t$ and $q(z_t,\, y_t) = H\,z_t+K\,y_t$, then the controller $\ctrler$ is said to be linear.
+Similar to the plant, if $p$ and $q$ can be expressed as linear combinations of their arguments, i.e., $p(z_t,\, y_t) = \Ac\,z_t+\Bc\,y_t$ and $q(z_t,\, y_t) = \Cc\,z_t+\Dc\,y_t$, then the controller $\ctrler$ is linear.
 %
 \begin{equation}%
     \label{eq:discrete-lti-ctrler}%
     \ctrler \; : \; \left\{\begin{aligned}
-        z_{t+1} &= F\,z_t + G\,y_t \\
-        u_t &= H\,z_t + K\,y_t \\
+        z_{t+1} &= \Ac\,z_t + \Bc\,y_t \\
+        u_t &= \Cc\,z_t + \Dc\,y_t \\
     \end{aligned}\right.
 \end{equation}
 %
 We say that a controller $\ctrler$ is \emph{stateless} (or \emph{static}) if it has no dependence on the internal state $z$, i.e., $n_z = 0$.
 Furthermore, a \emph{stateful} (or \emph{dynamic}) controller $\ctrler$ is any controller that depend on its internal state $z$, i.e., $n_z > 0$.
+\question{Talk about LET?}{}
 
 The vast treatise on synthesis and analysis of both linear and non-linear control laws that exists is likely too large to review in any thesis; however, some of the most known algorithms are outlined here.
 Arguably the most famous control structure is the proportional-integral-derivative (PID) controller, in which the error between the sensor measurements and the desired plant states are used to compute the new control signal~\cite{Astrom:2006}.
@@ -503,11 +505,25 @@ Like LQR, model predictive control (MPC) originate from optimal control~\addref{
 Where LQR optimises the control over a full window, MPC provides a receding time horizon solution while also supporting constraints on the trajectory, control state, and control signal.
 \question{Add more?}{}
 
+%\question{The following paragraph should probably be removed}{}
+%Regardless of the employed control law, to execute it in a real-time task it has to be translated into an implementable function, as highlighted in Figure~\ref{fig:control-structure-abstraction}.
+%Typically, the execution procedure goes as follows:
+%\begin{enumerate}[label=(\roman*)]
+%    \item the sensors sample the respective plant quantity they are overseeing,
+%    \item the sample is sent over a channel to the embedded system's I/O interface,
+%    \item \label{item:rx} the control task polls the memory register where the sensor value is stored,
+%    \item using the sensor data, it computes a new control signal and updates its internal state,
+%    \item \label{item:tx} the control command is stored in a register for the I/O interface to read and send it over another channel to the appropriate actuator,
+%    \item the actuator receives the control command and acts on the plant thereafter.
+%\end{enumerate}
+%%
+%Every control task's job invocation is supposed to complete steps~\ref{item:rx} to~\ref{item:tx}.
+
 Control theory is dedicated to developing models and algorithms for designing $p$ and $q$ such that the control system's state follows a desired trajectory while minimising undesirable effects such as noise, disturbances, and large actuator commands.
 In Sections~\ref{sec:background:stability} and~\ref{sec:background:performance}, the control law's objectives will be expanded upon, particularly discussing \emph{stability}  and \emph{performance}.
 However, to discuss stability and performance in real-time control systems, it is crucial to first properly introduce \emph{feedback}.
-The sensor signals that are received at the controller are processed by the control algorithm before the control signal is transmitted to the actuators; routing signals back into the plant like this is called \emph{feedback control} (or \emph{closed-loop control}).
-\question{Figure here to describe this?}{}
+The sensor signals that are received at the controller are processed by the control algorithm before the computed control signal is transmitted back to the actuators.
+Routing signals back into the plant like this is called \emph{feedback control} (or \emph{closed-loop control}).
 Typically, the closed-loop system (i.e., all components involved in the closed-loop control) is also described by a dynamical equation, acquired by combining Equations~\eqref{eq:discrete-lti-plant} and~\eqref{eq:discrete-lti-ctrler}:
 %
 \begin{equation}%
@@ -515,33 +531,41 @@ Typically, the closed-loop system (i.e., all components involved in the closed-l
     \tilde{x}_{t+1} = \clmat\, \tilde{x}_t.
 \end{equation}
 %
-where $\tilde{x}_t$ is the closed-loop system's state vector and $\clmat$ is the closed-loop system's matrix, responsible for encoding the closed-loop system's dynamics.
+where $\tilde{x}_t$ is the closed-loop system's state vector and $\clmat$ is the closed-loop system matrix, responsible for encoding the closed-loop system's dynamics.
 
-\subsubsection*{Controllers as Tasks}%
+Thus far, the system execution has been assumed to be faultless.
+However, we are interested in analysing the real-time control system when the control tasks are subject to computational overruns.
+Despite only having system components that are discrete-time, linear, and time-invariant, the closed-loop system dynamics become time-variant when introducing computational faults.
+In place of Equation~\eqref{eq:discrete-lti-ctrler}, the controller $\ctrler$ is then characterised by:
 %
-Regardless of the employed control law, to execute it in a real-time task it has to be translated into an implementable function, as highlighted in Figure~\ref{fig:control-structure-abstraction}.
-Typically,
+\begin{equation}%
+    \label{eq:tv-ctrler}%
+    \ctrler \; : \; \left\{\begin{aligned}
+        z_{t+1} &= \Ac\funof{\sigma(t)}\,z_t + \Bc\funof{\sigma(t)}\,y_t \\
+        u_t &= \Cc\funof{\sigma(t)}\,z_t + \Dc\funof{\sigma(t)}\,y_t \\
+    \end{aligned}\right.
+\end{equation}
+%
+where $\sigma(t)$ is the process governing the overruns, e.g., a weakly-hard sequence or Markov process.
+This does in turn also change the closed-loop dynamics from Equation~\eqref{eq:clsys} to:
+%
+\begin{equation}%
+    \label{eq:tv-clsys}%
+    \tilde{x}_{t+1} = \clmat\funof{\sigma(t)}\, \tilde{x}_t.
+\end{equation}
+%
+If $\sigma(t)$ is governed by a Markov process, then Equation~\eqref{eq:tv-clsys} is denoted a \emph{Markov jump linear system} (MJLS)~\cite{Feng:1992}.
+Instead, if the process changing the closed-loop dynamics is deterministic, it is labeled a \emph{switching system}~\cite{Liberzon:2003}.
+Both MJLS and switching systems will be discussed further in the upcoming sections.
+\question{Is this too big of an oversimplification? Should I add something else?}{}
 
-\nv{Continue here by explaining:
-\begin{itemize}
-    \item Explain how a control law is implemented as a task
-    \item What happens when the control task overruns its deadline.
-\end{itemize}}
 
-
-
-
-
-
-
-
-
-
-\nv{mention something about data freshness}
 
 \subsection{Control System Stability}%
 \label{sec:background:stability}%
 %
+\nv{CONTINUE HERE}
+
 
 \subsection{Control System Performance}%
 \label{sec:background:performance}%
@@ -550,54 +574,15 @@ Typically,
 
 \nv{%
 
-%\section*{Embedded real-time control Systems}%
-%
-%\begin{itemize}
-%    \item Refer to figure from Chapter~\ref{ch:intro} and then ``zoom'' in on the
-%        different aspects treated in the different subsections.
-%    \item Simple description of hardware components: Plant, Sensors, Network
-%        (wired/wireless), control hardware, actuators.
-%    \item Simple description of software components: network protocol, RTOS,
-%        tasks, memory, interrupts, etc.
-%    \item Maybe create a simple practical example (e.g., taxi of a plane) that
-%        can be followed throughout this section.
-%\end{itemize}
-%
-%
-%\subsection*{Real-Time Model}%
-%%
-%\begin{itemize}
-
-%    \item Describe advantages and disadvantages with each of the models
-%    \item recall great example of real-time system in rust book
-%\end{itemize}
-%
-%\subsubsection*{Modelling Execution using finite state-machine}%
-%%
-%\begin{itemize}
-%    \item This section should maybe be moved?
-%    \item Entire subsubsection requested by KE
-%    \item More automata theory
-%    \item "typically in control fsm have been used to design highlevel control
-%        (e.g., taxi takeoff and landing), in principle (computer science)
-%        automata have been used to represent more complicated things (for
-%        instance regular languages). This is the basis of what the WeaklyHard.jl
-%        does."
-%    \item Include markov theory here. "In CS when the transition was
-%        non-deterministic, i.e., probabilistic, then you have the concept of
-%        Markov chains."
-%\end{itemize}
-
-
 \subsection*{Control System Model}%
 %
-\begin{itemize}
-    \item Start from plant, non-linear model, linearisation
-    \item Sensors and actuator models included here.
-    \item Control model (non-linear, more common ones), relate to real-time
-        tasks
-    \item Switching systems! Markov Jump Linear Systems!
-\end{itemize}
+%\begin{itemize}
+%    \item Start from plant, non-linear model, linearisation
+%    \item Sensors and actuator models included here.
+%    \item Control model (non-linear, more common ones), relate to real-time
+%        tasks
+%    \item Switching systems! Markov Jump Linear Systems!
+%\end{itemize}
 
 
 \subsubsection*{Stability Analysis}%
@@ -618,8 +603,3 @@ Typically,
 \end{itemize}
 
 }%
-
-
-% MENTION SOMETHING ABOUT {SYNCHRONOUS, ASYNCHRONOUS, PERIODIC, APERIODIC} TASKS
-
-% MENTION TASK STATES (INTERNAL AND EXTERNAL)
