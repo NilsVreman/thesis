@@ -465,6 +465,7 @@ The resulting discrete-time, LTI model of the plant $\plant$ is then:
 \end{equation}
 %
 Here, the variable subscripts counts the discrete time samples since system startup, i.e., $x_t = x(t\cdot \Ts)$ and $x_{t+1} = x(t\cdot \Ts + \Ts)$.
+\fix{Add noise and disturbances here.}
 
 Similarly to how the plant can be described by a dynamical system on state-space form, controllers are also typically defined in the format of Equation~\eqref{eq:state-space} (denoted the controller's \emph{control law}).
 However, Section~\ref{sec:background:rts} described how the control algorithm is implemented as a function governed by a task executing in the RTOS; thus, modern controllers are unlikely to be continuous.
@@ -478,8 +479,8 @@ The discrete, time-invariant state-space representation of a general control law
     \end{aligned}\right.
 \end{equation}
 %
-Here, the \emph{control state vector} $z_t \in \R^{n_z}$ represent the controller's dynamics, while the functions $p$ and $q$ govern the dynamical behaviour of the controller.
-Similar to the plant, if $p$ and $q$ can be expressed as linear combinations of their arguments, the controller $\ctrler$ is said to be linear.
+Here, the \emph{control state vector} $z_t \in \R^{n_z}$ represent the controller's dynamics, the \emph{control signals} $u_t \in \R^{n_u}$ are also the inputs to the plant, and the functions $p$ and $q$ govern the dynamical behaviour of the controller.
+Similar to the plant, if $p$ and $q$ can be expressed as linear combinations of their arguments, i.e., $p(z_t,\, y_t) = F\,z_t+G\,y_t$ and $q(z_t,\, y_t) = H\,z_t+K\,y_t$, then the controller $\ctrler$ is said to be linear.
 %
 \begin{equation}%
     \label{eq:discrete-lti-ctrler}%
@@ -488,11 +489,45 @@ Similar to the plant, if $p$ and $q$ can be expressed as linear combinations of 
         u_t &= H\,z_t + K\,y_t \\
     \end{aligned}\right.
 \end{equation}
+%
+We say that a controller $\ctrler$ is \emph{stateless} (or \emph{static}) if it has no dependence on the internal state $z$, i.e., $n_z = 0$.
+Furthermore, a \emph{stateful} (or \emph{dynamic}) controller $\ctrler$ is any controller that depend on its internal state $z$, i.e., $n_z > 0$.
+
+The vast treatise on synthesis and analysis of both linear and non-linear control laws that exists is likely too large to review in any thesis; however, some of the most known algorithms are outlined here.
+Arguably the most famous control structure is the proportional-integral-derivative (PID) controller, in which the error between the sensor measurements and the desired plant states are used to compute the new control signal~\cite{Astrom:2006}.
+The PID controller is linear and stateful, assuming that either the I or D part is included.
+From the domain of optimal control, the linear-quadratic regulator (LQR) was derived to analytically minimise a quadratic cost function penalising large control signals and plant state deviations.
+The linear and stateless LQR algorithm has been the subject to a large research effort~\addref{}, likely due to its elegant mathematical properties.
+Additionally, the LQR is a fundamental part of solving the linear-quadratic-Gaussian (LQG) problem~\addref{}.
+Like LQR, model predictive control (MPC) originate from optimal control~\addref{}; however, they differ in the cost function's structure.
+Where LQR optimises the control over a full window, MPC provides a receding time horizon solution while also supporting constraints on the trajectory, control state, and control signal.
+\question{Add more?}{}
 
 Control theory is dedicated to developing models and algorithms for designing $p$ and $q$ such that the control system's state follows a desired trajectory while minimising undesirable effects such as noise, disturbances, and large actuator commands.
+In Sections~\ref{sec:background:stability} and~\ref{sec:background:performance}, the control law's objectives will be expanded upon, particularly discussing \emph{stability}  and \emph{performance}.
+However, to discuss stability and performance in real-time control systems, it is crucial to first properly introduce \emph{feedback}.
+The sensor signals that are received at the controller are processed by the control algorithm before the control signal is transmitted to the actuators; routing signals back into the plant like this is called \emph{feedback control} (or \emph{closed-loop control}).
+\question{Figure here to describe this?}{}
+Typically, the closed-loop system (i.e., all components involved in the closed-loop control) is also described by a dynamical equation, acquired by combining Equations~\eqref{eq:discrete-lti-plant} and~\eqref{eq:discrete-lti-ctrler}:
+%
+\begin{equation}%
+    \label{eq:clsys}%
+    \tilde{x}_{t+1} = \clmat\, \tilde{x}_t.
+\end{equation}
+%
+where $\tilde{x}_t$ is the closed-loop system's state vector and $\clmat$ is the closed-loop system's matrix, responsible for encoding the closed-loop system's dynamics.
 
-There exists a vast treatise on the synthesis and analysis of both linear and non-linear control laws, the breadth of which is too large to review in any thesis.
-\nv{give a few known examples}
+\subsubsection*{Controllers as Tasks}%
+%
+Regardless of the employed control law, to execute it in a real-time task it has to be translated into an implementable function, as highlighted in Figure~\ref{fig:control-structure-abstraction}.
+Typically,
+
+\nv{Continue here by explaining:
+\begin{itemize}
+    \item Explain how a control law is implemented as a task
+    \item What happens when the control task overruns its deadline.
+\end{itemize}}
+
 
 
 
