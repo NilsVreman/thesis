@@ -1,15 +1,17 @@
-\chapter{Contribution}%
-\label{ch:contribution}%
-%
-\nv{Don't forget to add at the bottom of each paper that you have unified language between papers.}
+\documentclass{article}
+\usepackage[inline]{enumitem}
 
-The main scientific contribution of this thesis is presented in the five papers that follow this chapter.
+\begin{document}
+
+\section*{Contribution Statement}
+
+The main scientific contribution of Nils Vreman's is presented in the five papers that follow this chapter.
 This chapter provides an overview of the scientific contributions of each of the five publications to the real-time control research.
 Additionally, each authors's contribution to the papers is described in detail.
 We conclude the chapter with Section~\ref{sec:additional-publications}, that lists additional peer-reviewed publications that were excluded from this thesis.
 These publications have been omitted to improve the cohesion of this manuscript, as they cover tangential topics with respect to the research presented in the thesis.
 
-\subsubsection*{Difference Between Published and Included Version:}%
+\subsection*{Difference Between Published and Included Version:}%
 There are two differences between the published papers and the version included in this thesis:
 \begin{enumerate*}[label=(\roman*)]
 \item the language and mathematical notation of the papers presented in this thesis have been uniformed for readability and consistency,
@@ -20,23 +22,23 @@ There are two differences between the published papers and the version included 
 % \clearpage %%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Included Papers}%
-\label{sec:paper-summaries}%
 %
-\subsection*{Paper I}%
+\section*{Paper I}%
 %
 \begin{quote}
-    \fullcite{Vreman:2021}
+
+N. Vreman, A. Cervin, and M. Maggio (2021). ``Stability and Per- formance Analysis of Control Systems Subject to Bursts of Deadline Misses''. In: 33rd Euromicro Conference on Real-Time Systems (ECRTS). Vol. 196. Leibniz International Proceed- ings in Informatics (LIPIcs). Schloss Dagstuhl – Leibniz-Zentrum für Informatik, Dagstuhl, Germany, 15:1–15:23. ISBN: \texttt{978-3-95977-192- 4}. DOI: \texttt{10.4230/LIPIcs.ECRTS.2021.15}
+
 \end{quote}
 
-\subsubsection*{Scientific Summary:}%
+\subsection*{Scientific Summary:}%
 %
 In Paper I, linear control system stability and performance is analysed when the controller experiences persistent computational blackouts.
 Historically, the models to analyse such events have been either stochastic or overly conservative.
 These models have been thoroughly investigated in the literature, but few have been shown to achieve similar results on industrial applications.
 
 On the contrary, Paper I proposes a new fault model that handles consecutive computational overruns whilst also encapsulating graceful recovery back to nominal execution conditions.
-The fault model is coupled together with different actuator (\tZ{} and \tH{}) and scheduling strategies (\tK{} and \tS{}) to provide a holistic system model.
+The fault model is coupled together with different actuator (zero and hold) and scheduling strategies (kill and skip) to provide a holistic system model.
 To properly analyse the specific fault model, a methodology for analysing the stability and performance is also derived.
 The stability analysis is based on a switched system stability approach, whilst the performance analysis is based on evolving a quadratic cost function in time.
 
@@ -44,7 +46,7 @@ To reinforce the analysis methodology's applicability to industrial application,
 The paper analyses both a non-linear physical system (a Furuta pendulum) and a set of linear system models representative for the process industry.
 From the analysis performed on the physical system, the paper shows that it is possible to draw accurate conclusions about the physical process' behaviour using simulation results.
 
-\subsubsection*{Contribution Statement:}%
+\subsection*{Contribution Statement:}%
 %
 The idea of analysing control system stability using fault models that are matching industrial needs was proposed by M. Maggio.
 The physical testing environment and the experiments were implemented and executed by N. Vreman, who also developed the fault model and its formalisation.
@@ -56,13 +58,13 @@ The manuscript writing and editing effort was shared among all three authors.
 %\clearpage %%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection*{Paper II}%
+\section*{Paper II}%
 %
 \begin{quote}
-    \fullcite{Vreman:2022a}
+N. Vreman, C. Mandrioli, and A. Cervin (2022a). ``Deadline-miss- adaptive controller implementation for real-time control systems''. In: IEEE 28th Real-Time and Embedded Technology and Applications Symposium (RTAS), pp. 13–26. DOI: \texttt{10.1109/RTAS54340.2022}.
 \end{quote}
 
-\subsubsection*{Scientific Summary:}%
+\subsection*{Scientific Summary:}%
 %
 Many different robust controllers exists, specifically targeting control systems where the controller can experience timing faults.
 The main advantage of using these synthesis methods is that they can guarantee a priori system stability, under their respective fault model.
@@ -80,14 +82,14 @@ To address the shortcomings of previous synthesis methods, the paper proposes an
     \item does not affect the nominal control performance.
 \end{enumerate*}
 The adaptive controller assumes that there exists a controller that has been synthesised with respect to a specific control system's specification under nominal conditions.
-Assuming that the \tK{} strategy is employed, the adaptation then alters the controller matrices (based on the number of computational overruns) to quickly restore nominal control performance.
+Assuming that the kill strategy is employed, the adaptation then alters the controller matrices (based on the number of computational overruns) to quickly restore nominal control performance.
 To analyse the performance gain of the adaptive controller, we extend existing stochastic performance analyses based on Markov jump linear system's theory to compute the \emph{relative performance degradation}, i.e., the performance degradation following from using a controller other than the ideal controller.
 
 The adaptive controller is validated on a physical process (a Ball and Beam) and on the set of process industrial models used also in Paper I.
 Significant performance gain is shown despite having an immense number of computational overruns.
 Additionally, since the proposed method does not guarantee any a priori stability guarantees, the paper analyses the switched system stability a posteriori.
 
-\subsubsection*{Contribution Statement:}%
+\subsection*{Contribution Statement:}%
 %
 The initial observation, that many fault-tolerant controllers are restricted to overly specific system conditions, was made by C. Mandrioli.
 A set of limitations was identified together by C. Mandrioli and N. Vreman; who also derived the adaptive controller addressing these limitations.
@@ -99,51 +101,51 @@ The manuscript writing and editing effort was shared among all three authors.
 % \clearpage %%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection*{Paper III}%
+\section*{Paper III}%
 %
 \begin{quote}
-    \fullcite{Vreman:2022b}
+N. Vreman, R. Pates, and M. Maggio (2022b). ``Weaklyhard.jl: scal- able analysis of weakly-hard constraints''. In: 2022 IEEE 28th Real- Time and Embedded Technology and Applications Symposium (RTAS), pp. 228–240. DOI: \texttt{10.1109/RTAS54340.2022}.
 \end{quote}
 
-\subsubsection*{Scientific Summary:}%
+\subsection*{Scientific Summary:}%
 %
 Ever since their introduction, the weakly-hard models have been steadily increasing in both academic and industrial popularity.
-The existing tools and research have focused on single constraints, in particular the \tAM{} constraint.
-In certain domains, e.g., control systems, this choice is likely motivated by the \tAM{} constraints popularity rather than its fitness to the problem statement.
+The existing tools and research have focused on single constraints, in particular the any miss constraint.
+In certain domains, e.g., control systems, this choice is likely motivated by the any miss constraints popularity rather than its fitness to the problem statement.
 
 Paper III aspires to
 \begin{enumerate*}[label=(\roman*)]
-    \item change the focus from the \tAM{} constraint to the \tRH{} constraint and
-    \item propose a scalable, open-source tool (\tool{}) that can be used to analyse \emph{all} the weakly-hard constraints.
+    \item change the focus from the any miss constraint to the row hit constraint and
+    \item propose a scalable, open-source tool (\texttt{WeaklyHard.jl}) that can be used to analyse \emph{all} the weakly-hard constraints.
 \end{enumerate*}
-In order to switch the attention to the \tRH{} constraint, we provide two novel theorems on the relation between it and the \tAH{} constraint, finalising the relationship graph between all the weakly-hard constraints.
-The \tool{} tool employ an automaton model to describe the discrete-time execution of a task subject to a specific weakly-hard constraint.
-Additionally, \tool{} is the first tool to address \emph{sets} of weakly-hard constraints.
-The paper reports the results of an experimental campaign that addresses the both scalability of \tool{} compared to the state-of-the-art alternative and tests the novel features of \tool{}.
+In order to switch the attention to the row hit constraint, we provide two novel theorems on the relation between it and the any hit constraint, finalising the relationship graph between all the weakly-hard constraints.
+The \texttt{WeaklyHard.jl} tool employ an automaton model to describe the discrete-time execution of a task subject to a specific weakly-hard constraint.
+Additionally, \texttt{WeaklyHard.jl} is the first tool to address \emph{sets} of weakly-hard constraints.
+The paper reports the results of an experimental campaign that addresses the both scalability of \texttt{WeaklyHard.jl} compared to the state-of-the-art alternative and tests the novel features of \texttt{WeaklyHard.jl}.
 
-\subsubsection*{Contribution Statement:}%
+\subsection*{Contribution Statement:}%
 %
 The idea behind the paper and the tool was developed entirely by N. Vreman. 
 The tool and its underlying algorithms was developed by N. Vreman, with input from M. Maggio.
-The formulation of the theorems that relate \tAH{} and \tRH{} constraints were derived by N. Vreman, with proof-sketches that R. Pates helped refining.
+The formulation of the theorems that relate any hit and row hit constraints were derived by N. Vreman, with proof-sketches that R. Pates helped refining.
 The manuscript was written by N. Vreman and M. Maggio, with input from R. Pates.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % \clearpage %%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection*{Paper IV}%
+\section*{Paper IV}%
 %
 \begin{quote}
-    \fullcite{Vreman:2022c}
+N. Vreman, P. Pazzaglia, V. Magron, J. Wang, and M. Maggio (2022c). ``Stability of linear systems under extended weakly-hard constraints''. IEEE Control Systems Letters 6, pp. 2900–2905. DOI: \texttt{10.1109/LCSYS.2022}.
 \end{quote}
 
-\subsubsection*{Scientific Summary:}%
+\subsection*{Scientific Summary:}%
 %
 Despite the weakly-hard models having steadily gained more traction in the analysis of control systems, the weakly-hard model fails at expressing some characteristics of the implementation of control systems, e.g., how the actual controller implementation deals with deadline misses.
 Paper IV rectifies this discrepancy, by extending the formal language defining the weakly-hard constraints, and connecting the analysis on weakly-hard control systems to the actual implementation of controllers.
 
-The paper uses the automata-based model produced by \tool{} and presented in Paper III, proposing a post-processing step that refines the automaton and handles the analysis of \emph{extended weakly-hard constraints}, the extension being the specification of implementation characteristics.
+The paper uses the automata-based model produced by \texttt{WeaklyHard.jl} and presented in Paper III, proposing a post-processing step that refines the automaton and handles the analysis of \emph{extended weakly-hard constraints}, the extension being the specification of implementation characteristics.
 The paper presents a stability analysis based on switching linear systems, that advances the state of the art of analysing implementation of control systems.
 
 The dynamics of the linear control system is Kronecker lifted with the adjacency matrix of the automaton to obtain an equivalent system model, now also subject to the extended weakly-hard constraint.
@@ -151,11 +153,11 @@ This system model can then be analysed using any method applicable to arbitrary 
 The paper uses a JSR approach, but other alternatives can be envisioned.
 In addition to the stability analysis, the paper discusses theoretical results relating the real-time constraints with the control system stability.
 
-\subsubsection*{Contribution Statement:}%
+\subsection*{Contribution Statement:}%
 %
 P. Pazzaglia came up with the idea to the paper after discussions with N. Vreman.
 The theoretical results presented in the paper were developed together by N. Vreman and P. Pazzaglia.
-N. Vreman included in \tool{} the ability to handle a more expressive formal language for implementation concerns.
+N. Vreman included in \texttt{WeaklyHard.jl} the ability to handle a more expressive formal language for implementation concerns.
 V. Magron and M. Maggio discussed the JSR analysis, which was implemented by J. Wang.
 The manuscript was written by P. Pazzaglia and N. Vreman, with input and revisions from co-authors.
 
@@ -163,15 +165,13 @@ The manuscript was written by P. Pazzaglia and N. Vreman, with input and revisio
 % \clearpage %%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection*{Paper V}%
+\section*{Paper V}%
 %
 \begin{quote}
-    \fullcite{Vreman:2023}
+N. Vreman and M. Maggio (2023). ``Stochastic Analysis of Control Systems Subject to Communication and Computation Faults''. In preparation.
 \end{quote}
 
-\nv{Change what is written here below.}
-
-\subsubsection*{Scientific Summary:}%
+\subsection*{Scientific Summary:}%
 %
 Control theory allows one to design controllers that are robust to external disturbances, model simplification, and modelling inaccuracy.
 Researchers have investigated whether the robustness carries on to the controller's digital implementation, mostly looking at how the controller reacts to either communication or computational problems.
@@ -181,36 +181,8 @@ However, the question of what happens when these faults occur simultaneously, as
 In this paper, we answer this question in the stochastic setting, using the theory of Markov Jump Linear Systems to provide stability contracts with \emph{almost sure} guarantees of convergence.
 We apply our method to three case studies from the recent literature and show their robustness to a comprehensive set of faults.
 
-\subsubsection*{Contribution Statement:}%
+\subsection*{Contribution Statement:}%
 %
 M. Maggio proposed the idea of looking into the analysis of systems with a combination of fault and provided guidance for the Markov Jump Linear Systems Analysis. The implementation of the analysis and the generation of the results was done by N. Vreman. The manuscript writing was shared between the two authors.
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% \clearpage %%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\section{Additional Publications}%
-\label{sec:additional-publications}%
-%
-The author of this thesis has also contributed to the following peer-reviewed publications.
-
-\begin{quote}
-    \fullcite{Gunnarsson:2023}
-\end{quote}
-
-\begin{quote}
-    \fullcite{Kruger:2021}
-\end{quote}
-
-\begin{quote}
-    \fullcite{Vreman:2020}
-\end{quote}
-
-\begin{quote}
-    \fullcite{Vreman:2019a}
-\end{quote}
-
-\begin{quote}
-    \fullcite{Vreman:2019b}
-\end{quote}
+\end{document}
