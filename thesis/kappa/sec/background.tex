@@ -550,7 +550,7 @@ where $\sigma(t)$ is the process governing the overruns, e.g., a weakly-hard seq
 For instance, given a sequence $w$ of job outcomes adhering to the weakly-hard constraint $\rowhit{} = \genfrac{<}{>}{0pt}{}{2}{5}$, e.g., $w = 110011011$; indexing the $t$-th character in the word $w$ as $c_t$, the outcome process is $\sigma(t) = c_t$.
 The controller dynamcis then depend on whether the deadline was met ($1$) or overrun ($0$) as well as the scheduler's overrun policy, i.e., whether \tK{}, \tS{}, \tQ{}, or some other deadline overrun strategy was employed.
 
-This does in turn also change the closed-loop dynamics from Equation~\eqref{eq:clsys} to:
+The overrun process changing the control equations does in turn also change the closed-loop dynamics from Equation~\eqref{eq:clsys}:
 %
 \begin{equation}%
     \label{eq:tv-clsys}%
@@ -584,7 +584,7 @@ Immensely simplified:
 \end{itemize}
 %
 In practice, these conditions directly correspond to verifying that all the system's eigenvalues are either strictly in the left half plane (continuous systems) or strictly inside the unit disc (discrete systems).
-For instance, consider a continuous-time and discrete-time LTI plant model~\eqref{eq:discrete-lti-plant}; the Hurwitz respectively Schur stability criterion is then:
+The Hurwitz stability criterion for a continuous-time LTI system with system matrix $\Ap_c$ and the Schur stability criterion for a discrete-time LTI system with system matrix $\Ap$ is then:
 %
 \begin{table}[h]
     \def\arraystretch{1.5}%
@@ -598,7 +598,37 @@ For instance, consider a continuous-time and discrete-time LTI plant model~\eqre
 \newline\noindent
 where $\eig{}{\cdot}$ computes a vector of eigenvalues and $\mathrm{Re}\funof{\cdot}$ extracts the real-part of a complex number (element-wise when applied to a vector).
 
+% Lyapunov stability
+Another useful tool for determining stability of a dynamical system is \emph{Lyapunov's second method} (more frequently referred to as \emph{Lyapunov's stability criterion}).
+Essentially, the stability criterion is based on deriving an energy function $V$ (denoted the \emph{Lyapunov function}) for the system under consideration.
+The following theorem is a paraphrased version of the discrete-time Lyapunov stability criterion~\cite{Astrom:1997}~\addref{}.
+%
+\begin{theorem}[Lyapunov's Second Method for Stability]
+    \label{thm:lyapunov}%
+    Let $V(x)$ be a Lyapunov function candidate for the system $x_{t+1} = f(x_t)$ which has a point of equilibrium in $x_t = x^e$, i.e., $V(x)$ is a continuous function in $x$ satisfying the following:
+    \begin{itemize}
+        \item $V(x) = 0$ if and only if $x = x^e$,
+        \item $V(x) > 0$ if and only if $x \neq x^e$,
+        \item $V(x) \rightarrow \infty$ if $\norm{x} \rightarrow \infty$,
+        \item $V(f(x)) - V(x) \leq 0,\; \forall x$.
+    \end{itemize}
+    %
+    Then the following are equivalent:
+    %
+    \begin{enumerate}
+        \item The point of equilibrium $x^e$ is globally asymptotically stable (GAS).
+        \item The Lyapunov function candidate $V(x)$ exists.
+    \end{enumerate}
+\end{theorem}
+%
+A visual argument involve thinking of a physical system, for instance, an oscillating pendulum; it will always move toward the position with the lowest energy, finally reaching its resting state when it is hanging freely downwards, i.e., where the potential energy of the pendulum is minimal.
 
+Lyapunov stability is a powerful tool in control, mainly because it does not require as strong assumptions on the system $f(x)$ as, for instance, the Schur stability criterion.
+However, the main threshold to overcome before applying Theorem~\ref{thm:lyapunov} is finding a suitable Lyapunov candidate function $V(x)$, which in general is a complex problem.
+
+% Switching stability
+
+% MSS, MS
 
 
 
