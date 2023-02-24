@@ -441,7 +441,7 @@ A state-space system is linear if the functions $f$ and $g$ can be expressed as 
     \end{aligned}\right.
 \end{equation}
 %
-Here, the matrices $\Ap_c(t) \in \R^{n_x \times n_x}$ and $\Bp_c(t) \in \R^{n_x \times n_u}$ govern the state evolution of the plant while $\Cp_c(t) \in \R^{n_y \times n_x}$ and $\Dp_c(t) \in \R^{n_y \times n_u}$ describe its output process.
+The matrices $\Ap_c(t) \in \R^{n_x \times n_x}$ and $\Bp_c(t) \in \R^{n_x \times n_u}$ govern the state evolution of the plant while $\Cp_c(t) \in \R^{n_y \times n_x}$ and $\Dp_c(t) \in \R^{n_y \times n_u}$ describe its output process.
 The plant is said to be linear time-invariant (LTI) if none of the matrices in Equation~\eqref{eq:linear-state-space} are time-dependent, e.g., $\Ap_c(t) = \Ap_c$.
 
 If the plant is continuous, it is typically \emph{discretised} to simplify the analysis, synthesis, and implementation of the controllers.
@@ -464,7 +464,7 @@ The resulting discrete-time, LTI model of the plant $\plant$ is then:
     \end{aligned}\right.
 \end{equation}
 %
-Here, the variable subscripts counts the discrete time samples since system startup, i.e., $x_t = x(t\cdot \Ts)$ and $x_{t+1} = x(t\cdot \Ts + \Ts)$.
+where the variable subscripts counts the discrete time samples since system startup, i.e., $x_t = x(t\cdot \Ts)$ and $x_{t+1} = x(t\cdot \Ts + \Ts)$.
 Additionally, the state's disturbance process $w_t \in \R^{n_w}$ and dynamic matrix $\Wp \in \R^{n_x \times n_w}$ are added.
 The disturbance process is typically a stochastic process with (assumed) known statistical properties, modelling the unknown plant dynamics and exogenous signals.
 
@@ -502,7 +502,7 @@ From the domain of optimal control, the linear-quadratic regulator (LQR) was der
 The linear and stateless LQR algorithm has been the subject to a large research effort~\addref{}, likely due to its elegant mathematical properties.
 Additionally, the LQR is a fundamental part of solving the linear-quadratic-Gaussian (LQG) problem~\addref{}.
 Like LQR, model predictive control (MPC) originate from optimal control~\addref{}; however, they differ in the cost function's structure.
-Where LQR optimises the control over a full window, MPC provides a receding time horizon solution while also supporting constraints on the trajectory, control state, and control signal.
+When LQR optimises the control structure over a full time window, MPC provides a receding time horizon solution while also supporting constraints on the trajectory, control state, and control signal.
 \question{Add more?}{}
 
 %\question{The following paragraph should probably be removed}{}
@@ -519,7 +519,7 @@ Where LQR optimises the control over a full window, MPC provides a receding time
 %%
 %Every control task's job invocation is supposed to complete steps~\ref{item:rx} to~\ref{item:tx}.
 
-Control theory is dedicated to developing models and algorithms for designing $p$ and $q$ such that the control system's state follows a desired trajectory while minimising undesirable effects such as noise, disturbances, and large actuator commands.
+Control theory is dedicated to developing models and algorithms (such as PID, LQR, LQG, and MPC) for designing $p$ and $q$ such that the control system's state follows a desired trajectory while minimising undesirable effects such as noise, disturbances, and large actuator commands.
 In Sections~\ref{sec:background:stability} and~\ref{sec:background:performance}, the control law's objectives will be expanded upon, particularly discussing \emph{stability}  and \emph{performance}.
 However, to discuss stability and performance in real-time control systems, it is crucial to first properly introduce \emph{feedback}.
 The sensor signals that are received at the controller are processed by the control algorithm before the computed control signal is transmitted back to the actuators.
@@ -547,6 +547,9 @@ In place of Equation~\eqref{eq:discrete-lti-ctrler}, the controller $\ctrler$ is
 \end{equation}
 %
 where $\sigma(t)$ is the process governing the overruns, e.g., a weakly-hard sequence or Markov process.
+For instance, given a sequence $w$ of job outcomes adhering to the weakly-hard constraint $\rowhit{} = \genfrac{<}{>}{0pt}{}{2}{5}$, e.g., $w = 110011011$; indexing the $t$-th character in the word $w$ as $c_t$, the outcome process is $\sigma(t) = c_t$.
+The controller dynamcis then depend on whether the deadline was met ($1$) or overrun ($0$) as well as the scheduler's overrun policy, i.e., whether \tK{}, \tS{}, \tQ{}, or some other deadline overrun strategy was employed.
+
 This does in turn also change the closed-loop dynamics from Equation~\eqref{eq:clsys} to:
 %
 \begin{equation}%
@@ -564,7 +567,39 @@ Both MJLS and switching systems will be discussed further in the upcoming sectio
 \subsection{Control System Stability}%
 \label{sec:background:stability}%
 %
-\nv{CONTINUE HERE}
+One of the fundamental objectives of all control synthesis is to \emph{stabilise} the system.
+Stability theory is a broad domain and there exists many both weak and strong definitions of stability.
+For dynamical systems (such as control systems), a common notion of stability is that bounded perturbations in the initial conditions of a differential (or difference) equation results in bounded perturbations in the solution.
+In other words, if a system is \emph{stable} for a bounded set of initial condition then the solution will not grow unbounded.
+Conversely, if a system is \emph{unstable} the solution grows unbounded.
+As an example, if the taxiing system was unstable, under certain conditions the wheel velocity would rapidly increase until the wheel engine shut down or broke down (a highly undesirable behaviour).
+
+In practice, these vague notions of stability are formalised in rigorous mathematical definitions.
+Two of the classic definitions of stability for \emph{linear} dynamical systems are the Routh-Hurwitz stability criterion for continuous systems~\addref{} and the Schur stability criterion for discrete systems~\addref{}.
+Immensely simplified:
+%
+\begin{itemize}
+    \item A continuous-time linear system is said to be \emph{Hurwitz stable} if all its characteristic polynomial's roots lie in the open left half-plane.
+    \item A discrete-time linear system is said to be \emph{Schur stable} if all its characteristic polynomial's roots lie inside the open unit disk.
+\end{itemize}
+%
+In practice, these conditions directly correspond to verifying that all the system's eigenvalues are either strictly in the left half plane (continuous systems) or strictly inside the unit disc (discrete systems).
+For instance, consider a continuous-time and discrete-time LTI plant model~\eqref{eq:discrete-lti-plant}; the Hurwitz respectively Schur stability criterion is then:
+%
+\begin{table}[h]
+    \def\arraystretch{1.5}%
+    \centering%
+    \begin{tabular}{c|c}
+        Hurwitz & Schur \\ \hline
+        $\underset{i}{\max}{\funof{\mathrm{Re}\funof{\eig{}{\Ap_c}}}} < 0$ & $\underset{i}{\max}{\abs{\eig{}{\Ap}}} < 1$
+    \end{tabular}
+\end{table}
+%
+\newline\noindent
+where $\eig{}{\cdot}$ computes a vector of eigenvalues and $\mathrm{Re}\funof{\cdot}$ extracts the real-part of a complex number (element-wise when applied to a vector).
+
+
+
 
 
 \subsection{Control System Performance}%
