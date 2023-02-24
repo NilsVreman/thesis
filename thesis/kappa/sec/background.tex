@@ -219,7 +219,7 @@ Due to this individuality, most real-time systems were historically divided into
 %
 \question%
 {Should I mention something about soft real-time models here as well (since we use it in Paper 2 and 5)?}%
-{}
+{Yes, I should}
 Despite these classes covering many real-time systems, they do not cover all cases.
 Prominent for real-time control systems are the \emph{firm real-time systems}, characterised by being able to overrun a few, but not too many, deadlines before causing critical system failure.
 
@@ -259,7 +259,7 @@ With a slight abuse of notation we will let $w \vdash \lambda$ represent the cas
     The \emph{satisfaction set} $\sset{N}{\lambda}$ of an arbitrary weakly-hard constraint $\lambda$, is the set of all length $N \in \N^{>}$ words $w$ satisfying $\lambda$.
     Formally:
     \begin{equation}
-        \sset{N}{\lambda} = \left\{ w \mid w \in \Sigma^N, w \vdash \lambda \right\}.
+        \sset{N}{\lambda} = \left\{ w \mid w \in \Sigma^N,\, w \vdash \lambda \right\}.
     \end{equation}
 \end{definition}
 %
@@ -493,7 +493,7 @@ Similar to the plant, if $p$ and $q$ can be expressed as linear combinations of 
 %
 We say that a controller $\ctrler$ is \emph{stateless} (or \emph{static}) if it has no dependence on the internal state $z$, i.e., $n_z = 0$.
 Furthermore, a \emph{stateful} (or \emph{dynamic}) controller $\ctrler$ is any controller that depend on its internal state $z$, i.e., $n_z > 0$.
-\question{Talk about LET?}{}
+\question{Maybe add a long footnote about LET somewhere around here?}{}
 
 The vast treatise on synthesis and analysis of both linear and non-linear control laws that exists is likely too large to review in any thesis; however, some of the most known algorithms are outlined here.
 Arguably the most famous control structure is the proportional-integral-derivative (PID) controller, in which the error between the sensor measurements and the desired plant states are used to compute the new control signal~\cite{Astrom:2006}.
@@ -503,7 +503,7 @@ The linear and stateless LQR algorithm has been the subject to a large research 
 Additionally, the LQR is a fundamental part of solving the linear-quadratic-Gaussian (LQG) problem~\addref{}.
 Like LQR, model predictive control (MPC) originate from optimal control~\addref{}; however, they differ in the cost function's structure.
 When LQR optimises the control structure over a full time window, MPC provides a receding time horizon solution while also supporting constraints on the trajectory, control state, and control signal.
-\question{Add more?}{}
+\question{Add more advanced control architectures?}{}
 
 %\question{The following paragraph should probably be removed}{}
 %Regardless of the employed control law, to execute it in a real-time task it has to be translated into an implementable function, as highlighted in Figure~\ref{fig:control-structure-abstraction}.
@@ -591,44 +591,62 @@ The Hurwitz stability criterion for a continuous-time LTI system with system mat
     \centering%
     \begin{tabular}{c|c}
         Hurwitz & Schur \\ \hline
-        $\underset{i}{\max}{\funof{\mathrm{Re}\funof{\eig{}{\Ap_c}}}} < 0$ & $\underset{i}{\max}{\abs{\eig{}{\Ap}}} < 1$
+        $\max{ \left\{ \mathrm{Re}\funof{\eig{i}{\Ap_c}} \right\}} < 0$ & $\max{ \left\{ \abs{\eig{i}{\Ap}} \right\}} < 1$
     \end{tabular}
 \end{table}
 %
 \newline\noindent
-where $\eig{}{\cdot}$ computes a vector of eigenvalues and $\mathrm{Re}\funof{\cdot}$ extracts the real-part of a complex number (element-wise when applied to a vector).
+where $\eig{i}{X}$ retrieves the $i$-th eigenvalue of $X$ and $\mathrm{Re}\funof{\cdot}$ extracts the real-part of a complex number (element-wise when applied to a vector).
+It is worth noting that the Schur stability criterion is dependent on the \emph{spectral radius} of the system, i.e., the maximum asymptotic growth rate of the system.
+Denoting with $\rho\funof{X}$ the spectral radius of a square matrix $X \in \R^{n \times n}$, it is then defined as\footnote{This is true regardless of the chosen matrix norm.}:
+%
+\begin{equation}%
+    \label{eq:spectral-radius}%
+    \rho\funof{X} = \max \left\{ \abs{\eig{1}{X}}, \abs{\eig{2}{X}}, \ldots, \abs{\eig{n}{X}} \right\} = \lim_{t\rightarrow\infty} \norm{X^t}^{\sfrac{1}{t}}.
+\end{equation}
 
 % Lyapunov stability
-Another useful tool for determining stability of a dynamical system is \emph{Lyapunov's second method} (more frequently referred to as \emph{Lyapunov's stability criterion}).
-Essentially, the stability criterion is based on deriving an energy function $V$ (denoted the \emph{Lyapunov function}) for the system under consideration.
-The following theorem is a paraphrased version of the discrete-time Lyapunov stability criterion~\cite{Astrom:1997}~\addref{}.
-%
-\begin{theorem}[Lyapunov's Second Method for Stability]
-    \label{thm:lyapunov}%
-    Let $V(x)$ be a Lyapunov function candidate for the system $x_{t+1} = f(x_t)$ which has a point of equilibrium in $x_t = x^e$, i.e., $V(x)$ is a continuous function in $x$ satisfying the following:
-    \begin{itemize}
-        \item $V(x) = 0$ if and only if $x = x^e$,
-        \item $V(x) > 0$ if and only if $x \neq x^e$,
-        \item $V(x) \rightarrow \infty$ if $\norm{x} \rightarrow \infty$,
-        \item $V(f(x)) - V(x) \leq 0,\; \forall x$.
-    \end{itemize}
-    %
-    Then the following are equivalent:
-    %
-    \begin{enumerate}
-        \item The point of equilibrium $x^e$ is globally asymptotically stable (GAS).
-        \item The Lyapunov function candidate $V(x)$ exists.
-    \end{enumerate}
-\end{theorem}
-%
-A visual argument involve thinking of a physical system, for instance, an oscillating pendulum; it will always move toward the position with the lowest energy, finally reaching its resting state when it is hanging freely downwards, i.e., where the potential energy of the pendulum is minimal.
-
-Lyapunov stability is a powerful tool in control, mainly because it does not require as strong assumptions on the system $f(x)$ as, for instance, the Schur stability criterion.
-However, the main threshold to overcome before applying Theorem~\ref{thm:lyapunov} is finding a suitable Lyapunov candidate function $V(x)$, which in general is a complex problem.
+Another useful tool for determining stability of a dynamical system is \emph{Lyapunov's second method} -- more frequently referred to as \emph{Lyapunov's stability criterion}.
+Essentially, the stability criterion is based on finding a function with particular properties (denoted the \emph{Lyapunov function}) for the system under consideration; if a Lyapunov function exists, the system is globally asymptotically stable~\cite{Astrom:1997}.
+The Lyapunov function is an energy function which is zero at the unique point of equilibrium, positive everywhere else, and decreases along all trajectories of the system.
+For instance, consider an oscillating pendulum; it will always move toward the position with the lowest energy, finally reaching its resting state when it is hanging freely downwards, i.e., where the potential energy of the pendulum has reached its equilibrium.
+Unfortunately, finding a suitable Lyapunov function is generally a very complex problem -- in particular when the system experiences switching dynamics due to overruns.
 
 % Switching stability
+Fortunately, the \emph{joint spectral radius} (JSR)~\cite{Rota:1960} has in recent years become the subject of intense research due to its role in (among others) discrete-time switching systems stability analysis.
+From its name, it might be clear that the joint spectral radius is a generalisation of the spectral radius from Equation~\eqref{eq:spectral-radius}.
+In fact, the JSR generalises the spectral radius to a set of matrices $\Aa$ (denoted the \emph{switching set}), i.e., it represents the maximum asymptotic growth rate of the arbitrary switching between matrices in the set.
+To simplify the generalisation, we borrow the following notation from~\cite{Jungers:2009}:
+%
+\begin{equation}
+    \Aa^t \triangleq \left\{ \clmat_1 \ldots \clmat_t \mid \clmat_i \in \Aa \right\}
+\end{equation}
+%
+In other words, $\Aa^t$ is the set of \emph{all} ordering combinations of matrices in the set $\Aa$.
+Using the introduced notation, the following definition provides a formal definition of the JSR~\cite{Jungers:2009}.
+%
+\begin{definition}[Joint Spectral Radius]%
+    \label{def:jsr}%
+    Given a bounded set of matrices $\Aa$, the \emph{joint spectral radius} (JSR) of $\Aa$ is defined as
+    \begin{equation*}
+        \rho\funof{\Aa} = \underset{t\rightarrow\infty}{\lim{}\sup{}} \left\{ \norm{\clmat}^{\sfrac{1}{t}} \mid \clmat \in \Aa^t \right\}
+    \end{equation*}
+\end{definition}
+\fix{I know I need to write a bit about JSR in relation to Lyapunov. Do you (MM) know of any literature on this?}
+
+Intuitively, since an LTI system is Schur stable if the spectral radius is less than one, it is easy to argue that the switching system is stable if the joint spectral radius is less than.
+Since $\rho\funof{\Aa} < 1$ implies that the worst-case sequence of matrices $\clmat_{WC} \in \Aa^t$ has a bounded growth rate $\norm{\clmat_{WC}} < 1$, it must mean that the switching system $x_t = \clmat_{WC}\cdot x_0$ is bounded by the triangle inequality, i.e., $\abs{x_t} \leq \norm{\clmat_{WC}}\abs{x_0} \rightarrow 0$.
+However, this raises an interesting question in the converse case: which is the switching sequence $\clmat \in \Aa^t$ resulting in $\rho\funof{\Aa} \geq 1$?
+To the best of this thesis' author's knowledge, there are currently no results outlining \emph{which} sequence that destabilises the switched dynamical system.
+We conclude the discussion of the joint spectral radius with a theorem on the stability of switched dynamical systems~\cite{Jungers:2009}: 
+%
+\begin{theorem}[Switching Stability]%
+    \label{thm:switching-stability}%
+    For any bounded set of matrices $\Aa$, the corresponding switched dynamical system is stable if and only if $\rho\funof{\Aa} < 1$.
+\end{theorem}
 
 % MSS, MS
+\nv{CONTINUE HERE}
 
 
 
