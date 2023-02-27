@@ -637,7 +637,7 @@ Using the introduced notation, the following definition provides a formal defini
 % https://link.springer.com/chapter/10.1007/978-3-540-95980-9_3
 
 Intuitively, since an LTI system is Schur stable if the spectral radius is less than one, it is easy to argue that a switching system is stable if the joint spectral radius is less than.
-Since $\rho\funof{\Aa} < 1$ implies that the worst-case sequence of matrices $\clmat_{WC} \in \Aa^t$ has a bounded growth rate $\norm{\clmat_{WC}} < 1$, it must mean that the switching system $x_t = \clmat_{WC}\cdot x_0$ is bounded by the triangle inequality, i.e., $\abs{x_t} \leq \norm{\clmat_{WC}}\abs{x_0} \rightarrow 0$.
+Since $\rho\funof{\Aa} < 1$ implies that the worst-case sequence of matrices $\clmat_{WC} \in \Aa^t$ has a bounded growth rate $\norm{\clmat_{WC}} < 1$, it must mean that the switching system $\tilde{x}_t = \clmat_{WC}\cdot \tilde{x}_0$ is bounded by the triangle inequality, i.e., $\abs{\tilde{x}_t} \leq \norm{\clmat_{WC}}\abs{\tilde{x}_0} \rightarrow 0$.
 Stability of a switched dynamical system via the joint spectral radius is outlined in the following theorem (for more details and a formal proof we refer the interested reader to~\cite{Jungers:2009}): 
 %
 \begin{theorem}[Switching Stability]%
@@ -648,26 +648,49 @@ Stability of a switched dynamical system via the joint spectral radius is outlin
 Furthermore, Theorem~\ref{thm:switching-stability} raises an interesting question about the converse case: which is the switching sequence $\clmat \in \Aa^t$ resulting in $\rho\funof{\Aa} \geq 1$?
 To the best of this thesis' author's knowledge, there are currently no results outlining \emph{which} sequence that destabilises the switched dynamical system.
 
-The JSR is a powerful tool, since it makes it possible to determine whether a switching system is asymptotically stable ($\rho\funof{\Aa} < 1$) or not ($\rho\funof{\Aa} \geq 1$).
+The JSR is a powerful tool since it makes it possible to determine whether a switching system is asymptotically stable ($\rho\funof{\Aa} < 1$) or not ($\rho\funof{\Aa} \geq 1$).
 However, the problem of computing the exact JSR value, and thus also testing whether or not the system is stable, is in practice undecidable~\cite{Blondel:2000}.
 To overcome this problem, the research community have in the last decade set out to develop and improve approximation methods, bounding the JSR from above and below~\addref{}.
+Multiple different methods have been developed to approximate the JSR, such as: \nv{ADD MORE JSR methods}.
 Trivially, if an approximation method provides an upper bound on the JSR that is below one for the switched dynamical system, it is confirmed to be stable; conversely, if the lower bound is above one, the system is guaranteed unstable.
 The active research in this field continues to enhance the bounds as well as algorithmic complexities, thus constantly improving the applicability of the JSR notion.
 
 % MSS, MS
-If the overrun process in Equation~\eqref{eq:tv-clsys} is governed by a Markov model, it is possible to utilise well-known results for Markov jump linear systems (MJLS) instead of switching system analysis~\cite{Lincoln:2002, Feng:1992, Nilsson:1998}.
+If the overrun process in Equation~\eqref{eq:tv-clsys} is governed by a Markov model, it is possible to utilise well-known results for Markov jump linear systems (MJLS)~\cite{Lincoln:2002, Feng:1992, Nilsson:1998}.
 While the switching system stability analysis (e.g., JSR) provides a deterministic stability certificate, i.e., the switching system stability analysis provides guarantees that the dynamical system will be stable under \emph{all} configurations of the different modes, the MJLS stability analysis provides a stochastic certificate.
-The stochastic certificate does in turn provide probabilistic guarantees that the MJLS will \emph{almost surely}\footnote{In probability theory, the notion of \emph{almost surely} means that an event will happen with probability $1$.} converge to its equilibrium point~\cite{Feng:1992}.
+This certificate does in turn provide probabilistic guarantees that the MJLS will \emph{almost surely}\footnote{In probability theory, the notion of \emph{almost surely} means that an event will happen with probability $1$.} converge to its equilibrium point~\cite{Feng:1992}.
 
 Since MJLS are stochastic by nature, the existing stability analyses typically investigate how the expected value of the system's states evolve in time.
-We here provide a definition of \emph{asymptotic mean square stability} (MSS)~\cite{Feng:1992}:
+Arguably the most well-known stability analysis methods are \emph{stochastic stability} (SS) and different variants of \emph{mean-square stability} (MSS)~\cite{Feng:1992}.
+Paraphrased from~\cite{Costa:2005}, we say that the dynamical system in~\eqref{eq:tv-clsys}, governed by a Markov process $\sigma\funof{t}$, is mean-square stable if
 %
-\begin{definition}[Asymptotic Mean Square Stability]
-    For the dynamical system in~\eqref{eq:tv-clsys}, governed by a Markov process $\sigma\funof{t}$, the equilibrium point $x_t = x^e$ is asymptotically mean square stable if for any $x_0$
-\end{definition}
+\begin{equation*}%
+    \lim_{t\rightarrow \infty} \E{\norm{\tilde{x}_t}^2} = \varepsilon < \infty
+\end{equation*}
 %
-In~\cite{Feng:1992}, the authors show that 
-
+In practice, testing for mean-square stability implies verifying that the spectral radius of the operator $\Psi$, i.e., the operator defining the Markov jump linear system's covariance, is less than one.
+We denote an $N$-state Markov chain's transition probability matrix with $\Pi = \left\{ p_{i,j} \right\} \in \R^{N \times N}$; this matrix specifies the probability of transitioning from the $i$-th to the $j$-th Markov state.
+Additionally, $I_{n}$ is the size $n \times n $ identity matrix and $\otimes$ is the Kronecker product.
+Then, the following theorem holds~\cite{Costa:2005}:
+%
+\begin{theorem}[Mean-Square Stability]%
+    \label{thm:mss}%
+    The dynamical system in Equation~\eqref{eq:tv-clsys}, governed by an $N$-state Markov chain with transition probability matrix $\Pi \in \R^{N \times N}$, is MSS if
+    %
+    \begin{equation*}%
+        \rho\funof{\Psi} < 1,
+    \end{equation*}
+    %
+    where
+    %
+    \begin{equation*}%
+        \Psi = \left( \Pi^\T{} \otimes I_{n^2} \right) \cdot \blkdiag{ \left\{ \clmat_i \otimes \clmat_i \, \mid \, i \in 1, 2, \ldots, N \right\} }.
+    \end{equation*}
+\end{theorem}
+%
+In practice, Theorem~\ref{thm:mss} simplifies the MSS testing and implies almost sure stability of the expected dynamics.
+Finding the spectral radius of a matrix is intuitively much faster than, e.g., the joint spectral radius (which has already been discussed to be undecidable).
+This is one of the advantages with the stochastic certificate received by the MSS in comparison to the deterministic one received by computing the JSR.
 
 
 
