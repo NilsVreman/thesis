@@ -493,7 +493,7 @@ Similar to the plant, if $p$ and $q$ can be expressed as linear combinations of 
 %
 We say that a controller $\ctrler$ is \emph{stateless} (or \emph{static}) if it has no dependence on the internal state $z$, i.e., $n_z = 0$.
 Furthermore, a \emph{stateful} (or \emph{dynamic}) controller $\ctrler$ is any controller that depend on its internal state $z$, i.e., $n_z > 0$.
-\question{Maybe add a long footnote about LET somewhere around here?}{}
+\question{Maybe add a long footnote about LET somewhere around here?}{If you add it here, then in Figure~\ref{fig:control-structure-abstraction} you should not have the controller code written according to the LET paradigm and you should instead say in the footnote that this means swapping the last two statements in the controller code from Figure~\ref{fig:control-structure-abstraction}.}
 
 The vast treatise on synthesis and analysis of both linear and non-linear control laws that exists is likely too large to review in any thesis; however, some of the most known algorithms are outlined here.
 Arguably the most famous control structure is the proportional-integral-derivative (PID) controller, in which the error between the sensor measurements and the desired plant states are used to compute the new control signal~\cite{Astrom:2006}.
@@ -560,7 +560,7 @@ The overrun process changing the control equations does in turn also change the 
 If $\sigma(t)$ is governed by a Markov process, then Equation~\eqref{eq:tv-clsys} is denoted a \emph{Markov jump linear system} (MJLS)~\cite{Feng:1992}.
 Instead, if the process changing the closed-loop dynamics is deterministic, it is labeled a \emph{switching system}~\cite{Liberzon:2003}.
 Both MJLS and switching systems will be discussed further in the upcoming sections.
-\question{Is this too big of an oversimplification? Should I add something else?}{}
+\question{Is this too big of an oversimplification? Should I add something else?}{It is a bit too much of an oversimplification, but I think you can simply acknowledge that it is a simplified view, and that later on this will become more clear when you introduce proper notions etc. I would not add something else here (it will come later).}
 
 
 
@@ -632,7 +632,9 @@ Using the introduced notation, the following definition provides a formal defini
         \rho\funof{\Aa} = \underset{t\rightarrow\infty}{\lim{}\sup{}} \left\{ \norm{\clmat}^{\sfrac{1}{t}} \,\mid\, \clmat \in \Aa^t \right\}
     \end{equation*}
 \end{definition}
-\fix{I know I need to write a bit about JSR in relation to Lyapunov. Do you (MM) know of any literature on this?}
+\question{I know I need to write a bit about JSR in relation to Lyapunov. Do you (MM) know of any literature on this?}
+{I would read from page 38 of the JSR book~\cite{Jungers:2009}. Link commented in tex for how to download it.} 
+% https://link.springer.com/chapter/10.1007/978-3-540-95980-9_3
 
 Intuitively, since an LTI system is Schur stable if the spectral radius is less than one, it is easy to argue that a switching system is stable if the joint spectral radius is less than.
 Since $\rho\funof{\Aa} < 1$ implies that the worst-case sequence of matrices $\clmat_{WC} \in \Aa^t$ has a bounded growth rate $\norm{\clmat_{WC}} < 1$, it must mean that the switching system $x_t = \clmat_{WC}\cdot x_0$ is bounded by the triangle inequality, i.e., $\abs{x_t} \leq \norm{\clmat_{WC}}\abs{x_0} \rightarrow 0$.
