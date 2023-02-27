@@ -541,8 +541,8 @@ In place of Equation~\eqref{eq:discrete-lti-ctrler}, the controller $\ctrler$ is
 \begin{equation}%
     \label{eq:tv-ctrler}%
     \ctrler \; : \; \left\{\begin{aligned}
-        z_{t+1} &= \Ac\funof{\sigma(t)}\,z_t + \Bc\funof{\sigma(t)}\,y_t \\
-        u_t &= \Cc\funof{\sigma(t)}\,z_t + \Dc\funof{\sigma(t)}\,y_t \\
+        z_{t+1} &= \Ac_{\sigma(t)}\,z_t + \Bc_{\sigma(t)}\,y_t \\
+        u_t &= \Cc_{\sigma(t)}\,z_t + \Dc_{\sigma(t)}\,y_t \\
     \end{aligned}\right.
 \end{equation}
 %
@@ -554,13 +554,14 @@ The overrun process changing the control equations does in turn also change the 
 %
 \begin{equation}%
     \label{eq:tv-clsys}%
-    \tilde{x}_{t+1} = \clmat\funof{\sigma(t)}\, \tilde{x}_t.
+    \tilde{x}_{t+1} = \clmat_{\sigma(t)}\, \tilde{x}_t.
 \end{equation}
 %
 If $\sigma(t)$ is governed by a Markov process, then Equation~\eqref{eq:tv-clsys} is denoted a \emph{Markov jump linear system} (MJLS)~\cite{Feng:1992}.
 Instead, if the process changing the closed-loop dynamics is deterministic, it is labeled a \emph{switching system}~\cite{Liberzon:2003}.
-Both MJLS and switching systems will be discussed further in the upcoming sections.
-\question{Is this too big of an oversimplification? Should I add something else?}{It is a bit too much of an oversimplification, but I think you can simply acknowledge that it is a simplified view, and that later on this will become more clear when you introduce proper notions etc. I would not add something else here (it will come later).}
+We acknowledge that this simplified description of both Markov jump linear systems and switching systems is extremely coarse.
+In the upcoming sections, we will introduce notation for both MJLS and switching systems such that the stability and performance analyses are unambiguous.
+%\question{Is this too big of an oversimplification? Should I add something else?}{It is a bit too much of an oversimplification, but I think you can simply acknowledge that it is a simplified view, and that later on this will become more clear when you introduce proper notions etc. I would not add something else here (it will come later).}
 
 
 
@@ -584,25 +585,25 @@ Very simplified, the criteria could be summarised by:
 \end{itemize}
 %
 In practice, these conditions directly correspond to verifying that all the system's eigenvalues are either strictly in the left half plane (continuous systems) or strictly inside the unit disc (discrete systems).
-The Hurwitz stability criterion for a continuous-time LTI system with system matrix $\Ap_c$ and the Schur stability criterion for a discrete-time LTI system with system matrix $\Ap$ is then:
+The Hurwitz stability criterion for a continuous-time LTI system with system matrix $\clmat^c$ and the Schur stability criterion for a discrete-time LTI system with system matrix $\clmat$ is then:
 %
 \begin{table}[h]
     \def\arraystretch{1.5}%
     \centering%
     \begin{tabular}{c|c}
         Hurwitz & Schur \\ \hline
-        $\max{ \left\{ \mathrm{Re}\funof{\eig{i}{\Ap_c}} \right\}} < 0$ & $\max{ \left\{ \abs{\eig{i}{\Ap}} \right\}} < 1$
+        $\max{ \left\{ \mathrm{Re}\funof{\eig{i}{\clmat^c}} \right\}} < 0$ & $\max{ \left\{ \abs{\eig{i}{\clmat}} \right\}} < 1$
     \end{tabular}
 \end{table}
 %
 \newline\noindent
-where $\eig{i}{X}$ retrieves the $i$-th eigenvalue of $X$ and $\mathrm{Re}\funof{\cdot}$ extracts the real-part of a complex number (element-wise when applied to a vector).
+where $\eig{i}{\clmat}$ retrieves the $i$-th eigenvalue of $\clmat$ and $\mathrm{Re}\funof{\cdot}$ extracts the real-part of a complex number (element-wise when applied to a vector).
 It is worth noting that the Schur stability criterion is dependent on the \emph{spectral radius} of the system, i.e., the maximum asymptotic growth rate of the system.
-Denoting with $\rho\funof{X}$ the spectral radius of a square matrix $X \in \R^{n \times n}$, it is then defined as\footnote{The second equality is a well-established relation known as Gelfand's formula. The equality holds true regardless of the chosen matrix norm.}:
+Denoting with $\rho\funof{\clmat}$ the spectral radius of a square matrix $\clmat \in \R^{n \times n}$, it is then defined as\footnote{The second equality is a well-established relation known as Gelfand's formula. The equality holds true regardless of the chosen matrix norm.}:
 %
 \begin{equation}%
     \label{eq:spectral-radius}%
-    \rho\funof{X} = \max \left\{ \abs{\eig{1}{X}}, \abs{\eig{2}{X}}, \ldots, \abs{\eig{n}{X}} \right\} = \lim_{t\rightarrow\infty} \norm{X^t}^{\sfrac{1}{t}}.
+    \rho\funof{\clmat} = \max \left\{ \abs{\eig{1}{\clmat}}, \abs{\eig{2}{\clmat}}, \ldots, \abs{\eig{n}{\clmat}} \right\} = \lim_{t\rightarrow\infty} \norm{\clmat^t}^{\sfrac{1}{t}}.
 \end{equation}
 
 % Lyapunov stability
@@ -615,14 +616,17 @@ Unfortunately, finding a suitable Lyapunov function is generally a very complex 
 % Switching stability
 Fortunately, the \emph{joint spectral radius} (JSR)~\cite{Rota:1960} has in recent years become the subject of intense research due to its role in (among others) discrete-time switching systems stability analysis.
 From its name, it might be clear that the joint spectral radius is a generalisation of the spectral radius from Equation~\eqref{eq:spectral-radius}.
-In fact, the JSR generalises the spectral radius to a set of matrices $\Aa$ (denoted the \emph{switching set}), i.e., it represents the maximum asymptotic growth rate of the arbitrary switching between matrices in the set.
+In fact, the JSR generalises the spectral radius to a set of matrices $\Aa = \left\{ \clmat_1, \clmat_2, \ldots, \clmat_N \right\}$ (denoted the \emph{switching set}), i.e., it represents the maximum asymptotic growth rate of the arbitrary switching between matrices in the set.
+For the switched dynamical system in Equation~\eqref{eq:tv-clsys}, each matrix $\clmat_i \in \Aa$ is a unique matrix describing one switching mode of $\sigma\funof{t}$ and the JSR is then the maximal asymptotic growth rate of the closed-loop states $\tilde{x}_t$ under arbitrary switching of the matrices $\clmat_i \in \Aa$.
+Trivially, if the switching set only contains one matrix, i.e., $\Aa = \left\{ \clmat \right\}$, then the joint spectral radius and the spectral radius are equivalent.
+
 To simplify the generalisation, we borrow the following notation from~\cite{Jungers:2009}:
 %
 \begin{equation}
     \Aa^t \triangleq \left\{ \clmat_1 \cdots \clmat_t \,\mid\, \clmat_i \in \Aa \right\}
 \end{equation}
 %
-Thus, $\Aa^t$ is the set of \emph{all} combinations of matrices in the set $\Aa$.
+Thus, $\Aa^t$ is the set of \emph{all} matrix multiplications involving $t$ matrices from the set $\Aa$.
 Using the introduced notation, the following definition provides a formal definition of the JSR~\cite{Jungers:2009}.
 %
 \begin{definition}[Joint Spectral Radius]%
@@ -632,9 +636,6 @@ Using the introduced notation, the following definition provides a formal defini
         \rho\funof{\Aa} = \underset{t\rightarrow\infty}{\lim{}\sup{}} \left\{ \norm{\clmat}^{\sfrac{1}{t}} \,\mid\, \clmat \in \Aa^t \right\}
     \end{equation*}
 \end{definition}
-\question{I know I need to write a bit about JSR in relation to Lyapunov. Do you (MM) know of any literature on this?}
-{I would read from page 38 of the JSR book~\cite{Jungers:2009}. Link commented in tex for how to download it.} 
-% https://link.springer.com/chapter/10.1007/978-3-540-95980-9_3
 
 Intuitively, since an LTI system is Schur stable if the spectral radius is less than one, it is easy to argue that a switching system is stable if the joint spectral radius is less than.
 Since $\rho\funof{\Aa} < 1$ implies that the worst-case sequence of matrices $\clmat_{WC} \in \Aa^t$ has a bounded growth rate $\norm{\clmat_{WC}} < 1$, it must mean that the switching system $\tilde{x}_t = \clmat_{WC}\cdot \tilde{x}_0$ is bounded by the triangle inequality, i.e., $\abs{\tilde{x}_t} \leq \norm{\clmat_{WC}}\abs{\tilde{x}_0} \rightarrow 0$.
@@ -651,7 +652,11 @@ To the best of this thesis' author's knowledge, there are currently no results o
 The JSR is a powerful tool since it makes it possible to determine whether a switching system is asymptotically stable ($\rho\funof{\Aa} < 1$) or not ($\rho\funof{\Aa} \geq 1$).
 However, the problem of computing the exact JSR value, and thus also testing whether or not the system is stable, is in practice undecidable~\cite{Blondel:2000}.
 To overcome this problem, the research community have in the last decade set out to develop and improve approximation methods, bounding the JSR from above and below~\addref{}.
-Multiple different methods have been developed to approximate the JSR, such as: \nv{ADD MORE JSR methods}.
+Multiple different methods have been developed to approximate the JSR, such methods include (but are not limited to): branch and bound~\cite{Gripenberg:1996}, polytope~\cite{Protasov:1996}, Lyapunov-based~\addref{}, semi-definite programming~\addref{}, and sum of Squares relaxation methods~\addref{}.
+\nv{continue here}
+\question{I know I need to write a bit about JSR in relation to Lyapunov. Do you (MM) know of any literature on this?}
+{I would read from page 38 of the JSR book~\cite{Jungers:2009}. Link commented in tex for how to download it.} 
+\nv{continue here}
 Trivially, if an approximation method provides an upper bound on the JSR that is below one for the switched dynamical system, it is confirmed to be stable; conversely, if the lower bound is above one, the system is guaranteed unstable.
 The active research in this field continues to enhance the bounds as well as algorithmic complexities, thus constantly improving the applicability of the JSR notion.
 
@@ -665,7 +670,7 @@ Arguably the most well-known stability analysis methods are \emph{stochastic sta
 Paraphrased from~\cite{Costa:2005}, we say that the dynamical system in~\eqref{eq:tv-clsys}, governed by a Markov process $\sigma\funof{t}$, is mean-square stable if
 %
 \begin{equation*}%
-    \lim_{t\rightarrow \infty} \E{\norm{\tilde{x}_t}^2} = \varepsilon < \infty
+    \lim_{t\rightarrow \infty} \E{\norm{\tilde{x}_t}^2} = \varepsilon < \infty.
 \end{equation*}
 %
 In practice, testing for mean-square stability implies verifying that the spectral radius of the operator $\Psi$, i.e., the operator defining the Markov jump linear system's covariance, is less than one.
