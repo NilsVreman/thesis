@@ -493,7 +493,11 @@ Similar to the plant, if $p$ and $q$ can be expressed as linear combinations of 
 %
 We say that a controller $\ctrler$ is \emph{stateless} (or \emph{static}) if it has no dependence on the internal state $z$, i.e., $n_z = 0$.
 Furthermore, a \emph{stateful} (or \emph{dynamic}) controller $\ctrler$ is any controller that depend on its internal state $z$, i.e., $n_z > 0$.
-\question{Maybe add a long footnote about LET somewhere around here?}{If you add it here, then in Figure~\ref{fig:control-structure-abstraction} you should not have the controller code written according to the LET paradigm and you should instead say in the footnote that this means swapping the last two statements in the controller code from Figure~\ref{fig:control-structure-abstraction}.}
+
+To improve timing predictability whilst also reducing input-output jitter one-step delay controllers are frequently employed\footnote{If the controller adopts a one-step delay approach, the order of the last two statements of the control algorithm in Figure~\ref{fig:control-structure-abstraction} has to be swapped, suggesting that the second equation of the system of equations~\eqref{eq:discrete-lti-ctrler} instead should be read as $u_{t+1} = \Cc\,z_t+\Dc\,y_t$. However, the control law's reformulation is typically made implicitly by augmenting the controller's state with the control signal.}.
+The one-step delay is generally taken into consideration during the control design process, in other words, the control algorithm is designed for the control signal to be computed during the $t$-th control period and to be set out to the actuators at the release of the $t+1$-st control job.
+In the real-time literature, one-step delay are commonly referred to as \emph{logical execution time} (LET) controllers~\cite{Ernst:2018, Gemlau:2021, Kirsch:2012}.
+The LET paradigm simplifies the schedulability analysis, improves timing predictability, and removes time-varying computational delays (e.g., release jitter, context switching overhead, and interrupts), but it comes at the cost of introducing a time-delay in the actuation.
 
 The vast treatise on synthesis and analysis of both linear and non-linear control laws that exists is likely too large to review in any thesis; however, some of the most known algorithms are outlined here.
 Arguably the most famous control structure is the proportional-integral-derivative (PID) controller, in which the error between the sensor measurements and the desired plant states are used to compute the new control signal~\cite{Astrom:2006}.
@@ -503,21 +507,6 @@ The linear and stateless LQR algorithm has been the subject to a large research 
 Additionally, the LQR is a fundamental part of solving the linear-quadratic-Gaussian (LQG) problem~\addref{}.
 Like LQR, model predictive control (MPC) originate from optimal control~\addref{}; however, they differ in the cost function's structure.
 When LQR optimises the control structure over a full time window, MPC provides a receding time horizon solution while also supporting constraints on the trajectory, control state, and control signal.
-\question{Add more advanced control architectures?}{}
-
-%\question{The following paragraph should probably be removed}{}
-%Regardless of the employed control law, to execute it in a real-time task it has to be translated into an implementable function, as highlighted in Figure~\ref{fig:control-structure-abstraction}.
-%Typically, the execution procedure goes as follows:
-%\begin{enumerate}[label=(\roman*)]
-%    \item the sensors sample the respective plant quantity they are overseeing,
-%    \item the sample is sent over a channel to the embedded system's I/O interface,
-%    \item \label{item:rx} the control task polls the memory register where the sensor value is stored,
-%    \item using the sensor data, it computes a new control signal and updates its internal state,
-%    \item \label{item:tx} the control command is stored in a register for the I/O interface to read and send it over another channel to the appropriate actuator,
-%    \item the actuator receives the control command and acts on the plant thereafter.
-%\end{enumerate}
-%%
-%Every control task's job invocation is supposed to complete steps~\ref{item:rx} to~\ref{item:tx}.
 
 Control theory is dedicated to developing models and algorithms (such as PID, LQR, LQG, and MPC) for designing $p$ and $q$ such that the control system's state follows a desired trajectory while minimising undesirable effects such as noise, disturbances, and large actuator commands.
 In Sections~\ref{sec:background:stability} and~\ref{sec:background:performance}, the control law's objectives will be expanded upon, particularly discussing \emph{stability}  and \emph{performance}.
@@ -651,13 +640,36 @@ To the best of this thesis' author's knowledge, there are currently no results o
 
 The JSR is a powerful tool since it makes it possible to determine whether a switching system is asymptotically stable ($\rho\funof{\Aa} < 1$) or not ($\rho\funof{\Aa} \geq 1$).
 However, the problem of computing the exact JSR value, and thus also testing whether or not the system is stable, is in practice undecidable~\cite{Blondel:2000}.
-To overcome this problem, the research community have in the last decade set out to develop and improve approximation methods, bounding the JSR from above and below~\addref{}.
-Multiple different methods have been developed to approximate the JSR, such methods include (but are not limited to): branch and bound~\cite{Gripenberg:1996}, polytope~\cite{Protasov:1996}, Lyapunov-based~\addref{}, semi-definite programming~\addref{}, and sum of Squares relaxation methods~\addref{}.
-\nv{continue here}
-\question{I know I need to write a bit about JSR in relation to Lyapunov. Do you (MM) know of any literature on this?}
-{I would read from page 38 of the JSR book~\cite{Jungers:2009}. Link commented in tex for how to download it.} 
-\nv{continue here}
-Trivially, if an approximation method provides an upper bound on the JSR that is below one for the switched dynamical system, it is confirmed to be stable; conversely, if the lower bound is above one, the system is guaranteed unstable.
+To overcome this problem, the research community have in the last decade set out to develop and improve approximation methods, bounding the JSR from above and below~\cite{Jungers:2009}.
+Multiple different methods have been developed to approximate the JSR, such methods include (but are not limited to): branch and bound~\cite{Gripenberg:1996}, polytope~\cite{Protasov:1996}, ellipsoidal norms~\cite{Blondel:2005, John:2014}, and sum-of-squares (SOS) relaxation methods~\cite{Parrilo:2008, Wang:2021a, Wang:2021b}.
+
+An interesting relation to the Lyapunov stability is the fact that searching for a common ellipsoidal norm is equivalent to finding a \emph{common quadratic Lyapunov function}.
+However, in~\cite{Ando:1998} the authors describe a constructive method for generating asymptotically stable switching systems for which no common quadratic Lyapunov function exist.
+Instead, the authors of~\cite{Parrilo:2008} prove that if the solution to the SOS problem in Equation~\eqref{eq:sos} provides a pair $(p\funof{x}, \gamma)$ such that
+%
+\begin{enumerate*}[label=(\roman*)]
+    \item the polynomial $p\funof{x}$ is homogeneous and in the interior of the SOS cone and
+    \item $\gamma < 1$,
+\end{enumerate*}
+%
+then $p\funof{x}$ is positive definite and decreases along all trajectories, meaning that $p\funof{x}$ is a Lyapunov function for the switching system defined by $\Aa$.
+%
+\begin{equation}%
+    \label{eq:sos}%
+    \begin{aligned}
+        \rho_{\mathrm{SOS},2d}\funof{\Aa} =& \inf_{p\funof{x} \in \R_{2d}\left[x\right], \gamma}  \gamma \\
+        \textrm{s.t.}\quad&
+        \left\{\begin{matrix*}[l]
+                p\funof{x} &\in \mathrm{SOS}_{2d},\\
+                \gamma^{2d} p\funof{x} - p\funof{\clmat_i x} &\in \mathrm{SOS}_{2d},\; \clmat_i \in \Aa.
+        \end{matrix*}\right.
+    \end{aligned}
+\end{equation}
+%
+Here $\R_{2d} \left[ x \right]$ is the set of homogeneous polynomials of degree $2d$.
+Additionally, the authors show how the upper bound on the JSR achieved by the SOS approach in Equation~\eqref{eq:sos} is never weaker than the one obtained with a common quadratic Lyapunov function.
+
+Trivially, since $\rho^{LB}\funof{\Aa} \leq \rho\funof{\Aa} \leq \rho^{UB}\funof{\Aa}$, if an approximation method provides an upper bound $\rho^{UB}\funof{\Aa}$ that is below one for the switched dynamical system, it is confirmed to be stable; conversely, if the lower bound $\rho^{LB}\funof{\Aa}$ is above one, the system is guaranteed unstable.
 The active research in this field continues to enhance the bounds as well as algorithmic complexities, thus constantly improving the applicability of the JSR notion.
 
 % MSS, MS
