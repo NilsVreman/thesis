@@ -207,7 +207,7 @@ Respectively, if the job completes before its deadline, it \emph{meets} its dead
 Computational overruns are present in generally all real-time domains from avionics and defence to consumer electronics~\cite{Akesson:2020}, thus highlighting the importance of analysing their impact on the systems' functional correctness.
 
 % task models -> soft, hard, weakly-hard
-Every real-time systems behave differently to deadline overruns.
+Every real-time system behave differently to deadline overruns.
 Depending on the application, some systems crash while others experience a degraded efficiency.
 Due to this individuality, most real-time systems were historically divided into two classes describing how the systems were affected by computational overruns.
 %
@@ -217,11 +217,12 @@ Due to this individuality, most real-time systems were historically divided into
     \item \emph{Soft real-time systems} -- The perceived quality of the system is degraded with the number of overrun deadlines, but it is unlikely that it will impact system safety.
 \end{itemize}
 %
-\question%
-{Should I mention something about soft real-time models here as well (since we use it in Paper 2 and 5)?}%
-{Yes, I should}
-Despite these classes covering many real-time systems, they do not cover all cases.
-Prominent for real-time control systems are the \emph{firm real-time systems}, characterised by being able to overrun a few, but not too many, deadlines before causing critical system failure.
+\note{MM: Could you double check this paragraph, please?}
+Since the soft real-time systems typically do not crash with a finite number of deadline overruns, it is common that they are modelled using stochastic processes.
+For instance, the simplest models assume that jobs' deadline outcomes are independent and identically distributed random variables, i.e., that the outcome of each job only depend on the probability that this specific job overrun its deadline.
+Intuitively, this assumption is too simplistic for real systems and instead stochastic models for the task execution were developed based on, e.g., Markov chains~\cite{Liu:2005, Friebe:2022, Abeni:2017} and task chains~\cite{Manolache:2004, Liu:2010}.
+Despite the hard and soft classes covering many real-time systems, they do not cover all cases.
+Prominent for, in particular, real-time control systems are the \emph{firm real-time systems}, characterised by being able to overrun a few, but not too many, deadlines before causing critical system failure.
 
 Arguably the most recognised firm model is the \emph{weakly-hard} task model~\cite{Bernat:2001}.
 The weakly-hard model was originally devised to provide formal guarantees to tasks that can tolerate occasional deadline overruns, e.g., control tasks where decreasing the sampling time would improve the overall performance whilst introducing intermittent computational overruns.
