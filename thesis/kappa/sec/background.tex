@@ -661,8 +661,8 @@ then $p\funof{x}$ is positive definite and decreases along all trajectories, mea
         \rho_{\mathrm{SOS},2d}\funof{\Aa} =& \inf_{p\funof{x} \in \R_{2d}\left[x\right], \gamma}  \gamma \\
         \textrm{s.t.}\quad&
         \left\{\begin{matrix*}[l]
-                p\funof{x} &\in \mathrm{SOS}_{2d},\\
-                \gamma^{2d} p\funof{x} - p\funof{\clmat_i x} &\in \mathrm{SOS}_{2d},\; \clmat_i \in \Aa.
+                p\funof{x} &\text{is SOS},\\
+                \gamma^{2d} p\funof{x} - p\funof{\clmat_i x} &\text{is SOS},\; \clmat_i \in \Aa.
         \end{matrix*}\right.
     \end{aligned}
 \end{equation}
@@ -723,7 +723,7 @@ Performance as a metric to be measured exists in many differing domains, however
 
 Evaluating the performance of a control system involves first defining what is important for the application in focus.
 As mentioned in Section~\ref{sec:background:ctrl}, the objective of controller synthesis is to design the functions $p$ and $q$ from Equation~\eqref{eq:discrete-state-space} such that some predetermined requirements are met.
-Aside from the obvious stability necessity, such requirements typically involve (but are not limited to):
+Aside from the obvious stability necessity, the requirements typically involve (but are not limited to):
 %
 \begin{enumerate*}[label=(\roman*)]
     \item accurately following a desired system trajectory,
@@ -733,17 +733,17 @@ Aside from the obvious stability necessity, such requirements typically involve 
     \item estimating or predicting the system state by eliminating inaccuracies and measurement errors.
 \end{enumerate*}
 %
-Ideally, any controller's ultimate goal is to track the desired system trajectory perfectly and immediately whilst rejecting all disturbances and keeping the control effort to a minimum.
+Ideally, any controller's ultimate goal is to track the desired system trajectory perfectly whilst also rejecting all disturbances and keeping the control effort to a minimum.
 Unfortunately, there exists a trade-off between the controller's \emph{robustness} and \emph{tracking performance}, i.e., how well it handles disturbances and how well it handles setpoint changes.
-The trade-off expresses itself as a limit on how efficiently the desired setpoint can be tracked if disturbances and unmodeled dynamics are also to be effectively rejected.
-Conclusively, how the control objectives are valued is dependent on the particular application.
+The trade-off expresses itself implicitly as a limit on how efficiently the desired setpoint can be tracked if disturbances and unmodeled dynamics are also to be effectively rejected.
+Conclusively, how the different control objectives are valued is dependent on the particular application.
 
 To judge how well the synthesised controller performs, a \emph{performance analysis} is frequently employed.
 The analysis method uses a \emph{performance metric} to qualitatively measure the performance of the controller, i.e., the performance metric produces a descriptive value for the specific controller.
 Using the performance measure, it is then possible to compare the quality of one controller to another.
-The analysis is typically simulation-based, meaning that the performance is evaluated on a virtual replica of the system.
-Intuitively, performance analysis methods provide a rough estimate of how well the controller will perform when connected to the actual system.
-To get more accurate results, it is necessary to run the controller also on the physical hardware.
+The analysis is typically simulation-based, meaning that the performance is evaluated on a virtual replica (or model) of the system.
+Intuitively, performance analysis methods provide a coarse estimation of how well the controller will perform when connected to the actual system.
+To improve the results, it is thus necessary to run the controller also on the physical hardware.
 However, this can become costly in case there are undetected problems with either the control or real-time system design.
 The system is therefore first evaluated in extensive simulations and tests~\cite{Mandrioli:2022}.
 
@@ -751,8 +751,17 @@ The system is therefore first evaluated in extensive simulations and tests~\cite
 Innumerable different methods for analysing control system performance exists.
 For instance, in process and instrumentation industries (generally controlled by PID controllers) it is common to determine performance by analysing the error between the system's reference setpoint and the actual measurement value~\cite{Panda:2012}.
 The metric used to evaluate such systems is, e.g., integral error (IE), integral absolute error (IAE), or integral of time multiplied by absolute error (ITAE), to mention a small fraction of the relevant performance metrics.
+What the integral error functions have in common with many other performance metrics is that a \emph{cost function} is evaluated during the controller execution.
 
-
+This thesis facilitates performance analysis of real-time control systems subject to computational overruns, where the performance is evaluated using a \emph{quadratic cost function} $J_t$:
+%
+\begin{equation}%
+    \label{eq:cost}%
+    J_t = \E{\tilde{x}_t^\T{}\, Q\, \tilde{x}_t}.
+\end{equation}
+%
+Here $J_t$ is the closed-loop state's cost increment in the $t$-th period and $Q$ is a positive semidefinite weight matrix.
+\nv{CONTINUE HERE, BE EXTREMELY CAREFUL WITH WHAT YOU WRITE}
 
 % Mention some tools to analyse performance
 
