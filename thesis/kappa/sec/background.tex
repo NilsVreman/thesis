@@ -220,13 +220,13 @@ Due to this individuality, most real-time systems were historically divided into
 \note{MM: Could you double check this paragraph, please?}
 Since the soft real-time systems typically do not crash catastrophically with a finite number of deadline overruns, it is common that they are modelled using stochastic processes.
 For instance, the simplest models assume that jobs' deadline outcomes are independent and identically distributed random variables, i.e., that the outcome of each job depend only on the probability that this specific job overruns its deadline.
-Intuitively, this assumption is too simplistic for real systems and instead stochastic models for the task execution were developed based on, for instance, Markov chains~\cite{Liu:2005, Friebe:2022, Abeni:2017, Lincoln:2003} and task chains~\cite{Manolache:2004, Liu:2010}, where the transitions between states are probabilistic.
+Intuitively, this assumption is too simplistic for real systems and instead stochastic models for the task execution were developed based on, for instance, Markov chains~\cite{Liu:2005, Friebe:2022, Abeni:2017, Lincoln:2002} and task chains~\cite{Manolache:2004, Liu:2010}, where the transitions between states are probabilistic.
 Despite the hard and soft classes covering many real-time systems, they do not cover all cases.
-Prominent for, in particular, real-time control systems are the \emph{firm real-time systems}, characterised by being able to overrun a few, but not too many, deadlines before causing critical system failure.
+Prominent for, in particular, embedded systems are the \emph{firm real-time systems}, characterised by being able to overrun a few, but not too many, deadlines before causing critical system failure.
 
 Arguably the most recognised firm model is the \emph{weakly-hard} task model~\cite{Bernat:2001}.
-The weakly-hard model was originally devised to provide formal guarantees to tasks that can tolerate occasional deadline overruns, e.g., control tasks where decreasing the sampling time would improve the overall performance whilst introducing intermittent computational overruns.
-What defines a weakly-hard task is that the distribution of the deadline hits and misses during a window of $k$ jobs are precisely bounded.
+These models were originally devised to provide formal guarantees to tasks that can tolerate occasional deadline overruns, e.g., control tasks where decreasing the sampling time would improve the overall performance whilst introducing intermittent computational overruns.
+What defines a weakly-hard task is that the distribution of deadline hits and misses during a window of $k$ jobs is precisely bounded.
 In other words, in addition to the number of overrun deadlines that a task experiences in a window, the sequence in which they appear is also affecting the task execution.
 We here compile the definitions of the weakly-hard models:
 %
@@ -246,15 +246,15 @@ Here, the $\vdash$ symbol is used to indicate that all possible sequences of dea
 
 To formalise which sequences of deadline hits and misses that are permitted under a specific weakly-hard constraint an alphabet is introduced.
 For historical reasons, the language used to characterise the deadline outcomes of a weakly-hard task is binary, i.e., it consisted solely of two unique character mappings to a deadline hit and a deadline miss\footnote{In \note{Paper~IV} we extend this notation to also encompass more appropriate languages in the real-time control systems setting.}.
-Formally, the alphabet of outcomes is denoted $\Sigma = \left\{ 0, 1 \right\}$, where $0$ indicates a job overrunning its corresponding deadline and $1$ represents a job meeting its deadline.
-With the use of the \emph{alphabet} and conventional language theoretical notation~\addref{}, a \emph{character} $c_t \in \Sigma$ is defined as the outcome of the $t$-th job.
+Formally, the \emph{alphabet} of outcomes is denoted $\Sigma = \left\{ 0, 1 \right\}$, where $0$ indicates a job overrunning its corresponding deadline and $1$ represents a job meeting its deadline.
+With the use of the alphabet and conventional language theoretical notation~\addref{}, a \emph{character} $c_t \in \Sigma$ is defined as the outcome of the $t$-th job.
 Similarly, a \emph{word} $w$ is a sequence of $\abs{w}$ characters, i.e., $w = \seq{c_1, c_2, \ldots, c_{\abs{w}}}$.
 Hence, a word is representing a sequence of deadline hits and misses.
 The set of all all length $N$ words that can be constructed from the alphabet $\Sigma$ is denoted $\Sigma^N$.
 
 Since all of the weakly-hard constraints act on the same language it is natural to ask whether they are relatable to one another, or not.
-In~\cite{Bernat:2001}, the authors show that the constraints are in fact comparable using the sets containing all sequences satisfying the specific constraints'.
-With a slight abuse of notation we will let $w \vdash \lambda$ represent the case when the word $w$ (outcome sequence) satisfies the weakly-hard constraint $\lambda$.
+In~\cite{Bernat:2001}, the authors show that the constraints are in fact comparable using the sets containing all sequences satisfying the specific constraints.
+With a slight abuse of notation we will let $w \vdash \lambda$ represent the case when a word $w$ (outcome sequence) satisfies the weakly-hard constraint $\lambda$.
 %
 \begin{definition}[Satisfaction Set]
     The \emph{satisfaction set} $\sset{N}{\lambda}$ of an arbitrary weakly-hard constraint $\lambda$, is the set of all length $N \in \N^{>}$ words $w$ satisfying $\lambda$.
@@ -265,8 +265,8 @@ With a slight abuse of notation we will let $w \vdash \lambda$ represent the cas
 \end{definition}
 %
 To simplify notation, the set of infinite length words satisfying a constraint will be denoted as $\sset{\infty}{\lambda} \equiv \sset{}{\lambda}$.
-Using the weakly-hard constraints' satisfaction sets it is then possible to define a partial ordering among the constraints, i.e., relate them to one another based on their difficulty to satisfy.
-A weakly-hard constraint is typically \emph{harder to satisfy} if it is more restrictive in what sequences satisfy the constraint.
+Using the satisfaction sets it is then possible to define a partial ordering among the constraints, i.e., relate them to one another based on their difficulty to satisfy.
+A weakly-hard constraint is \emph{harder to satisfy} if it is more restrictive in which sequences satisfy the constraint.
 Consider for instance the constraint $\lambda_1 = \binom{1}{1}$, which requires that every job meets its corresponding deadline.
 The constraint is extremely restrictive in what sequences it permits; in fact, the satisfaction set of this constraint only contains one sequence, $\sset{N}{\lambda_1} = \left\{ 1^N \right\}$.
 On the other hand, the constraint $\lambda_2 = \binom{0}{1}$ requires no job deadlines to be met to be satisfied; thus, all sequences satisfy this constraint, $\sset{N}{\lambda_2} = \Sigma^N$.
@@ -312,7 +312,7 @@ Formally
     \label{fig:schedule}
 \end{figure}
 
-The chosen task model is important when analysing the execution pattern of the real-time task, however, implementation details, such as the scheduler's functionality, are typically not included in the analysis.
+The chosen task model is important when analysing the execution pattern of the real-time task, but implementation details, such as the scheduler's functionality, are typically not included in the analysis.
 In fact, it has been shown that the implementation's design choices affect both the performance and safety properties of the system~\cite{Cervin:2005}.
 This thesis addresses the discrepancy between the real-time models, control theoretical models, and the implementation specifications by including details about the implementation in the real-time control system analysis.
 For instance, consider the $t+3$-rd job in Figure~\ref{fig:schedule}; the behaviour of the real-time system is undefined, regardless of the chosen task model.
@@ -365,7 +365,7 @@ A \emph{Markov chain} (MC) model was used in~\cite{Ling:2003} to model the dropo
 We will henceforth sloppily refer to finite state machines as \emph{automata}\footnote{To keep notation consistent with \note{Papers III and IV}.}.
 
 % Introduce notation for the FSM
-Both automata and Markov chains are constructed from directed graphs, with the main difference that the automata transitions are deterministic in nature whilst the Markov chain requires a distribution of probabilities to model the transitions between states.
+Both automata and Markov chains are constructed from directed graphs, with the main difference that the automata transitions are deterministic by nature whilst the Markov chain requires a distribution of probabilities to model the transitions between states.
 In this thesis, both the automata and MC denotes the underlying graph $\GG{} = (\VV{}, \EE{})$, where $\VV{}$ is the set of \emph{vertices} (or \emph{states}) and $\EE{}$ is the set of \emph{edges} (or \emph{transitions}).
 However, the vertices and transitions symbolise different deadline overrun models for the automata and Markov chain.
 
@@ -752,13 +752,9 @@ To improve the results, it is thus necessary to run the controller also on the p
 However, this can become costly in case there are undetected problems with either the control or real-time system design.
 The system is therefore first evaluated in extensive simulations and tests~\cite{Mandrioli:2022}.
 
-% Mention some types of performance analysis
+% Describe our performance analysis
 Innumerable different methods for analysing control system performance have been developed.
-%For instance, in process and instrumentation industries (generally controlled by PID controllers) it is common to determine performance by analysing the error between the system's reference setpoint and the actual measurement value~\cite{Panda:2012}.
-%The metric used to evaluate such systems is, e.g., integral error (IE), integral absolute error (IAE), or integral of time multiplied by absolute error (ITAE), to mention a small fraction of the relevant performance metrics.
-%What the integral error functions have in common with many other performance metrics is that a \emph{cost function} is evaluated during the controller execution.
-%
-This thesis facilitates a performance analysis of real-time control systems subject to computational overruns, where the performance is evaluated using a \emph{stochastic cost function on quadratic form} $J_t$:
+This thesis facilitates a performance analysis of real-time control systems subject to computational overruns, where the performance is evaluated on the closed-loop system using a stochastic quadratic cost function $J_t$:
 %
 \begin{equation}%
     \label{eq:cost}%
@@ -816,7 +812,7 @@ Recalling that $\tilde{x}_t$ and $w_t$ are independent, evolving the covariance 
         &= \E{\tilde{x}_{t+1}\,\tilde{x}_{t+1}^\T{}} - m_{t+1}\,m_{t+1}^\T{} \\
         &= \E{\tilde{x}_{t+1}\,\tilde{x}_{t+1}^\T{}} - \clmat\, m_{t}\,m_{t}^\T{}\,\clmat^\T{} \\
         &= \E{ \left( \clmat\,\tilde{x}_t + \clinp_w\, w_t \right)\left( \clmat\,\tilde{x}_t + \clinp_w\, w_t \right)^\T{} } - \clmat\, m_{t}\,m_{t}^\T{}\,\clmat^\T{} \\
-        &= \E{ \clmat\,\tilde{x}_t\,\tilde{x}_t^\T{}\,\clmat^\T{} + \clmat\,\tilde{x}_t\,w_t^\T{}\,\clinp_w^\T{} + \clinp_w\,w_t\,\tilde{x}_t^\T{}\,\clmat^\T{} + \clinp_w\,w_t\,w_t^\T{}\,\clinp_w^\T{}} - \clmat\, m_{t}\,m_{t}^\T{}\,\clmat^\T{} \\
+        %&= \E{ \clmat\,\tilde{x}_t\,\tilde{x}_t^\T{}\,\clmat^\T{} + \clmat\,\tilde{x}_t\,w_t^\T{}\,\clinp_w^\T{} + \clinp_w\,w_t\,\tilde{x}_t^\T{}\,\clmat^\T{} + \clinp_w\,w_t\,w_t^\T{}\,\clinp_w^\T{}} - \clmat\, m_{t}\,m_{t}^\T{}\,\clmat^\T{} \\
         &= \clmat\,\E{ \tilde{x}_t\,\tilde{x}_t^\T{} }\,\clmat^\T{} + \clinp_w\,\E{ w_t\,w_t^\T{} }\,\clinp_w^\T{} - \clmat\, m_{t}\,m_{t}^\T{}\,\clmat^\T{} \\
         &= \clmat\,\left( \cov{\tilde{x}_t} + m_t\,m_t^\T{} \right)\,\clmat^\T{} + \clinp_w\,\E{ w_t\,w_t^\T{} }\,\clinp_w^\T{} - \clmat\, m_t\,m_{t}^\T{}\,\clmat^\T{} \\
         &= \clmat\,\cov{\tilde{x}_t}\,\clmat^\T{} + \clinp_w\,\E{ w_t\,w_t^\T{} }\,\clinp_w^\T{} \\
@@ -824,52 +820,19 @@ Recalling that $\tilde{x}_t$ and $w_t$ are independent, evolving the covariance 
     \end{aligned}
 \end{equation}
 %
-The performance analysis is summarised in the following definition:
-%
-\begin{definition}[Stochastic Quadratic Cost Function]%
-    \label{def:cost}%
-    \nv{TODO}
-\end{definition}
-
-
-
-
+Trivially, Equations~\eqref{eq:tr-cost} and~\eqref{eq:cov} establish the foundation for the performance analysis on a nominally executing dynamical system, such as the one in~\eqref{eq:clsys}.
+When the control task starts experiencing deadline overruns, the switching dynamics alters the performance analysis accordingly, i.e., swapping $\clmat$ for $\clmat_{\sigma\funof{t}}$ in Equation~\eqref{eq:cov}\footnote{In \note{Papers I and II} we make additional alterations to the performance analysis to properly facilitate it under the specific system conditions.}.
 
 % Mention some tools to analyse performance
-%Jittertime, Jitterbug, Truetime
+The research community have developed multiple different tools to simplify the performance analysis of real-time embedded (or networked) control systems~\cite{Ohlin:2006}.
+For instance, \code{JitterBug}~\cite{Lincoln:2002} is a tool to evaluate precisely the quadratic cost function considered in this thesis~\eqref{eq:tr-cost} for mixed continuous-/discrete-time system components.
+The \code{JitterBug} toolbox models the execution time of different components as stochastic variables (in a Markov process) with known probabilistic properties.
+This allows the entire system to be modeled as a MJLS where the stationary performance can be computed by solving a set of linear equations.
+For the complex timing model adopted in this thesis -- with job-level individual overruns and communication errors -- more flexible tools are required.
 
-% Go into JitterTime's analysis
-
-
-\nv{Regardless of the performance analysis chosen, if they penalise the same things they should show the same behaviour}
-\nv{%
-
-\subsection*{Control System Model}%
-%
-%\begin{itemize}
-%    \item Start from plant, non-linear model, linearisation
-%    \item Sensors and actuator models included here.
-%    \item Control model (non-linear, more common ones), relate to real-time
-%        tasks
-%    \item Switching systems! Markov Jump Linear Systems!
-%\end{itemize}
-%
-%
-%\subsubsection*{Stability Analysis}%
-%%
-%\begin{itemize}
-%    \item Binary: Stable or not
-%    \item Stability definitions: nominal, MS, MSS, JSR, Lyapunov
-%    \item differences (e.g., JSR vs. Lyapunov), applicability
-%\end{itemize}
+As a response, the \code{JitterTime} toolbox for Matlab\footnote{The \code{JitterTime} toolbox has also been translated to the open-source programming language Julia~\cite{Julia:2017} by personnel affiliated with the department of automatic control, Lund University, e.g., this thesis' author: \url{https://github.com/X-N-C/JitterTime.jl}.} was developed to provide similar functionality as \code{JitterBug}, but with more freedom for the user to design the different components' timing models.
+The user-driven timing models make it possible to analyse the quadratic cost function~\eqref{eq:tr-cost} when, for instance, the control jobs overrun their corresponding deadlines or the communication between different components is lost.
+Additionally, different complex scheduling policies and deadline overrun handling strategies, e.g., the \tK{}, \tS{}, or \tQ{} strategies, can freely be implemented.
+One of the main disadvantages with \code{JitterTime} compared to \code{JitterBug} is that infinite horizon or stochastic timing scenarios might require a Monte Carlo or scenario theory based approach to provide accurate performance results.
 
 
-\subsubsection*{Performance Analysis}%
-%
-\begin{itemize}
-    \item Gradient: varying degree of performance
-    \item Why Performance Analysis?
-    \item Metrics
-\end{itemize}
-
-}%
