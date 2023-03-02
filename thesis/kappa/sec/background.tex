@@ -220,7 +220,7 @@ Due to this individuality, most real-time systems were historically divided into
 \note{MM: Could you double check this paragraph, please?}
 Since the soft real-time systems typically do not crash catastrophically with a finite number of deadline overruns, it is common that they are modelled using stochastic processes.
 For instance, the simplest models assume that jobs' deadline outcomes are independent and identically distributed random variables, i.e., that the outcome of each job depend only on the probability that this specific job overruns its deadline.
-Intuitively, this assumption is too simplistic for real systems and instead stochastic models for the task execution were developed based on, for instance, Markov chains~\cite{Liu:2005, Friebe:2022, Abeni:2017} and task chains~\cite{Manolache:2004, Liu:2010}, where the transitions between states are probabilistic.
+Intuitively, this assumption is too simplistic for real systems and instead stochastic models for the task execution were developed based on, for instance, Markov chains~\cite{Liu:2005, Friebe:2022, Abeni:2017, Lincoln:2003} and task chains~\cite{Manolache:2004, Liu:2010}, where the transitions between states are probabilistic.
 Despite the hard and soft classes covering many real-time systems, they do not cover all cases.
 Prominent for, in particular, real-time control systems are the \emph{firm real-time systems}, characterised by being able to overrun a few, but not too many, deadlines before causing critical system failure.
 
@@ -466,8 +466,8 @@ The resulting discrete-time, LTI model of the plant $\plant$ is then:
 \end{equation}
 %
 where the variable subscripts counts the discrete time samples since system startup, i.e., $x_t = x(t\cdot \Ts)$ and $x_{t+1} = x(t\cdot \Ts + \Ts)$.
-Additionally, the state's disturbance process $w_t \in \R^{n_w}$ and dynamic matrix $\Wp \in \R^{n_x \times n_w}$ are added.
-The disturbance process is typically a stochastic process with (assumed) known statistical properties, modelling the unknown plant dynamics and exogenous signals.
+Note that the process' stochastic disturbance process $w_t \in \R^{n_w}$ and dynamic matrix $\Wp \in \R^{n_x \times n_w}$ have been added.
+The disturbance process $w_t$ is typically a stochastic process with (assumed) known statistical properties, modelling the unknown plant dynamics and exogenous signals.
 
 Similarly to how the plant is described using a dynamical system on state-space form, controllers are typically also defined on the same format (denoted the controller's \emph{control law}).
 Section~\ref{sec:background:rts} described how the control algorithm is implemented as a function governed by a task executing in the RTOS; modern controllers are hence unlikely to be continuous.
@@ -518,10 +518,15 @@ Typically, the closed-loop system (i.e., all components involved in the closed-l
 %
 \begin{equation}%
     \label{eq:clsys}%
-    \tilde{x}_{t+1} = \clmat\, \tilde{x}_t.
+    \tilde{x}_{t+1} = \clmat\, \tilde{x}_t + \clinp_w\, w_t.
 \end{equation}
 %
-where $\tilde{x}_t$ is the closed-loop system's state vector and $\clmat$ is the closed-loop system matrix, responsible for encoding the closed-loop system's dynamics.
+where $\tilde{x}_t$ is the closed-loop system's state vector, $\clmat$ is the closed-loop system matrix responsible for encoding the closed-loop system's dynamics, and
+$$\clinp_w = \begin{bmatrix}
+    \Wp \\
+    0
+\end{bmatrix}$$
+is the dynamic matrix of the exogenous stochastic variable $w_t$.
 
 Thus far, the system execution has been assumed to be faultless.
 However, we are interested in analysing the real-time control system when the control tasks are subject to computational overruns.
@@ -544,7 +549,7 @@ The changing control equations do in turn also change the closed-loop dynamics f
 %
 \begin{equation}%
     \label{eq:tv-clsys}%
-    \tilde{x}_{t+1} = \clmat_{\sigma(t)}\, \tilde{x}_t.
+    \tilde{x}_{t+1} = \clmat_{\sigma(t)}\, \tilde{x}_t + \clinp_w\, w_t.
 \end{equation}
 %
 If $\sigma(t)$ is governed by a Markov process, then Equation~\eqref{eq:tv-clsys} is denoted a \emph{Markov jump linear system} (MJLS)~\cite{Feng:1992}.
@@ -560,7 +565,7 @@ In the upcoming sections, we will introduce notation for both MJLS and switching
 %
 One of the fundamental objectives of all control synthesis is to \emph{stabilise} the system.
 Stability theory is a broad domain and there exists many both weak and strong definitions of stability.
-For dynamical systems (such as control systems), a common notion of stability is that bounded perturbations in the initial conditions of a differential (or difference) equation results in bounded perturbations in the solution.
+For dynamical systems (such as control systems), a common notion of stability is that bounded perturbations in the initial conditions of a differential (or difference) equation results in bounded perturbations in the solution\footnote{Note that this implies that the disturbances do not affect the linear system's stability.}.
 In other words, if a system is \emph{stable} for a bounded set of initial condition then the solution will not grow unbounded.
 Conversely, if a system is \emph{unstable} the solution grows unbounded.
 As an example, if the taxiing system was unstable, under certain conditions the wheel velocity would rapidly increase until the wheel engine shut down or broke down (a highly undesirable behaviour).
@@ -748,20 +753,87 @@ However, this can become costly in case there are undetected problems with eithe
 The system is therefore first evaluated in extensive simulations and tests~\cite{Mandrioli:2022}.
 
 % Mention some types of performance analysis
-Innumerable different methods for analysing control system performance exists.
-For instance, in process and instrumentation industries (generally controlled by PID controllers) it is common to determine performance by analysing the error between the system's reference setpoint and the actual measurement value~\cite{Panda:2012}.
-The metric used to evaluate such systems is, e.g., integral error (IE), integral absolute error (IAE), or integral of time multiplied by absolute error (ITAE), to mention a small fraction of the relevant performance metrics.
-What the integral error functions have in common with many other performance metrics is that a \emph{cost function} is evaluated during the controller execution.
-
-This thesis facilitates performance analysis of real-time control systems subject to computational overruns, where the performance is evaluated using a \emph{quadratic cost function} $J_t$:
+Innumerable different methods for analysing control system performance have been developed.
+%For instance, in process and instrumentation industries (generally controlled by PID controllers) it is common to determine performance by analysing the error between the system's reference setpoint and the actual measurement value~\cite{Panda:2012}.
+%The metric used to evaluate such systems is, e.g., integral error (IE), integral absolute error (IAE), or integral of time multiplied by absolute error (ITAE), to mention a small fraction of the relevant performance metrics.
+%What the integral error functions have in common with many other performance metrics is that a \emph{cost function} is evaluated during the controller execution.
+%
+This thesis facilitates a performance analysis of real-time control systems subject to computational overruns, where the performance is evaluated using a \emph{stochastic cost function on quadratic form} $J_t$:
 %
 \begin{equation}%
     \label{eq:cost}%
     J_t = \E{\tilde{x}_t^\T{}\, Q\, \tilde{x}_t}.
 \end{equation}
 %
-Here $J_t$ is the closed-loop state's cost increment in the $t$-th period and $Q$ is a positive semidefinite weight matrix.
-\nv{CONTINUE HERE, BE EXTREMELY CAREFUL WITH WHAT YOU WRITE}
+Here $J_t$ is the closed-loop state's cost increment in the $t$-th period and $Q$ is a positive semidefinite weight matrix penalising large closed-loop state deviations.
+The model is based on well-known theory for linear stochastic systems~\cite{Astrom:1970, Astrom:1997, Cervin:2019}.
+
+We assume that the desired reference point for the closed-loop state $\tilde{x}_t$ is zero and that the disturbance $w_t$ is an independent, discrete-time, zero mean, Gaussian white noise process with covariance $\E{w_t\,w_t^\T{}} = R_1$.
+The assumptions may seem overly restrictive, but we emphasise that more elaborate and advanced disturbance processes (and reference trajectories) can be realised by augmenting the closed-loop system with additional states describing the exogenous dynamics\footnote{In both \note{Paper I and II} we augment the system state to model respectively brown noise (integrated white noise) and reference trajectories.}.
+With these assumptions, together with the initial condition on the closed-loop state's mean value and covariance being respectively $\E{\tilde{x}_0} = m_0$ and $\E{\tilde{x}_0\,\tilde{x}_0^\T{}} = R_0$, it is now possible to describe how to evaluate Equation~\eqref{eq:cost}.
+
+The expression in Equation~\eqref{eq:cost} is difficult to compute in practice.
+Instead, it is easier to first transform the cost $J_t$ into an equivalent form before evaluating it.
+We define the closed-loop system's mean value and covariance functions as $m_t$ and $P_t$ respectively
+%
+\begin{equation}%
+    \label{eq:cov}%
+    m_t = \E{\tilde{x}_t}, \quad P_t = \cov{\tilde{x}_t} = \E{\tilde{x}_t\, \tilde{x}_t^\T{}} - \E{\tilde{x}_t}\,\E{\tilde{x}_t}^\T{}.
+\end{equation}
+%
+Note that because $\E{w_t} = 0$, the mean value of the state adhere to the following dynamical equation:
+%
+\begin{equation}%
+    m_{t+1} = \E{\clmat\,\tilde{x}_t + \clinp_w\,w_t} = \clmat\, m_t.
+\end{equation}
+%
+From~\eqref{eq:cov} it then follows that~\eqref{eq:cost} can equivalently be written as~\cite{Bates:2011}:
+%
+\begin{equation}%
+    \label{eq:tr-cost}%
+    \begin{aligned}
+        J_t &= \E{\tilde{x}_t^\T{}\, Q\, \tilde{x}_t} \\
+        &= \trace{\E{\tilde{x}_t^\T{}\, Q\, \tilde{x}_t}} \\
+        &= \E{\trace{\tilde{x}_t^\T{}\, Q\, \tilde{x}_t}} \\
+        &= \E{\trace{Q\, \tilde{x}_t\, \tilde{x}_t^\T{}}} \\
+        &= \trace{Q\, \E{\tilde{x}_t\,\tilde{x}_t^\T{}}} \\
+        &= \trace{Q\, \left( P_t + m_t\,m_t^\T{} \right)} \\
+        &= \trace{Q\, P_t} + m_t^\T{}\, Q\, m_t.
+    \end{aligned}
+\end{equation}
+%
+Here, $\trace{\cdot}$ computes the trace of its argument.
+If the condition $\E{\tilde{x}_0} = m_0 = 0$ is enforced, the expression can be reduced to solving $J_t = \trace{Q\, P_t}$.
+
+Solving Equation~\eqref{eq:tr-cost} still requires knowledge about how the closed-loop state's covariance $P_t$ propagates in time.
+Recalling that $\tilde{x}_t$ and $w_t$ are independent, evolving the covariance results in the following dynamical equation:
+%
+\begin{equation}%
+    \label{eq:cov}%
+    \begin{aligned}
+        P_{t+1} &= \cov{\tilde{x}_{t+1}} \\
+        &= \E{\tilde{x}_{t+1}\,\tilde{x}_{t+1}^\T{}} - \E{\tilde{x}_{t+1}}\,\E{\tilde{x}_{t+1}}^\T{} \\
+        &= \E{\tilde{x}_{t+1}\,\tilde{x}_{t+1}^\T{}} - m_{t+1}\,m_{t+1}^\T{} \\
+        &= \E{\tilde{x}_{t+1}\,\tilde{x}_{t+1}^\T{}} - \clmat\, m_{t}\,m_{t}^\T{}\,\clmat^\T{} \\
+        &= \E{ \left( \clmat\,\tilde{x}_t + \clinp_w\, w_t \right)\left( \clmat\,\tilde{x}_t + \clinp_w\, w_t \right)^\T{} } - \clmat\, m_{t}\,m_{t}^\T{}\,\clmat^\T{} \\
+        &= \E{ \clmat\,\tilde{x}_t\,\tilde{x}_t^\T{}\,\clmat^\T{} + \clmat\,\tilde{x}_t\,w_t^\T{}\,\clinp_w^\T{} + \clinp_w\,w_t\,\tilde{x}_t^\T{}\,\clmat^\T{} + \clinp_w\,w_t\,w_t^\T{}\,\clinp_w^\T{}} - \clmat\, m_{t}\,m_{t}^\T{}\,\clmat^\T{} \\
+        &= \clmat\,\E{ \tilde{x}_t\,\tilde{x}_t^\T{} }\,\clmat^\T{} + \clinp_w\,\E{ w_t\,w_t^\T{} }\,\clinp_w^\T{} - \clmat\, m_{t}\,m_{t}^\T{}\,\clmat^\T{} \\
+        &= \clmat\,\left( \cov{\tilde{x}_t} + m_t\,m_t^\T{} \right)\,\clmat^\T{} + \clinp_w\,\E{ w_t\,w_t^\T{} }\,\clinp_w^\T{} - \clmat\, m_t\,m_{t}^\T{}\,\clmat^\T{} \\
+        &= \clmat\,\cov{\tilde{x}_t}\,\clmat^\T{} + \clinp_w\,\E{ w_t\,w_t^\T{} }\,\clinp_w^\T{} \\
+        &= \clmat\,P_t\,\clmat^\T{} + \clinp_w\,R_1\,\clinp_w^\T{}
+    \end{aligned}
+\end{equation}
+%
+The performance analysis is summarised in the following definition:
+%
+\begin{definition}[Stochastic Quadratic Cost Function]%
+    \label{def:cost}%
+    \nv{TODO}
+\end{definition}
+
+
+
+
 
 % Mention some tools to analyse performance
 %Jittertime, Jitterbug, Truetime
