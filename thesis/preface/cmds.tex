@@ -123,10 +123,20 @@
 \newcommand{\mm}[1]{\color{red!60!blue}\textbf{MM:} #1\xspace\color{black}}% 
 \newcommand{\note}[1]{\color{red}\textbf{#1}\color{black}}% 
 \newcommand{\question}[2]{%
-    \color{red}\textbf{Q: }%
+    \color{red}\textbf{Q from NV: }%
     #1 %
     \color{black}%
-    \color{blue}\textbf{A: }%
+    \color{blue}\textbf{A from MM: }%
+    \ifthenelse{%
+        \equal{#2}{}}%
+        {TODO}%
+        {#2}%
+    \xspace\color{black}}%
+\newcommand{\mquestion}[2]{%
+    \color{red}\textbf{Q from MM: }%
+    #1 %
+    \color{black}%
+    \color{blue}\textbf{A from NV: }%
     \ifthenelse{%
         \equal{#2}{}}%
         {TODO}%
