@@ -27,12 +27,19 @@ Next, we describe the underlying hardware and real-time architecture seen in Fig
 \begin{figure}[t]
     \centering
     \input{\figdir/operating-system-abstraction}%
-    \caption{\fix{Need to arrange figure so it makes more sense.}}%
+    \caption{A more detailed view on the digital element of the control system. CPU, memory, and hardware interfaces are represented, and the scheduler determines the current task(s) that are executing in the hardware platform.}%
     \label{fig:operating-system-abstraction}%
 \end{figure}
 
+Although this thesis does not discern different hardware architectures from one another, it is appropriate to talk about \emph{microcontrollers} and \emph{embedded systems}, in particular because of their growing recognition. 
+Despite being two different hardware architectures, the terms embedded system and microcontroller will carelessly be used interchangeably due to their natural similarities.
+As introduced in Chapter~\ref{ch:intro}, microcontrollers (MCUs) are small computers with integrated processors, memory, and I/O peripherals.
+Most embedded systems are based on microcontroller architectures, however, some embedded systems are based on one or more microprocessors with external memory and I/O peripherals.
+Hence, microcontrollers are embedded systems and can be used to develop more complex embedded systems, but an embedded system is not necessarily a microcontroller.
+
 % CPU and cores
-The \emph{central processing unit} (CPU, or simply \emph{processor}) is the electronic component responsible for executing the task functions.
+The basis of every hardware architecture is a \emph{central processing unit} (CPU, or simply \emph{processor}).
+This is the electronic component responsible for executing the task functions.
 Each function (or program) is translated into a list of instructions to be executed on the CPU.
 These instructions belong to the machine's language used to tell the processor what type of operation to execute, e.g., load a specific memory register or execute an arithmetic operation.
 The time it takes for the CPU to execute one instruction, i.e., fetching the instruction from memory before decoding and executing it, is typically called an \emph{instruction cycle} (or simply \emph{cycle}); this is the basic unit used to measure CPU speed.
@@ -53,7 +60,7 @@ Cache misses can arise if:
 \begin{itemize}
     \item the size of the requested data is too large to fetch;
     \item the requested data is not yet loaded into the cache; or
-    \item the data have been evicted from the cache, e.g., to make room for more recently retrieved data or from the cache being flushed due to security reasons.
+    \item the data has been evicted from the cache, e.g., to make room for more recently retrieved data, or because the cache has been flushed due to security reasons.
 \end{itemize}
 %
 Ideally, the number of cache misses that a task experiences are kept to a minimum, in particular since fetching data from the main memory can incur large timing overheads on the task execution.
@@ -73,16 +80,6 @@ The peripherals are all external components connected to the hardware, e.g., sen
 Depending on the hardware, the peripherals can either be connected to the circuit board responsible for joining the different components together or directly into the CPU.
 If the link to the external environment is wireless, the I/O peripherals are not necessarily sensors or actuators, but rather radio antennas, Bluetooth transmitters, or Wi-Fi routers (depending on the wireless communication protocol) interacting with the sensors and actuators.
 Typically, each peripheral is assigned to an \emph{I/O port} in the device, i.e., a unique number to know which physical pin to transmit and receive data through. 
-
-% Microcontrollers and embedded systems
-\nv{Not sure if this paragraph should be higher up (in connection to the I/O), or not?}
-Although this thesis does not discern different hardware architectures from one another, it is appropriate to talk about \emph{microcontrollers} and \emph{embedded systems}, in particular because of their growing recognition. 
-Despite being two different hardware architectures, the terms embedded system and microcontroller will carelessly be used interchangeably due to their natural similarities.
-As introduced in Chapter~\ref{ch:intro}, microcontrollers (MCUs) are small computers with integrated processors, memory, and I/O peripherals.
-Most embedded systems are based on microcontroller architectures, however, some embedded systems are based on one or more microprocessors with external memory and I/O peripherals.
-Hence, microcontrollers are embedded systems and can be used to develop more complex embedded systems, but an embedded system is not necessarily a microcontroller.
-\nv{Not sure if this paragraph should be higher up (in connection to the I/O), or not?}
-
 
 Separately from the I/O port, the \emph{communication protocol} defines the rules used to pack and unpack the packets sent between the peripherals and the hardware over the \emph{communication channel}.
 As an analogy, consider a postcard being sent between England and France; the port is where we choose to send the letter, i.e., the address to send it to and the postage stamp, while the protocol is the content of the message, i.e., the chosen communication format.
@@ -116,7 +113,7 @@ Processing the packets in the buffer is efficient, but it requires some non-negl
 Thus, under normal conditions the receiver will experience packet latency and jitter, but if the network traffic is heavy the buffer space can quickly be exhausted.
 In other words, if the packets arrive faster than what the router can process it becomes congested.
 
-Multiple policies have been developed to control the congestion, e.g., tail drop~\addref{} and \nv{insert something}~\addref{}.
+Multiple policies have been developed to control the congestion, such as tail drop~\addref{}.
 Common among all the congestion control strategies is that they employ intentional \emph{packet dropping}, i.e., if a packet arrives while the buffer space is exhausted, the congestion controller will remove either the arriving packet or one in the buffer (depending on the strategy).
 In addition to the congestion controller dropping packets, there are intermittent packet drops due to, e.g., packets being misrouted~\addref{}, security threats~\addref{}, software bugs~\addref{}, or wireless communication~\addref{}.
 
@@ -169,13 +166,14 @@ Employing a scheduler for single-core processors follow the described paradigm, 
 Fundamentally, two different approaches have been taken to scheduling to a multi-core processor: \emph{global} or \emph{partitioned} scheduling.
 The former assumes one scheduler responsible for scheduling all the tasks in a global ready queue to the individual cores based on available and required resources.
 On the other hand, partitioned scheduling (sometimes referred to as \emph{clustered} scheduling) involves dividing the tasks into partitions that are then mapped to separate cores with individual schedulers.
-Despite having additional computational resources to work with, multi-core systems are subject to deadline overruns similarly to how single-core systems are.
-Trivially, since partitioned multi-core scheduled systems can be perceived as a set of single-core scheduled systems, they can also experience the same computational overruns that a single-core system can.
-For global multi-core schedulers, \nv{I need some help completing this sentence, I got lost in pfair schedulers and got confused}
-\fix{Concluding sentence that confirms that this thesis is relevant even for multi-core systems.}
+Despite having additional computational resources to work with, multi-core systems are subject to deadline overruns similarly to single-core systems, when the capacity is exceeded or due to other events such as deadlocks and locking of shared resources.
+% MM: I think I would get rid of what follows (commented out), you already made your point IMHO.
+%Trivially, since partitioned multi-core scheduled systems can be perceived as a set of single-core scheduled systems, they can also experience the same computational overruns that a single-core system can.
+%For global multi-core schedulers, \nv{I need some help completing this sentence, I got lost in pfair schedulers and got confused}
+%\fix{Concluding sentence that confirms that this thesis is relevant even for multi-core systems.}
 
 
-\subsubsection*{\note{Tasks}}%
+\subsubsection*{Tasks}%
 % Tasks
 All the real-time tasks considered in this thesis are \emph{recurrent}, i.e., they do not terminate during system operation.
 The recurrent task model simplifies the \emph{a priori} analysis of the real-time workload's effect on the system execution.
@@ -207,7 +205,7 @@ Respectively, if the job completes before its deadline, it \emph{meets} its dead
 Computational overruns are present in generally all real-time domains from avionics and defence to consumer electronics~\cite{Akesson:2020}, thus highlighting the importance of analysing their impact on the systems' functional correctness.
 
 % task models -> soft, hard, weakly-hard
-Every real-time system behave differently to deadline overruns.
+Every real-time system behave differently in the presence of deadline overruns.
 Depending on the application, some systems crash while others experience a degraded efficiency.
 Due to this individuality, most real-time systems were historically divided into two classes describing how the systems were affected by computational overruns.
 %
@@ -217,12 +215,12 @@ Due to this individuality, most real-time systems were historically divided into
     \item \emph{Soft real-time systems} -- The perceived quality of the system is degraded with the number of overrun deadlines, but it is unlikely that it will impact system safety.
 \end{itemize}
 %
-\note{MM: Could you double check this paragraph, please?}
-Since the soft real-time systems typically do not crash catastrophically with a finite number of deadline overruns, it is common that they are modelled using stochastic processes.
+Soft real-time systems typically do not crash catastrophically when they experience a finite number of deadline overruns.
+To analyse these systems, their deadline overruns are typically modelled using stochastic processes.
 For instance, the simplest models assume that jobs' deadline outcomes are independent and identically distributed random variables, i.e., that the outcome of each job depend only on the probability that this specific job overruns its deadline.
 Intuitively, this assumption is too simplistic for real systems and instead stochastic models for the task execution were developed based on, for instance, Markov chains~\cite{Liu:2005, Friebe:2022, Abeni:2017, Lincoln:2002} and task chains~\cite{Manolache:2004, Liu:2010}, where the transitions between states are probabilistic.
 Despite the hard and soft classes covering many real-time systems, they do not cover all cases.
-Prominent for, in particular, embedded systems are the \emph{firm real-time systems}, characterised by being able to overrun a few, but not too many, deadlines before causing critical system failure.
+In particular, embedded systems can be described using the \emph{firm real-time systems} model, characterised by being able to overrun a few, but not too many, deadlines before causing critical system failure.
 
 Arguably the most recognised firm model is the \emph{weakly-hard} task model~\cite{Bernat:2001}.
 These models were originally devised to provide formal guarantees to tasks that can tolerate occasional deadline overruns, e.g., control tasks where decreasing the sampling time would improve the overall performance whilst introducing intermittent computational overruns.
@@ -300,7 +298,7 @@ Since one of the main mathematical advantages of the weakly-hard constraints is 
 Formally
 %
 \begin{equation}
-    \sset{}{\Lambda} = \bigcap_{i=0}^N \, \sset{}{\lambda_i}
+    \sset{}{\Lambda} = \bigcap_{i=0}^N \, \sset{}{\lambda_i}.
 \end{equation}
 
 % Scheduler deadline handling
@@ -323,7 +321,7 @@ In addition to orchestrating the tasks in the RTOS, the scheduler is also respon
 Different strategies have been developed to handle overruns in varying applications.
 In~\cite{Caccamo:2002}, the authors propose a method for avoiding deadline overruns by postponing the deadline of the job that requires more processor time to complete.
 An arbiter designed to drop certain jobs upon release (i.e., skipping them) is proposed in~\cite{Yoshimoto:2011}.
-However, three of the simplest and most commonly employed overrun handling strategies are~\cite{Cervin:2004b}:
+However, as described in~\cite{Cervin:2004b}, three of the simplest and most commonly employed overrun handling strategies are:
 %
 \begin{itemize}
     \item \tQ{} -- The naive approach involves letting the job overrunning its deadline to continue its execution whilst queueing up subsequent jobs.
