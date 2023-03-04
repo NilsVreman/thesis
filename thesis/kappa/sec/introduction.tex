@@ -43,13 +43,13 @@ Not only is the number of computational devices increasing, but their independen
 Obviously, the increased efficiency and reduced cost opened up new businesses and domains, in particular within the IT-domain, whilst also consolidating and automating preexisting industry.
 Integrating digital components and software solutions is nowadays the norm rather than the exception; this does not come as a surprise, considering that automating and simplifying the decision making and data collection yield both economical and safety benefits.
 Generally, integrating software into any domain help monitor system safety, log and transmit important data, orchestrate the execution of different components, and remotely micromanage system updates.
-Subsequently, software integration is a powerful tool that improve both efficiency and increase revenue, when everything behaves as intended.
+Subsequently, software integration is a powerful tool that improves both efficiency and increase revenue, when everything behaves as intended.
 
 % The complexity and reduced prices increase error surfaces
 Interconnecting multiple systems is, however, not a trivial task.
 When the systems are getting increasingly more complex, the surface for possible errors is also growing.
 In addition to the components' individual faults, after connecting two components together, additional problems can be encountered; for instance, problems with the coupling of the components' or new problems in the individual components.
-A motorbike can experience all the same problems that a normal bike can encounter (e.g., a loose chain), but it can also experience issues from connecting the bike together with a motor (e.g., electric clutch).
+A motorbike can experience all the same problems that a normal bike can encounter (such as a loose chain), but it can also experience issues from connecting the bike together with a motor (such as electric clutch).
 Similarly to the motorbike, systems relying on the interconnection of computational devices and digital components can experience complex coupling issues.
 For example, data transmissions can easily be delayed or stall indefinitely if data is lost, a computer's orchestrator can get overloaded, and systems with remote updates have the potential to break every time a new patch is installed.
 These problems are neither easy to detect nor troubleshoot; particularly since their origin can be obfuscated by complex software and hardware interconnections.
@@ -108,7 +108,7 @@ Next, the individual components seen in the figure are introduced.
 \begin{figure}[t]
     \centering
     \input{\figdir/high-level-abstraction}%
-    \caption{\fix{Maybe change font? Change ``HW Interfaces''?}.}%
+    \caption{A control system represented at a high level of abstraction. The plant is represented on the right and its digital controller is shown on the left and comprises hardware and its interfaces with the plant, as well as a real-time operating system and its running tasks, among which the control tasks.}%
     \label{fig:high-level-abstraction}%
 \end{figure}
 
@@ -191,9 +191,9 @@ Consequently, allowing a certain number of deadline overruns can improve the con
 \subsection{Timeliness}%
 \label{sec:intro:timeliness}%
 %
-Executing a real-time control system is one thing, but executing it under suboptimal timing conditions is another.
+In some situations, real-time control systems are executed under suboptimal timing conditions.
 As already mentioned, faults typically lead to reduced quality of the end product and can in the worst case be lethal.
-However, ``timing faults'' is a huge oversimplification of a complex class of problems.
+However, the term ``timing faults'' is an oversimplification for a complex class of problems.
 When analysing timing faults and irregularities it is thus important to properly define the fault type under analysis.
 The following list include some of the most general timing irregularities analysed in literature.
 %
