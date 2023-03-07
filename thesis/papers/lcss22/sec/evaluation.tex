@@ -24,23 +24,23 @@ We here analyse a stable discrete-time plant $\plant_1$, representative of the p
     \begin{aligned}
         \plant_1: \,\, &\left\{
         \begin{aligned}
-            x_{t+1} &= \begin{bmatrix}
+            x_{k+1} &= \begin{bmatrix}
                 0.606 & 0.304 & 0.076 \\
                 0 & 0.606 & 0.304 \\
                 0 & 0 & 0.606 \\
-            \end{bmatrix} x_t + \begin{bmatrix}
+            \end{bmatrix} x_k + \begin{bmatrix}
                 0.014 \\
                 0.091 \\
                 0.394 \\
-            \end{bmatrix} u_t \\
-            y_t &= \begin{bmatrix}
+            \end{bmatrix} u_k \\
+            y_k &= \begin{bmatrix}
                 1 & 0 & 0
-            \end{bmatrix} x_t
+            \end{bmatrix} x_k
         \end{aligned} \right. \\
         \ctrler_1: \,\, &\left\{
         \begin{aligned}
-            z_{t+1} &= z_t + 0.359\, y_t \\
-            u_{t+1} &= 0.454\, z_t + 0.633\, y_t
+            z_{k+1} &= z_k + 0.359\, y_k \\
+            u_{k+1} &= 0.454\, z_k + 0.633\, y_k
         \end{aligned} \right.
     \end{aligned}
 \end{equation*}
@@ -74,7 +74,7 @@ Starred values represent stable systems inferred from Corollary~\ref{cor:rho_dom
 All the upper bounds computed by \code{JSR toolbox} are greater than 1, while all lower bounds are \emph{below} 1, thus we cannot draw any conclusion about the stability of the considered system using the \code{JSR toolbox}.
 In contrast, the dense/sparse SOS method finds better upper bounds but takes more time.
 
-The speedup ratio between the dense and sparse SOS is growing when $k$ increases, yielding a particularly high benefit of exploiting sparsity for the \tS{} strategy and \tZ{} actuation.
+The speedup ratio between the dense and sparse SOS is growing when the window length $k$ increases, yielding a particularly high benefit of exploiting sparsity for the \tS{} strategy and \tZ{} actuation.
 For instance, with $x=1$ the computing time of the sparse upper bound goes from 0.43 ($k=2$) to 13.1 seconds ($k=6$).
 %
 Furthermore, the complexity of the analysis increases with the value of $x$.
@@ -91,22 +91,22 @@ The dynamics are given by an unstable discrete-time model $\plant_2$, which is s
     \begin{aligned}
         \plant_2: \,\, &\left\{
         \begin{aligned}
-            x_{t+1} &= \begin{bmatrix}
+            x_{k+1} &= \begin{bmatrix}
                 0.999 & 0.012 & -5.5 e^{-4} \\
                 0.020 & 1 & -5.5 e^{-6} \\
                 5.0 e^{-5} & 0.005 & 1 \\
-            \end{bmatrix} x_t + \begin{bmatrix}
+            \end{bmatrix} x_k + \begin{bmatrix}
                 0.020 \\
                 2.0e^{-4} \\
                 3.3e^{-7} \\
-            \end{bmatrix}u_t \\
-            y_t &= I x_t
+            \end{bmatrix}u_k \\
+            y_k &= I x_k
         \end{aligned} \right. \\
         \ctrler_2: \,\, &\left\{
         \begin{aligned}
-            u_{t+1} &= -\begin{bmatrix}
+            u_{k+1} &= -\begin{bmatrix}
                 3.380 & 3.417 & 1.846
-            \end{bmatrix} x_t - 0.322 u_t
+            \end{bmatrix} x_k - 0.322 u_k
         \end{aligned}\right.
     \end{aligned}
 \end{equation*}

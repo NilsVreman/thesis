@@ -8,9 +8,9 @@
 Any \ewhc{}, as presented in Definition~\ref{def:new-mk}, can be systematically represented using an \emph{automaton}.
 In this paper we build upon the \tool{} automaton model presented in~{\cite{Vreman:2022}}.
 Here, a (minimal) automaton $\GG{\lambda^\strat} = \left(\VV{\lambda^\strat}, \EE{\lambda^\strat}\right)$ associated to $\lambda^\strat$ consists of a set of vertices ($\VV{\lambda^\strat}$) and a set of directed labeled edges ($\EE{\lambda^\strat}$). 
-Each vertex $v_i \in \VV{\lambda^\strat}$ corresponds to a sequence (word) of outcomes of the extended weakly-hard task executions. 
+Each vertex $v_i \in \VV{\lambda^\strat}$ is represented by a sequence (word) of outcomes of the extended weakly-hard task executions, $w_i$. 
 Trivially, there exists no vertices for words that do not satisfy the \ewhc{}.
-A directed labeled edge $e_{i, j} = \left(v_i, v_j, \alpha \right) \in \EE{\lambda^\strat}$ (also denoted \emph{transition}) connects two vertices if and only if the outcome $\alpha \in \Sigma\left(\strat\right)$ -- the edge's label -- appended to the tail vertex's word representation ($v_i$) would result in the word equivalent to the one of the head vertex ($v_j$).
+A directed labeled edge $e_{i, j} = \left(v_i, v_j, c \right) \in \EE{\lambda^\strat}$ (also denoted \emph{transition}) connects two vertices if and only if the outcome $c \in \Sigma\left(\strat\right)$ -- the edge's label -- appended to the tail vertex's word representation ($v_i$) would result in the word equivalent to the one of the head vertex ($v_j$).
 Thus, a random walk in the automaton corresponds to a random word satisfying the \ewhc{}.
 In particular, all the walks in the automaton corresponds to \emph{all} words in $\sset{}{\lambda^{\strat}}$.
 
@@ -50,43 +50,43 @@ Since the stability analysis presented in this paper is invariant to the type (a
 \subsection{Dynamic Model of an Automaton}
 \label{ssec:dynamicgraph}
 %
-Extracting all the transitions in $\EE{\Lambda^\strat}$ corresponding to a character $\alpha \in \Sigma\left(\strat\right)$ yields what is generally known as a \emph{directed adjacency matrix}~\cite{xu2012matrix}, denoted here as a \emph{transition matrix}.
+Extracting all the transitions in $\EE{\Lambda^\strat}$ corresponding to a character $c \in \Sigma\left(\strat\right)$ yields what is generally known as a \emph{directed adjacency matrix}~\cite{xu2012matrix}, denoted here as a \emph{transition matrix}.
 \begin{definition}[Transition matrix]%
     \label{def:transition}%
-    Given an automaton $\GG{\Lambda^\strat}$, the \emph{transition matrix} $F_{\alpha} ( \GG{\Lambda^\strat} ) \in \R^{\abs{\VV{\Lambda^\strat}} \times \abs{\VV{\Lambda^\strat}}}$ for $\alpha\in\Sigma\left(\strat\right)$, is computed as $F_{\alpha} ( \GG{\Lambda^\strat} ) = \{f_{i,j}(\alpha)\}$ with
+    Given an automaton $\GG{\Lambda^\strat}$, the \emph{transition matrix} $F_{c} ( \GG{\Lambda^\strat} ) \in \R^{\abs{\VV{\Lambda^\strat}} \times \abs{\VV{\Lambda^\strat}}}$ for $c\in\Sigma\left(\strat\right)$, is computed as $F_{c} ( \GG{\Lambda^\strat} ) = \{f_{i,j}(c)\}$ with
     %
     \begin{equation*}
-        f_{i,j}\funof{\alpha}=
+        f_{i,j}\funof{c}=
         \begin{cases}
-            1, &\text{ if } \exists \, e=(v_j,v_i,\alpha) \in \EE{\Lambda^\strat} \\
+            1, &\text{ if } \exists \, e=(v_j,v_i,c) \in \EE{\Lambda^\strat} \\
             0, &\text{ otherwise.}
         \end{cases}
         \end{equation*}%
 \end{definition}
 %
-Since there can exist \emph{at most one} successor from each vertex with a transition labeled with $\alpha$, the transition matrix $F_\alpha$ will have a column sum of either 1 or 0.
-We introduce a vector $q_t\in \R^{n_{\VV{}}}$ called \emph{G-state}, with $n_{\VV{}} =\abs{\VV{\Lambda^\strat}}$, representing the state of the given automaton $\GG{\Lambda^\strat}$, which is associated to the interval $\pi_t$.
+Since there can exist \emph{at most one} successor from each vertex with a transition labeled with $c$, the transition matrix $F_c$ will have a column sum of either 1 or 0.
+We introduce a vector $q_k\in \R^{n_{\VV{}}}$ called \emph{G-state}, with $n_{\VV{}} =\abs{\VV{\Lambda^\strat}}$, representing the state of the given automaton $\GG{\Lambda^\strat}$, which is associated to the interval $\pi_k$.
 %
 \begin{definition}[G-state]%
     \label{def:qt}%
-    Given an automaton $\GG{\Lambda^\strat} = (\VV{\Lambda^\strat}, \EE{\Lambda^\strat})$ and a word $w = \langle \alpha_1,\alpha_2,\dots,\alpha_N \rangle \in \Sigma\left( \strat \right)^N$, for $k = \abs{v},\,\, v\in\VV{\Lambda^\strat}$, we define $q_t\in \R^{n_{\VV{}}}$, where the $i$-th element $q_{t,i}$ is defined as:
+    Given an automaton $\GG{\Lambda^\strat} = (\VV{\Lambda^\strat}, \EE{\Lambda^\strat})$ and a word $w = \seq{c_1,c_2,\dots,c_N} \in \Sigma\left( \strat \right)^N$, for $\ell = \abs{v_i}, v_i\in\VV{\Lambda^\strat}$, we define the $i$-th element of $q_k\in \R^{n_{\VV{}}}$ as $q_{k,i}$:
     \begin{equation*}
-        q_{t,i}=
+        q_{k,i}=
         \begin{cases}
-            1, &\text{ if } \langle \alpha_{t-k},\dots,\alpha_{t-1} \rangle \equiv v_i \in \VV{\Lambda^\strat} \\
+            1, &\text{ if } \seq{c_{k-\ell},\dots,c_{k-1}} \equiv v_i \in \VV{\Lambda^\strat} \\
             0, &\text{otherwise}.
         \end{cases}
     \end{equation*}
 \end{definition}
 %
-The G-state $q_t$ is the vector representation of the vertex \emph{left} at step $t$: here, $q_t=0$ means that the transition at step $t-1$ was infeasible for the automaton. 
-Given an arbitrary string $w=\langle \alpha_1,\dots,\alpha_t,\dots \rangle$, the G-state dynamics is defined as $q_{t+1} = F_{\alpha_t}\funof{\GG{\Lambda^\strat}} \cdot q_t$, and the following property holds~\cite{xu2012matrix}.
+The G-state $q_k$ is the vector representation of the vertex that was \emph{departed} at step $k$, i.e., $q_k=0$ means that the transition at step $k-1$ was infeasible for the automaton. 
+Given an arbitrary string $w=\seq{c_1,\dots,c_k,\dots}$, the G-state dynamics is defined as $q_{k+1} = F_{c_k}\funof{\GG{\Lambda^\strat}} \cdot q_k$, and the following property holds~\cite{xu2012matrix}.
 %
 \begin{lemma}[Infeasible sequence]%
     \label{cor:Fseqnotinlambda}%
-    If $\langle \alpha_1,\dots,\alpha_t,\dots \rangle \notin \sset{N}{ \Lambda^\strat }$, then 
+    If $\seq{c_1,\dots,c_k,\dots} \notin \sset{N}{ \Lambda^\strat }$, then 
     \begin{equation*}
-        F_{\alpha_N}\funof{\GG{\Lambda^\strat}} \cdots F_{\alpha_2}\funof{\GG{\Lambda^\strat}} \cdot F_{\alpha_1}\funof{\GG{\Lambda^\strat}} = 0.
+        F_{c_N}\funof{\GG{\Lambda^\strat}} \cdots F_{c_2}\funof{\GG{\Lambda^\strat}} \cdot F_{c_1}\funof{\GG{\Lambda^\strat}} = 0.
     \end{equation*}
 \end{lemma}
-Thus, if $q_t=0$ for any $t$, then $q_{t'}=0$ for $t' \geq t$.
+Thus, if $q_k=0$ for any $k$, then $q_{k'}=0$ for $k' \geq k$.

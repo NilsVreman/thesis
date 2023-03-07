@@ -1,11 +1,11 @@
-Using the alphabet $\Sigma\left(\strat\right)$ and the chosen actuator mode (i.e., zeroing, or holding the previous value), we compute the closed-loop behaviour of the controlled system.
-We identify one matrix for each dynamics corresponding to an interval $\pi_t$ associated by $\alpha \in \Sigma\left( \strat \right)$, building the set $\Aa^\strat$.
+Using the alphabet $\Sigma\left(\strat\right)$ and the chosen actuator mode (i.e., \tZ{}ing, or \tH{}ing the previous value), we compute the closed-loop behaviour of the system.
+We identify one matrix for each dynamics corresponding to an interval $\pi_k$ associated by $c \in \Sigma\left( \strat \right)$, building the set $\Aa^\strat$.
 
 \textbf{\tK{}: }%
 %
-We define $\tilde x_t^{K} = \left[ x_t^\T{}\,\, z_t^\T{}\,\, u_t^\T{} \right]^\T{}$ as the closed-loop state vector and compute the closed-loop dynamics $\clmat{}^{K}_{\cH}$, corresponding to the character $\cH$.
+We define $\tilde x_k^{K} = \left[ x_k^\T{}\,\, z_k^\T{}\,\, u_k^\T{} \right]^\T{}$ as the closed-loop state vector and compute the closed-loop dynamics $\clmat{}^{K}_{\cH}$, corresponding to the character $\cH$.
 \begin{equation*}
-    \tilde x_{t+1}^{K} = \clmat{}^{K}_{\cH}\,\tilde x_t^{K}, \quad
+    \tilde x_{k+1}^{K} = \clmat{}^{K}_{\cH}\,\tilde x_k^{K}, \quad
     \clmat{}^{K}_{\cH} = \begin{bmatrix}
         \Ap       & 0    & \Bp       \\
         -\Bc\Cp   & \Ac  & -\Bc\Dp   \\
@@ -13,11 +13,11 @@ We define $\tilde x_t^{K} = \left[ x_t^\T{}\,\, z_t^\T{}\,\, u_t^\T{} \right]^\T
     \end{bmatrix}
 \end{equation*}
 %
-For the case of $\cM$, the controller execution terminates prematurely, thus not updating its states ($z_{t+1} = z_t$).
-Depending on the actuation mode, the controller output is either zeroed ($u_{t+1} = 0$) or held ($u_{t+1} = u_t$).
+For the case of $\cM$, the controller execution terminates prematurely, thus not updating its states ($z_{k+1} = z_k$).
+Depending on the actuation mode, the controller output is either zeroed ($u_{k+1} = 0$) or held ($u_{k+1} = u_k$).
 The resulting closed-loop system in state-space form is denoted with $\clmat{}^{K}_{\cM}$:
 \begin{equation*}
-    \tilde x_{t+1}^{K} = \clmat{}^{K}_{\cM}\,\tilde x_t^{K}, \quad
+    \tilde x_{k+1}^{K} = \clmat{}^{K}_{\cM}\,\tilde x_k^{K}, \quad
     \clmat{}^{K}_{\cM} = \begin{bmatrix}
         \Ap & 0  & \Bp \\
         0   & I  & 0   \\
@@ -29,13 +29,13 @@ The set of dynamic matrices that a controlled system under the \tK{} strategy ma
 
 \textbf{\tS{}: }%
 %
-For the \tS{} strategy, we introduce two additional states $\hat x_t$ and $\hat u_t$ storing the old values of $x_t$ and $u_t$ while the controller awaits an update.
-The resulting state vector then becomes $\tilde x_t^{S} = \left[ x_t^\T{}\,\,z_t^\T{}\,\, u_t^\T{}\,\, \hat{x}_t^\T{}\,\, \hat{u}_t^\T{} \right]^\T{}$.
-When $\pi_t$ is associated to $\cH$, the two additional states mirror the behaviour of the states of which they are storing data.
+For the \tS{} strategy, we introduce two additional states $\hat x_k$ and $\hat u_k$ storing the old values of $x_k$ and $u_k$ while the controller awaits an update.
+The resulting state vector then becomes $\tilde x_k^{S} = \left[ x_k^\T{}\,\,z_k^\T{}\,\, u_k^\T{}\,\, \hat{x}_k^\T{}\,\, \hat{u}_k^\T{} \right]^\T{}$.
+When $\pi_k$ is associated to $\cH$, the two additional states mirror the behaviour of the states of which they are storing data.
 The resulting closed-loop system is described using $\clmat{}^{S}_{\cH}$:
 %
 \begin{equation*}
-    \tilde x_{t+1}^{S} = \clmat{}^{S}_{\cH}\,\tilde x_t^{S}, \quad
+    \tilde x_{k+1}^{S} = \clmat{}^{S}_{\cH}\,\tilde x_k^{S}, \quad
     \clmat{}^{S}_{\cH} = \begin{bmatrix}
         \Ap       & 0    & \Bp      & 0 & 0 \\
         -\Bc\Cp   & \Ac  & -\Bc\Dp  & 0 & 0 \\
@@ -45,11 +45,11 @@ The resulting closed-loop system is described using $\clmat{}^{S}_{\cH}$:
     \end{bmatrix}.
 \end{equation*}
 %
-For the case of $\cM$ in $\pi_t$ the two augmented states hold their previous values.
+For the case of $\cM$ in $\pi_k$ the two augmented states hold their previous values.
 The resulting closed-loop system is described by $\clmat{}^{S}_{\cM}$:
 %
 \begin{equation*}
-    \tilde x_{t+1}^{S} = \clmat{}^{S}_{\cM}\,\tilde x_t^{S}, \quad
+    \tilde x_{k+1}^{S} = \clmat{}^{S}_{\cM}\,\tilde x_k^{S}, \quad
     \clmat{}^{S}_{\cM}=\begin{bmatrix}
         \Ap & 0  & \Bp & 0 & 0 \\
         0   & I  & 0   & 0 & 0 \\
@@ -59,11 +59,11 @@ The resulting closed-loop system is described by $\clmat{}^{S}_{\cM}$:
     \end{bmatrix}.
 \end{equation*}
 %
-Finally, for the case of recovery $\cR$ in $\pi_t$, the new control command is calculated using the values stored in $\hat x_t$ and $\hat u_t$.
+Finally, for the case of recovery $\cR$ in $\pi_k$, the new control command is calculated using the values stored in $\hat x_k$ and $\hat u_k$.
 The resulting closed-loop system is described by $\clmat{}^{S}_{\cR}$:
 %
 \begin{equation*}
-    \tilde x_{t+1}^{S} = \clmat{}^{S}_{\cR} \, \tilde x_{t}^{S}, \quad
+    \tilde x_{k+1}^{S} = \clmat{}^{S}_{\cR} \, \tilde x_{k}^{S}, \quad
     \clmat{}^{S}_{\cR} = \begin{bmatrix}
         \Ap & 0    & \Bp & 0       & 0 \\
         0   & \Ac  & 0   & -\Bc\Cp & -\Bc\Dp \\
@@ -84,23 +84,23 @@ However, few efficient CJSR computation methods exist.
 Instead, building upon the recent work of~\cite{xu2020approximation}, we seek to obtain an equivalent system model based on \emph{Kronecker lifting}~\cite{horn2012matrix}, characterized by a set of matrices denoted by $\Alifted_{\Lambda^\strat}$ and behaving as an \emph{arbitrary switching system}, such that $\rho\funof{\Alifted_{\Lambda^\strat}} = \rho\funof{\Aa^{\strat},\GG{\Lambda^\strat}}$.
 This way, powerful algorithms applicable to arbitrary switching system~\cite{vankeerberghen2014jsr,sparsejsr} can be used to find tight stability bounds.
 %
-By leveraging the vector $q_t$ of Definition~\ref{def:qt}, we introduce the \emph{lifted discrete-time state}, $\xi_t\in\R^{n\cdot n_{\VV{}}}$, defined as 
+By leveraging the vector $q_k$ of Definition~\ref{def:qt}, we introduce the \emph{lifted discrete-time state}, $\xi_k\in\R^{n\cdot n_{\VV{}}}$, defined as 
 \begin{equation*}
-    \xi_t = q_t\otimes \tilde x_t,
+    \xi_k = q_k\otimes \tilde x_k,
 \end{equation*}
-where $n$ is the number of closed-loop states $\tilde x_t$, $n_{\VV{}} = \abs{\VV{\Lambda^\strat}}$, and $\otimes$ is the Kronecker product operator.
-By construction, $\xi_t$ is then a vector composed of $n_{\VV{}}$ blocks of size $n$, where at most one block is equal to $\tilde x_t$ and all other blocks are equal to the $0$ vector.
+where $n$ is the number of closed-loop states $\tilde x_k$, $n_{\VV{}} = \abs{\VV{\Lambda^\strat}}$, and $\otimes$ is the Kronecker product operator.
+By construction, $\xi_k$ is then a vector composed of $n_{\VV{}}$ blocks of size $n$, where at most one block is equal to $\tilde x_k$ and all other blocks are equal to the $0$ vector.
 %
-Then, we build a set of lifted matrices $L_{\alpha} ( \GG{\Lambda^\strat} )\in\R^{n\cdot n_{\VV{}}\times n\cdot n_{\VV{}}}$ that includes information about both the system dynamics and the possible transitions given a certain outcome $\alpha \in \Sigma\left(\strat\right)$:
+Then, we build a set of lifted matrices $L_{c} ( \GG{\Lambda^\strat} )\in\R^{n\cdot n_{\VV{}}\times n\cdot n_{\VV{}}}$ that includes information about both the system dynamics and the possible transitions given a certain outcome $c \in \Sigma\left(\strat\right)$:
 %
 \begin{equation*}
-    L_{\alpha} ( \GG{\Lambda^\strat} ) = F_{\alpha} ( \GG{\Lambda^\strat} )\otimes \clmat{}_\alpha^\strat,\quad \alpha \in \Sigma \left( \strat \right).
+    L_{c} ( \GG{\Lambda^\strat} ) = F_{c} ( \GG{\Lambda^\strat} )\otimes \clmat{}_c^\strat,\quad c \in \Sigma \left( \strat \right).
 \end{equation*}
 %
 The lifted dynamics of the closed loop system then become%
 %
 \begin{equation*}
-    \xi_{t+1} = L_{\alpha} ( \GG{\Lambda^\strat} )\,\xi_t.
+    \xi_{k+1} = L_{c} ( \GG{\Lambda^\strat} )\,\xi_k.
 \end{equation*}
 %
 Formally, we obtain an equivalent closed-loop system composed of a set of lifted dynamic matrices, $\Alifted_{\Lambda^\strat}$.
@@ -111,7 +111,7 @@ Formally, we obtain an equivalent closed-loop system composed of a set of lifted
     Formally,
     %
     \begin{equation*}
-        \Alifted_{\Lambda^\strat} = \left\{ L_{\alpha} ( \GG{\Lambda^\strat} ) \,\, | \,\, \alpha \in \Sigma\left(\strat\right) \right\}.
+        \Alifted_{\Lambda^\strat} = \left\{ L_{c} ( \GG{\Lambda^\strat} ) \,\, | \,\, c \in \Sigma\left(\strat\right) \right\}.
     \end{equation*}
 \end{definition}
 %
