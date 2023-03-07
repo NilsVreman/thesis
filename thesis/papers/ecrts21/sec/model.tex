@@ -3,9 +3,9 @@ In this section, we introduce the relevant control background needed for the rem
 \begin{figure}[t]
 \centering
 \input{\figdir/loop.tex}
-\caption{Control loop: The reference value $r_t$ is compared with the output $y_t$ of the plant $\plant$.
-    The control error $e_t = r_t - y_t$ is used by the controller $\ctrler$ to compute the value of the control signal $u_t$.
-    The plant is disturbed by the stochastic process $w_t$.}
+\caption{Control loop: The reference value $r_k$ is compared with the output $y_k$ of the plant $\plant$.
+    The control error $e_k = r_k - y_k$ is used by the controller $\ctrler$ to compute the value of the control signal $u_k$.
+    The plant is disturbed by the stochastic process $w_k$.}
 \label{fig:loop}
 \end{figure}
 
@@ -26,45 +26,45 @@ We consider a plant $\plant$ described in state-space form:
 \label{eq:background:plant}
     \plant : \left\{
     \begin{aligned}
-        x_{t+1} &\,=\,  \Ap\,x_t + \Bp\,u_t + \Wp\,w_t \\
-        y_t &\,=\, \Cp\,x_t + \Dp\,u_t
+        x_{k+1} &\,=\,  \Ap\,x_k + \Bp\,u_k + \Wp\,w_k \\
+        y_k &\,=\, \Cp\,x_k + \Dp\,u_k
     \end{aligned}
     \right.
 \end{equation}
 
-In~\eqref{eq:background:plant}, $t$ counts the discrete instants that represent the plant's sampling points.
-We assume periodic sampling; the time between two consecutive samples $t$ and $t+1$ is fixed and equal to sampling period $\Ts$.
-In the equation, $x_t$ is a column vector with $n_x$ elements.
+In~\eqref{eq:background:plant}, $k$ counts the discrete instants that represent the plant's sampling points.
+We assume periodic sampling; the time between two consecutive samples $k$ and $k+1$ is fixed and equal to sampling period $\Ts$.
+In the equation, $x_k$ is a column vector with $n_x$ elements.
 These elements represent the state variables that account for, e.g., the storage of mass, momentum, and energy.
-Similarly, $u_t$ is a column vector with $n_u$ elements.
+Similarly, $u_k$ is a column vector with $n_u$ elements.
 These values represent the inputs that affect the dynamics of the plant.
-We also consider $w_t$, a column vector with $n_u$ elements.
-The term $w_t$ represents an unknown load disturbance, modelled as a stationary stochastic process with known properties.
-Finally, $y_t$ is a column vector with $n_y$ elements, that represents the measurements that are taken from our plant.
+We also consider $w_k$, a column vector with $n_u$ elements.
+The term $w_k$ represents an unknown load disturbance, modelled as a stationary stochastic process with known properties.
+Finally, $y_k$ is a column vector with $n_y$ elements, that represents the measurements that are taken from our plant.
 The matrices $\Ap$ (size $n_x \times n_x$), $\Bp$ (size $n_x \times n_u$), $\Cp$ (size $n_y \times n_x$), $\Dp$ (size $n_y \times n_u$), and $\Wp$ (size $n_x \times n_u$) characterise the dynamics of the plant.
 
 \subsection{Controller Model}
 
 The plant $\plant$ is controlled by a periodically executing controller $\ctrler$ with implicit deadlines, i.e., the deadline of each task instance (job) coincides with the next task activation.
-We consider the class of all linear controllers with a one-step delay between sampling and actuation.\footnote{One-step delay controllers are controllers in which a control signal is computed in the $t$-th interval and actuated at the beginning of the $t+1$-th period. In the real-time systems jargon, one-step delay controllers are often referred to as controllers that follow the Logical Execution Time (LET) paradigm~\cite{Kirsch:2012, Ernst:2018}. From the real-time perspective, implementing the controller following the LET paradigm improves the timing predictability. From the control perspective, one-step delay controllers reduce activation jitter and allows the engineer to neglect time-varying computational delays.}
+We consider the class of all linear controllers with a one-step delay between sampling and actuation.\footnote{One-step delay controllers are controllers in which a control signal is computed in the $k$-th interval and actuated at the beginning of the $k+1$-th period. In the real-time systems jargon, one-step delay controllers are often referred to as controllers that follow the Logical Execution Time (LET) paradigm~\cite{Kirsch:2012, Ernst:2018}. From the real-time perspective, implementing the controller following the LET paradigm improves the timing predictability. From the control perspective, one-step delay controllers reduce activation jitter and allows the engineer to neglect time-varying computational delays.}
 In other words, we consider all the controllers that can be written as linear systems, according to the following state-space equation:
 \begin{equation}
 \label{eq:background:controller}
     \ctrler : \left\{
     \begin{aligned}
-        z_{t+1} &\,=\, \Ac\,z_t + \Bc\,e_t \\
-        u_{t+1} &\,=\, \Cc\,z_t + \Dc\,e_t
+        z_{k+1} &\,=\, \Ac\,z_k + \Bc\,e_k \\
+        u_{k+1} &\,=\, \Cc\,z_k + \Dc\,e_k
     \end{aligned}
     \right.
 \end{equation}
 
-Here, $z_t$ is a column vector with $n_z$ elements that represents the state of the controller.
-The input of the controller is $e_t$, a vector of $n_y$ elements.
-Each element in the vector is the error between the corresponding plant output and its reference value ($e_t = r_t - y_t$, where $r_t$ represents the reference values for the plant outputs).
-Finally, $u_t$ is a vector of $n_u$ elements, that encodes the output of the controller, which is connected to the plant input vector.
+Here, $z_k$ is a column vector with $n_z$ elements that represents the state of the controller.
+The input of the controller is $e_k$, a vector of $n_y$ elements.
+Each element in the vector is the error between the corresponding plant output and its reference value ($e_k = r_k - y_k$, where $r_k$ represents the reference values for the plant outputs).
+Finally, $u_k$ is a vector of $n_u$ elements, that encodes the output of the controller, which is connected to the plant input vector.
 The matrices $\Ac$ (size $n_z \times n_z$), $\Bc$ (size $n_z \times n_y$), $\Cc$ (size $n_u \times n_z$), and $\Dc$ (size $n_u \times n_y$) characterise the dynamics of the controller.
-For every task activation, the controller first applies the value of $u_t$ that was computed by the previous job and then reads the inputs $r_t$ and $y_t$.
-It then calculates the values of $z_{t+1}$ and $u_{t+1}$ that will be used in the next iteration.
+For every task activation, the controller first applies the value of $u_k$ that was computed by the previous job and then reads the inputs $r_k$ and $y_k$.
+It then calculates the values of $z_{k+1}$ and $u_{k+1}$ that will be used in the next iteration.
 
 The analysis methodology presented in the remainder of this paper is valid for \emph{all} linear controllers.
 The class of linear controllers includes some of the most frequently used controllers in industry, in particular proportional and integral (PI), proportional, integral, and derivative (PID), lead--lag compensators, and linear-quadratic-Gaussian (LQG) controllers.
@@ -76,15 +76,15 @@ Hence, it is possible to analyse plants and controllers that transition between 
 
 We now analyse the closed-loop system shown in Figure~\ref{fig:loop}.
 Combining the dynamical models from~\eqref{eq:background:plant} and~\eqref{eq:background:controller}, we obtain matrices that represent the closed-loop system.
-We denote the state vector of the closed-loop system with $\tilde{x}_t = \left[ x_t^\T,\, z_t^\T,\, u_t^\T \right]^\T$, where $^\T$ is the transpose operator.
-In this way, we obtain a system that has the vectors $r_t$ and $w_t$ as input, and is described by
+We denote the state vector of the closed-loop system with $\tilde{x}_k = \left[ x_k^\T,\, z_k^\T,\, u_k^\T \right]^\T$, where $^\T$ is the transpose operator.
+In this way, we obtain a system that has the vectors $r_k$ and $w_k$ as input, and is described by
 %
 \begin{equation} 
 \label{eq:feedback-basic}
     \clsys : \left\{
     \begin{aligned}
-        \tilde{x}_{t+1} &\,=\, \clmat{}\,\tilde{x}_{t} + \clinp{}_r\,r_{t} + \clinp{}_w\,w_{t}\\
-        y_{t} &\,=\, \tilde C\,\tilde{x}_{t},
+        \tilde{x}_{k+1} &\,=\, \clmat{}\,\tilde{x}_{k} + \clinp{}_r\,r_{k} + \clinp{}_w\,w_{k}\\
+        y_{k} &\,=\, \tilde C\,\tilde{x}_{k},
     \end{aligned} \right.
 \end{equation}
 %
@@ -118,7 +118,7 @@ Figure~\ref{fig:closedloop} shows the graphical representation of the closed-loo
 \centering
 \input{\figdir/compressed-loop.tex}
 \caption{Closed-loop system rewritten as a new linear system $\clsys$.
-    The resulting system has two inputs, $r_t$ and $w_t$ and one output.
+    The resulting system has two inputs, $r_k$ and $w_k$ and one output.
     The feedback loop shown in Figure~\ref{fig:loop} is hidden inside $\clsys$.}
 \label{fig:closedloop}
 \end{figure}
@@ -150,37 +150,37 @@ In our work, we use a quadratic cost function
 %
 \begin{equation}
     \label{eq:cost}
-    J_t = \E{e_t^\T Q_e e_t + u_t^\T Q_u u_t}.
+    J_k = \E{e_k^\T Q_e e_k + u_k^\T Q_u u_k}.
 \end{equation}
 %
 The cost function penalises deviations from the reference value as well as usage of the control signal.
 $\mathbb{E}$ denotes expected value, and the positive semidefinite weighting matrices $Q_e$ (size $n_y \times n_y$) and $Q_u$ (size $n_u \times n_u$) weigh the different terms against each other.
 A small cost value means that the controller successfully makes the error approach zero, using a small control signal.
 
-If the stochastic properties of the external signals $r_t$ and $w_t$ are known, it is possible to calculate the value of the cost function analytically.
-For simplicity and without loss of generality, we will henceforth assume that $r_t = 0$ (i.e., we want to regulate the output to zero) and that $w_t$ is a zero-mean Gaussian white noise process with variance~$R=\E{w_t w_t^\T}$.
+If the stochastic properties of the external signals $r_k$ and $w_k$ are known, it is possible to calculate the value of the cost function analytically.
+For simplicity and without loss of generality, we will henceforth assume that $r_k = 0$ (i.e., we want to regulate the output to zero) and that $w_k$ is a zero-mean Gaussian white noise process with variance~$R=\E{w_k w_k^\T}$.
 More elaborate disturbance models can be realised by adding extra states in the plant model.
 
 We now detail how to evaluate \eqref{eq:cost}.
-Let $P_t$ denote the covariance of the closed-loop state vector at time $t$,
+Let $P_k$ denote the covariance of the closed-loop state vector at time $k$,
 %
 \begin{equation}
 \label{eq:covarcalc}
-    P_t = \E{\tilde x_t \tilde x_t^\T }.
+    P_k = \E{\tilde x_k \tilde x_k^\T }.
 \end{equation}
 %
 The state covariance evolves according to
 %
 \begin{equation}
 \label{eq:covevolution}
-    P_{t+1} = \clmat{} \,P_t\, \clmat{}^\T + \clinp{}_w \,R\, \clinp{}_w^\T.
+    P_{k+1} = \clmat{} \,P_k\, \clmat{}^\T + \clinp{}_w \,R\, \clinp{}_w^\T.
 \end{equation}
 %
-Given $P_t$, we can calculate the cost for time step $t$ as
+Given $P_k$, we can calculate the cost for time step $t$ as
 %
 \begin{equation}
 \label{eq:covartocost}
-    J_t = \E{\tilde x_t^\T \,Q\, \tilde x_t } = \trace{P_t \,Q},
+    J_k = \E{\tilde x_k^\T \,Q\, \tilde x_k } = \trace{P_k \,Q},
 \end{equation}
 %
 where $\mathrm{tr}$ computes the trace of the matrix, and
@@ -199,7 +199,7 @@ The stationary cost of the system is defined as $J_\infty$.
 This is the cost that the system converges to when operating under normal conditions:
 %
 \begin{equation}
-    J_\infty = \lim_{t\rightarrow\infty} J_t.
+    J_\infty = \lim_{k\rightarrow\infty} J_k.
 \end{equation}
 %
-This means that there exists an instant $\bar{t}$ for which $J_t$ reaches a value arbitrarily close to the steady-state value $J_\infty$, or $\forall \varepsilon, \,\, \exists \bar{t} \text{~s.t.~} \forall t>\bar{t},\,\,|(J_t - J_\infty)/J_\infty| < \varepsilon$.
+This means that there exists an instant $\bar{k}$ for which $J_k$ reaches a value arbitrarily close to the steady-state value $J_\infty$, or $\forall \varepsilon, \,\, \exists \bar{k} \text{~s.t.~} \forall k>\bar{k},\,\,|(J_k - J_\infty)/J_\infty| < \varepsilon$.

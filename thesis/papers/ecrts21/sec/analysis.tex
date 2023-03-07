@@ -12,7 +12,7 @@ Specifically, given a system $\clsys$, we define a \emph{burst interval} $\miss$
 We assume that the burst interval $\miss$ is followed by a \emph{recovery interval} $\recovery$, defined as an interval in which the control task consecutively hits $\numhits$ deadlines.
 
 During the burst interval, the deadline misses of the control task are handled using a \emph{deadline handling strategy} $\dstrat$ (\tK{}, $K$, or \tS{}, $S$).
-The control signal $u_t$ is selected in accordance with the \emph{actuation strategy} $\hstrat$ (\tZ{}, $Z$, or \tH{}, $H$).
+The control signal $u_k$ is selected in accordance with the \emph{actuation strategy} $\hstrat$ (\tZ{}, $Z$, or \tH{}, $H$).
 We denote the combination of $\dstrat$ and $\hstrat$ with~$\strat = \left(\dstrat,\hstrat\right)$.
 For example $\strat$ could be $SZ$ to indicate that the \tS{} deadline handling strategy is paired with the \tZ{} actuation strategy.
 The system \emph{recovers} once it operates close to steady-state.
@@ -46,7 +46,7 @@ Hence, we here extend the weakly hard models of computation with a fifth alterna
 
 \subsection{Closed-Loop System Dynamics}%
 \label{sec:derivation}
-In this section we derive the system dynamics for a closed-loop control system under the assumption that we enter a burst interval of length $\nummisses$ after time instant $t$, and after $\nummisses$ deadline misses we start completing the control job in time.
+In this section we derive the system dynamics for a closed-loop control system under the assumption that we enter a burst interval of length $\nummisses$ after time instant $k$, and after $\nummisses$ deadline misses we start completing the control job in time.
 
 \textbf{Normal Operation: }%
 Under \emph{normal operating conditions} the system is not experiencing any deadline misses.
@@ -54,11 +54,11 @@ In other words, the system evolves according to the closed-loop system dynamics~
 
 \textbf{\tKZ{}: }%
 %
-If a control task deadline miss occurs at time instant $t$, the plant states $x_t$ still evolve as normal.
-However, the controller terminates its execution prematurely by killing the job, thus not updating its states ($z_{t+1} = z_t$).
-The controller output is determined by the actuation strategy and is here zero ($u_{t+1} = 0$).
-Now, consider a burst interval of length $\nummisses$ after time instant $t$.
-Recalling that $\tilde{x}_t = \left[ {x_t}^\T {z_t}^\T {u_t}^\T \right]^\T$, we can write the evolution of the closed-loop system for the sequence of $m$ deadline misses followed by a single deadline hit as the product of a matrix representing the behaviour of the system for a hit and a matrix representing the behaviour in case of miss elevated to the power of $m$ to indicate $m$ steps of the system evolution.
+If a control task deadline miss occurs at time instant $k$, the plant states $x_k$ still evolve as normal.
+However, the controller terminates its execution prematurely by killing the job, thus not updating its states ($z_{k+1} = z_k$).
+The controller output is determined by the actuation strategy and is here zero ($u_{k+1} = 0$).
+Now, consider a burst interval of length $\nummisses$ after time instant $k$.
+Recalling that $\tilde{x}_k = \left[ {x_k}^\T {z_k}^\T {u_k}^\T \right]^\T$, we can write the evolution of the closed-loop system for the sequence of $m$ deadline misses followed by a single deadline hit as the product of a matrix representing the behaviour of the system for a hit and a matrix representing the behaviour in case of miss elevated to the power of $m$ to indicate $m$ steps of the system evolution.
 
 The resulting closed-loop system in state-space form is
 %
@@ -66,9 +66,9 @@ The resulting closed-loop system in state-space form is
     \setlength\arraycolsep{2pt}
     \label{eq:KZ}
     \begin{bmatrix}
-        x_{t+\nummisses+1} \\
-        z_{t+\nummisses+1} \\
-        u_{t+\nummisses+1}
+        x_{k+\nummisses+1} \\
+        z_{k+\nummisses+1} \\
+        u_{k+\nummisses+1}
     \end{bmatrix} = 
     \underbrace{ \clmat{} \begin{bmatrix}
         \Ap                                         & 0_{n_x \times n_z}  & \Bp \\
@@ -76,29 +76,29 @@ The resulting closed-loop system in state-space form is
         0_{n_u \times n_x}   & 0_{n_u \times n_z}   & 0_{n_u \times n_u}
     \end{bmatrix}^{\nummisses}}_{\clmat{}_{KZ}\funof{\nummisses}}
     \begin{bmatrix}
-        x_{t} \\
-        z_{t} \\
-        u_{t}
+        x_{k} \\
+        z_{k} \\
+        u_{k}
     \end{bmatrix},
 \end{equation}
 %
 where $\clmat{}_{KZ}\funof{\nummisses}$ represents the system matrix for $\nummisses$ misses under the \tKZ{} strategy, followed by a single hit (the matrix $\clmat{}$ that is multiplied to the left of the equation).
-The matrix $\clmat{}$ is the same specified in~\eqref{eq:matrixA}, and represents the first hit that follows the $\nummisses$ misses, hence, we determine how $\tilde{x}_t$ influences $\tilde{x}_{t+m+1}$ ($\nummisses$ misses and one hit).
+The matrix $\clmat{}$ is the same specified in~\eqref{eq:matrixA}, and represents the first hit that follows the $\nummisses$ misses, hence, we determine how $\tilde{x}_k$ influences $\tilde{x}_{k+m+1}$ ($\nummisses$ misses and one hit).
 
 \textbf{\tKH{}: }%
 %
 Changing the actuation strategy to \tH{}, slightly alters the system matrix we derived for the \tKZ{} case.
-The plant states $x_t$ evolve as normal and the control states $z_t$ are still not updated ($z_{t+1} = z_t$).
-However, due to the change in actuation strategy, the last actuated value is instead held ($u_{t+1} = u_t$).
+The plant states $x_k$ evolve as normal and the control states $z_k$ are still not updated ($z_{k+1} = z_k$).
+However, due to the change in actuation strategy, the last actuated value is instead held ($u_{k+1} = u_k$).
 The resulting closed-loop state-space form can be seen in~\eqref{eq:KH}, where $\clmat{}_{KH}\funof{\nummisses}$ is used to represent the system matrix for $\nummisses$ misses under the \tKH{} strategy and matrix $\clmat{}$ is specified in~\eqref{eq:matrixA}.
 %
 \begin{equation}
     \setlength\arraycolsep{2pt}
     \label{eq:KH}
     \begin{bmatrix}
-        x_{t+\nummisses+1} \\
-        z_{t+\nummisses+1} \\
-        u_{t+\nummisses+1}
+        x_{k+\nummisses+1} \\
+        z_{k+\nummisses+1} \\
+        u_{k+\nummisses+1}
     \end{bmatrix} = 
     \underbrace{ \clmat{} \begin{bmatrix}
         \Ap                                         & 0_{n_x \times n_z}  & \Bp \\
@@ -106,9 +106,9 @@ The resulting closed-loop state-space form can be seen in~\eqref{eq:KH}, where $
         0_{n_u \times n_x}   & 0_{n_u \times n_z}   & I
     \end{bmatrix}^{\nummisses}}_{\clmat{}_{KH}\funof{\nummisses}}
     \begin{bmatrix}
-        x_{t} \\
-        z_{t} \\
-        u_{t}
+        x_{k} \\
+        z_{k} \\
+        u_{k}
     \end{bmatrix}
 \end{equation}
 
@@ -116,7 +116,7 @@ The resulting closed-loop state-space form can be seen in~\eqref{eq:KH}, where $
 %
 When the control task misses a deadline under the \tS{} strategy, the job missing the deadline is allowed to continue its execution until completion.
 However, no subsequent job of the control task is released until the current job has finished executing.
-If the currently active job terminates during period $t$, the next control job is released at the start of the $t+1$-th period.
+If the currently active job terminates during period $k$, the next control job is released at the start of the $k+1$-th period.
 We can then write the evolution of the system where the control job experiences $\nummisses$ misses before completing its execution, meaning that there is a subsequent hit that uses old information for the error measurements.
 While the controller executed only once to completion, the plant evolved for $\nummisses+1$ steps.
 The resulting closed-loop state-space form can be seen in~\eqref{eq:SZ}, where $\clmat{}_{SZ}\funof{\nummisses}$ is used to represent the system matrix under the \tSZ{} strategy for $\nummisses$ misses and one completion using old measurements.
@@ -125,9 +125,9 @@ The resulting closed-loop state-space form can be seen in~\eqref{eq:SZ}, where $
 \setlength\arraycolsep{2pt}
 \label{eq:SZ}
     \begin{bmatrix}
-        x_{t+\nummisses+1} \\
-        z_{t+\nummisses+1} \\
-        u_{t+\nummisses+1}
+        x_{k+\nummisses+1} \\
+        z_{k+\nummisses+1} \\
+        u_{k+\nummisses+1}
     \end{bmatrix} = 
     \underbrace{\begin{bmatrix}
         \Ap^{\nummisses+1}  & 0_{n_x \times n_z}  & \Ap^\nummisses \Bp \\
@@ -135,9 +135,9 @@ The resulting closed-loop state-space form can be seen in~\eqref{eq:SZ}, where $
         -\Dc\Cp             & \Cc                                       & -\Dc\Dp
     \end{bmatrix}}_{\clmat{}_{SZ}\funof{\nummisses}}
     \begin{bmatrix}
-        x_{t} \\
-        z_{t} \\
-        u_{t}
+        x_{k} \\
+        z_{k} \\
+        u_{k}
     \end{bmatrix}
 \end{equation}
 
@@ -152,9 +152,9 @@ The resulting closed-loop state-space form can be seen in~\eqref{eq:SH}, where $
 \setlength\arraycolsep{2pt}
 \label{eq:SH}
     \begin{bmatrix}
-        x_{t+\nummisses+1} \\
-        z_{t+\nummisses+1} \\
-        u_{t+\nummisses+1}
+        x_{k+\nummisses+1} \\
+        z_{k+\nummisses+1} \\
+        u_{k+\nummisses+1}
     \end{bmatrix} = 
     \underbrace{\begin{bmatrix}
         \Ap^{\nummisses+1}  & 0_{n_x \times n_z}  & \sum_{i=0}^\nummisses \Ap^i\Bp \\
@@ -162,9 +162,9 @@ The resulting closed-loop state-space form can be seen in~\eqref{eq:SH}, where $
         -\Dc\Cp             & \Cc                                       & -\Dc\Dp
     \end{bmatrix}}_{\clmat{}_{SH}\funof{\nummisses}}
     \begin{bmatrix}
-        x_{t} \\
-        z_{t} \\
-        u_{t}
+        x_{k} \\
+        z_{k} \\
+        u_{k}
     \end{bmatrix}
 \end{equation}
 
@@ -172,7 +172,7 @@ Equations~\eqref{eq:KZ}--\eqref{eq:SH} are inspired by the analysis in~\cite{Mag
 The first one is that our controller is specified as a general state-space system; therefore our method is able to address \emph{all} linear controllers.
 The second generalisation is that we could include estimates of the plant states in the controller.
 We can thus properly handle the presence of an observer.\footnote{In~\cite{Maggio:2020} the controller state is specified as part of the plant (e.g., when the proportional and integral controller is introduced). This implies that the state is computed although the controller did not execute. Our formulation fixes this by separating the plant execution and the controller states.}
-Furthermore, we simplify the calculations by reducing the number of states $\tilde{x}_t$ of the closed-loop matrices.
+Furthermore, we simplify the calculations by reducing the number of states $\tilde{x}_k$ of the closed-loop matrices.
 
 \paragraph*{Stability}%
 
@@ -222,7 +222,7 @@ When a burst interval of $\nummisses$ missed deadlines occurs, the system will b
 %
 \begin{equation}
 \label{eq:covariance-evolution}
-    P_{t+\nummisses+1} = \clmat{}_{\strat}\funof{m} P_t \left( \clmat{}_{\strat}\funof{m} \right)^\T + \clmat{}^{j_{\numhits}} R_w \left( \clmat{}^{j_{\numhits}} \right)^\T,
+    P_{k+\nummisses+1} = \clmat{}_{\strat}\funof{m} P_k \left( \clmat{}_{\strat}\funof{m} \right)^\T + \clmat{}^{j_{\numhits}} R_w \left( \clmat{}^{j_{\numhits}} \right)^\T,
 \end{equation}
 where
 \begin{equation}
@@ -255,13 +255,13 @@ We evaluate this as
 %
 \begin{equation}
     \label{eq:cost-threshold}
-    \abs{\frac{J_{\infty}-J_t}{J_\infty}} < \varepsilon,
+    \abs{\frac{J_{\infty}-J_k}{J_\infty}} < \varepsilon,
 \end{equation}
 where $\varepsilon> 0$ is the \emph{recovery threshold}.
 
 \begin{definition}[Performance Recovery Interval]%
 \label{def:recovery-lenght-interval}%
-    We define the recovery length interval $\recoverylengthinterval_{\strat}$ as the smallest $\numhits$ such that~\eqref{eq:cost-threshold} is satisfied for all $t \geq \numhits$ when using $\strat$ to handle deadline misses.
+    We define the recovery length interval $\recoverylengthinterval_{\strat}$ as the smallest $\numhits$ such that~\eqref{eq:cost-threshold} is satisfied for all $k \geq \numhits$ when using $\strat$ to handle deadline misses.
 \end{definition}
 
 \begin{definition}[Maximum normalised cost]%
@@ -269,24 +269,24 @@ where $\varepsilon> 0$ is the \emph{recovery threshold}.
     We denote the maximum normalised cost of the system by
     %
     \begin{equation}
-        J_{M,\strat} = \max_t \frac{J_{t, \strat}}{J_\infty},
+        J_{M,\strat} = \max_k \frac{J_{k, \strat}}{J_\infty},
     \end{equation}
     %
-    where $J_{t,\strat}$ is the cost computed according to~\eqref{eq:covartocost} when using $\strat$ to handle the deadline misses.
+    where $J_{k,\strat}$ is the cost computed according to~\eqref{eq:covartocost} when using $\strat$ to handle the deadline misses.
 \end{definition}
 \begin{figure}[t]
     \centering
     \input{\figdir/performance-example} 
-    \caption{Illustration of normalised cost ($J_t/J_\infty$), performance recovery interval $\recoverylengthinterval_{\strat}$ and maximum normalised cost $J_{M,\strat}$ on a data trace. The example uses $\strat = \text{\tKZ{}}$ and $\varepsilon=0.1$.}
+    \caption{Illustration of normalised cost ($J_k/J_\infty$), performance recovery interval $\recoverylengthinterval_{\strat}$ and maximum normalised cost $J_{M,\strat}$ on a data trace. The example uses $\strat = \text{\tKZ{}}$ and $\varepsilon=0.1$.}
     \label{fig:recoveryandpeak}
 \end{figure}
 Figure~\ref{fig:recoveryandpeak} gives a graphical representation of $\recoverylengthinterval_{\strat}$ and $J_{M,\strat}$ for an execution trace in which the controller experiences 3 misses and uses \tKZ{} as strategy $\strat$.
 
 Compared to the stability analysis, the performance analysis also takes into account state deviations and uncertainty due to disturbances.
 In Section~\ref{sec:derivation} we used the system dynamics to analyse the stability of the system.
-The disturbance term $w_t$ was neglected as it does not influence the system stability.
+The disturbance term $w_k$ was neglected as it does not influence the system stability.
 However, its presence (as the presence of any disturbance) changes the dynamic behaviour of the system.
-For the performance metric, the state covariance matrix $P_t$ evolves according to both the noise intensity and the system dynamics~\eqref{eq:covariance-evolution}.
+For the performance metric, the state covariance matrix $P_k$ evolves according to both the noise intensity and the system dynamics~\eqref{eq:covariance-evolution}.
 The result is that the performance analysis provides us with a conservative (but more realistic) recovery interval, that takes system uncertainties into consideration.
 
 To find the length of the recovery interval, we evolve the state covariance during a burst interval, using a specific strategy $\strat$ according to~\eqref{eq:covariance-evolution}.

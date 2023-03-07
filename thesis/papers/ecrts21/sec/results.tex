@@ -28,20 +28,20 @@ Based on state-of-the-art models~\cite{Cazzolato:2011} and on our control design
     \begin{aligned}
         \plant \,\, : \,\, & \left\{ 
         \begin{aligned}
-            x_{t+1} &= 
+            x_{k+1} &= 
             \begin{bmatrix*}[c] 
                 1.002 & 0.0100 & 0 & 0 \\
                 0.3133 & 1.002 & 0 & 0 \\
                 -2.943\cdot 10^{-5} & -9.808\cdot 10^{-8} & 1 & 0.01 \\
                 -0.0059 & -2.943\cdot 10^{-5} & 0 & 1
-            \end{bmatrix*} x_t + 
+            \end{bmatrix*} x_k + 
             \begin{bmatrix*}[c]
                 -0.0036 \\
                 -0.7127 \\
                 \textcolor{white}{+}0.0096 \\
                 \textcolor{white}{+}1.9120
-            \end{bmatrix*} u_t + I w_t,\\
-            y_t &= I x_t, 
+            \end{bmatrix*} u_k + I w_k,\\
+            y_k &= I x_k, 
         \end{aligned} \right. \\
     \end{aligned}
 \end{equation}
@@ -49,10 +49,10 @@ the controller $\ctrler$ takes the form
 \begin{equation}
     \label{eq:furuta2}
     \begin{aligned}
-        \ctrler \,\, : \,\,\, & u_{t+1} = 
+        \ctrler \,\, : \,\,\, & u_{k+1} = 
         \begin{bmatrix*}[c]
         8.8349 & 1.5804 & 0.2205 & 0.3049
-        \end{bmatrix*} x_t 
+        \end{bmatrix*} x_k 
     \end{aligned}
 \end{equation}
 and is designed and analysed using the following parameters (see Section~\ref{sec:cldynamics}):
@@ -85,7 +85,7 @@ Instead, the peaks in the \nilsstability{} region can be explained by stable mod
 It is also interesting to note that \tK{} seems to consistently yield a larger stability region than \tS{}, while neither \tZ{} nor \tH{} dominate each other in terms of stability guarantees. An example of the latter fact was given already in~\cite{schenato09}.
 
 For the performance analysis, we considered a one-shot burst fault of a specific length $m$, followed by a long period of normal execution. 
-Assuming that the pendulum starts close to the upright equilibrium, with stationary cost $J_\infty$, we calculate how the covariance $P_t$ and performance cost $J_t$ evolve during and after the burst interval using Equations~\eqref{eq:covariance-evolution}--\eqref{eq:evolutionparameters}.\footnote{The analysis is implemented using \code{JitterTime}~\cite{Cervin:2019}, \url{https://www.control.lth.se/jittertime}.} 
+Assuming that the pendulum starts close to the upright equilibrium, with stationary cost $J_\infty$, we calculate how the covariance $P_k$ and performance cost $J_k$ evolve during and after the burst interval using Equations~\eqref{eq:covariance-evolution}--\eqref{eq:evolutionparameters}.\footnote{The analysis is implemented using \code{JitterTime}~\cite{Cervin:2019}, \url{https://www.control.lth.se/jittertime}.} 
 These calculations assume an ideal, linear model of the pendulum. 
 The simulation results for different strategies and bursts of length $m=20$ are shown in the upper half of Figure~\ref{fig:cost_simvsreal}. 
 For \tH{}, it is seen that the cost grows exponentially during the initial fault interval (the first $20\,\Ts=0.2\,$s). 
@@ -95,7 +95,7 @@ The reason for the poor performance of \tH{} is that any non-zero held control s
 \begin{figure}
     \centering
     \input{\figdir/sim-vs-real}
-    \caption{Normalised performance cost $J_t/J_\infty$ obtained with the Furuta pendulum.
+    \caption{Normalised performance cost $J_k/J_\infty$ obtained with the Furuta pendulum.
         The upper part of the figure shows simulated data, while the lower part of the figure shows the corresponding values obtained averaging the results of 500 experiments with the real process and hardware.
         Each experiment corresponds to a 500 jobs of the controller (20 misses and 480 hits).}
     \label{fig:cost_simvsreal}
@@ -116,9 +116,9 @@ Due to system model uncertainties (e.g., friction) being significant, the rotati
 We removed the state from the covariance calculations, since the arm angle majorly impacted the variance despite its inconsequential significance on the system dynamics (the pendulum can be stabilised with the arm being around any position, provided that the pendulum itself is kept in the upright position).
 Including the rotation angle would not change the shape of the performance degradation seen in Figure~\ref{fig:cost_simvsreal}. 
 However, it would make the results obtained with different strategies $\strat$ not comparable (in some of them, the rotation angle could have varied less across the 500 experiments). 
-The covariance matrix $P_t$ was derived by calculating the variance of the closed-loop state vector $\tilde{x}_t$ according to Equation~\eqref{eq:covarcalc}, in each time step $t$. 
+The covariance matrix $P_k$ was derived by calculating the variance of the closed-loop state vector $\tilde{x}_k$ according to Equation~\eqref{eq:covarcalc}, in each time step $k$. 
 
-The resulting performance cost can be seen in the lower half of Figure~\ref{fig:cost_simvsreal}, where the cost $J_t$ was calculated according to Equation~\eqref{eq:covartocost} and normalised using the stationary cost $J_\infty$. 
+The resulting performance cost can be seen in the lower half of Figure~\ref{fig:cost_simvsreal}, where the cost $J_k$ was calculated according to Equation~\eqref{eq:covartocost} and normalised using the stationary cost $J_\infty$. 
 Comparing the simulated (upper) and real (lower) performance costs in Figure~\ref{fig:cost_simvsreal}, we notice the similarities between the simulated analysis and the analysis performed on the physical plant. 
 %
 Particularly, the strategies involving \tH{} actuation show similar behaviours. 
