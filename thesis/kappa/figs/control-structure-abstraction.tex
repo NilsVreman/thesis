@@ -43,8 +43,8 @@ sleepUntil(period);
 \node[] (vct) at (-0.9-1*10*\delta, 0.0) {\ctrlCode};
 \node[align=center] (cmath) at (-0.9+1.5*10*\delta, 0.0) {%
     $\left\{\begin{aligned}
-        z_{t+1} &= p(z_t,\, y_t,\, t) \\
-        u_{t} &= q(z_t,\, y_t,\, t) \\
+        z_{k+1} &= p(z_k,\, y_k,\, k) \\
+        u_{k} &= q(z_k,\, y_k,\, k) \\
     \end{aligned}\right.$};
 
 \draw[thick, ->] ([yshift=0.2cm, xshift=-0.1cm]vct.east) to ([xshift=0.1cm]cmath.west);

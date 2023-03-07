@@ -69,7 +69,7 @@ Intuitively, the task will experience a few initial cache misses when the data i
 This is also known as \emph{cache warming}.
 If the task continues to experience significant cache misses even after the cache warming phase, it is said to be \emph{thrashing} the cache, i.e., continuously experiencing cache misses.
 Thrashing can severely impact both real-time performance, energy consumption, and even collapse the execution~\cite{Wadleigh:2000}.
-In multi-core setups where different cores share a level-X cache, thrashing is a big concern; however, there exists strategies to mitigate frequent interference from different tasks sharing the same cache~\cite{Brandenburg:2011}.
+In multi-core setups where different cores share a layer-X cache, thrashing is a big concern; however, there exists strategies to mitigate frequent interference from different tasks sharing the same cache~\cite{Brandenburg:2011}.
 To help mitigate cache eviction (both in single- and multi-core setups), \emph{cache partitioning} is typically employed.
 Cache partitioning reserves specific memory addresses for specific tasks, whilst reserving others for shared data.
 Thus, cache evictions are limited to the specific cache memory regions that are shared among multiple tasks; unless, the cache is flushed due to security reasons.
@@ -107,7 +107,7 @@ Transmitting a message, such as \code{RTS}, thus involve encoding each character
 \end{equation*}
 
 The network over which the packets are transmitted, typically consist of one or more routers forwarding the packets between different target locations.
-To determine where to forward the packet to, the packet includes a \emph{network address}\footnote{The network address is an identifier to help recognise where to froward the packet to. Common examples of network addresses are IP addresses and MAC addresses.} that is read by the router before rerouting the packet according to a routing policy.
+To determine where to forward the packet to, the packet includes a \emph{network address}\footnote{The network address is an identifier to help recognise where to forward the packet to. Common examples of network addresses are IP addresses and MAC addresses.} that is read by the router before rerouting the packet according to a routing policy.
 Additionally, each router contains a buffer to store incoming packets before processing them.
 Processing the packets in the buffer is efficient, but it requires some non-negligible overhead, i.e., reading the network address and deciding where to forward the packet.
 Thus, under normal conditions the receiver will experience packet latency and jitter, but if the network traffic is heavy the buffer space can quickly be exhausted.
@@ -118,7 +118,7 @@ Common among all the congestion control strategies is that they employ intention
 In addition to the congestion controller dropping packets, there are intermittent packet drops due to, e.g., packets being misrouted~\addref{}, security threats~\addref{}, software bugs~\addref{}, or wireless communication~\addref{}.
 
 Regardless of the packet drops' origins, they can have dire consequences for real-time control systems.
-Losing packets on the network connecting the control hardware and the plant, is the same as loosing sensor measurements or control commands.
+Losing packets on the network connecting the control hardware and the plant, is the same as losing sensor measurements or control commands.
 Generally, this will degrade the control performance~\addref{}, however, if enough packets are lost it could cause critical system failures or crashes~\addref{}.
 
 % RTOS, threads
@@ -180,25 +180,25 @@ The recurrent task model simplifies the \emph{a priori} analysis of the real-tim
 A plethora of methods have been derived to model the recurrent task execution, ranging in complexity from the classic Liu and Layland model~\cite{Liu:1973} to directed acyclic graph (DAG) models~\cite{Saifullah:2014}.
 Henceforth, the terms \emph{recurrent tasks} and \emph{tasks} will be used analogously.
 
-The task model adopted in this thesis defines a task $\tau$ as a sequence of \emph{jobs} $j_t$, where each job is responsible for executing one full iteration of the task's function.
-Here, $t$ counts the number of discrete time steps since the task was created.
+The task model adopted in this thesis defines a task $\tau$ as a sequence of \emph{jobs} $j_k$, where each job is responsible for executing one full iteration of the task's function.
+Here, $k$ counts the number of discrete time steps since the task was created.
 Each task $\tau_i$ is characterised by the triplet $(e_i, d_i, p_i)$.
 Here, for each job; $e_i > 0$ is the \emph{worst-case execution time} (WCET); $d_i > 0$ is the relative \emph{deadline}; and, $p_i \geq d_i$ is the minimum interarrival \emph{period}.
-The RTOS scheduler releases a job $j_t$ at time $a_t$ (the job's \emph{release time}) and the job then completes its execution at time $f_t$ (the job's \emph{completion time}).
-A recurrent task is \emph{periodic} if its jobs are released at equidistant time points, i.e., $a_t = t\cdot T$ where $T$ is fixed. 
+The RTOS scheduler releases a job $j_k$ at time $a_k$ (the job's \emph{release time}) and the job then completes its execution at time $f_k$ (the job's \emph{completion time}).
+A recurrent task is \emph{periodic} if its jobs are released at equidistant time points, i.e., $a_k = k\cdot \Ts$ where $\Ts$ is fixed. 
 In particular, control tasks are typically implemented as periodic tasks, hence one job is released in every period.
-To make sure that the periodic task's jobs finish their execution before the subsequent job is released, it is common to adopt \emph{implicit deadlines}, i.e., that job $j_t$ completes its execution before the release time of job $j_{t+1}$; formally, it implies that $f_t \leq a_{t+1} = t\cdot T+T = a_t + T$ or simpler $d_i = p_i = T$.
+To make sure that the periodic task's jobs finish their execution before the subsequent job is released, it is common to adopt \emph{implicit deadlines}, i.e., that job $j_k$ completes its execution before the release time of job $j_{k+1}$; formally, it implies that $f_k \leq a_{k+1} = k\cdot \Ts+\Ts = a_k + \Ts$ or simpler $d_i = p_i = \Ts$.
 
-Under ideal computational conditions, each job completes its execution before its corresponding deadline, i.e., $f_t \leq a_t + d_i$.
+Under ideal computational conditions, each job completes its execution before its corresponding deadline, i.e., $f_k \leq a_k + d_i$.
 However, it can happen that the individual job has not yet finished executing when it reaches the end of its allotted time budget.
 We then say that the job experiences a \emph{deadline overrun} (also referred to as \emph{deadline miss} or \emph{computational overrun}).
 Respectively, if the job completes before its deadline, it \emph{meets} its deadline (experiences a \emph{deadline hit}).
 %
 \begin{definition}[Deadline Overrun]%
     \label{def:kappa:overrun}%
-    The $t$-th job ($j_t$) of a task $\tau_i$ is said to experience a deadline overrun if
+    The $k$-th job ($j_k$) of a task $\tau_i$ is said to experience a deadline overrun if
     \begin{equation}
-        f_t > a_t + d_i.
+        f_k > a_k + d_i.
     \end{equation}
 \end{definition}
 %
@@ -224,7 +224,7 @@ In particular, embedded systems can be described using the \emph{firm real-time 
 
 Arguably the most recognised firm model is the \emph{weakly-hard} task model~\cite{Bernat:2001}.
 These models were originally devised to provide formal guarantees to tasks that can tolerate occasional deadline overruns, e.g., control tasks where decreasing the sampling time would improve the overall performance whilst introducing intermittent computational overruns.
-What defines a weakly-hard task is that the distribution of deadline hits and misses during a window of $k$ jobs is precisely bounded.
+What defines a weakly-hard task is that the distribution of deadline hits and misses during a window of $k$ jobs is precisely bounded\footnote{From the context it will always be clear when $k$ is used to respectively denote the window length of a weakly-hard constraint and to count the discrete number of job iterations of a recurrent task.}.
 In other words, in addition to the number of overrun deadlines that a task experiences in a window, the sequence in which they appear is also affecting the task execution.
 We here compile the definitions of the weakly-hard models:
 %
@@ -245,7 +245,7 @@ Here, the $\vdash$ symbol is used to indicate that all possible sequences of dea
 To formalise which sequences of deadline hits and misses that are permitted under a specific weakly-hard constraint an alphabet is introduced.
 For historical reasons, the language used to characterise the deadline outcomes of a weakly-hard task is binary, i.e., it consisted solely of two unique character mappings to a deadline hit and a deadline miss\footnote{In \note{Paper~IV} we extend this notation to also encompass more appropriate languages in the real-time control systems setting.}.
 Formally, the \emph{alphabet} of outcomes is denoted $\Sigma = \left\{ 0, 1 \right\}$, where $0$ indicates a job overrunning its corresponding deadline and $1$ represents a job meeting its deadline.
-With the use of the alphabet and conventional language theoretical notation~\addref{}, a \emph{character} $c_t \in \Sigma$ is defined as the outcome of the $t$-th job.
+With the use of the alphabet and conventional language theoretical notation~\cite{Hopcroft:2006}, a \emph{character} $c_k \in \Sigma$ is defined as the outcome of the $k$-th job.
 Similarly, a \emph{word} $w$ is a sequence of $\abs{w}$ characters, i.e., $w = \seq{c_1, c_2, \ldots, c_{\abs{w}}}$.
 Hence, a word is representing a sequence of deadline hits and misses.
 The set of all all length $N$ words that can be constructed from the alphabet $\Sigma$ is denoted $\Sigma^N$.
@@ -313,8 +313,8 @@ Formally
 The chosen task model is important when analysing the execution pattern of the real-time task, but implementation details, such as the scheduler's functionality, are typically not included in the analysis.
 In fact, it has been shown that the implementation's design choices affect both the performance and safety properties of the system~\cite{Cervin:2005}.
 This thesis addresses the discrepancy between the real-time models, control theoretical models, and the implementation specifications by including details about the implementation in the real-time control system analysis.
-For instance, consider the $t+3$-rd job in Figure~\ref{fig:schedule}; the behaviour of the real-time system is undefined, regardless of the chosen task model.
-Furthermore, the function that job $j_{t+3}$ is supposed to carry out remains unfinished, resulting in an unknown behaviour if the overrun deadline is left unmanaged.
+For instance, consider the $k+3$-rd job in Figure~\ref{fig:schedule}; the behaviour of the real-time system is undefined, regardless of the chosen task model.
+Furthermore, the function that job $j_{k+3}$ is supposed to carry out remains unfinished, resulting in an unknown behaviour if the overrun deadline is left unmanaged.
 It is therefore crucial to include some details about the implementation in the system analysis.
 
 In addition to orchestrating the tasks in the RTOS, the scheduler is also responsible for supervising the tasks overrunning their deadlines (denoted the \emph{overrun handling strategy}).
@@ -398,7 +398,7 @@ To demonstrate the similarities and differences between the automaton and Markov
 Here, the automaton is constructed from a weakly-hard real-time task subject to the constraint $\anyhit{} = \binom{1}{2}$, i.e., at least one job has to meet its deadline in every window of two consecutive job activations.
 Recall that the characters $0$ and $1$ respectively represent an overrun and a met deadline in the automaton's language.
 Since the constraint does not tolerate two consecutive deadline overruns, if a deadline overrun occur from vertex $v_2$ the constraint would be violated and the fail-state is entered.
-In comparison, the MC represent a soft real-time task where every job has an independent and identically distributed (i.i.d) probability $\rho$ of overrunning its deadline.
+In comparison, the MC represent a soft real-time task where every job has an independent and identically distributed (i.i.d) probability $p$ of overrunning its deadline.
 Notice that the transitions in both the automaton and in the Markov chain represent the outcome of exactly one job execution.
 This is a deterministic transition (no probabilities involved) in the automaton, whilst it is stochastic for the MC.
 
@@ -429,7 +429,7 @@ The mathematical models characterise the system's behaviour in time, typically v
 
 Practically all real-world plants can be modelled using continuous-time, non-linear state-space equations on the same form as Equation~\eqref{eq:state-space}.
 The physical properties of the plant (e.g., velocity, position, rotation, etc.) are collected in the \emph{state vector} $x(t) \in \R^{n_x}$, the exogenous signals affecting the plant are collected in the \emph{input vector} $u(t) \in \R^{n_u}$, and the measurable quantities are collected in the \emph{output vector} $y(t) \in \R^{n_y}$.
-The dynamical behaviour of the system is described by the functions $f$ and $g$, which we say are \emph{time-variant} if they explicitly depend on the time variable $t$ and \emph{time-invariant} if they do not, i.e., if $f(x(t),\, u(t),\, t) = f(x(t),\, u(t))$ and $g(x(t),\, u(t),\, t) = g(x(t),\, u(t))$.
+The dynamical behaviour of the system is described by the functions $f$ and $g$, which we say are \emph{time-variant} if they explicitly depend on the time variable $k$ and \emph{time-invariant} if they do not, i.e., if $f(x(t),\, u(t),\, t) = f(x(t),\, u(t))$ and $g(x(t),\, u(t),\, t) = g(x(t),\, u(t))$.
 A state-space system is linear if the functions $f$ and $g$ can be expressed as linear combinations of their arguments, i.e., a linear state-space system can be written as:
 %
 \begin{equation}%
@@ -449,23 +449,21 @@ The DAC is located near the actuators and translates the digital value received 
 Similarly, the ADC transforms the analog sensor values to digital signals to be sent to the controlling hardware.
 One of the most commonly applied sampling techniques is the zero-order hold (ZOH) circuit, where the DAC holds the last converted analog signal constant until a new discrete value is received and converted.
 The sensors are generally configured to sample the plant at the discrete time instants when the control signal to the plant changes.
-In other words, if the DAC receives and converts discrete values at time instants $\left\{\, t_i \,\right\}$, the sensors sample the system in the same time points.
-For periodically sampled systems, the sampling instants are equidistant with a sampling period of $\Ts$, i.e., $t_i = i\cdot \Ts$.
+In other words, if the DAC receives and converts discrete values at time instants $\left\{\, t_k \,\right\}_k$, the sensors sample the system in the same time points.
+For periodically sampled systems, the sampling instants are equidistant with a sampling period of $\Ts$, i.e., $t_k = k\cdot \Ts$.
 The resulting discrete-time, LTI model of the plant $\plant$ is then:
-%
-\newline\fix{Subscript $t$ is problematic here}\question{MM: Do you have a suggestion for how to solve it?}{}
 %
 \begin{equation}%
     \label{eq:discrete-lti-plant}%
     \plant \; : \; \left\{\begin{aligned}
-        x_{t+1} &= \Ap\,x_t + \Bp\,u_t + \Wp\, w_t\\
-        y_t &= \Cp\,x_t + \Dp\,u_t \\
+        x_{k+1} &= \Ap\,x_k + \Bp\,u_k + \Wp\, w_k\\
+        y_k &= \Cp\,x_k + \Dp\,u_k \\
     \end{aligned}\right.
 \end{equation}
 %
-where the variable subscripts counts the discrete time samples since system startup, i.e., $x_t = x(t\cdot \Ts)$ and $x_{t+1} = x(t\cdot \Ts + \Ts)$.
-Note that the process' stochastic disturbance process $w_t \in \R^{n_w}$ and dynamic matrix $\Wp \in \R^{n_x \times n_w}$ have been added.
-The disturbance process $w_t$ is typically a stochastic process with (assumed) known statistical properties, modelling the unknown plant dynamics and exogenous signals.
+where the variable subscripts counts the discrete time samples since system startup, i.e., $x_k = x(k\cdot \Ts)$ and $x_{k+1} = x(k\cdot \Ts + \Ts)$.
+Note that the process' stochastic disturbance process $w_k \in \R^{n_w}$ and dynamic matrix $\Wp \in \R^{n_x \times n_w}$ have been added.
+The disturbance process $w_k$ is typically a stochastic process with (assumed) known statistical properties, modelling the unknown plant dynamics and exogenous signals.
 
 Similarly to how the plant is described using a dynamical system on state-space form, controllers are typically also defined on the same format (denoted the controller's \emph{control law}).
 Section~\ref{sec:background:rts} described how the control algorithm is implemented as a function governed by a task executing in the RTOS; modern controllers are hence unlikely to be continuous.
@@ -474,27 +472,27 @@ Therefore, the discrete, time-invariant state-space representation of a general 
 \begin{equation}%
     \label{eq:discrete-state-space}%
     \left\{\begin{aligned}
-        z_{t+1} &= p(z_t,\, y_t) \\
-        u_t &= q(z_t,\, y_t) \\
+        z_{k+1} &= p(z_k,\, y_k) \\
+        u_k &= q(z_k,\, y_k) \\
     \end{aligned}\right.
 \end{equation}
 %
-Here, the \emph{control state vector} $z_t \in \R^{n_z}$ represent the controller's dynamics, the \emph{control signals} $u_t \in \R^{n_u}$ are also the inputs to the plant, and the functions $p$ and $q$ govern the dynamical behaviour of the controller.
-Similar to the plant, if $p$ and $q$ can be expressed as linear combinations of their arguments, i.e., $p(z_t,\, y_t) = \Ac\,z_t+\Bc\,y_t$ and $q(z_t,\, y_t) = \Cc\,z_t+\Dc\,y_t$, then the controller $\ctrler$ is linear.
+Here, the \emph{control state vector} $z_k \in \R^{n_z}$ represent the controller's dynamics, the \emph{control signals} $u_k \in \R^{n_u}$ are also the inputs to the plant, and the functions $p$ and $q$ govern the dynamical behaviour of the controller.
+Similar to the plant, if $p$ and $q$ can be expressed as linear combinations of their arguments, i.e., $p(z_k,\, y_k) = \Ac\,z_k+\Bc\,y_k$ and $q(z_k,\, y_k) = \Cc\,z_k+\Dc\,y_k$, then the controller $\ctrler$ is linear.
 %
 \begin{equation}%
     \label{eq:discrete-lti-ctrler}%
     \ctrler \; : \; \left\{\begin{aligned}
-        z_{t+1} &= \Ac\,z_t + \Bc\,y_t \\
-        u_t &= \Cc\,z_t + \Dc\,y_t \\
+        z_{k+1} &= \Ac\,z_k + \Bc\,y_k \\
+        u_k &= \Cc\,z_k + \Dc\,y_k \\
     \end{aligned}\right.
 \end{equation}
 %
 We say that a controller $\ctrler$ is \emph{stateless} (or \emph{static}) if it has no dependence on the internal state $z$, i.e., $n_z = 0$.
 Furthermore, a \emph{stateful} (or \emph{dynamic}) controller $\ctrler$ is any controller that depend on its internal state $z$, i.e., $n_z > 0$.
 
-To improve timing predictability whilst also reducing input-output jitter one-step delay controllers are frequently employed\footnote{If the controller adopts a one-step delay approach, the order of the last two statements of the control algorithm in Figure~\ref{fig:control-structure-abstraction} has to be swapped, suggesting that the second equation of the system of equations~\eqref{eq:discrete-lti-ctrler} instead should be read as $u_{t+1} = \Cc\,z_t+\Dc\,y_t$. However, the control law's reformulation is typically made implicitly by augmenting the controller's state with the control signal.}.
-The one-step delay is generally taken into consideration during the control design process, in other words, the control algorithm is designed for the control signal to be computed during the $t$-th control period and to be set out to the actuators at the release of the $t+1$-st control job.
+To improve timing predictability whilst also reducing input-output jitter one-step delay controllers are frequently employed\footnote{If the controller adopts a one-step delay approach, the order of the last two statements of the control algorithm in Figure~\ref{fig:control-structure-abstraction} has to be swapped, suggesting that the second equation of the system of equations~\eqref{eq:discrete-lti-ctrler} instead should be read as $u_{k+1} = \Cc\,z_k+\Dc\,y_k$. However, the control law's reformulation is typically made implicitly by augmenting the controller's state with the control signal.}.
+The one-step delay is generally taken into consideration during the control design process, in other words, the control algorithm is designed for the control signal to be computed during the $t$-th control period and to be set out to the actuators at the release of the $k+1$-st control job.
 In the real-time literature, one-step delay are commonly referred to as \emph{logical execution time} (LET) controllers~\cite{Ernst:2018, Gemlau:2021, Kirsch:2012}.
 The LET paradigm simplifies the schedulability analysis, improves timing predictability, and removes time-varying computational delays (e.g., release jitter, context switching overhead, and interrupts), but it comes at the cost of introducing a time-delay in the actuation.
 
@@ -516,15 +514,15 @@ Typically, the closed-loop system (i.e., all components involved in the closed-l
 %
 \begin{equation}%
     \label{eq:clsys}%
-    \tilde{x}_{t+1} = \clmat\, \tilde{x}_t + \clinp_w\, w_t.
+    \tilde{x}_{k+1} = \clmat\, \tilde{x}_k + \clinp_w\, w_k.
 \end{equation}
 %
-where $\tilde{x}_t$ is the closed-loop system's state vector, $\clmat$ is the closed-loop system matrix responsible for encoding the closed-loop system's dynamics, and
+where $\tilde{x}_k$ is the closed-loop system's state vector, $\clmat$ is the closed-loop system matrix responsible for encoding the closed-loop system's dynamics, and
 $$\clinp_w = \begin{bmatrix}
     \Wp \\
     0
 \end{bmatrix}$$
-is the dynamic matrix of the exogenous stochastic variable $w_t$.
+is the dynamic matrix of the exogenous stochastic variable $w_k$.
 
 Thus far, the system execution has been assumed to be faultless.
 However, we are interested in analysing the real-time control system when the control tasks are subject to computational overruns.
@@ -534,23 +532,23 @@ In place of Equation~\eqref{eq:discrete-lti-ctrler}, the controller $\ctrler$ is
 \begin{equation}%
     \label{eq:tv-ctrler}%
     \ctrler \; : \; \left\{\begin{aligned}
-        z_{t+1} &= \Ac_{\sigma(t)}\,z_t + \Bc_{\sigma(t)}\,y_t \\
-        u_t &= \Cc_{\sigma(t)}\,z_t + \Dc_{\sigma(t)}\,y_t \\
+        z_{k+1} &= \Ac_{\theta_k}\,z_k + \Bc_{\theta_k}\,y_k \\
+        u_k &= \Cc_{\theta_k}\,z_k + \Dc_{\theta_k}\,y_k \\
     \end{aligned}\right.
 \end{equation}
 %
-where $\sigma(t)$ is the process governing the overruns, e.g., a weakly-hard sequence or Markov process.
-For instance, given a sequence $w$ of job outcomes adhering to the weakly-hard constraint $\rowhit{} = \genfrac{<}{>}{0pt}{}{2}{5}$, e.g., $w = 110011011$; indexing the $t$-th character in the word $w$ as $c_t$, the outcome process is $\sigma(t) = c_t$.
+where $\theta_k$ is the process governing the overruns, e.g., a weakly-hard sequence or Markov process.
+For instance, given a sequence $w$ of job outcomes adhering to the weakly-hard \tRH{} constraint $\genfrac{<}{>}{0pt}{}{2}{5}$, e.g., $w = 110011011$; indexing the $k$-th character in the word $w$ as $c_k$, the outcome process is $\theta_k = c_k$.
 The controller dynamics then depend on whether the deadline was met ($1$) or overrun ($0$) as well as the scheduler's overrun policy, i.e., whether \tK{}, \tS{}, \tQ{}, or some other deadline overrun strategy was employed.
 
 The changing control equations do in turn also change the closed-loop dynamics from Equation~\eqref{eq:clsys}:
 %
 \begin{equation}%
     \label{eq:tv-clsys}%
-    \tilde{x}_{t+1} = \clmat_{\sigma(t)}\, \tilde{x}_t + \clinp_w\, w_t.
+    \tilde{x}_{k+1} = \clmat_{\theta_k}\, \tilde{x}_k + \clinp_w\, w_k.
 \end{equation}
 %
-If $\sigma(t)$ is governed by a Markov process, then Equation~\eqref{eq:tv-clsys} is denoted a \emph{Markov jump linear system} (MJLS)~\cite{Feng:1992}.
+If $\theta_k$ is governed by a Markov process, then Equation~\eqref{eq:tv-clsys} is denoted a \emph{Markov jump linear system} (MJLS)~\cite{Feng:1992}.
 Instead, if the process changing the closed-loop dynamics is deterministic, it is labeled a \emph{switching system}~\cite{Liberzon:2003}.
 We acknowledge that this simplified description of both Markov jump linear systems and switching systems is extremely coarse.
 In the upcoming sections, we will introduce notation for both MJLS and switching systems such that the stability and performance analyses are unambiguous.
@@ -596,7 +594,7 @@ Denoting with $\rho\funof{\clmat}$ the spectral radius of a square matrix $\clma
 %
 \begin{equation}%
     \label{eq:spectral-radius}%
-    \rho\funof{\clmat} = \max \left\{ \abs{\eig{1}{\clmat}}, \abs{\eig{2}{\clmat}}, \ldots, \abs{\eig{n}{\clmat}} \right\} = \lim_{t\rightarrow\infty} \norm{\clmat^t}^{\sfrac{1}{t}}.
+    \rho\funof{\clmat} = \max \left\{ \abs{\eig{1}{\clmat}}, \abs{\eig{2}{\clmat}}, \ldots, \abs{\eig{n}{\clmat}} \right\} = \lim_{k\rightarrow\infty} \norm{\clmat^k}^{\sfrac{1}{k}}.
 \end{equation}
 
 % Lyapunov stability
@@ -610,28 +608,28 @@ Unfortunately, finding a suitable Lyapunov function is generally a very complex 
 Fortunately, the \emph{joint spectral radius} (JSR)~\cite{Rota:1960} has in recent years become the subject of intense research due to its role in (among others) discrete-time switching systems stability analysis.
 From its name, it might be clear that the joint spectral radius is a generalisation of the spectral radius from Equation~\eqref{eq:spectral-radius}.
 In fact, the JSR generalises the spectral radius to a set of matrices $\Aa = \left\{ \clmat_1, \clmat_2, \ldots, \clmat_N \right\}$ (denoted the \emph{switching set}), i.e., it represents the maximum asymptotic growth rate of the arbitrary switching between matrices in the set.
-For the switched dynamical system in Equation~\eqref{eq:tv-clsys}, each matrix $\clmat_i \in \Aa$ is a unique matrix describing one switching mode of $\sigma\funof{t}$ and the JSR is then the maximal asymptotic growth rate of the closed-loop states $\tilde{x}_t$ under arbitrary switching of the matrices $\clmat_i \in \Aa$.
+For the switched dynamical system in Equation~\eqref{eq:tv-clsys}, each matrix $\clmat_i \in \Aa$ is a unique matrix describing one switching mode of $\theta_k$ and the JSR is then the maximal asymptotic growth rate of the closed-loop states $\tilde{x}_k$ under arbitrary switching of the matrices $\clmat_i \in \Aa$.
 Trivially, if the switching set only contains one matrix, i.e., $\Aa = \left\{ \clmat \right\}$, then the joint spectral radius and the spectral radius are equivalent.
 
 To simplify the generalisation, we borrow the following notation from~\cite{Jungers:2009}:
 %
 \begin{equation}
-    \Aa^t \triangleq \left\{ \clmat_1 \cdots \clmat_t \,\mid\, \clmat_i \in \Aa \right\}
+    \Aa^k \triangleq \left\{ \clmat_1 \cdots \clmat_k \,\mid\, \clmat_i \in \Aa \right\}
 \end{equation}
 %
-Thus, $\Aa^t$ is the set of \emph{all} matrix multiplications involving $t$ matrices from the set $\Aa$.
+Thus, $\Aa^k$ is the set of \emph{all} matrix multiplications involving $k$ matrices from the set $\Aa$.
 Using the introduced notation, the following definition provides a formal definition of the JSR~\cite{Jungers:2009}.
 %
 \begin{definition}[Joint Spectral Radius]%
     \label{def:jsr}%
     Given a bounded set of matrices $\Aa$, the \emph{joint spectral radius} (JSR) of $\Aa$ is defined as
     \begin{equation*}
-        \rho\funof{\Aa} = \underset{t\rightarrow\infty}{\lim{}\sup{}} \left\{ \norm{\clmat}^{\sfrac{1}{t}} \,\mid\, \clmat \in \Aa^t \right\}
+        \rho\funof{\Aa} = \underset{k\rightarrow\infty}{\lim{}\sup{}} \left\{ \norm{\clmat}^{\sfrac{1}{k}} \,\mid\, \clmat \in \Aa^k \right\}
     \end{equation*}
 \end{definition}
 
 Intuitively, since an LTI system is Schur stable if the spectral radius is less than one, it is easy to argue that a switching system is stable if the joint spectral radius is less than.
-Since $\rho\funof{\Aa} < 1$ implies that the worst-case sequence of matrices $\clmat_{WC} \in \Aa^t$ has a bounded growth rate $\norm{\clmat_{WC}} < 1$, it must mean that the switching system $\tilde{x}_t = \clmat_{WC}\cdot \tilde{x}_0$ is bounded by the triangle inequality, i.e., $\abs{\tilde{x}_t} \leq \norm{\clmat_{WC}}\abs{\tilde{x}_0} \rightarrow 0$.
+Since $\rho\funof{\Aa} < 1$ implies that the worst-case sequence of matrices $\clmat_{WC} \in \Aa^k$ has a bounded growth rate $\norm{\clmat_{WC}} < 1$, it must mean that the switching system $\tilde{x}_k = \clmat_{WC}\cdot \tilde{x}_0$ is bounded by the triangle inequality, i.e., $\abs{\tilde{x}_k} \leq \norm{\clmat_{WC}}\abs{\tilde{x}_0} \rightarrow 0$.
 Stability of a switched dynamical system via the joint spectral radius is outlined in the following theorem (for more details and a formal proof we refer the interested reader to~\cite{Jungers:2009}): 
 %
 \begin{theorem}[Switching Stability]%
@@ -639,7 +637,7 @@ Stability of a switched dynamical system via the joint spectral radius is outlin
     For any bounded set of matrices $\Aa$, the corresponding switched dynamical system is stable if and only if $\rho\funof{\Aa} < 1$.
 \end{theorem}
 %
-Furthermore, Theorem~\ref{thm:switching-stability} raises an interesting question about the converse case: which is the switching sequence $\clmat \in \Aa^t$ resulting in $\rho\funof{\Aa} \geq 1$?
+Furthermore, Theorem~\ref{thm:switching-stability} raises an interesting question about the converse case: which is the switching sequence $\clmat \in \Aa^k$ resulting in $\rho\funof{\Aa} \geq 1$?
 To the best of this thesis' author's knowledge, there are currently no results outlining \emph{which} sequence that destabilises the switched dynamical system.
 
 The JSR is a powerful tool since it makes it possible to determine whether a switching system is asymptotically stable ($\rho\funof{\Aa} < 1$) or not ($\rho\funof{\Aa} \geq 1$).
@@ -683,10 +681,10 @@ This certificate does in turn provide probabilistic guarantees that the MJLS wil
 
 Since MJLS are stochastic by nature, the existing stability analyses typically investigate how the expected value of the system's states evolve in time.
 Arguably the most well-known stability analysis methods are \emph{stochastic stability} (SS) and different variants of \emph{mean-square stability} (MSS)~\cite{Feng:1992}.
-Paraphrased from~\cite{Costa:2005}, we say that the dynamical system in~\eqref{eq:tv-clsys}, governed by a Markov process $\sigma\funof{t}$, is mean-square stable if
+Paraphrased from~\cite{Costa:2005}, we say that the dynamical system in~\eqref{eq:tv-clsys}, governed by a Markov process $\theta_k$, is mean-square stable if
 %
 \begin{equation*}%
-    \lim_{t\rightarrow \infty} \E{\norm{\tilde{x}_t}^2} = \varepsilon < \infty.
+    \lim_{k\rightarrow \infty} \E{\norm{\tilde{x}_k}^2} = \varepsilon < \infty.
 \end{equation*}
 %
 In practice, testing for mean-square stability implies verifying that the spectral radius of the operator $\Psi$, i.e., the operator defining the Markov jump linear system's covariance, is less than one.
@@ -752,74 +750,74 @@ The system is therefore first evaluated in extensive simulations and tests~\cite
 
 % Describe our performance analysis
 Innumerable different methods for analysing control system performance have been developed.
-This thesis facilitates a performance analysis of real-time control systems subject to computational overruns, where the performance is evaluated on the closed-loop system using a stochastic quadratic cost function $J_t$:
+This thesis facilitates a performance analysis of real-time control systems subject to computational overruns, where the performance is evaluated on the closed-loop system using a stochastic quadratic cost function $J_k$:
 %
 \begin{equation}%
     \label{eq:cost}%
-    J_t = \E{\tilde{x}_t^\T{}\, Q\, \tilde{x}_t}.
+    J_k = \E{\tilde{x}_k^\T{}\, Q\, \tilde{x}_k}.
 \end{equation}
 %
-Here $J_t$ is the closed-loop state's cost increment in the $t$-th period and $Q$ is a positive semidefinite weight matrix penalising large closed-loop state deviations.
+Here $J_k$ is the closed-loop state's cost increment in the $k$-th period and $Q$ is a positive semidefinite weight matrix penalising large closed-loop state deviations.
 The model is based on well-known theory for linear stochastic systems~\cite{Astrom:1970, Astrom:1997, Cervin:2019}.
 
-We assume that the desired reference point for the closed-loop state $\tilde{x}_t$ is zero and that the disturbance $w_t$ is an independent, discrete-time, zero mean, Gaussian white noise process with covariance $\E{w_t\,w_t^\T{}} = R_1$.
+We assume that the desired reference point for the closed-loop state $\tilde{x}_k$ is zero and that the disturbance $w_k$ is an independent, discrete-time, zero mean, Gaussian white noise process with covariance $\E{w_k\,w_k^\T{}} = R_1$.
 The assumptions may seem overly restrictive, but we emphasise that more elaborate and advanced disturbance processes (and reference trajectories) can be realised by augmenting the closed-loop system with additional states describing the exogenous dynamics\footnote{In both \note{Paper I and II} we augment the system state to model respectively brown noise (integrated white noise) and reference trajectories.}.
 With these assumptions, together with the initial condition on the closed-loop state's mean value and covariance being respectively $\E{\tilde{x}_0} = m_0$ and $\E{\tilde{x}_0\,\tilde{x}_0^\T{}} = R_0$, it is now possible to describe how to evaluate Equation~\eqref{eq:cost}.
 
 The expression in Equation~\eqref{eq:cost} is difficult to compute in practice.
-Instead, it is easier to first transform the cost $J_t$ into an equivalent form before evaluating it.
-We define the closed-loop system's mean value and covariance functions as $m_t$ and $P_t$ respectively
+Instead, it is easier to first transform the cost $J_k$ into an equivalent form before evaluating it.
+We define the closed-loop system's mean value and covariance functions as $m_k$ and $P_k$ respectively
 %
 \begin{equation}%
-    \label{eq:cov}%
-    m_t = \E{\tilde{x}_t}, \quad P_t = \cov{\tilde{x}_t} = \E{\tilde{x}_t\, \tilde{x}_t^\T{}} - \E{\tilde{x}_t}\,\E{\tilde{x}_t}^\T{}.
+    \label{eq:cl-def}%
+    m_k = \E{\tilde{x}_k}, \quad P_k = \cov{\tilde{x}_k} = \E{\tilde{x}_k\, \tilde{x}_k^\T{}} - \E{\tilde{x}_k}\,\E{\tilde{x}_k}^\T{}.
 \end{equation}
 %
-Note that because $\E{w_t} = 0$, the mean value of the state adhere to the following dynamical equation:
+Note that because $\E{w_k} = 0$, the mean value of the state adhere to the following dynamical equation:
 %
 \begin{equation}%
-    m_{t+1} = \E{\clmat\,\tilde{x}_t + \clinp_w\,w_t} = \clmat\, m_t.
+    m_{k+1} = \E{\clmat\,\tilde{x}_k + \clinp_w\,w_k} = \clmat\, m_k.
 \end{equation}
 %
-From~\eqref{eq:cov} it then follows that~\eqref{eq:cost} can equivalently be written as~\cite{Bates:2011}:
+From~\eqref{eq:cl-def} it then follows that~\eqref{eq:cost} can equivalently be written as~\cite{Bates:2011}:
 %
 \begin{equation}%
     \label{eq:tr-cost}%
     \begin{aligned}
-        J_t &= \E{\tilde{x}_t^\T{}\, Q\, \tilde{x}_t} \\
-        &= \trace{\E{\tilde{x}_t^\T{}\, Q\, \tilde{x}_t}} \\
-        &= \E{\trace{\tilde{x}_t^\T{}\, Q\, \tilde{x}_t}} \\
-        &= \E{\trace{Q\, \tilde{x}_t\, \tilde{x}_t^\T{}}} \\
-        &= \trace{Q\, \E{\tilde{x}_t\,\tilde{x}_t^\T{}}} \\
-        &= \trace{Q\, \left( P_t + m_t\,m_t^\T{} \right)} \\
-        &= \trace{Q\, P_t} + m_t^\T{}\, Q\, m_t.
+        J_k &= \E{\tilde{x}_k^\T{}\, Q\, \tilde{x}_k} \\
+        &= \trace{\E{\tilde{x}_k^\T{}\, Q\, \tilde{x}_k}} \\
+        &= \E{\trace{\tilde{x}_k^\T{}\, Q\, \tilde{x}_k}} \\
+        &= \E{\trace{Q\, \tilde{x}_k\, \tilde{x}_k^\T{}}} \\
+        &= \trace{Q\, \E{\tilde{x}_k\,\tilde{x}_k^\T{}}} \\
+        &= \trace{Q\, \left( P_k + m_k\,m_k^\T{} \right)} \\
+        &= \trace{Q\, P_k} + m_k^\T{}\, Q\, m_k.
     \end{aligned}
 \end{equation}
 %
 Here, $\trace{\cdot}$ computes the trace of its argument.
-If the condition $\E{\tilde{x}_0} = m_0 = 0$ is enforced, the expression can be reduced to solving $J_t = \trace{Q\, P_t}$.
+If the condition $\E{\tilde{x}_0} = m_0 = 0$ is enforced, the expression can be reduced to solving $J_k = \trace{Q\, P_k}$.
 
-Solving Equation~\eqref{eq:tr-cost} still requires knowledge about how the closed-loop state's covariance $P_t$ propagates in time.
-Recalling that $\tilde{x}_t$ and $w_t$ are independent, evolving the covariance results in the following dynamical equation:
+Solving Equation~\eqref{eq:tr-cost} still requires knowledge about how the closed-loop state's covariance $P_k$ propagates in time.
+Recalling that $\tilde{x}_k$ and $w_k$ are independent, evolving the covariance results in the following dynamical equation:
 %
 \begin{equation}%
     \label{eq:cov}%
     \begin{aligned}
-        P_{t+1} &= \cov{\tilde{x}_{t+1}} \\
-        &= \E{\tilde{x}_{t+1}\,\tilde{x}_{t+1}^\T{}} - \E{\tilde{x}_{t+1}}\,\E{\tilde{x}_{t+1}}^\T{} \\
-        &= \E{\tilde{x}_{t+1}\,\tilde{x}_{t+1}^\T{}} - m_{t+1}\,m_{t+1}^\T{} \\
-        &= \E{\tilde{x}_{t+1}\,\tilde{x}_{t+1}^\T{}} - \clmat\, m_{t}\,m_{t}^\T{}\,\clmat^\T{} \\
-        &= \E{ \left( \clmat\,\tilde{x}_t + \clinp_w\, w_t \right)\left( \clmat\,\tilde{x}_t + \clinp_w\, w_t \right)^\T{} } - \clmat\, m_{t}\,m_{t}^\T{}\,\clmat^\T{} \\
-        %&= \E{ \clmat\,\tilde{x}_t\,\tilde{x}_t^\T{}\,\clmat^\T{} + \clmat\,\tilde{x}_t\,w_t^\T{}\,\clinp_w^\T{} + \clinp_w\,w_t\,\tilde{x}_t^\T{}\,\clmat^\T{} + \clinp_w\,w_t\,w_t^\T{}\,\clinp_w^\T{}} - \clmat\, m_{t}\,m_{t}^\T{}\,\clmat^\T{} \\
-        &= \clmat\,\E{ \tilde{x}_t\,\tilde{x}_t^\T{} }\,\clmat^\T{} + \clinp_w\,\E{ w_t\,w_t^\T{} }\,\clinp_w^\T{} - \clmat\, m_{t}\,m_{t}^\T{}\,\clmat^\T{} \\
-        &= \clmat\,\left( \cov{\tilde{x}_t} + m_t\,m_t^\T{} \right)\,\clmat^\T{} + \clinp_w\,\E{ w_t\,w_t^\T{} }\,\clinp_w^\T{} - \clmat\, m_t\,m_{t}^\T{}\,\clmat^\T{} \\
-        &= \clmat\,\cov{\tilde{x}_t}\,\clmat^\T{} + \clinp_w\,\E{ w_t\,w_t^\T{} }\,\clinp_w^\T{} \\
-        &= \clmat\,P_t\,\clmat^\T{} + \clinp_w\,R_1\,\clinp_w^\T{}
+        P_{k+1} &= \cov{\tilde{x}_{k+1}} \\
+        &= \E{\tilde{x}_{k+1}\,\tilde{x}_{k+1}^\T{}} - \E{\tilde{x}_{k+1}}\,\E{\tilde{x}_{k+1}}^\T{} \\
+        &= \E{\tilde{x}_{k+1}\,\tilde{x}_{k+1}^\T{}} - m_{k+1}\,m_{k+1}^\T{} \\
+        &= \E{\tilde{x}_{k+1}\,\tilde{x}_{k+1}^\T{}} - \clmat\, m_{k}\,m_{k}^\T{}\,\clmat^\T{} \\
+        &= \E{ \left( \clmat\,\tilde{x}_k + \clinp_w\, w_k \right)\left( \clmat\,\tilde{x}_k + \clinp_w\, w_k \right)^\T{} } - \clmat\, m_{k}\,m_{k}^\T{}\,\clmat^\T{} \\
+        %&= \E{ \clmat\,\tilde{x}_k\,\tilde{x}_k^\T{}\,\clmat^\T{} + \clmat\,\tilde{x}_k\,w_k^\T{}\,\clinp_w^\T{} + \clinp_w\,w_k\,\tilde{x}_k^\T{}\,\clmat^\T{} + \clinp_w\,w_k\,w_k^\T{}\,\clinp_w^\T{}} - \clmat\, m_{k}\,m_{k}^\T{}\,\clmat^\T{} \\
+        &= \clmat\,\E{ \tilde{x}_k\,\tilde{x}_k^\T{} }\,\clmat^\T{} + \clinp_w\,\E{ w_k\,w_k^\T{} }\,\clinp_w^\T{} - \clmat\, m_{k}\,m_{k}^\T{}\,\clmat^\T{} \\
+        &= \clmat\,\left( \cov{\tilde{x}_k} + m_k\,m_k^\T{} \right)\,\clmat^\T{} + \clinp_w\,\E{ w_k\,w_k^\T{} }\,\clinp_w^\T{} - \clmat\, m_k\,m_{k}^\T{}\,\clmat^\T{} \\
+        &= \clmat\,\cov{\tilde{x}_k}\,\clmat^\T{} + \clinp_w\,\E{ w_k\,w_k^\T{} }\,\clinp_w^\T{} \\
+        &= \clmat\,P_k\,\clmat^\T{} + \clinp_w\,R_1\,\clinp_w^\T{}
     \end{aligned}
 \end{equation}
 %
 Trivially, Equations~\eqref{eq:tr-cost} and~\eqref{eq:cov} establish the foundation for the performance analysis on a nominally executing dynamical system, such as the one in~\eqref{eq:clsys}.
-When the control task starts experiencing deadline overruns, the switching dynamics alters the performance analysis accordingly, i.e., swapping $\clmat$ for $\clmat_{\sigma\funof{t}}$ in Equation~\eqref{eq:cov}\footnote{In \note{Papers I and II} we make additional alterations to the performance analysis to properly facilitate it under the specific system conditions.}.
+When the control task starts experiencing deadline overruns, the switching dynamics alters the performance analysis accordingly, i.e., swapping $\clmat$ for $\clmat_{\theta_k}$ in Equation~\eqref{eq:cov}\footnote{In \note{Papers I and II} we make additional alterations to the performance analysis to properly facilitate it under the specific system conditions.}.
 
 % Mention some tools to analyse performance
 The research community have developed multiple different tools to simplify the performance analysis of real-time embedded (or networked) control systems~\cite{Ohlin:2006}.

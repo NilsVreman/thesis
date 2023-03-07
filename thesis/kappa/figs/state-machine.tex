@@ -24,9 +24,9 @@
     \node[state] (v1mc) at ($(startmc) - (\statedist, 0)$) {$v_1$};
     \node[] at ($(startmc) - (0.5*\statedist, 0.75*\statedist)$) {Markov Chain};
 
-    \draw[thick, ->] (v1mc) edge [loop left] node[above, yshift=0.1cm] {$1-\rho$} (v1mc);
-    \draw[thick, ->] (v1mc) edge [bend left=45] node[above] {$\rho$} (v2mc);
-    \draw[thick, ->] (v2mc) edge [bend left=45] node[below] {$1-\rho$} (v1mc);
-    \draw[thick, ->] (v2mc) edge [loop right] node[above, yshift=0.1cm] {$\rho$} (v2mc);
+    \draw[thick, ->] (v1mc) edge [loop left] node[above, yshift=0.1cm] {$1-p$} (v1mc);
+    \draw[thick, ->] (v1mc) edge [bend left=45] node[above] {$p$} (v2mc);
+    \draw[thick, ->] (v2mc) edge [bend left=45] node[below] {$1-p$} (v1mc);
+    \draw[thick, ->] (v2mc) edge [loop right] node[above, yshift=0.1cm] {$p$} (v2mc);
 
 \end{tikzpicture}

@@ -1,41 +1,10 @@
 \chapter{Introduction}%
 \label{ch:intro}%
-
-%\nv{%
-%In this section, I'll try to portray my ``elevator pitch''.
-%
-%\textbf{Pitch:}
-%\begin{enumerate}
-%    \item\label{item:pitch1} What is the problem this thesis is trying to solve?
-%        \begin{itemize}
-%            \item The hardware and system architecture is getting more powerful.
-%            \item This increases the complexity of the designed system and increases the error probability.
-%            \item Especially since more and more junior developers can use this powerful and complicated hardware for their designs.
-%        \end{itemize}
-%    \item Why is the problem an important one to analyse?
-%        \begin{itemize}
-%            \item This can introduce huge risks in safety critical systems, risking lives and damage to humans
-%            \item Can cause major damage on infrastructure and commercial systems
-%            \item Security issues are introduced, leaking private data
-%        \end{itemize}
-%    \item Give a positive and bold statement of what this thesis is doing.
-%        \begin{itemize}
-%            \item We present novel theoretical and practically applicable analytical tools to help analyse fault-prone systems
-%            \item We focus on making these tools easy to use, lowering the threshold for developers to use them in everyday life
-%            \item \textbf{If nothing else is remembered from the thesis, this should be it.}
-%        \end{itemize}
-%    \item The consequences of the thesis (preferably ``solve'' the problem in~\ref{item:pitch1})
-%        \begin{itemize}
-%            \item By applying the tools presented in this thesis to embedded real-time control systems, we can identify and mitigate a lot of trivial bugs and errors that occur.
-%        \end{itemize}
-%\end{enumerate}
-%}%
-
 %%% WHAT
 % Introduction to digitalisation
 Entering the digital age has forever changed how we interact with the world and how it interacts with us.
 Unlike only 20 years ago, from the moment we wake up in the morning till the moment we close our eyes at night, we interact with advanced computer systems.
-Our cellphones, work computers, and even our cars going contain many computational devices, performing everything from menial tasks, such as checking the weather and accessing mail clients, to safety critical tasks, such as the car's ABS breaks and most of the engine's functionality.
+Our cellphones, work computers, and even our cars contain many computational devices, performing everything from menial tasks, such as checking the weather and accessing mail clients, to safety critical tasks, such as the car's ABS breaks and most of the engine's functionality.
 To put the digital growth rate in perspective, the semiconductor\footnote{Semiconductors are components constituting the foundation of generally \emph{all} electronic devices.} market share has more than quadrupled over the last 20 years~\cite{statista:2022}.
 
 % The hardware architecture is getting more powerful and cheaper to use
@@ -66,7 +35,7 @@ Furthermore, if the end product is inferior to the promised product, the consume
 Arguably more important than the economic consequences are the risks to personal safety, security, and privacy.
 One of the modern era's most famous examples are the Boeing's 737 MAX\footnote{\url{https://en.wikipedia.org/wiki/Boeing_737_MAX_groundings}} crashes, killing 346 people in two subsequent crashes.
 The crashes were caused by erroneous sensor readings being misinterpreted by the flight control system, resulting in the planes nosediving into the ground.
-Another relevant (although less lethal) example is the famous malicious Stuxnet worm\footnote{\url{https://en.wikipedia.org/wiki/Stuxnet}}.
+Another relevant (although less lethal) example is the infamous Stuxnet worm\footnote{\url{https://en.wikipedia.org/wiki/Stuxnet}}.
 Stuxnet infiltrated the system controlling the gas-centrifuges in multiple Iranian nuclear plants, significantly damaging them whilst also collecting critical information. 
 
 Generally it is impossible to guarantee that today's complex computer systems are absolutely safe, secure, and performs according to specifications under all conditions.
@@ -186,7 +155,7 @@ As elaborated in Chapter~\ref{ch:background}, we partition the tasks in these tw
 In particular, the aim of the thesis is to investigate the control system's behaviour when the control tasks overrun their respective deadlines.
 This is particularly relevant for control systems, because enforcing that the control task's WCRT is shorter than its deadline (i.e., that the task \emph{never} overruns its deadline) would involve postponing the deadline.
 Holding off the deadline results in fewer control updates, hence severely degrading the control system's performance.
-Consequently, allowing a certain number of deadline overruns can improve the control system's performance.
+Consequently, allowing a certain number of deadline overruns can improve the control system's overall performance.
 
 \subsection{Timeliness}%
 \label{sec:intro:timeliness}%
