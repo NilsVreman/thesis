@@ -90,7 +90,7 @@ The arrows going to and from the plant indicate the flow of data; actuation data
 Actuation data refers to the commands sent to the components responsible for movement or change in the plant, i.e., the actuators.
 Similarly, the sensor data is all information collected by the sensors, e.g., the rotational velocity of the wheel or the friction between the wheel and the ground in the taxiing system.
 These signals are transmitted via the hardware interfaces on the computational unit responsible for controlling the plant.
-Historically, these signals were transmitted via wire, but in the last couple of decades wireless communication has become more common~\addref{}.
+Historically, these signals were transmitted via wire, but in the last couple of decades wireless communication has become more common~\cite{Park:2018}.
 
 A communication protocol\footnote{A communication protocol is a set of rules setup in order for two or more actors in a network to be able to transmit information to one another. The rules include (but are not limited to) semantics, i.e., how to format the information, and synchronisation, i.e., how much and how fast the information is transmitted.} is used for the plant to communicate with the hardware interfaces.
 The choice of protocol is domain dependent, e.g., the controller area network (CAN) is very common in the automotive industry~\addref{}.
@@ -104,7 +104,7 @@ It is also common to connect multiple levels of control hardware together.
 For instance, having a high-level trajectory planner communicate with a low-level control structure whose objective is to enforce that the desired trajectory is followed, e.g., the taxiways on the airfield.
 
 The choice of computer architecture is often flexible and can be changed depending on the plant structure.
-It is for instance not uncommon that the plant sensors include their own MCU to perform data processing before transmitting it to the central control hardware~\addref{}.
+It is for instance not uncommon that the plant sensors include their own MCU to perform data processing before transmitting it to the central control hardware~\cite{Karray:2018}.
 Another common architecture choice is having many single objective, specialised MCU nodes operating together towards a global target, e.g., controlling the rotational velocity of the individual wheels of a plane to move it along the taxiway.
 %\question{Write something more about this, like distributed control?}{Yes. I think you want to state that depending on the hardware that is chosen the computer architecture can be distributed, and there could be for example sensors with their own MCUs, that execute some operations on the data before sending it to a controller etc.}
 
