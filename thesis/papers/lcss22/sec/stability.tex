@@ -116,6 +116,13 @@ Formally, we obtain an equivalent closed-loop system composed of a set of lifted
 \end{definition}
 %
 By leveraging the mixed-product property~\cite{horn2012matrix} of $\otimes$ and by introducing a proper submultiplicative norm, it is possible to prove that $\rho\left(\Alifted_{\Lambda^\strat}\right)= \rho\,(\Aa^{\strat},\GG{\Lambda^\strat})$.
+In other words, it holds that
+%
+\begin{equation*}%
+    \rho\left(\Alifted_{\Lambda^\strat}\right)= \rho\,(\Aa^{\strat},\GG{\Lambda^\strat}) = \lim_{\ell\rightarrow \infty} \max_{w \in \sset{\ell}{\Lambda^\strat}}\norm{\clmat{}_{w}}^{1/\ell},
+\end{equation*}
+%
+where $\clmat{}_{w} = \clmat{}_{c_1}\clmat{}_{c_2}\cdots\clmat{}_{c_\ell}$, for a sequence $w = \seq{c_1, c_2, \ldots, c_\ell} \in \sset{\ell}{\Lambda^\strat}$.
 For more details and a formal proof we refer the interested reader to~\cite{xu2020approximation}.
 
 
@@ -135,9 +142,8 @@ We now provide a general relation between \emph{all} \ewhc{}s in terms of the jo
     \begin{proof}
         From Equation~\eqref{jsr}, for a generic \ewhc{} $\lambda^\strat$,
         \begin{equation*}
-            \rho\funof{\Alifted_{\lambda^\strat}} = \lim_{\ell\rightarrow \infty}\rho_\ell\funof{\Alifted_{\lambda^\strat}}, \quad \rho_\ell\funof{\Alifted_{\lambda^\strat}} = \max_{w \in \sset{\ell}{\lambda^\strat}}\norm{\clmat{}_{w}}^{1/\ell}.
+            \rho\funof{\Alifted_{\lambda^\strat}} = \lim_{\ell\rightarrow \infty} \max_{w \in \sset{\ell}{\lambda^\strat}}\norm{\clmat{}_{w}}^{1/\ell}.
         \end{equation*}
-        \textcolor{red}{The second equality here follows from $\rho_\ell\funof{\Alifted_{\lambda^\strat}} = \rho_{\ell}\funof{\Aa, \GG{\lambda^\strat}}$, i.e., due to the mixed-product property of $\otimes$.}
         According to Definition~\ref{def:domination}, it holds that $\lambda^\strat_1 \preceq \lambda^\strat_2$ if and only if $\sset{}{\lambda^\strat_1} \subseteq \sset{}{\lambda^\strat_2}$.
         Thus, if for a word $a$ it holds that $a \in \sset{\ell}{\lambda^\strat_1}$, then it also holds that $a \in \sset{\ell}{\lambda^\strat_2}$.
         The set of all possible $\clmat{}_{a}$ is thus included in the set of all possible $\clmat{}_{b},\, b \in \sset{\ell}{\lambda^\strat_2}$.
@@ -205,11 +211,13 @@ We now extend the results of Theorem~\ref{th:rho_dominance_general} by relating 
     \end{equation*}
     %
     \begin{proof}
-        \fix{Add an explanation that the second part of the equation below holds because of the mixed-product property of $\otimes$, because otherwise $\clmat{}$ might be confusing}
-        For an arbitrary \ewhc{} set $\Lambda^\strat = \{\lambda^\strat_1, \dots, \lambda^\strat_N\}$, its satisfaction set is $\sset{\ell}{\Lambda^\strat} = \bigcap_{i \in \{1,\dots, N\}} \sset{\ell}{\lambda^\strat_i}$.
+        For an arbitrary \ewhc{} set $\Lambda^\strat = \{\lambda^\strat_1, \dots, \lambda^\strat_N\}$, its satisfaction set is 
+        \begin{equation*}%
+            \sset{\ell}{\Lambda^\strat} = \bigcap_{i = 1}^N \sset{\ell}{\lambda^\strat_i}.
+        \end{equation*}
         Thus, for any $\lambda^\strat \in \Lambda^\strat$ it holds that 
         \begin{equation*}
-            \sset{\ell}{\Lambda^\strat} \subseteq \sset{\ell}{\lambda^\strat}
+            \sset{\ell}{\Lambda^\strat} \subseteq \sset{\ell}{\lambda^\strat}.
         \end{equation*}
         If a word $a$ is in $\sset{\ell}{\Lambda^\strat}$ it also belongs to $\sset{\ell}{\lambda^\strat}$. 
         The set of all possible $\clmat{}_{a}$ is thus included in the set of all possible $\clmat{}_{b},\, b \in \sset{\ell}{\lambda^\strat}$.
