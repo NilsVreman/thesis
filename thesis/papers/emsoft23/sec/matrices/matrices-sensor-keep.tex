@@ -1,0 +1,499 @@
+\subsubsection{Kill strategy}%
+
+We denote the closed-loop state vector with $$\tilde x_k = \left[ x^T_k, z^T_k, u^T_k, \hat y^T_{k-1} \right]^T.$$
+
+Then:
+
+\begin{table}[htpb]
+    \centering
+    \begin{tabular}{c|ccc|l}\hline\hline
+                                        & \textbf{\texttt{sense}}   & \textbf{\texttt{control}} & \textbf{\texttt{actuate}} & probability \\ \hline\hline
+        $A_{\ndrop\hit\ndrop}$          & \ding{51}                 & \ding{51}                 & \ding{51}                 & $(1-\rho_s)(1-\rho_c)(1-\rho_a)$ \\
+        $A_{\drop\miss\ndrop}$          & \ding{55}                 & \ding{55}                 & \ding{51}                 & $\rho_s\rho_c(1-\rho_a)$ \\
+        $A_{\drop\hit\ndrop}$           & \ding{55}                 & \ding{51}                 & \ding{51}                 & $\rho_s(1-\rho_c)(1-\rho_a)$ \\
+        $A_{\ndrop\miss\ndrop}$         & \ding{51}                 & \ding{55}                 & \ding{51}                 & $(1-\rho_s)\rho_c(1-\rho_a)$ \\
+        $A_{\ndrop\hit\drop}$           & \ding{51}                 & \ding{51}                 & \ding{55}                 & $(1-\rho_s)(1-\rho_c)\rho_a$ \\
+        $A_{\ndrop\miss\drop}$          & \ding{51}                 & \ding{55}                 & \ding{55}                 & $(1-\rho_s)\rho_c\rho_a$ \\
+        $A_{\drop\miss\drop}$           & \ding{55}                 & \ding{55}                 & \ding{55}                 & $\rho_s\rho_c\rho_a$ \\
+        $A_{\drop\hit\drop}$            & \ding{55}                 & \ding{51}                 & \ding{55}                 & $\rho_s(1-\rho_c)\rho_a$ \\
+    \end{tabular}
+\end{table}
+
+\begin{equation}
+    \begin{bmatrix}
+        x_{k+1} \\
+        z_{k+1} \\
+        u_{k+1} \\
+        \hat y_{k} \\
+    \end{bmatrix} = \underbrace{\begin{bmatrix}
+        A  & 0 & B & 0 \\
+        GC & F & GD & 0 \\
+        HC & K & HD & 0 \\
+        C & 0 & D & 0 \\
+    \end{bmatrix}}_{A_{\ndrop\hit\ndrop}}\, \begin{bmatrix}
+        x_{k} \\
+        z_{k} \\
+        u_{k} \\
+        \hat y_{k-1} \\
+    \end{bmatrix}
+\end{equation}
+%
+\begin{equation}
+    \begin{bmatrix}
+        x_{k+1} \\
+        z_{k+1} \\
+        u_{k+1} \\
+        \hat y_{k} \\
+    \end{bmatrix} = \underbrace{\begin{bmatrix}
+        A & 0 & B & 0 \\
+        0 & F & 0 & G \\
+        0 & K & 0 & H \\
+        0 & 0 & 0 & I
+    \end{bmatrix}}_{A_{\drop\hit\ndrop}}\, \begin{bmatrix}
+        x_{k} \\
+        z_{k} \\
+        u_{k} \\
+        \hat y_{k-1} \\
+    \end{bmatrix}
+\end{equation}
+%
+\begin{equation}
+    \begin{bmatrix}
+        x_{k+1} \\
+        z_{k+1} \\
+        u_{k+1} \\
+        \hat y_{k} \\
+    \end{bmatrix} = \underbrace{\begin{bmatrix}
+        A & 0 & B & 0 \\
+        0 & I & 0 & 0 \\
+        0 & 0 & \Delta_\actuator & 0 \\
+        C & 0 & D & 0
+    \end{bmatrix}}_{A_{\ndrop\miss\ndrop}}\, \begin{bmatrix}
+        x_{k} \\
+        z_{k} \\
+        u_{k} \\
+        \hat y_{k-1} \\
+    \end{bmatrix}
+\end{equation}
+%
+\begin{equation}
+    \begin{bmatrix}
+        x_{k+1} \\
+        z_{k+1} \\
+        u_{k+1} \\
+        \hat y_{k} \\
+    \end{bmatrix} = \underbrace{\begin{bmatrix}
+        A & 0 & B & 0 \\
+        GC & F & GD & 0 \\
+        0 & 0 & \Delta_\drop & 0 \\
+        C & 0 & D & 0
+    \end{bmatrix}}_{A_{\ndrop\hit\drop}}\, \begin{bmatrix}
+        x_{k} \\
+        z_{k} \\
+        u_{k} \\
+        \hat y_{k-1} \\
+    \end{bmatrix}
+\end{equation}
+%
+\begin{equation}
+    \begin{bmatrix}
+        x_{k+1} \\
+        z_{k+1} \\
+        u_{k+1} \\
+        \hat y_{k} \\
+    \end{bmatrix} = \underbrace{\begin{bmatrix}
+        A & 0 & B & 0 \\
+        0 & I & 0 & 0 \\
+        0 & 0 & \Delta_\actuator & 0 \\
+        0 & 0 & 0 & I
+    \end{bmatrix}}_{A_{\drop\miss\ndrop}}\, \begin{bmatrix}
+        x_{k} \\
+        z_{k} \\
+        u_{k} \\
+        \hat y_{k-1} \\
+    \end{bmatrix}
+\end{equation}
+%
+\begin{equation}
+    \begin{bmatrix}
+        x_{k+1} \\
+        z_{k+1} \\
+        u_{k+1} \\
+        \hat y_{k} \\
+    \end{bmatrix} = \underbrace{\begin{bmatrix}
+        A & 0 & B & 0 \\
+        0 & I & 0 & 0 \\
+        0 & 0 & \Delta_\drop & 0 \\
+        C & 0 & D & 0
+    \end{bmatrix}}_{A_{\ndrop\miss\drop}}\, \begin{bmatrix}
+        x_{k} \\
+        z_{k} \\
+        u_{k} \\
+        \hat y_{k-1} \\
+    \end{bmatrix}
+\end{equation}
+%
+\begin{equation}
+    \begin{bmatrix}
+        x_{k+1} \\
+        z_{k+1} \\
+        u_{k+1} \\
+        \hat y_{k} \\
+    \end{bmatrix} = \underbrace{\begin{bmatrix}
+        A & 0 & B & 0 \\
+        0 & F & 0 & G \\
+        0 & 0 & \Delta_\drop & 0 \\
+        0 & 0 & 0 & I
+    \end{bmatrix}}_{A_{\drop\hit\drop}}\, \begin{bmatrix}
+        x_{k} \\
+        z_{k} \\
+        u_{k} \\
+        \hat y_{k-1} \\
+    \end{bmatrix}
+\end{equation}
+%
+\begin{equation}
+    \begin{bmatrix}
+        x_{k+1} \\
+        z_{k+1} \\
+        u_{k+1} \\
+        \hat y_{k} \\
+    \end{bmatrix} = \underbrace{\begin{bmatrix}
+        A & 0 & B & 0 \\
+        0 & I & 0 & 0 \\
+        0 & 0 & \Delta_\drop & 0 \\
+        0 & 0 & 0 & I
+    \end{bmatrix}}_{A_{\drop\miss\drop}}\, \begin{bmatrix}
+        x_{k} \\
+        z_{k} \\
+        u_{k} \\
+        \hat y_{k-1} \\
+    \end{bmatrix}
+\end{equation}
+
+\newpage
+
+\subsubsection{Skip-Next strategy}%
+
+We denote the closed-loop state vector with $$\tilde x_k = \left[ x^T_k, z^T_k, u^T_k, \hat x^T_k, \hat u^T_k, \hat y^T_{k-1} \right]^T.$$
+
+\begin{table}[htpb]
+    \centering
+    \begin{tabular}{c|ccc|l}\hline\hline
+                                        & \textbf{\texttt{sense}}   & \textbf{\texttt{control}} & \textbf{\texttt{actuate}} & probability \\ \hline\hline
+        $A_{\ndrop\hit\ndrop}$          & \ding{51}                 & \ding{51}                 & \ding{51}                 & \discuss{$(1-\rho_s)(1-\rho_c)(1-\rho_a)$} \\
+        $A_{\drop\miss\ndrop}$          & \ding{55}                 & \ding{55}                 & \ding{51}                 & \discuss{$\rho_s\rho_c(1-\rho_a)$} \\
+        $A_{\drop\hit\ndrop}$           & \ding{55}                 & \ding{51}                 & \ding{51}                 & \discuss{$\rho_s(1-\rho_c)(1-\rho_a)$} \\
+        $A_{\ndrop\miss\ndrop}$         & \ding{51}                 & \ding{55}                 & \ding{51}                 & \discuss{$(1-\rho_s)\rho_c(1-\rho_a)$} \\
+        $A_{\ndrop\hit\drop}$           & \ding{51}                 & \ding{51}                 & \ding{55}                 & \discuss{$(1-\rho_s)(1-\rho_c)\rho_a$} \\
+        $A_{\ndrop\miss\drop}$          & \ding{51}                 & \ding{55}                 & \ding{55}                 & \discuss{$(1-\rho_s)\rho_c\rho_a$} \\
+        $A_{\drop\miss\drop}$           & \ding{55}                 & \ding{55}                 & \ding{55}                 & \discuss{$\rho_s\rho_c\rho_a$} \\
+        $A_{\drop\hit\drop}$            & \ding{55}                 & \ding{51}                 & \ding{55}                 & \discuss{$\rho_s(1-\rho_c)\rho_a$} \\
+        $A_{\ndrop\recov\ndrop}$        & \ding{51}                 & \ding{51}                 & \ding{51}                 & \discuss{$(1-\rho_s)(1-\rho_c)(1-\rho_a)$} \\
+        $A_{\drop\recov\ndrop}$         & \ding{55}                 & \ding{51}                 & \ding{51}                 & \discuss{$\rho_s(1-\rho_c)(1-\rho_a)$} \\
+        $A_{\ndrop\recov\drop}$         & \ding{51}                 & \ding{51}                 & \ding{55}                 & \discuss{$(1-\rho_s)(1-\rho_c)\rho_a$} \\
+        $A_{\drop\recov\drop}$          & \ding{55}                 & \ding{51}                 & \ding{55}                 & \discuss{$\rho_s(1-\rho_c)\rho_a$} \\
+    \end{tabular}
+\end{table}
+
+\begin{equation}
+    \begin{bmatrix}
+        x_{k+1} \\
+        z_{k+1} \\
+        u_{k+1} \\
+        \hat x_{k+1} \\
+        \hat u_{k+1} \\
+        \hat y_{k} \\
+    \end{bmatrix} = \underbrace{\begin{bmatrix}
+        A  & 0 & B & 0 & 0 & 0 \\
+        GC & F & GD & 0 & 0 & 0 \\
+        HC & K & HD & 0 & 0 & 0 \\
+        A  & 0 & B & 0 & 0 & 0 \\
+        HC & K & HD & 0 & 0 & 0 \\
+        C & 0 & D & 0 & 0 & 0 \\
+    \end{bmatrix}}_{A_{\ndrop\hit\ndrop}}\, \begin{bmatrix}
+        x_{k} \\
+        z_{k} \\
+        u_{k} \\
+        \hat x_{k} \\
+        \hat u_{k} \\
+        \hat y_{k-1} \\
+    \end{bmatrix}
+\end{equation}
+%
+\begin{equation}
+    \begin{bmatrix}
+        x_{k+1} \\
+        z_{k+1} \\
+        u_{k+1} \\
+        \hat x_{k+1} \\
+        \hat u_{k+1} \\
+        \hat y_{k} \\
+    \end{bmatrix} = \underbrace{\begin{bmatrix}
+        A & 0 & B & 0 & 0 & 0 \\
+        0 & F & 0 & 0 & 0 & G \\
+        0 & K & 0 & 0 & 0 & H \\
+        A & 0 & B & 0 & 0 & 0 \\
+        0 & K & 0 & 0 & 0 & H \\
+        0 & 0 & 0 & 0 & 0 & I
+    \end{bmatrix}}_{A_{\drop\hit\ndrop}}\, \begin{bmatrix}
+        x_{k} \\
+        z_{k} \\
+        u_{k} \\
+        \hat x_{k} \\
+        \hat u_{k} \\
+        \hat y_{k-1} \\
+    \end{bmatrix}
+\end{equation}
+%
+\begin{equation}
+    \begin{bmatrix}
+        x_{k+1} \\
+        z_{k+1} \\
+        u_{k+1} \\
+        \hat x_{k+1} \\
+        \hat u_{k+1} \\
+        \hat y_{k} \\
+    \end{bmatrix} = \underbrace{\begin{bmatrix}
+        A & 0 & B & 0 & 0 & 0 \\
+        0 & I & 0 & 0 & 0 & 0 \\
+        0 & 0 & \Delta_\actuator & 0 & 0 & 0 \\
+        0 & 0 & 0 & I & 0 & 0 \\
+        0 & 0 & 0 & 0 & I & 0 \\
+        0 & 0 & 0 & 0 & 0 & I
+    \end{bmatrix}}_{A_{\ndrop\miss\ndrop}}\, \begin{bmatrix}
+        x_{k} \\
+        z_{k} \\
+        u_{k} \\
+        \hat x_{k} \\
+        \hat u_{k} \\
+        \hat y_{k-1} \\
+    \end{bmatrix}
+\end{equation}
+%
+\begin{equation}
+    \begin{bmatrix}
+        x_{k+1} \\
+        z_{k+1} \\
+        u_{k+1} \\
+        \hat x_{k+1} \\
+        \hat u_{k+1} \\
+        \hat y_{k} \\
+    \end{bmatrix} = \underbrace{\begin{bmatrix}
+        A & 0 & B & 0 & 0 & 0 \\
+        GC & F & GD & 0 & 0 & 0 \\
+        0 & 0 & \Delta_\drop & 0 & 0 & 0 \\
+        A & 0 & B & 0 & 0 & 0 \\
+        HC & K & HD & 0 & 0 & 0 \\
+        C & 0 & D & 0 & 0 & 0
+    \end{bmatrix}}_{A_{\ndrop\hit\drop}}\, \begin{bmatrix}
+        x_{k} \\
+        z_{k} \\
+        u_{k} \\
+        \hat x_{k} \\
+        \hat u_{k} \\
+        \hat y_{k-1} \\
+    \end{bmatrix}
+\end{equation}
+%
+\begin{equation}
+    \begin{bmatrix}
+        x_{k+1} \\
+        z_{k+1} \\
+        u_{k+1} \\
+        \hat x_{k+1} \\
+        \hat u_{k+1} \\
+        \hat y_{k} \\
+    \end{bmatrix} = \underbrace{\begin{bmatrix}
+        A & 0 & B & 0 & 0 & 0 \\
+        0 & I & 0 & 0 & 0 & 0 \\
+        0 & 0 & \Delta_\actuator & 0 & 0 & 0 \\
+        0 & 0 & 0 & I & 0 & 0 \\
+        0 & 0 & 0 & 0 & I & 0 \\
+        0 & 0 & 0 & 0 & 0 & I
+    \end{bmatrix}}_{A_{\drop\miss\ndrop}}\, \begin{bmatrix}
+        x_{k} \\
+        z_{k} \\
+        u_{k} \\
+        \hat x_{k} \\
+        \hat u_{k} \\
+        \hat y_{k-1} \\
+    \end{bmatrix}
+\end{equation}
+%
+\begin{equation}
+    \begin{bmatrix}
+        x_{k+1} \\
+        z_{k+1} \\
+        u_{k+1} \\
+        \hat x_{k+1} \\
+        \hat u_{k+1} \\
+        \hat y_{k} \\
+    \end{bmatrix} = \underbrace{\begin{bmatrix}
+        A & 0 & B & 0 & 0 & 0 \\
+        0 & I & 0 & 0 & 0 & 0 \\
+        0 & 0 & \Delta_\drop & 0 & 0 & 0 \\
+        0 & 0 & 0 & I & 0 & 0 \\
+        0 & 0 & 0 & 0 & I & 0 \\
+        0 & 0 & 0 & 0 & 0 & I
+    \end{bmatrix}}_{A_{\ndrop\miss\drop}}\, \begin{bmatrix}
+        x_{k} \\
+        z_{k} \\
+        u_{k} \\
+        \hat x_{k} \\
+        \hat u_{k} \\
+        \hat y_{k-1} \\
+    \end{bmatrix}
+\end{equation}
+%
+\begin{equation}
+    \begin{bmatrix}
+        x_{k+1} \\
+        z_{k+1} \\
+        u_{k+1} \\
+        \hat x_{k+1} \\
+        \hat u_{k+1} \\
+        \hat y_{k} \\
+    \end{bmatrix} = \underbrace{\begin{bmatrix}
+        A & 0 & B & 0 & 0 & 0 \\
+        0 & F & 0 & 0 & 0 & G \\
+        0 & 0 & \Delta_\drop & 0 & 0 & 0 \\
+        A & 0 & B & 0 & 0 & 0 \\
+        0 & K & 0 & 0 & 0 & H \\
+        0 & 0 & 0 & 0 & 0 & I
+    \end{bmatrix}}_{A_{\drop\hit\drop}}\, \begin{bmatrix}
+        x_{k} \\
+        z_{k} \\
+        u_{k} \\
+        \hat x_{k} \\
+        \hat u_{k} \\
+        \hat y_{k-1} \\
+    \end{bmatrix}
+\end{equation}
+%
+\begin{equation}
+    \begin{bmatrix}
+        x_{k+1} \\
+        z_{k+1} \\
+        u_{k+1} \\
+        \hat x_{k+1} \\
+        \hat u_{k+1} \\
+        \hat y_{k} \\
+    \end{bmatrix} = \underbrace{\begin{bmatrix}
+        A & 0 & B & 0 & 0 & 0 \\
+        0 & I & 0 & 0 & 0 & 0 \\
+        0 & 0 & \Delta_\drop & 0 & 0 & 0 \\
+        0 & 0 & 0 & I & 0 & 0 \\
+        0 & 0 & 0 & 0 & I & 0 \\
+        0 & 0 & 0 & 0 & 0 & I
+    \end{bmatrix}}_{A_{\drop\miss\drop}}\, \begin{bmatrix}
+        x_{k} \\
+        z_{k} \\
+        u_{k} \\
+        \hat x_{k} \\
+        \hat u_{k} \\
+        \hat y_{k-1} \\
+    \end{bmatrix}
+\end{equation}
+%
+\begin{equation}
+    \begin{bmatrix}
+        x_{k+1} \\
+        z_{k+1} \\
+        u_{k+1} \\
+        \hat x_{k+1} \\
+        \hat u_{k+1} \\
+        \hat y_{k} \\
+    \end{bmatrix} = \underbrace{\begin{bmatrix}
+        A & 0 & B & 0 & 0 & 0 \\
+        0 & F & 0 & GC & GD & 0 \\
+        0 & K & 0 & HC & HD & 0 \\
+        A & 0 & B & 0 & 0 & 0 \\
+        0 & K & 0 & HC & HD & 0 \\
+        0 & 0 & 0 & 0 & 0 & I
+    \end{bmatrix}}_{A_{\drop\recov\ndrop}}\, \begin{bmatrix}
+        x_{k} \\
+        z_{k} \\
+        u_{k} \\
+        \hat x_{k} \\
+        \hat u_{k} \\
+        \hat y_{k-1} \\
+    \end{bmatrix}
+\end{equation}
+%
+\begin{equation}
+    \begin{bmatrix}
+        x_{k+1} \\
+        z_{k+1} \\
+        u_{k+1} \\
+        \hat x_{k+1} \\
+        \hat u_{k+1} \\
+        \hat y_{k} \\
+    \end{bmatrix} = \underbrace{\begin{bmatrix}
+        A & 0 & B & 0 & 0 & 0 \\
+        0 & F & 0 & GC & GD & 0 \\
+        0 & K & 0 & HC & HD & 0 \\
+        A & 0 & B & 0 & 0 & 0 \\
+        0 & K & 0 & HC & HD & 0 \\
+        0 & 0 & 0 & 0 & 0 & I
+    \end{bmatrix}}_{A_{\ndrop\recov\ndrop}}\, \begin{bmatrix}
+        x_{k} \\
+        z_{k} \\
+        u_{k} \\
+        \hat x_{k} \\
+        \hat u_{k} \\
+        \hat y_{k-1} \\
+    \end{bmatrix}
+\end{equation}
+%
+\begin{equation}
+    \begin{bmatrix}
+        x_{k+1} \\
+        z_{k+1} \\
+        u_{k+1} \\
+        \hat x_{k+1} \\
+        \hat u_{k+1} \\
+        \hat y_{k} \\
+    \end{bmatrix} = \underbrace{\begin{bmatrix}
+        A & 0 & B & 0 & 0 & 0 \\
+        0 & F & 0 & GC & GD & 0 \\
+        0 & 0 & \Delta_\drop & 0 & 0 & 0 \\
+        A & 0 & B & 0 & 0 & 0 \\
+        0 & K & 0 & HC & HD & 0 \\
+        0 & 0 & 0 & 0 & 0 & I
+    \end{bmatrix}}_{A_{\drop\recov\drop}}\, \begin{bmatrix}
+        x_{k} \\
+        z_{k} \\
+        u_{k} \\
+        \hat x_{k} \\
+        \hat u_{k} \\
+        \hat y_{k-1} \\
+    \end{bmatrix}
+\end{equation}
+%
+\begin{equation}
+    \begin{bmatrix}
+        x_{k+1} \\
+        z_{k+1} \\
+        u_{k+1} \\
+        \hat x_{k+1} \\
+        \hat u_{k+1} \\
+        \hat y_{k} \\
+    \end{bmatrix} = \underbrace{\begin{bmatrix}
+        A & 0 & B & 0 & 0 & 0 \\
+        0 & F & 0 & GC & GD & 0 \\
+        0 & 0 & \Delta_\drop & 0 & 0 & 0 \\
+        A & 0 & B & 0 & 0 & 0 \\
+        0 & K & 0 & HC & HD & 0 \\
+        0 & 0 & 0 & 0 & 0 & I
+    \end{bmatrix}}_{A_{\ndrop\recov\drop}}\, \begin{bmatrix}
+        x_{k} \\
+        z_{k} \\
+        u_{k} \\
+        \hat x_{k} \\
+        \hat u_{k} \\
+        \hat y_{k-1} \\
+    \end{bmatrix}
+\end{equation}
+%
+The $\hat y_k = \hat y_{k-1}$ expression for $*\recov*$ and $*\miss*$ follow from the ``newer'' measurement signals \emph{not} being stored.

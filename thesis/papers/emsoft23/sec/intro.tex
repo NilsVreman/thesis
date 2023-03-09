@@ -1,0 +1,47 @@
+Two important objectives in the design of control systems are guaranteeing robustness to disturbances and modelling inaccuracy~\cite{Astrom:1997}, and the joint verification of the computer program implementing the controller logic, together with the physical system this program acts on~\cite{Bohrer:2018}.
+The outcome of the verification process is a certificate of correctness for the cyber-physical system that comprises both the controller and the physical plant it controls.
+
+However, during its actual execution, the controller operation can be affected by faults such as computational delays and communication loss.
+Researchers have been trying to quantify how much of the inherent controller robustness carries over to tolerate communication~\cite{Ahrendts:2018, Linsenmayer:2017} and computational~\cite{Pazzaglia:2018, Maggio:2020, Hobbs:2022} faults.
+The main appeal with these results is the ability to guarantee properties of the closed-loop systems in worst-case conditions.
+
+In real-world controller implementations, worst-case conditions are rare.
+The results obtained to certify worst-case conditions may be exceedingly conservative under normal operation~\cite{Vreman:2021}.
+Furthermore, the process of obtaining computational models (such as the weakly-hard~\cite{Bernat:2001} task model) that enable these analyses is still complex~\cite{Sun:2017}, restricting the applicability of the controller analyses.
+On the contrary, typical fault models are probabilistic.
+If some risk is tolerated, or if the worst-case is extremely rare, soft real-time task models~\cite{Buttazzo:2005} (i.e., \emph{probabilistic} or \emph{stochastic}) can significantly improve typical-case performance analysis.
+These probabilistic models aim to optimise the average-case performance rather than the worst-case robustness, and can also be used to provide stochastic safety guarantees.
+
+There exists a vast literature on stochastic stability for control systems, including~\cite{Fang:2002, Liberzon:2014, Blair:1975, Lincoln:2002, Bolzern:2010, Astrom:1970}.
+These results are typically providing guarantees on the safe operation of a control system in the presence of stochastic disturbance signals, rather than to guarantee the safe operation of a control system in the presence of computational problems.
+Moreover, the literature on fault tolerance typically answers questions such as when is the first fault occurring~\cite{Safari:2022}.
+However, predicating over the safety of the control system in the presence of faults should also take into account that multiple components can fail at the same time.
+For example, a networked control system can experience a channel dropout \emph{simultaneously} with the controller code stalling and thus not completing its execution before its deadline.
+
+Although some literature indicate that tolerating packet losses is enough for networked control systems to function also in the presence of other fault types~\cite{Kauer:2014, Ghosh:2018, Horssen:2016, Ling:2002, Linsenmayer:2017}, this can only be true for static controllers, e.g., LQ-regulators.
+For such controllers, a lost packet is equivalent to a missed deadline if the controller waits indefinitely for a sensor packet to arrive.
+Even with the restriction of using a static controller, the assumption that the controller would wait for sensor data indefinitely is both conservative and unrealistic.
+
+In this paper we aim to resolve the misconception that packet losses in networked control system can be used to analyse control deadline overruns (and vice versa).
+We formulate the problem of analysing a control system in the presence of \emph{simultaneous} failures of three different types:
+\begin{enumerate*}[label=(\roman*)]
+    \item packet losses on the sensor channel,
+    \item computational overruns of the control task, and
+    \item packet losses on the actuator channel.
+\end{enumerate*}
+In solving this problem, we aim at bringing the control analysis one step closer to the implementation of control tasks, considering actual control skeletons that include, among other things, timeouts for communication channels.
+
+To analyse the simultaneous presence of faults in computational units and communication channels, this paper casts the problem into the formalism of Markov Jump Linear Systems~\cite{Costa:2005} and provides a stochastic analysis of the controller behaviour.
+Specifically, we provide the following contributions:
+\begin{itemize}
+    \item We compile a model of what happens to the control system when the different faults are experienced. This model includes both the discrete state (which encodes whether data transmissions and control computation have been successful) and the dynamical state of the physical part of the system (which describes the quantities that are affected by the controller execution both in the controller itself and in the physical world).
+    \item We leverage the literature on stochastic control to provide a probabilistic analysis of control systems subject to simultaneous communication and computation faults. The analysis aims to provide a certificate of \emph{mean square stability}, i.e., the simultaneous convergence of the average value of the state vector to a precise point, and of its covariance (and hence standard deviation) to zero.
+    \item We apply the analysis to two different case studies taken from the literature, showing how resilient their controllers are to faults that may occur during the lifetime and execution of the controller.
+\end{itemize}
+
+% Outline
+The rest of this paper is outlined as follows.
+Section~\ref{sec:prb} contains the necessary background and a more precise problem statement.
+In Section~\ref{sec:anl} we propose an analysis of control systems subject to \emph{both} packet losses and computational overruns.
+In Section~\ref{sec:eval} we evaluate the analysis on two different case studies taken from the literature, and show that we can assess the (stochastic) stability of the controlled systems under a variety of simultaneous faults.
+Section~\ref{sec:rel} summarises the related literature and Section~\ref{sec:concl} concludes the paper.

@@ -1,0 +1,49 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% In this file, only commands are allowed. These commands should be explained to
+% greatest possible extent.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Strategy related
+\newcommand{\Kill}{\texttt{K}}
+\newcommand{\Skip}{\texttt{S}}
+
+%%% Alphabet related
+\newcommand{\osets}{\Sigma\funof{\mathcal{S}}}
+\newcommand{\oseta}{\Sigma\funof{\mathcal{A}}}
+
+\newcommand{\osetc}[1]{\Sigma\,({\mathcal{C}^{#1}})}
+\newcommand{\osetck}{\osetc{\Kill}}
+\newcommand{\osetcs}{\osetc{\Skip}}
+
+%%% Notation
+\newcommand{\sensor}{\mathcal{S}}
+\newcommand{\actuator}{\mathcal{A}}
+
+%%% Code
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{black!10}, commentstyle=\color{codegreen},
+    frame=single,
+    keywordstyle=\color{black},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\linespread{1.15}\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    xrightmargin=1cm,xleftmargin=1cm,
+    language=Python,
+    keywordstyle=\color{blue},
+    morekeywords={read_sensor_ch,compute_control,send_actuator_ch,sleep_until},
+}
+\lstset{style=mystyle}

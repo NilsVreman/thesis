@@ -1,0 +1,57 @@
+%%% KILL
+%\begin{figure*}[ht]
+%    \centering\scriptsize
+    \begin{equation}
+        \label{eq:cont-kill} 
+        \begin{matrix}
+            \underbrace{\begin{bmatrix}
+                A  & 0 & B & 0 \\
+                GC & F & GD & 0 \\
+                KC & H & KD & 0 \\
+                C & 0 & D & 0 \\
+            \end{bmatrix}}_{\clmat_{\cT\cH\cT}^{\Kill}} &
+            \underbrace{\begin{bmatrix}
+                A & 0 & B & 0 \\
+                GC & F & GD & 0 \\
+                0 & 0 & \Delta_\actuator & 0 \\
+                C & 0 & D & 0
+            \end{bmatrix}}_{\clmat_{\cT\cH\cF}^{\Kill}} &
+            \underbrace{\begin{bmatrix}
+                A & 0 & B & 0 \\
+                0 & I & 0 & 0 \\
+                0 & 0 & \Delta_\actuator & 0 \\
+                C & 0 & D & 0
+            \end{bmatrix}}_{\clmat_{\cT\cM\cT}^{\Kill}} &
+            \underbrace{\begin{bmatrix}
+                A & 0 & B & 0 \\
+                0 & I & 0 & 0 \\
+                0 & 0 & \Delta_\actuator & 0 \\
+                C & 0 & D & 0
+            \end{bmatrix}}_{\clmat_{\cT\cM\cF}^{\Kill}} \\[4em]
+            \underbrace{\begin{bmatrix}
+                A & 0 & B & 0 \\
+                0 & F & 0 & G \\
+                0 & H & 0 & K \\
+                0 & 0 & 0 & I
+            \end{bmatrix}}_{\clmat_{\cF\cH\cT}^{\Kill}} &
+            \underbrace{\begin{bmatrix}
+                A & 0 & B & 0 \\
+                0 & F & 0 & G \\
+                0 & 0 & \Delta_\actuator & 0 \\
+                0 & 0 & 0 & I
+            \end{bmatrix}}_{\clmat_{\cF\cH\cF}^{\Kill}} &
+            \underbrace{\begin{bmatrix}
+                A & 0 & B & 0 \\
+                0 & I & 0 & 0 \\
+                0 & 0 & \Delta_\actuator & 0 \\
+                0 & 0 & 0 & I
+            \end{bmatrix}}_{\clmat_{\cF\cM\cT}^{\Kill}} &
+            \underbrace{\begin{bmatrix}
+                A & 0 & B & 0 \\
+                0 & I & 0 & 0 \\
+                0 & 0 & \Delta_\actuator & 0 \\
+                0 & 0 & 0 & I
+            \end{bmatrix}}_{\clmat_{\cF\cM\cF}^{\Kill}}
+        \end{matrix}.
+    \end{equation}%
+%\end{figure*}

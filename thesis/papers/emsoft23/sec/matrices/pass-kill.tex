@@ -1,0 +1,36 @@
+%%% KILL
+\begin{equation}
+    \label{eq:pass-kill} 
+    \begin{matrix}
+        \underbrace{\begin{bmatrix}
+            A  & 0  & B \\
+            GC & F & GD \\
+            HC & K & HD \\
+        \end{bmatrix}}_{A_{\recv\hit\recv}^{\Pass\Kill}} & 
+        \underbrace{\begin{bmatrix}
+            A & 0 & B \\
+            0 & I & 0 \\
+            0 & 0 & \Delta_\actuator \\
+        \end{bmatrix}}_{A_{\loss\unkn\recv}^{\Pass\Kill}} &
+        \underbrace{\begin{bmatrix}
+            A & 0 & B \\
+            0 & I & 0 \\
+            0 & 0 & \Delta_\actuator \\
+        \end{bmatrix}}_{A_{\recv\miss\recv}^{\Pass\Kill}\, (\equiv A_{\loss\unkn\recv}^{\Pass\Kill})} \\[4em]
+        \underbrace{\begin{bmatrix}
+            A  & 0 & B \\
+            GC & F & GD \\
+            0  & 0 & \Delta_\loss \\
+        \end{bmatrix}}_{A_{\recv\hit\loss}^{\Pass\Kill}} & 
+         \underbrace{\begin{bmatrix}
+            A & 0 & B \\
+            0 & I & 0 \\
+            0 & 0 & \Delta_\loss \\
+         \end{bmatrix}}_{A_{\recv\miss\loss}^{\Pass\Kill}} & 
+        \underbrace{\begin{bmatrix}
+            A & 0 & B \\
+            0 & I & 0 \\
+            0 & 0 & \Delta_\loss \\
+        \end{bmatrix}}_{A_{\loss\unkn\loss}^{\Pass\Kill}\, (\equiv A_{\recv\miss\loss}^{\Pass\Kill})}
+    \end{matrix}
+\end{equation}%

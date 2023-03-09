@@ -1,0 +1,92 @@
+%%% Skip
+\begin{equation}%
+    \label{eq:pass-skip}%
+    \resizebox{0.915\columnwidth}{!}{$%
+    \begin{matrix}
+        \underbrace{\begin{bmatrix}
+            A  & 0 & B  & 0 & 0 \\
+            GC & F & GD & 0 & 0 \\
+            HC & K & HD & 0 & 0 \\
+            A  & 0 & B  & 0 & 0 \\
+            HC & K & HD & 0 & 0 \\
+        \end{bmatrix}}_{A_{\recv\hit\recv}} &
+        \underbrace{\begin{bmatrix}
+            A & 0 & B & 0 & 0 \\
+            0 & I & 0 & 0 & 0 \\
+            0 & 0 & \Delta_\actuator & 0 & 0 \\
+            A & 0 & B & 0 & 0 \\
+            0 & 0 & 0 & 0 & I \\
+        \end{bmatrix}}_{A_{\loss\unkn\recv}} \\[4em]
+        \underbrace{\begin{bmatrix}
+            A  & 0 & B & 0 & 0 \\
+            GC & F & GD & 0 & 0 \\
+            0  & 0 & \Delta_\loss & 0 & 0 \\
+            A  & 0 & B & 0 & 0 \\
+            HC & K & HD & 0 & 0 \\
+        \end{bmatrix}}_{A_{\recv\hit\loss}} &
+        \underbrace{\begin{bmatrix}
+            A & 0 & B & 0 & 0 \\
+            0 & I & 0 & 0 & 0 \\
+            0 & 0 & \Delta_\loss & 0 & 0 \\
+            A & 0 & B & 0 & 0 \\
+            0 & 0 & 0 & 0 & I \\
+        \end{bmatrix}}_{A_{\loss\unkn\loss}} \\[4em]
+        \underbrace{\begin{bmatrix}
+            A & 0 & B & 0 & 0 \\
+            0 & I & 0 & 0 & 0 \\
+            0 & 0 & \Delta_\actuator & 0 & 0 \\
+            0 & 0 & 0 & I & 0 \\
+            0 & 0 & 0 & 0 & I \\
+        \end{bmatrix}}_{A_{\recv\miss\recv}} &
+        \underbrace{\begin{bmatrix}
+            A & 0 & B & 0 & 0 \\
+            0 & I & 0 & 0 & 0 \\
+            0 & 0 & \Delta_\actuator & 0 & 0 \\
+            0 & 0 & 0 & I & 0 \\
+            0 & 0 & 0 & 0 & I \\
+        \end{bmatrix}}_{A_{\loss\miss\recv}\, (\equiv A_{\recv\miss\recv})} \\[4em]
+        \underbrace{\begin{bmatrix}
+            A & 0 & B & 0 & 0 \\
+            0 & I & 0 & 0 & 0 \\
+            0 & 0 & \Delta_\loss & 0 & 0 \\
+            0 & 0 & 0 & I & 0 \\
+            0 & 0 & 0 & 0 & I \\
+        \end{bmatrix}}_{A_{\recv\miss\loss}} &
+        \underbrace{\begin{bmatrix}
+            A & 0 & B & 0 & 0 \\
+            0 & I & 0 & 0 & 0 \\
+            0 & 0 & \Delta_\loss & 0 & 0 \\
+            0 & 0 & 0 & I & 0 \\
+            0 & 0 & 0 & 0 & I \\
+        \end{bmatrix}}_{A_{\loss\miss\loss}\, (\equiv A_{\recv\miss\loss})} \\[4em]
+        \underbrace{\begin{bmatrix}
+            A & 0 & B & 0 & 0 \\
+            0 & F & 0 & GC & GD \\
+            0 & K & 0 & HC & HD \\
+            A & 0 & B & 0 & 0 \\
+            0 & K & 0 & HC & HD \\
+        \end{bmatrix}}_{A_{\recv\recov\recv}} &
+        \underbrace{\begin{bmatrix}
+            A & 0 & B & 0 & 0 \\
+            0 & F & 0 & GC & GD \\
+            0 & K & 0 & HC & HD \\
+            A & 0 & B & 0 & 0 \\
+            0 & K & 0 & HC & HD \\
+        \end{bmatrix}}_{A_{\loss\recov\recv}\, (\equiv A_{\recv\recov\recv})} \\[4em]
+        \underbrace{\begin{bmatrix}
+            A & 0 & B & 0 & 0 \\
+            0 & F & 0 & GC & GD \\
+            0 & 0 & \Delta_\loss & 0 & 0 \\
+            A & 0 & B & 0 & 0 \\
+            0 & K & 0 & HC & HD \\
+        \end{bmatrix}}_{A_{\recv\recov\loss}} &
+        \underbrace{\begin{bmatrix}
+            A & 0 & B & 0 & 0 \\
+            0 & F & 0 & GC & GD \\
+            0 & 0 & \Delta_\loss & 0 & 0 \\
+            A & 0 & B & 0 & 0 \\
+            0 & K & 0 & HC & HD \\
+        \end{bmatrix}}_{A_{\loss\recov\loss}\, (\equiv A_{\recv\recov\loss})}
+    \end{matrix}
+    $}%
+\end{equation}

@@ -1,0 +1,14 @@
+There exists a common misconception that analysing a control system's robustness to packet losses on the network is equivalent to having the control algorithm overrun its timing budget, and vice versa.
+This paper proposes an approach to analyse real-time control systems and their stability properties when subject to multiple types of faults.
+In particular, we analyse \emph{simultaneous} packet losses on the IO communication channels and computational overruns of the task executing the control algorithm, making the analysis more comprehensive than the state-of-the-art alternatives.
+
+%There exists a common misconception that analysing the control-system's robustness to packet losses on the network is equivalent to having the control algorithm overrun its timing budget, and vice versa.
+%The paper primarily proposes two contributions:
+%\begin{enumerate*}[label=(\roman*)]
+%    \item a method for analysing the stability of embedded control-systems subject to IO packet loss, control computational overruns, and combinations thereof, and
+%    \item a comprehensive experimental campaign, highlighting the effects the different fault types have on the system.
+%\end{enumerate*}
+
+We envision that the analysis method and the corresponding experimental campaign will be used to improve future analysis methods and correct any misconceptions about how faults interact in computer-controlled systems.
+Finally, the paper brings the control analysis closer to the state-of-practice compared to the research literature, because it relies on a probabilistic failure model.
+In industrial setups, it is in fact easier to get estimates of the probability of certain events from testing campaigns, rather than to extract complex (but deterministic) guarantees like the validity of a weakly-hard constraint.

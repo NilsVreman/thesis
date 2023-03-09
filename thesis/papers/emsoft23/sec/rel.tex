@@ -1,0 +1,19 @@
+In recent years, probabilistic analysis techniques for real-time systems are becoming more prominent~\cite{Cucu-Grosjean:2019}.
+In particular, a few interesting methods have been developed to compute the probability that specific tasks miss their deadlines, e.g.,~\cite{Bruggen:2021}.
+In~\cite{Bruggen:2018a}, the authors propose a method to safely estimate the deadline miss rate of tasks in a uniprocessor system under a preemptive fixed-priority scheduling policy.
+For mixed-criticality systems,~\cite{Cucu-Grosjean:2017} introduce a probabilistic analysis method for analysing worst-case execution time distributions, and in turn worst-case deadline miss probabilities, under fixed-priority preemptive scheduling.
+An efficient and accurate convolution-based approach to calculating deadline miss probabilities is introduced in~\cite{Bruggen:2018b}.
+The authors of~\cite{Markovic:2021} propose a method for down-sampling the random variables in order to improve space and time complexity of the analysis methods.
+
+% Probabilistic approach to packet drops and computational faults exists -> considered "equivalent"
+The ratios provided by the deadline miss probability analysis can be utilised to improve the design of control systems.
+In~\cite{Schenato:2007}, the authors derive an optimal controller (control law and estimator) for a networked control system where packet arrivals are modelled stochastically.
+The authors of~\cite{Heemels:2010} propose a stabilising controller for networked control systems subject to stochastic network delays and packet losses.
+Pazzaglia et al.~\cite{Pazzaglia:2019} derive a robust controller to be used when the control task can experience deadline misses stochastically.
+%For a soft real-time system,~\cite{Manolache:2004} develop an optimisation based approach to allocating resources such that bounds on the deadline miss ratio are not violated.
+%In~\cite{Wilson:2011}, a deadline-aware control protocol is developed for data centres with heavy traffic subject to probabilistic real-time constraints.
+
+Generally, fault-tolerant controllers are designed to counteract one specific type of fault, e.g., sensor losses \emph{or} deadline overruns.
+To analyse whether a system is robust to the specific type of fault or not, different analysis methods have been proposed.
+A stability analysis method for control systems subject to weakly-hard packet losses is proposed in~\cite{Linsenmayer:2020}.
+In~\cite{Maggio:2020}, the authors propose a method for analysing the stability of real-time control systems where the control task is subject to consecutive deadline overruns.

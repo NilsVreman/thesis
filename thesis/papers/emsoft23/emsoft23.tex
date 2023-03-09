@@ -1,0 +1,55 @@
+\renewcommand\thisdir{papers/emsoft23}
+\tikzsetfigurename{emsoft23-}
+\renewcommand\figdir{\thisdir/figs}
+
+% Commands for this paper
+% if the conflict with previously defined commands use \renewcommand
+\input{\thisdir/preamble/cmd}
+
+\paper[Stochastic Analysis of Control Systems Subject to Faults]{Stochastic Analysis of Control Systems Subject to Communication and Computation Faults}
+\authors{Nils Vreman \and Martina Maggio}
+
+\begin{abstract}
+    Control theory allows one to design controllers that are robust to external disturbances, model simplification, and modelling inaccuracy.
+    Researchers have investigated whether the robustness carries on to the controller's digital implementation, mostly looking at how the controller reacts to either communication or computational problems.
+    Communication problems are typically modelled using random variables (i.e., estimating the probability that a fault will occur during a transmission), while computational problems are modelled using deterministic guarantees on the number of deadlines that the control task has to meet.
+    These fault models allow the engineer to both design robust controllers and assess the controllers' behaviour in the presence of isolated faults.
+    Despite being very relevant for the real-world implementations of control system, the question of what happens when these faults occur simultaneously does not yet have a proper answer.
+    In this paper, we answer this question in the stochastic setting, using the theory of Markov Jump Linear Systems to provide stability contracts with \emph{almost sure} guarantees of convergence.
+    We apply our method to two case studies from the recent literature and show their robustness to a comprehensive set of faults.
+\end{abstract}
+
+\vfill
+Under submission to ACM SIGBED International Conference on Embedded Software (2023). 
+\newpage
+
+\section{Introduction}
+\label{sec:intro}
+\input{\thisdir/sec/intro}
+
+\section{Problem Formulation}
+\label{sec:prb}
+\input{\thisdir/sec/prb}
+
+\section{Analysis}
+\label{sec:anl}
+\input{\thisdir/sec/anl}
+
+\section{Evaluation}
+\label{sec:eval}
+\input{\thisdir/sec/eval}
+
+\section{Related Work}
+\label{sec:rel}
+\input{\thisdir/sec/rel}
+
+\section{Conclusion and Future Work}
+\label{sec:concl}
+\input{\thisdir/sec/concl}
+
+\section*{Acknowledgements}
+This work was supported by the ELLIIT Strategic Research Area.
+This project has received funding from the European Union's Horizon 2020 research and innovation programme under grant agreement No 871259 (ADMORPH project). This (publication/report) reflects only the authors' view and the European Commission is not responsible for any use that may be made of the information it contains.
+
+
+\printbibliography[heading=subbibliography]
