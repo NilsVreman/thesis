@@ -92,6 +92,7 @@ root/
     ├── preamble/
     │   ├── cmds.tex
     │   └── pkgs.tex
+    ├── figs/
     └── style/
         ├── LTHthesis.cls
         ├── LUCsv.eps

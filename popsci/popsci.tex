@@ -7,7 +7,8 @@
 % Document
 \begin{document}
 
-\noindent\begin{minipage}[]{0.25\textwidth}
+\noindent
+\begin{minipage}[]{0.25\textwidth}
     \noindent\includegraphics[width=20mm]{style/LUCsv}
     \par\vspace*{3mm} 
 \end{minipage}\hfill
@@ -15,30 +16,59 @@
     \vspace*{-3mm}
     \sffamily
     \begin{flushleft}
-        \huge Ett viktigt bidrag till teorin\\[2mm]
+        \huge Vad är det Värsta som kan Hända när Datorn Krånglar? \\[2mm]
         \Large Nils Vreman\\[1mm]
         \normalsize Institutionen för Reglerteknik
     \end{flushleft}
 \end{minipage}
-\par\vspace{1mm}  
-\begin{sffamily}\noindent Populärvetenskaplig sammanfattning av doktorsavhandlingen \emph{A Very Important Contribution to the Theory}, juni 2023. Avhandlingen kan laddas ner från: \url{http://www.control.lth.se/publications}
 
+\par\vspace{1mm}  
+
+\begin{sffamily}\noindent
+    Populärvetenskaplig sammanfattning av doktorsavhandlingen \emph{Analysis of Embedded Real-Time Control Systems Subject to Computational Overruns}, juni 2023.
+    Avhandlingen kan laddas ner från: \url{http://www.control.lth.se/publications}
 \end{sffamily}
+
 \vspace{2mm}\hrule\vspace{3mm}
+
 \noindent
-Denna avhandling undersöker hur tillämpningar  kan förbättras på olika vis. I dagens industri används reglerteknik till många olika uppgifter, men till största delen rör det sig om enkla uppdrag som inte är beroende av fysisk kontakt med omgivningen.
+Datorer i olika storlekar och styrka finns överallt runt omkring oss.
+Allt från mobilen i din ficka till bilen du åker med till jobbet innehåller många små datorer, också kallade \emph{inbyggda system}.
+Varje litet inbyggt system har uppgifter som den måste uträtta, t.ex., beräkna hastigheten på din bil.
+I de flesta fall finns det krav och specifikationer på att beräkningen måste uträttas inom en viss tidsram.
+Om bromsen trycks in förväntas bilen sakta ner direkt.
+I verkligheten tar det lite tid för det inbyggda systemet att beräkna nedbromsningshastigheten innan kommandot kan skickas till bromssystemet.
+Det är dock inget märkligt och systemet är oftast designat med den extra tiden det tar att uträtta hela uppgiften i åtanke.
 
 \begin{wrapfigure}{r}{0.45\textwidth}
     \vspace*{-2mm}
     \begin{centering}
-        \fbox{\rule{0pt}{30mm}\rule{0.95\linewidth}{0pt}}
+        \includegraphics[width=0.45\textwidth]{figs/microcontroller.jpg}
     \end{centering}\small\par\medskip
-    \noindent\emph{En industrirobot utrustad med fräsverktyg, som använts för experiment i avhandlingen.}
+    \noindent\emph{Exempel på ett inbyggt system. På bilden ses en Raspberry Pi Pico där det svarta chippet i mitten är en mikrokontroller, dvs., ett inbyggt system.}\footnotemark
     \vspace*{-2mm}
 \end{wrapfigure}
+\footnotetext{Laserlicht, CC BY-SA 4.0, \url{https://creativecommons.org/licenses/by-sa/4.0/}, via Wikimedia Commons}
 
-För bearbetningsuppgifter såsom slipning och fräsning används traditionellt sett specialmaskiner. Intresset för att istället använda industrirobotar har ökat, på grund av robotars flexibilitet i att kunna utföra en mängd olika uppgifter, samt den relativt låga investeringskostnaden. Industrirobotar är mycket bra på att positionera sig noggrant i fria luften, men under bearbetning när stora krafter utövas på roboten blir resultatet inte lika bra. Detta beror på att robotens leder är förhållandevis veka och böjs när externa krafter påverkar roboten, vilket i sin tur leder till att noggrannheten blir lidande. Om man hade kunnat mäta ledernas utböjning direkt hade det varit enkelt att kompensera för dem, men i dagsläget saknas sensorer som kan mäta utböjningen.
+Tyvärr så kan inbyggda system krångla, precis som en persondatorer kan.
+Bland annat kan bakgrundsprogram, virus, och föråldrad hårdvara/programvara störa beräkningen.
+Det kan försena beräkningen och i värsta fall medföra att uppgiften inte blir klar alls.
+Vad händer då om det inbyggda systemet krånglar på ett sådant sätt att tidsramen för beräkningen inte respekteras?
+Just den frågan besvaras i den här avhandlingen.
 
-Här skall texten fortsätta, tills den blir antingen två eller (gärna) fyra 
-sidor lång.
+Många inbyggda system sitter i apparater där det inte gör så mycket ifall något krånglar.
+Till exempel har mycket hemelektronik (så som moderna stereosystem, TV-apparater, och kylskåp) inbyggda system för att styra funktionaliteten och kommunicera med andra smarta system.
+Det värsta som kan hända här är att (till exempel) videokvaliteten inte är helt perfekt på TVn.
+Värre konsekvenser uppstår ifall det inbyggda systemet krånglar i ett bromssystem, en pacemaker, eller i ett flygplans styrsystem; då kan det uppstå verklig fara för människor i närheten och värstascenariot inkluderar även dödsfall.
+
+Den här avhandlingen utvecklar matematiska verktyg och metoder för att förbättra analysen av säkerhetskritiska system, så som bromssystemet i en bil.
+Eftersom det är livsviktigt att ingen person kommer till skada fokuseras analysen på att se till att det hela systemet är säkert, även under väldigt dåliga förhållanden för det inbyggda systemet.
+Dåliga förhållanden innebär här, bland annat, att det inbyggda systemet inte lyckas beräkna något under en väldigt lång tid på grund av, t.ex., en hacker-attack.
+
+\textbf{FORTSÄTT HÄR}
+
+Att ett system är säkert i teorin innebär dock inte att det är det även i praktiken.
+
+
+Här skall texten fortsätta, tills den blir antingen två eller (gärna) fyra sidor lång.
 \end{document}
