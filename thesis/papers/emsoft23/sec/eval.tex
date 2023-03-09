@@ -18,7 +18,7 @@ For each case study, we perform the following three sets of experiments:
         This corresponds to $p_s=0.15$, $p_c=0.4$, and $p_a = 0.05$.
 \end{enumerate}
 %
-We analyse controllers that are implemented with kill and skip as deadline overrun handling strategy and zero and hold as actuation modes.
+We analyse controllers that are implemented with \tK{} and \tS{} as deadline overrun handling strategy and \tZ{} and \tH{} as actuation modes.
 For all experiments, we calculate $\rho\funof{\Psi}$ to determine the closed-loop mean square stability according to Equation~\eqref{eq:stab-notion}, where $\Psi$ is the Markov Jump Linear System's covariance matrix.
 
 \subsection{Automotive Cruise Control Evaluation}%
@@ -68,7 +68,7 @@ In this paper, we analyse the automotive cruise control system controlled by a b
             legend style={align=center,font=\footnotesize},
             grid=major,
             grid style={black!20, dashed}]
-            \nextgroupplot[title={\tKZ{}}, ylabel={$\rho\funof{\Psi}$}, title style={yshift=-0.5em}]
+            \nextgroupplot[title={\tKZ{}}, ylabel={$\rho\funof{\Psi}$}, title style={yshift=-0.6em}]
             \addplot[red, thick, forget plot] {1};
             \addplot[ultra thick, blue, densely dotted] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs1_exp1_kz_rs.csv};
             \addlegendentry{$p_s$};
@@ -77,7 +77,7 @@ In this paper, we analyse the automotive cruise control system controlled by a b
             \addplot[ultra thick, orange!70!black, densely dashed] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs1_exp1_kz_ra.csv};
             \addlegendentry{$p_a$};
 
-            \nextgroupplot[title={\tKH{}}, title style={yshift=-0.5em}]
+            \nextgroupplot[title={\tKH{}}, title style={yshift=-0.6em}]
             \addplot[red, thick, forget plot] {1};
             \addplot[ultra thick, blue, densely dotted] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs1_exp1_kh_rs.csv};
             \addlegendentry{$p_s$};
@@ -86,7 +86,7 @@ In this paper, we analyse the automotive cruise control system controlled by a b
             \addplot[ultra thick, orange!70!black, densely dashed] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs1_exp1_kh_ra.csv};
             \addlegendentry{$p_a$};
 
-            \nextgroupplot[title={\tSZ{}}, ylabel={$\rho\funof{\Psi}$}, xlabel = {$p_x$}, title style={yshift=-0.5em}]
+            \nextgroupplot[title={\tSZ{}}, ylabel={$\rho\funof{\Psi}$}, xlabel = {$p_x$}, title style={yshift=-0.7em}]
             \addplot[red, thick, forget plot] {1};
             \addplot[ultra thick, blue, densely dotted] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs1_exp1_sz_rs.csv};
             \addlegendentry{$p_s$};
@@ -95,7 +95,7 @@ In this paper, we analyse the automotive cruise control system controlled by a b
             \addplot[ultra thick, orange!70!black, densely dashed] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs1_exp1_sz_ra.csv};
             \addlegendentry{$p_a$};
 
-            \nextgroupplot[title={\tSH{}}, xlabel = {$p_x$}, title style={yshift=-0.5em}]
+            \nextgroupplot[title={\tSH{}}, xlabel = {$p_x$}, title style={yshift=-0.7em}]
             \addplot[red, thick, forget plot] {1};
             \addplot[ultra thick, blue, densely dotted] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs1_exp1_sh_rs.csv};
             \addlegendentry{$p_s$};
@@ -113,7 +113,7 @@ In this paper, we analyse the automotive cruise control system controlled by a b
 \subsubsection*{Experiment~\ref{exp:twofixed}}%
 %
 Figure~\ref{fig:samarjit-fix2} shows the results of experiment~\ref{exp:twofixed}.
-Each plot corresponds to a particular strategy combination (e.g., kill and zero) and the x-axis shows the probability that is varied, $p_x \in \{0,0.01,\dots,0.99\}$ (while the other probabilities are set to $0$), while the y-axis shows the result of the analysis, $\rho\funof{\Psi}$.
+Each plot corresponds to a particular strategy combination (e.g., \tKZ{}) and the x-axis shows the probability that is varied, $p_x \in \{0,0.01,\dots,0.99\}$ (while the other probabilities are set to $0$), while the y-axis shows the result of the analysis, $\rho\funof{\Psi}$.
 A value of $\rho\funof{\Psi}$ that exceeds $1$ implies that the system with the given $p_x$ is not mean square stable.
 
 When the sensor channel's packet loss probability $p_s$ increases, so does the magnitude of the closed-loop system's eigenvalues, no matter the choice of strategy to handle the deadline miss and the actuation mode.
@@ -121,13 +121,13 @@ In the case of the sensor packet loss plot, $p_s \neq 0$ and $p_c = p_a = 0$.
 Hence, the controller will never miss a deadline and the actuator will always output a new control signal, implying that losing packets on the sensor channel are invariant to the choice of deadline overrun strategy and actuation mode.
 
 When $p_s = p_c=0$ and $p_a \neq 0$, the stability of the system depends on the choice of actuation mode, but is agnostic to the deadline overrun strategy.
-When the hold actuation mode is favoured, the actuator outcome is comparable to missing a sensor packet and continuing the controller execution, since the sensor packets always arrive ($p_s=0$) and the controller never overruns its deadline ($p_c=0$).
-Additionally, we deduce that the automotive cruise control system tolerates a higher probability of losing actuator commands before going unstable under the zero actuation mode than under hold.
+When the \tH{} actuation mode is favoured, the actuator outcome is comparable to missing a sensor packet and continuing the controller execution, since the sensor packets always arrive ($p_s=0$) and the controller never overruns its deadline ($p_c=0$).
+Additionally, we deduce that the automotive cruise control system tolerates a higher probability of losing actuator commands before going unstable under the \tZ{} actuation mode than under \tH{}.
 This likely follows from the system being inherently stable.
 
-For the kill overrun strategy, the eigenvalue of $\Psi$ with the largest magnitude is identical for computational overruns and lost actuator packets.
+For the \tK{} overrun strategy, the eigenvalue of $\Psi$ with the largest magnitude is identical for computational overruns and lost actuator packets.
 Since the controller is a static state-feedback law, as soon as a deadline is hit a new control signal is computed without any residual problems originating from a diverged control state (state-feedback controllers are stateless).
-However, when computational overruns occur and the scheduler has adopted the skip strategy, the computed control signal is based on old plant states, and thus negatively impacts the robustness of the control system.
+However, when computational overruns occur and the scheduler has adopted the \tS{} strategy, the computed control signal is based on old plant states, and thus negatively impacts the robustness of the control system.
 
 The shape of the curve representing the computational overruns, i.e., the case when $p_c \neq 0$, $p_s = p_a = 0$, is strongly dependent on the system dynamics.
 When the probability of overrunning a deadline goes to $1$, the system runs in \emph{open-loop}, i.e., without any feedback.
@@ -137,7 +137,7 @@ This is consistent with observations presented in~\cite{Vreman:2021} about how t
 We do however emphasise that despite the value of $\rho\funof{\Psi}$ decreasing, it is still above $1$, thus indicating that the system is \emph{not} mean square stable.
 
 \subsubsection*{Experiment~\ref{exp:onefixed}}%
-Figure~\ref{fig:samarjit-sh-sc} displays a 3d plot of $\rho\funof{\Psi}$ when both sensor packet losses and computational overruns may occur, but the actuator packets are always delivered correctly, i.e., $p_s \neq 0$, $p_c \neq 0$, and $p_a = 0$, for skip and hold.\footnote{Experiments with different configurations or strategies do not provide additional insights and are hence not reported due to space limitations.}
+Figure~\ref{fig:samarjit-sh-sc} displays a 3d plot of $\rho\funof{\Psi}$ when both sensor packet losses and computational overruns may occur, but the actuator packets are always delivered correctly, i.e., $p_s \neq 0$, $p_c \neq 0$, and $p_a = 0$, for \tSH{}.\footnote{Experiments with different configurations or strategies do not provide additional insights and are hence not reported due to space limitations.}
 %
 \begin{figure}[t]
     \centering
@@ -152,7 +152,7 @@ Figure~\ref{fig:samarjit-sh-sc} displays a 3d plot of $\rho\funof{\Psi}$ when bo
             \addplot3[surf] table [col sep=comma] {\figdir/data/cs1_exp2_sh_rsrc.csv};
         \end{axis}
     \end{tikzpicture}
-    \caption{Results of Experiment~\ref{exp:onefixed} on the cruise control plant~\cite{Ghosh:2018} for (continue) skip and hold as deadline handling strategy and actuation mode.}
+    \caption{Results of Experiment~\ref{exp:onefixed} on the cruise control plant~\cite{Ghosh:2018} for (continue) \tSH{} as deadline handling strategy and actuation mode.}
     \label{fig:samarjit-sh-sc}
 \end{figure}
 %
@@ -178,7 +178,7 @@ Table~\ref{tab:samarjit} shows the results of Experiment~\ref{exp:nonefixed}.
 
 Regardless of deadline overrun strategy and actuation mode, the Markov Jump Linear System is stable when $p_s=0.15$, $p_c=0.4$, and $p_a=0.05$.
 The results confirm that the cruise control system is robust to simultaneous occurrences of multiple fault types.
-It is interesting to note that the outcome configuration $(p_s,\, p_c,\, p_a) = (0,\, 0.4,\, 0)$ leads to $\rho\funof{\Psi} = 0.9108$ for the skip and hold strategy.
+It is interesting to note that the outcome configuration $(p_s,\, p_c,\, p_a) = (0,\, 0.4,\, 0)$ leads to $\rho\funof{\Psi} = 0.9108$ for the \tSH{} strategy.
 In other words, despite the faults on the IO channels appearing to be inconsequential for the system stability (for $p_s < 0.5$ and $p_a < 0.5$) in Figure~\ref{fig:samarjit-fix2}, they significantly affect the dynamics of the system.
 In fact, perturbing the probabilities on the IO channels from Experiment~\ref{exp:nonefixed} by 8\% to $(p_s,\, p_c,\, p_a) = (0.23, 0.4, 0.13)$, the system is unstable with a value of $\rho\funof{\Psi} = 1.0014$.
 
@@ -289,7 +289,7 @@ Note that the ball and beam plant is modelled as a triple integrator, i.e., ther
             legend style={align=center,font=\footnotesize},
             grid=major,
             grid style={black!20, dashed}]
-            \nextgroupplot[title={\tKZ{}}, ylabel={$\rho\funof{\Psi}$}, title style={yshift=-0.5em}]
+            \nextgroupplot[title={\tKZ{}}, ylabel={$\rho\funof{\Psi}$}, title style={yshift=-0.6em}]
             \addplot[red, thick, forget plot] {1};
             \addplot[ultra thick, blue, densely dotted] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs3_exp1_kz_rs.csv};
             \addlegendentry{$p_s$};
@@ -298,7 +298,7 @@ Note that the ball and beam plant is modelled as a triple integrator, i.e., ther
             \addplot[ultra thick, orange!70!black, densely dashed] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs3_exp1_kz_ra.csv};
             \addlegendentry{$p_a$};
 
-            \nextgroupplot[title={\tKH{}}, title style={yshift=-0.5em}]
+            \nextgroupplot[title={\tKH{}}, title style={yshift=-0.6em}]
             \addplot[red, thick, forget plot] {1};
             \addplot[ultra thick, blue, densely dotted] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs3_exp1_kh_rs.csv};
             \addlegendentry{$p_s$};
@@ -307,7 +307,7 @@ Note that the ball and beam plant is modelled as a triple integrator, i.e., ther
             \addplot[ultra thick, orange!70!black, densely dashed] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs3_exp1_kh_ra.csv};
             \addlegendentry{$p_a$};
 
-            \nextgroupplot[title={\tSZ{}}, ylabel={$\rho\funof{\Psi}$}, xlabel = {$p_x$}, title style={yshift=-0.5em}]
+            \nextgroupplot[title={\tSZ{}}, ylabel={$\rho\funof{\Psi}$}, xlabel = {$p_x$}, title style={yshift=-0.7em}]
             \addplot[red, thick, forget plot] {1};
             \addplot[ultra thick, blue, densely dotted] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs3_exp1_sz_rs.csv};
             \addlegendentry{$p_s$};
@@ -316,7 +316,7 @@ Note that the ball and beam plant is modelled as a triple integrator, i.e., ther
             \addplot[ultra thick, orange!70!black, densely dashed] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs3_exp1_sz_ra.csv};
             \addlegendentry{$p_a$};
 
-            \nextgroupplot[title={\tSH{}}, xlabel = {$p_x$}, title style={yshift=-0.5em}]
+            \nextgroupplot[title={\tSH{}}, xlabel = {$p_x$}, title style={yshift=-0.7em}]
             \addplot[red, thick, forget plot] {1};
             \addplot[ultra thick, blue, densely dotted] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs3_exp1_sh_rs.csv};
             \addlegendentry{$p_s$};
@@ -340,7 +340,7 @@ It is evident that the sensor, actuator, and controller all affect the Markov Ju
 The contrast between the behaviour of the ball and beam system and the prior setup come from the controller dynamics in $\ctrler_2$.
 While $\ctrler_1$ is stateless, the LQG controller $\ctrler_2$ does have an internal state, meaning that if the controller overruns a deadline or an IO channel packet is lost, it will also impact the system negatively for some time after the event.
 %The authors of~\cite{Vreman:2022} discuss this discrepancy in further detail. %%% TODO: re add if accepted
-Despite the introduced controller dynamics, the closed-loop ball and beam system appear to be robust to both IO channel packet losses (up to $p_s$ and $p_a$ around $0.85$) and computational overruns (up to $p_c$ around $0.35$ for the zero actuation mode and $0.5$ for hold actuation mode).
+Despite the introduced controller dynamics, the closed-loop ball and beam system appear to be robust to both IO channel packet losses (up to $p_s$ and $p_a$ around $0.85$) and computational overruns (up to $p_c$ around $0.35$ for the \tZ{} actuation mode and $0.5$ for \tH{} actuation mode).
 
 \subsubsection*{Experiment~\ref{exp:onefixed}}%
 %
@@ -357,11 +357,11 @@ Despite the introduced controller dynamics, the closed-loop ball and beam system
             \addplot3[surf] table [col sep=comma] {\figdir/data/cs3_exp2_kz_rsra.csv};
         \end{axis}
     \end{tikzpicture}
-    \caption{Results of Experiment~\ref{exp:onefixed} on the ball and beam~\cite{Vreman:2022} for (continue) kill and zero as deadline handling strategy and actuation mode.}
+    \caption{Results of Experiment~\ref{exp:onefixed} on the ball and beam~\cite{Vreman:2022} for (continue) \tKZ{} as deadline handling strategy and actuation mode.}
     \label{fig:nils-kz-sa}
 \end{figure}
 %
-The surface plot in Figure~\ref{fig:nils-kz-sa} shows $\rho\funof{\Psi}$ with varying $p_s$ and $p_a$, assuming that the controller always succeeds in meeting its computational deadline ($p_c=0$) and that the zero actuation mode is adopted.
+The surface plot in Figure~\ref{fig:nils-kz-sa} shows $\rho\funof{\Psi}$ with varying $p_s$ and $p_a$, assuming that the controller always succeeds in meeting its computational deadline ($p_c=0$) and that the \tZ{} actuation mode is adopted.
 It is easy to see that even for high values of both $p_s$ and $p_a$, the system remains mean square stable as long as the controller does not miss its deadlines.
 This is likely a result of the controller being designed with robustness as a design objective.
 
@@ -380,7 +380,7 @@ Table~\ref{tab:bnb} presents the results acquired from Experiment~\ref{exp:nonef
 \end{table}
 
 The results indicate that the choice of actuation mode is affecting $\rho\funof{\Psi}$ more than the choice of deadline overrun strategy.
-In fact, both implementations employing the zero actuation mode are unstable, while if the hold actuation mode is selected, the closed-loop system is mean square stable under the tested probabilities.
-When we increase the probability of the IO channels experiencing packet losses, the zero actuation mode quickly becomes unstable, while the hold actuation mode can tolerate up to $75$\% packet loss on \emph{both} the sensor and actuator channels simultaneously before becoming mean square unstable, i.e., before $\rho\funof{\Psi} \geq 1$.
+In fact, both implementations employing the \tZ{} actuation mode are unstable, while if the \tH{} actuation mode is selected, the closed-loop system is mean square stable under the tested probabilities.
+When we increase the probability of the IO channels experiencing packet losses, the \tZ{} actuation mode quickly becomes unstable, while the \tH{} actuation mode can tolerate up to $75$\% packet loss on \emph{both} the sensor and actuator channels simultaneously before becoming mean square unstable, i.e., before $\rho\funof{\Psi} \geq 1$.
 This likely follows from the model of the system being a triple integrator, where zeroing the output signal in case of a packet loss or computational overrun drives the system state away from the desired value.
 Instead, holding the previous control command keeps the integrator state close to its ideal value.  

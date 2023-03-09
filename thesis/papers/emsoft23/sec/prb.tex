@@ -134,14 +134,14 @@ Regardless of what caused the overrun, the scheduler needs to react.
 In the literature~\cite{Cervin:2005}, mainly three simple \emph{deadline overrun strategies} have been considered:
 %
 \begin{enumerate*}[label=(\roman*)]
-    \item \emph{killing} the job that overran its deadline (and releasing a new one), rolling back any (possibly partial) change performed by the job that missed its deadline, thus reverting the internal task state variables to their original value,
-    \item letting the job continue its execution, \emph{skipping} the subsequent job releases, until the current one has completed its execution, or
-    \item combining the two, and letting the job continue its execution but at the same time \emph{queueing} the subsequent job executions.
+    \item \tK{} -- i.e., \emph{killing} the job that overran its deadline (and releasing a new one), rolling back any (possibly partial) change performed by the job that missed its deadline, thus reverting the internal task state variables to their original value,
+    \item \tS{} -- i.e., letting the job continue its execution, \emph{skipping} the subsequent job releases, until the current one has completed its execution, or
+    \item \tQ{} -- i.e., combining the two, and letting the job continue its execution but at the same time \emph{queueing} the subsequent job executions.
 \end{enumerate*}
 %
-In the case of skip and queue, the job that continues executing operates on outdated data.
-On the contrary, kill allows the task to always work with fresh data, with the risk of throwing away near-completed computations.
-The queue strategy has been shown to create chain effects which can severely damage control systems~\cite{Cervin:2005, Maggio:2020}, hence in this paper we only consider kill and skip as viable strategies.
+In the case of \tS{} and \tQ{}, the job that continues executing operates on outdated data.
+On the contrary, \tK{} allows the task to always work with fresh data, with the risk of throwing away near-completed computations.
+The \tQ{} strategy has been shown to create chain effects which can severely damage control systems~\cite{Cervin:2005, Maggio:2020}, hence in this paper we only consider \tK{} and \tS{} as viable strategies.
 
 \subsubsection*{Sensor Channel Dropouts:}
 Control systems rely on communication interfaces between the sensors/actuator and the controller code itself (i.e., the sensor and actuator channels).
@@ -194,7 +194,7 @@ Packet losses on the actuator channel have not been studied as thoroughly as the
 The reason likely comes from the fact that the actuator response is typically hardware-dependant and difficult to detect and compensate in the control algorithm.
 If the actuator does not receive a new control command when it is expecting one, it defaults to a value dependent on the \emph{actuation mode}.
 The actuation mode has received more attention, with different degradation or stabilising actuation policies being proposed~\cite{Ma:2018}.
-However, the most common approaches involve either \emph{holding} the last received control command (i.e., $u_{k+1} = u_k$) or \emph{zeroing} the output (i.e., $u_{k+1}=0$).
+However, the most common approaches involve either \tH{}ing the last received control command (i.e., $u_{k+1} = u_k$) or \tZ{}ing the output (i.e., $u_{k+1}=0$).
 Similarly to picking continue or avoid in the case of a lost packet from the sensor, the choice of actuation mode is non-trivial and generally depend on the control system dynamic~\cite{Schenato:2009, Vreman:2021}.
 
 \subsection{Problem Formulation}%

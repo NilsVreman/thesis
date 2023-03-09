@@ -7,17 +7,17 @@
 \newcommand{\Kill}{\texttt{K}}
 \newcommand{\Skip}{\texttt{S}}
 
+%%% Notation
+\newcommand{\sensor}{\mathcal{I}}
+\newcommand{\actuator}{\mathcal{O}}
+
 %%% Alphabet related
-\newcommand{\osets}{\Sigma\funof{\mathcal{S}}}
-\newcommand{\oseta}{\Sigma\funof{\mathcal{A}}}
+\newcommand{\osets}{\Sigma\funof{\sensor}}
+\newcommand{\oseta}{\Sigma\funof{\actuator}}
 
 \newcommand{\osetc}[1]{\Sigma\,({\mathcal{C}^{#1}})}
 \newcommand{\osetck}{\osetc{\Kill}}
 \newcommand{\osetcs}{\osetc{\Skip}}
-
-%%% Notation
-\newcommand{\sensor}{\mathcal{S}}
-\newcommand{\actuator}{\mathcal{A}}
 
 %%% Code
 \definecolor{codegreen}{rgb}{0,0.6,0}
