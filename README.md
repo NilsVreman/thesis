@@ -22,68 +22,78 @@ root/
 │       ├── rtas22b.pdf
 │       └── emsoft23.pdf
 ├── README.md
-└── thesis/
-    ├── kappa/
-    │   ├── figs/
-    │   ├── kappa.bib
-    │   ├── kappa.tex
-    │   └── sec/
-    │       ├── background.tex
-    │       ├── contribution.tex
-    │       └── introduction.tex
+├── thesis/
+│   ├── kappa/
+│   │   ├── figs/
+│   │   ├── kappa.bib
+│   │   ├── kappa.tex
+│   │   └── sec/
+│   │       ├── background.tex
+│   │       ├── contribution.tex
+│   │       └── introduction.tex
+│   ├── Makefile
+│   ├── papers/
+│   │   ├── ecrts21/
+│   │   │   ├── ecrts21.bib
+│   │   │   ├── ecrts21.tex
+│   │   │   ├── figs/
+│   │   │   ├── og/
+│   │   │   ├── preamble/
+│   │   │   └── sec/
+│   │   ├── lcss22/
+│   │   │   ├── lcss22.bib
+│   │   │   ├── lcss22.tex
+│   │   │   ├── figs/
+│   │   │   ├── og/
+│   │   │   ├── preamble/
+│   │   │   └── sec/
+│   │   ├── rtas22a/
+│   │   │   ├── rtas22a.bib
+│   │   │   ├── rtas22a.tex
+│   │   │   ├── figs/
+│   │   │   ├── og/
+│   │   │   ├── preamble/
+│   │   │   └── sec/
+│   │   ├── rtas22b/
+│   │   │   ├── rtas22b.bib
+│   │   │   ├── rtas22b.tex
+│   │   │   ├── figs/
+│   │   │   ├── og/
+│   │   │   ├── preamble/
+│   │   │   └── sec/
+│   │   └── emsoft23/
+│   │       ├── emsoft23.bib
+│   │       ├── emsoft23.tex
+│   │       ├── figs/
+│   │       ├── og/
+│   │       ├── preamble/
+│   │       └── sec/
+│   ├── preface/
+│   │   ├── abstract.tex
+│   │   ├── acknoledgement.tex
+│   │   ├── cmds.tex
+│   │   ├── nomenclature.tex
+│   │   ├── pkgs.tex
+│   │   ├── preface.tex
+│   │   ├── thmfmt.tex
+│   │   ├── tikzfmt.tex
+│   │   └── titlepages.tex
+│   ├── style/
+│   │   ├── LTHthesis.cls
+│   │   ├── LUBWen.pdf
+│   │   ├── LUCsv.eps
+│   │   └── LUCsv.pdf
+│   └── thesis.tex
+└── popsci/
     ├── Makefile
-    ├── papers/
-    │   ├── ecrts21/
-    │   │   ├── ecrts21.bib
-    │   │   ├── ecrts21.tex
-    │   │   ├── figs/
-    │   │   ├── og/
-    │   │   ├── preamble/
-    │   │   └── sec/
-    │   ├── lcss22/
-    │   │   ├── lcss22.bib
-    │   │   ├── lcss22.tex
-    │   │   ├── figs/
-    │   │   ├── og/
-    │   │   ├── preamble/
-    │   │   └── sec/
-    │   ├── rtas22a/
-    │   │   ├── rtas22a.bib
-    │   │   ├── rtas22a.tex
-    │   │   ├── figs/
-    │   │   ├── og/
-    │   │   ├── preamble/
-    │   │   └── sec/
-    │   ├── rtas22b/
-    │   │   ├── rtas22b.bib
-    │   │   ├── rtas22b.tex
-    │   │   ├── figs/
-    │   │   ├── og/
-    │   │   ├── preamble/
-    │   │   └── sec/
-    │   └── emsoft23/
-    │       ├── emsoft23.bib
-    │       ├── emsoft23.tex
-    │       ├── figs/
-    │       ├── og/
-    │       ├── preamble/
-    │       └── sec/
-    ├── preface/
-    │   ├── abstract.tex
-    │   ├── acknoledgement.tex
+    ├── popsci.tex
+    ├── preamble/
     │   ├── cmds.tex
-    │   ├── nomenclature.tex
-    │   ├── pkgs.tex
-    │   ├── preface.tex
-    │   ├── thmfmt.tex
-    │   ├── tikzfmt.tex
-    │   └── titlepages.tex
-    ├── style/
-    │   ├── LTHthesis.cls
-    │   ├── LUBWen.pdf
-    │   ├── LUCsv.eps
-    │   └── LUCsv.pdf
-    └── thesis.tex
+    │   └── pkgs.tex
+    └── style/
+        ├── LTHthesis.cls
+        ├── LUCsv.eps
+        └── LUCsv.pdf
 ```
 
 ### File Description
@@ -116,6 +126,7 @@ root/
     - `paperX/sec/`: Section setup for paperX
 * `root/thesis/style/`: The style files to compile this thesis.
 * `root/thesis/thesis.tex`: The main thesis file to compile.
+* `root/popsci/`: The popular science article summarising the thesis.
 
 
 ## Useful Links
@@ -128,7 +139,8 @@ root/
 * ~~Insert all papers~~
 * ~~Unify notation~~
 * ~~Kappa: Write Chapter 1~~
-* Kappa: Write Chapter 2
+* ~~Kappa: Write Chapter 2~~
 * ~~Kappa: Write Chapter 3~~
-* Kappa: Write nomenclature
-* Unify sequences throughout thesis (langle and rangle)
+* ~~Kappa: Write nomenclature~~
+* ~~Unify sequences throughout thesis (langle and rangle)~~
+* Write popular science article
