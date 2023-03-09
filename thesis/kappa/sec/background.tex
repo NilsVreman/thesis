@@ -113,18 +113,18 @@ Processing the packets in the buffer is efficient, but it requires some non-negl
 Thus, under normal conditions the receiver will experience packet latency and jitter, but if the network traffic is heavy the buffer space can quickly be exhausted.
 In other words, if the packets arrive faster than what the router can process it becomes congested.
 
-Multiple policies have been developed to control the congestion, such as tail drop~\addref{}.
+Multiple policies have been developed to control the congestion, such as tail drop~\cite{Comer:2013}.
 Common among all the congestion control strategies is that they employ intentional \emph{packet dropping}, i.e., if a packet arrives while the buffer space is exhausted, the congestion controller will remove either the arriving packet or one in the buffer (depending on the strategy).
-In addition to the congestion controller dropping packets, there are intermittent packet drops due to, e.g., packets being misrouted~\addref{}, security threats~\addref{}, software bugs~\addref{}, or wireless communication~\addref{}.
+In addition to the congestion controller dropping packets, there are intermittent packet drops due to, e.g., packets being misrouted~\cite{Bradley:1998}, security threats~\cite{Hansman:2005}, software bugs~\cite{Mai:2011}, or wireless communication~\cite{Zhu:2021}.
 
 Regardless of the packet drops' origins, they can have dire consequences for real-time control systems.
 Losing packets on the network connecting the control hardware and the plant, is the same as losing sensor measurements or control commands.
-Generally, this will degrade the control performance~\addref{}, however, if enough packets are lost it could cause critical system failures or crashes~\addref{}.
+Generally, this will degrade the control performance~\cite{Nilsson:1998b}, however, if enough packets are lost it could cause critical system failures or crashes~\cite{Xiong:2007}.
 
 % RTOS, threads
 A real-time operating system is commonly employed to simplify the interface with the hardware while guaranteeing timeliness.
 The RTOS is responsible for orchestrating the tasks' execution and allocating resources (e.g., memory and CPU time) to said tasks.
-The terms ``task'', ``process'', and ``thread'' are frequently confused in many documents; to avoid this confusion we provide a definition in the context of real-time operating systems~\addref{}:
+The terms ``task'', ``process'', and ``thread'' are frequently confused in many documents; to avoid this confusion we provide a definition in the context of real-time operating systems:
 %
 \begin{itemize}
     \item \emph{Process} -- A process is a computer program with its own stack, control block\footnote{A task's control block (TCB) includes descriptive information about the task, for instance, the identifier used by the scheduler, its priority, and the task's state (running, ready, blocked, suspended, etc.).}, and instruction set.
@@ -155,7 +155,7 @@ For instance, two different scheduling strategies applied to one set of real-tim
 If the RTOS tasks are not schedulable there exists tasks overrunning their corresponding deadlines.
 
 In order for the scheduler to know when to stop the currently running task in favour of switching in another, the RTOS clock triggers an \emph{interrupt} at every clock tick.
-Interrupts can come from both hardware\footnote{Hardware interrupts come from events changing the state of the system, e.g., external signals triggering that they need attention from the RTOS, watchdog timers triggering an interrupt at set time intervals, or spurious interrupts (electrical anomalies)~\addref{}.} and software, but the RTOS ticks are triggered by the software clock in the RTOS.
+Interrupts can come from both hardware\footnote{Hardware interrupts come from events changing the state of the system, e.g., external signals triggering that they need attention from the RTOS, watchdog timers triggering an interrupt at set time intervals, or spurious interrupts (electrical anomalies)~\cite{Drepper:2003}.} and software, but the RTOS ticks are triggered by the software clock in the RTOS.
 Attached to the interrupt is generally an \emph{interrupt service routine} (ISR), i.e., a callback function to execute when the specific interrupt is triggered.
 For instance, in the context of the scheduler's tick interrupt, the ISR may be responsible for switching out the currently active task before switching in a new task and its relevant context.
 The ISR connected to the RTOS clock tick is also one of the major culprits behind \emph{release jitter} in RTOS, i.e., the time it takes to put the suspended task into the ready queue before picking a new candidate to execute varies between invocations.
@@ -337,7 +337,7 @@ However, as described in~\cite{Cervin:2004b}, three of the simplest and most com
         One of the main advantages with the \tK{} strategy comes from its binary outcome representation, i.e., either the job is completed or it is not.
         This fits well together with, for instance, the weakly-hard task models' language representation.
         On the other hand, one of the drawbacks with \tK{} are that many subsequent job deadlines can be overrun if the job iterations are not independent.
-        Additionally, if the task function depend on an internal state, the part of the computation that was completed may need to be rolled back to a previous state via, e.g., memory checkpointing~\addref{}.
+        Additionally, if the task function depend on an internal state, the part of the computation that was completed may need to be rolled back to a previous state via, e.g., memory checkpointing~\cite{Vogt:2015}.
         Since such an operation requires additional overhead, it further increases the risk of missing the subsequent job's deadline.
 \end{itemize}
 %
