@@ -93,7 +93,7 @@ These signals are transmitted via the hardware interfaces on the computational u
 Historically, these signals were transmitted via wire, but in the last couple of decades wireless communication has become more common~\cite{Park:2018}.
 
 A communication protocol\footnote{A communication protocol is a set of rules setup in order for two or more actors in a network to be able to transmit information to one another. The rules include (but are not limited to) semantics, i.e., how to format the information, and synchronisation, i.e., how much and how fast the information is transmitted.} is used for the plant to communicate with the hardware interfaces.
-The choice of protocol is domain dependent, e.g., the controller area network (CAN) is very common in the automotive industry~\addref{}.
+The choice of protocol is domain dependent, e.g., the controller area network (CAN) is very common in the automotive industry~\cite{Voss:2005}.
 There exists a plethora of domain specific communication protocols, but some established ones include CAN, Profibus, Modbus, and Ethernet/IP.
 
 \subsubsection{Hardware}% Hardware
@@ -194,7 +194,7 @@ It is therefore crucial to analyse all the appropriate models in order to get a 
 
 This thesis specifically targets systems subject to computational overruns, and (to a minor extent) communication losses.
 Of particular interest are the problems that occur in real-time control systems due to control tasks overrunning their corresponding deadlines.
-It is convenient to blame computational overruns on poor system design and programming errors; however, even a flawless system design can experience overruns due to, for instance, cache memory misses~\addref{} or alpha-induced faults~\addref{}.
+It is convenient to blame computational overruns on poor system design and programming errors; however, even a flawless system design can experience overruns due to, for instance, cache memory misses~\cite{Gracioli:2015} or radiation-induced faults~\cite{Tsog:2021}.
 More commonly, it is known that the real-time control system's nominal performance is degraded if a design that completely avoids overruns is used, i.e., if the deadline is postponed until after the WCRT of the controller.
 Thus, with the awareness that it can cause transient faults, the control system engineers tolerate a few overruns when the control task's execution time is near its worst case, in order to improve the system's nominal performance.
 
