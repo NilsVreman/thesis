@@ -55,57 +55,7 @@ In this paper, we analyse the automotive cruise control system controlled by a b
 
 \begin{figure}[t]
     \centering
-    \begin{tikzpicture}
-        \begin{groupplot}[group style={group size= 2 by 2},
-            height=0.375\textwidth,
-            width=0.45\textwidth,
-            ymax=1.25,
-            ymin=0.75,
-            xmax=1,
-            xmin=0,
-            legend pos=south east,
-            legend columns=1,
-            legend style={align=center,font=\footnotesize},
-            grid=major,
-            grid style={black!20, dashed}]
-            \nextgroupplot[title={\tKZ{}}, ylabel={$\rho\funof{\Psi}$}, title style={yshift=-0.6em}]
-            \addplot[red, thick, forget plot] {1};
-            \addplot[ultra thick, blue, densely dotted] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs1_exp1_kz_rs.csv};
-            \addlegendentry{$p_s$};
-            \addplot[ultra thick, green!70!black] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs1_exp1_kz_rc.csv};
-            \addlegendentry{$p_c$};
-            \addplot[ultra thick, orange!70!black, densely dashed] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs1_exp1_kz_ra.csv};
-            \addlegendentry{$p_a$};
-
-            \nextgroupplot[title={\tKH{}}, title style={yshift=-0.6em}]
-            \addplot[red, thick, forget plot] {1};
-            \addplot[ultra thick, blue, densely dotted] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs1_exp1_kh_rs.csv};
-            \addlegendentry{$p_s$};
-            \addplot[ultra thick, green!70!black] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs1_exp1_kh_rc.csv};
-            \addlegendentry{$p_c$};
-            \addplot[ultra thick, orange!70!black, densely dashed] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs1_exp1_kh_ra.csv};
-            \addlegendentry{$p_a$};
-
-            \nextgroupplot[title={\tSZ{}}, ylabel={$\rho\funof{\Psi}$}, xlabel = {$p_x$}, title style={yshift=-0.7em}]
-            \addplot[red, thick, forget plot] {1};
-            \addplot[ultra thick, blue, densely dotted] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs1_exp1_sz_rs.csv};
-            \addlegendentry{$p_s$};
-            \addplot[ultra thick, green!70!black] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs1_exp1_sz_rc.csv};
-            \addlegendentry{$p_c$};
-            \addplot[ultra thick, orange!70!black, densely dashed] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs1_exp1_sz_ra.csv};
-            \addlegendentry{$p_a$};
-
-            \nextgroupplot[title={\tSH{}}, xlabel = {$p_x$}, title style={yshift=-0.7em}]
-            \addplot[red, thick, forget plot] {1};
-            \addplot[ultra thick, blue, densely dotted] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs1_exp1_sh_rs.csv};
-            \addlegendentry{$p_s$};
-            \addplot[ultra thick, green!70!black] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs1_exp1_sh_rc.csv};
-            \addlegendentry{$p_c$};
-            \addplot[ultra thick, orange!70!black, densely dashed] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs1_exp1_sh_ra.csv};
-            \addlegendentry{$p_a$};
-
-        \end{groupplot}
-    \end{tikzpicture}
+    \input{\figdir/samarjit-fix2}%
     \caption{Results of Experiment~\ref{exp:twofixed} on the cruise control plant~\cite{Ghosh:2018} for different deadline handling strategies and actuation modes.}
     \label{fig:samarjit-fix2}
 \end{figure}
@@ -141,17 +91,7 @@ Figure~\ref{fig:samarjit-sh-sc} displays a 3d plot of $\rho\funof{\Psi}$ when bo
 %
 \begin{figure}[t]
     \centering
-    \begin{tikzpicture}
-        \begin{axis}[view={-30}{30}, mesh/ordering=y varies, mesh/cols=100, colorbar, height=5.2cm, width=7cm,
-            grid=major,
-            grid style={black!20, dashed},
-            xlabel={$p_s$},
-            ylabel={$p_c$},
-            zlabel={$\rho\funof{\Psi}$}]
-
-            \addplot3[surf] table [col sep=comma] {\figdir/data/cs1_exp2_sh_rsrc.csv};
-        \end{axis}
-    \end{tikzpicture}
+    \input{\figdir/samarjit-fix1}%
     \caption{Results of Experiment~\ref{exp:onefixed} on the cruise control plant~\cite{Ghosh:2018} for (continue) \tSH{} as deadline handling strategy and actuation mode.}
     \label{fig:samarjit-sh-sc}
 \end{figure}
@@ -276,57 +216,7 @@ Note that the ball and beam plant is modelled as a triple integrator, i.e., ther
 
 \begin{figure}[t]
     \centering
-    \begin{tikzpicture}
-        \begin{groupplot}[group style={group size= 2 by 2},
-            height=0.375\textwidth,
-            width=0.45\textwidth,
-            ymax=1.1,
-            ymin=0.95,
-            xmax=1,
-            xmin=0,
-            legend pos=north west,
-            legend columns=1,
-            legend style={align=center,font=\footnotesize},
-            grid=major,
-            grid style={black!20, dashed}]
-            \nextgroupplot[title={\tKZ{}}, ylabel={$\rho\funof{\Psi}$}, title style={yshift=-0.6em}]
-            \addplot[red, thick, forget plot] {1};
-            \addplot[ultra thick, blue, densely dotted] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs3_exp1_kz_rs.csv};
-            \addlegendentry{$p_s$};
-            \addplot[ultra thick, green!70!black] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs3_exp1_kz_rc.csv};
-            \addlegendentry{$p_c$};
-            \addplot[ultra thick, orange!70!black, densely dashed] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs3_exp1_kz_ra.csv};
-            \addlegendentry{$p_a$};
-
-            \nextgroupplot[title={\tKH{}}, title style={yshift=-0.6em}]
-            \addplot[red, thick, forget plot] {1};
-            \addplot[ultra thick, blue, densely dotted] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs3_exp1_kh_rs.csv};
-            \addlegendentry{$p_s$};
-            \addplot[ultra thick, green!70!black] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs3_exp1_kh_rc.csv};
-            \addlegendentry{$p_c$};
-            \addplot[ultra thick, orange!70!black, densely dashed] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs3_exp1_kh_ra.csv};
-            \addlegendentry{$p_a$};
-
-            \nextgroupplot[title={\tSZ{}}, ylabel={$\rho\funof{\Psi}$}, xlabel = {$p_x$}, title style={yshift=-0.7em}]
-            \addplot[red, thick, forget plot] {1};
-            \addplot[ultra thick, blue, densely dotted] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs3_exp1_sz_rs.csv};
-            \addlegendentry{$p_s$};
-            \addplot[ultra thick, green!70!black] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs3_exp1_sz_rc.csv};
-            \addlegendentry{$p_c$};
-            \addplot[ultra thick, orange!70!black, densely dashed] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs3_exp1_sz_ra.csv};
-            \addlegendentry{$p_a$};
-
-            \nextgroupplot[title={\tSH{}}, xlabel = {$p_x$}, title style={yshift=-0.7em}]
-            \addplot[red, thick, forget plot] {1};
-            \addplot[ultra thick, blue, densely dotted] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs3_exp1_sh_rs.csv};
-            \addlegendentry{$p_s$};
-            \addplot[ultra thick, green!70!black] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs3_exp1_sh_rc.csv};
-            \addlegendentry{$p_c$};
-            \addplot[ultra thick, orange!70!black, densely dashed] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs3_exp1_sh_ra.csv};
-            \addlegendentry{$p_a$};
-
-        \end{groupplot}
-    \end{tikzpicture}
+    \input{\figdir/bnb-fix2}%
     \caption{Results of Experiment~\ref{exp:twofixed} with the ball and beam~\cite{Vreman:2022} and different deadline handling and actuation mode strategies.}
     \label{fig:nils-fix2}
 \end{figure}
@@ -346,17 +236,7 @@ Despite the introduced controller dynamics, the closed-loop ball and beam system
 %
 \begin{figure}[t]
     \centering
-    \begin{tikzpicture}
-        \begin{axis}[view={-20}{20}, mesh/ordering=y varies, mesh/cols=100, colorbar, height=5.2cm, width=7cm,
-            grid=major,
-            grid style={black!20, dashed},
-            xlabel={$p_s$},
-            ylabel={$p_a$},
-            zlabel={$\rho\funof{\Psi}$}]
-
-            \addplot3[surf] table [col sep=comma] {\figdir/data/cs3_exp2_kz_rsra.csv};
-        \end{axis}
-    \end{tikzpicture}
+    \input{\figdir/bnb-fix1}%
     \caption{Results of Experiment~\ref{exp:onefixed} on the ball and beam~\cite{Vreman:2022} for (continue) \tKZ{} as deadline handling strategy and actuation mode.}
     \label{fig:nils-kz-sa}
 \end{figure}

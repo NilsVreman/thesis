@@ -1,0 +1,11 @@
+\begin{tikzpicture}
+    \begin{axis}[view={-20}{20}, mesh/ordering=y varies, mesh/cols=100, colorbar, height=5.2cm, width=7cm,
+        grid=major,
+        grid style={black!20, dashed},
+        xlabel={$p_s$},
+        ylabel={$p_a$},
+        zlabel={$\rho\funof{\Psi}$}]
+
+        \addplot3[surf] table [col sep=comma] {\figdir/data/cs3_exp2_kz_rsra.csv};
+    \end{axis}
+\end{tikzpicture}

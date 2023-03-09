@@ -1,0 +1,50 @@
+\begin{tikzpicture}
+    \begin{groupplot}[group style={group size= 2 by 2},
+        height=0.375\textwidth,
+        width=0.45\textwidth,
+        ymax=1.25,
+        ymin=0.75,
+        xmax=1,
+        xmin=0,
+        legend pos=south east,
+        legend columns=1,
+        legend style={align=center,font=\footnotesize},
+        grid=major,
+        grid style={black!20, dashed}]
+        \nextgroupplot[title={\tKZ{}}, ylabel={$\rho\funof{\Psi}$}, title style={yshift=-0.6em}]
+        \addplot[red, thick, forget plot] {1};
+        \addplot[ultra thick, blue, densely dotted] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs1_exp1_kz_rs.csv};
+        \addlegendentry{$p_s$};
+        \addplot[ultra thick, green!70!black] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs1_exp1_kz_rc.csv};
+        \addlegendentry{$p_c$};
+        \addplot[ultra thick, orange!70!black, densely dashed] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs1_exp1_kz_ra.csv};
+        \addlegendentry{$p_a$};
+
+        \nextgroupplot[title={\tKH{}}, title style={yshift=-0.6em}]
+        \addplot[red, thick, forget plot] {1};
+        \addplot[ultra thick, blue, densely dotted] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs1_exp1_kh_rs.csv};
+        \addlegendentry{$p_s$};
+        \addplot[ultra thick, green!70!black] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs1_exp1_kh_rc.csv};
+        \addlegendentry{$p_c$};
+        \addplot[ultra thick, orange!70!black, densely dashed] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs1_exp1_kh_ra.csv};
+        \addlegendentry{$p_a$};
+
+        \nextgroupplot[title={\tSZ{}}, ylabel={$\rho\funof{\Psi}$}, xlabel = {$p_x$}, title style={yshift=-0.7em}]
+        \addplot[red, thick, forget plot] {1};
+        \addplot[ultra thick, blue, densely dotted] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs1_exp1_sz_rs.csv};
+        \addlegendentry{$p_s$};
+        \addplot[ultra thick, green!70!black] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs1_exp1_sz_rc.csv};
+        \addlegendentry{$p_c$};
+        \addplot[ultra thick, orange!70!black, densely dashed] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs1_exp1_sz_ra.csv};
+        \addlegendentry{$p_a$};
+
+        \nextgroupplot[title={\tSH{}}, xlabel = {$p_x$}, title style={yshift=-0.7em}]
+        \addplot[red, thick, forget plot] {1};
+        \addplot[ultra thick, blue, densely dotted] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs1_exp1_sh_rs.csv};
+        \addlegendentry{$p_s$};
+        \addplot[ultra thick, green!70!black] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs1_exp1_sh_rc.csv};
+        \addlegendentry{$p_c$};
+        \addplot[ultra thick, orange!70!black, densely dashed] table[x index=0, y index=1, col sep=comma] {\figdir/data/cs1_exp1_sh_ra.csv};
+        \addlegendentry{$p_a$};
+    \end{groupplot}
+\end{tikzpicture}
