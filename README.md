@@ -1,5 +1,7 @@
 # Thesis
-the repository of my PhD thesis, using the LTH thesis template
+The repository for the PhD Thesis of Nils Vreman, titled:
+
+__Analysis of Emedded Real-Time Control Systems Subject to Computational Overruns__
 
 ## File Structure
 
