@@ -12,7 +12,7 @@ In this paper, we consider a controllable and fully observable \emph{discrete-ti
     \right.
 \end{equation}
 %
-Here $x_k\in\R^{n_x}$, $u_k\in\R^{n_u}$, and $y_k\in\R^{n_y}$ are the plant state, the control signal and the plant output, sampled at time $k\cdot \Ts$, $\Ts$ is the sampling period, and $k\in\N$.
+Here $x_k\in\R^{n_x}$, $u_k\in\R^{n_u}$, and $y_k\in\R^{n_y}$ are the plant state, the control signal and the plant output, sampled at time $k\cdot \Ts$, $\Ts$ is the sampling period, and $k\in\N_{\geq}$.
 The plant is controlled by a stabilising, LTI, one-step delay discrete-time controller
 %
 \begin{equation}
@@ -33,7 +33,7 @@ Without loss of generality, we consider $r_k = 0$.
 %
 The controller in~\eqref{eq:controller} is implemented as a real-time task $\tau$, and designed to be executed periodically with period $\Ts$ in a real-time embedded platform.
 Under nominal conditions the task releases an instance (called \emph{job}) in each period, that should be completed before the release of the next instance.
-We denote the sequence of activation instants for $\tau$ with $(a_i)_{i \in \N}$, such that, in nominal conditions, $a_{i+1} = a_i+\Ts$,  the sequence of completion instants $(f_i)_{i \in \N}$, and the sequence of job deadlines with $(d_i)_{i \in \N}$, such that $d_i = a_i + \Ts$ (also called \emph{implicit} deadline).
+We denote the sequence of activation instants for $\tau$ with $(a_i)_{i \in \N_{\geq}}$, such that, in nominal conditions, $a_{i+1} = a_i+\Ts$,  the sequence of completion instants $(f_i)_{i \in \N_{\geq}}$, and the sequence of job deadlines with $(d_i)_{i \in \N_{\geq}}$, such that $d_i = a_i + \Ts$ (also called \emph{implicit} deadline).
 This requirement can be either satisfied or not, leading respectively to deadline hits and misses.
 %
 \begin{definition}[Deadline hit and miss]%
@@ -56,7 +56,7 @@ This bound is generally denoted using the \emph{weakly-hard model}~\cite{Bernat:
         \item \label{item:cons} $\tau \vdash \rowmiss{}$: at most $x$ \emph{consecutive} deadlines are missed, in any window of $k$ consecutive jobs; and
         \item $\tau \vdash \rowhit{}$: at least $x$ \emph{consecutive} deadlines are hit, in any window of $k$ consecutive jobs,
     \end{enumerate}
-    with $x\in \N$, $k \in \N\setminus \left\{ 0 \right\}$, and $x\leq k$.
+    with $x\in \N_{\geq}$, $k \in \N_{>}$, and $x\leq k$.
 \end{definition}
 %
 A generic weakly-hard constraint is hereafter denoted with the symbol $\lambda$, while a set of $L$ constraints will be referred to as $\Lambda = \{ \lambda_1, \lambda_2, \dots, \lambda_L \}$.
@@ -118,7 +118,7 @@ A control task that may experience deadline misses requires a proper analysis to
 In~\cite{Maggio:2020}, the authors identify a set of subsequences of hit and missed deadlines, which can be arbitrarily combined to obtain all possible sequences in $\sset{}{\rowmiss{}}$.
 After assigning to each subsequence its corresponding dynamic matrix, the stability analysis of the resulting arbitrary switching system can then be obtained by leveraging the \emph{Joint Spectral Radius} (JSR)~\cite{Jungers2009}, which is briefly presented here.
 %
-Given $N\in\N\setminus \left\{ 0 \right\} $ and a set of matrices $\Aa = \{\clmat{}_1, \ldots, \clmat{}_N \} \subseteq \R^{n\times n}$, under the hypothesis of arbitrary switching over any sequence $w=\seq{c_1,c_2,\dots}$ of indices of matrices in $\Aa$, the JSR of $\Aa$ is defined by:
+Given $N\in\N_{>}$ and a set of matrices $\Aa = \{\clmat{}_1, \ldots, \clmat{}_N \} \subseteq \R^{n\times n}$, under the hypothesis of arbitrary switching over any sequence $w=\seq{c_1,c_2,\dots}$ of indices of matrices in $\Aa$, the JSR of $\Aa$ is defined by:
 \begin{equation}
     \label{jsr}
     \rho\left(\Aa\right)= \lim_{\ell\rightarrow\infty} \max_{w\in\{1,\ldots,N\}^\ell} \norm{\clmat{}_{c_\ell} \cdots \clmat{}_{c_2}\clmat{}_{c_1}}^{1/\ell} \,.
@@ -141,7 +141,7 @@ This will be also our approach, as detailed later.
 
 In~\cite{parrilo}, the authors propose upper bounds for the JSR based on positive polynomials $p(x)$ which be can decomposed as \emph{sum of squares} (SOS) of polynomials.
 %
-It consists of considering a hierarchy of relaxations indexed by $d\in\N\setminus \left\{ 0 \right\}$, which in turn yields a sequence of upper bounds for $\rho\left(\Aa\right)$:
+It consists of considering a hierarchy of relaxations indexed by $d\in\N_{>}$, which in turn yields a sequence of upper bounds for $\rho\left(\Aa\right)$:
 \begin{equation}
     \label{densesos}
     \begin{aligned}

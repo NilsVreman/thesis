@@ -76,7 +76,7 @@ Hence, it is possible to analyse plants and controllers that transition between 
 
 We now analyse the closed-loop system shown in Figure~\ref{fig:loop}.
 Combining the dynamical models from~\eqref{eq:background:plant} and~\eqref{eq:background:controller}, we obtain matrices that represent the closed-loop system.
-We denote the state vector of the closed-loop system with $\tilde{x}_k = \left[ x_k^\T,\, z_k^\T,\, u_k^\T \right]^\T$, where $^\T$ is the transpose operator.
+We denote the state vector of the closed-loop system with $\tilde{x}_k = \left[ x_k^\T,\, z_k^\T,\, u_k^\T \right]^\T$, where $\T$ is the transpose operator.
 In this way, we obtain a system that has the vectors $r_k$ and $w_k$ as input, and is described by
 %
 \begin{equation} 
@@ -154,7 +154,7 @@ In our work, we use a quadratic cost function
 \end{equation}
 %
 The cost function penalises deviations from the reference value as well as usage of the control signal.
-$\mathbb{E}$ denotes expected value, and the positive semidefinite weighting matrices $Q_e$ (size $n_y \times n_y$) and $Q_u$ (size $n_u \times n_u$) weigh the different terms against each other.
+$\E{}$ denotes expected value, and the positive semidefinite weighting matrices $Q_e$ (size $n_y \times n_y$) and $Q_u$ (size $n_u \times n_u$) weigh the different terms against each other.
 A small cost value means that the controller successfully makes the error approach zero, using a small control signal.
 
 If the stochastic properties of the external signals $r_k$ and $w_k$ are known, it is possible to calculate the value of the cost function analytically.

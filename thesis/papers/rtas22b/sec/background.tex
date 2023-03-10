@@ -1,5 +1,5 @@
 In this work, we analyse a single real-time task. 
-For the remainder of this paper, a real-time task $\tau$ is an entity composed of a sequence of jobs $(j_i)_{i \in \N^\geq}$, representing code that is executed repeatedly on a given hardware platform (not necessarily according to any temporal pattern or periodicity). 
+For the remainder of this paper, a real-time task $\tau$ is an entity composed of a sequence of jobs $(j_i)_{i \in \N_{\geq}}$, representing code that is executed repeatedly on a given hardware platform (not necessarily according to any temporal pattern or periodicity). 
 A task is characterised by its relative deadline $d$, representing the time after which each job should be completed.
 
 The index $i$ counts the job number. 
@@ -29,7 +29,7 @@ The weakly-hard task model~\cite{Bernat:2001, Bernat:1998} provides guarantees o
         \item \label{item:AnyMiss} $\tau \vdash \anymiss{}$ (\tAM{}): in any window of $k$ consecutive jobs, the maximum number of misses is $x$; and
         \item \label{item:RowMiss} $\tau \vdash \rowmiss{}$ (\tRM{}): in any window of $k$ consecutive jobs, the maximum number of consecutive misses is $x$;
     \end{enumerate}
-    for some values of $x\in \N^\geq$, $k \in \N^>$, where $x\leq k$. We use the $\vdash$ symbol to indicate that all the possible sequences of outcomes of $\tau$ satisfy the right hand side.
+    for some values of $x\in \N_{\geq}$, $k \in \N_{>}$, where $x\leq k$. We use the $\vdash$ symbol to indicate that all the possible sequences of outcomes of $\tau$ satisfy the right hand side.
 \end{definition}
 %
 The types of constraints in Definition~\ref{def:weakly-hard} have received different attention in the real-time systems literature. 
@@ -86,13 +86,13 @@ To provide dominance results, we first define the \emph{weakest} and \emph{harde
 \begin{definition}[Weakest Constraint $\lweak$]%
 \label{def:weakest}%
     The weakest constraint $\lweak$ is defined as the constraint satisfied by \emph{any} word.
-    Formally, $\sset{N}{\lweak} = \Sigma^N,\,\forall N \in \mathbb{N}^{>}$.
+    Formally, $\sset{N}{\lweak} = \Sigma^N,\,\forall N \in \N_{>}$.
 \end{definition}
 %
 \begin{definition}[Hardest Constraint $\lhard$]%
 \label{def:hardest}%
     The hardest constraint $\lhard$ is defined as the constraint satisfied \emph{solely} by the word containing all deadline hits.
-    Formally, $\sset{N}{\lhard} = \left\{ 1^N \right\},\,\forall N \in \mathbb{N}^{>}$.
+    Formally, $\sset{N}{\lhard} = \left\{ 1^N \right\},\,\forall N \in \N_{>}$.
 \end{definition}
 Using these definitions, we now review known constraint dominance relations.
 We refer the reader to~\cite{Bernat:1998} or any referenced paper for the corresponding proofs.
