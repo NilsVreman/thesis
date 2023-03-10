@@ -27,7 +27,7 @@ Next, we describe the underlying hardware and real-time architecture seen in Fig
 \begin{figure}[t]
     \centering
     \input{\figdir/operating-system-abstraction}%
-    \caption{A more detailed view on the digital element of the control system. CPU, memory, and hardware interfaces are represented, and the scheduler determines the current task(s) that are executing in the hardware platform.}%
+    \caption{A more detailed view of the digital elements of the control system introduced in Figure~\ref{fig:high-level-abstraction}. Processor, memory, and hardware interfaces are represented as well as the scheduler responsible for determining which task(s) that are currently executing on the hardware platform.}%
     \label{fig:operating-system-abstraction}%
 \end{figure}
 
@@ -237,7 +237,7 @@ We here compile the definitions of the weakly-hard models:
         \item \label{item:AnyMiss} $\tau \vdash \anymiss{}$ (\tAM{}): in any window of $k$ consecutive jobs, the maximum number of deadline misses is $x$; and
         \item \label{item:RowMiss} $\tau \vdash \rowmiss{}$ (\tRM{}): in any window of $k$ consecutive jobs, the maximum number of consecutive deadline misses is $x$;
     \end{enumerate}
-    for some values of $x\in \N^\geq$, $k \in \N^>$, where $x\leq k$.
+    for some values of $x\in \N_{\geq}$, $k \in \N_{>}$, where $x\leq k$.
 \end{definition}
 %
 Here, the $\vdash$ symbol is used to indicate that all possible sequences of deadline hits and misses of $\tau$ satisfy the right hand side.
@@ -255,7 +255,7 @@ In~\cite{Bernat:2001}, the authors show that the constraints are in fact compara
 With a slight abuse of notation we will let $w \vdash \lambda$ represent the case when a word $w$ (outcome sequence) satisfies the weakly-hard constraint $\lambda$.
 %
 \begin{definition}[Satisfaction Set]
-    The \emph{satisfaction set} $\sset{N}{\lambda}$ of an arbitrary weakly-hard constraint $\lambda$, is the set of all length $N \in \N^{>}$ words $w$ satisfying $\lambda$.
+    The \emph{satisfaction set} $\sset{N}{\lambda}$ of an arbitrary weakly-hard constraint $\lambda$, is the set of all length $N \in \N_{>}$ words $w$ satisfying $\lambda$.
     Formally:
     \begin{equation*}
         \sset{N}{\lambda} = \left\{ w \mid w \in \Sigma^N,\, w \vdash \lambda \right\}
@@ -387,7 +387,9 @@ The transitional probability depends on the specific probability distribution.
 \begin{figure}[t]
     \centering
     \input{\figdir/state-machine}
-    \caption{\fix{todo}}
+    \caption{Graph representation example of an automaton (left) and Markov chain (right).
+    Left: the automaton models the firm real-time constraint that at most one deadline overrun can exist in every window of two consecutive jobs.
+    Right: the Markov chain models the soft real-time constraint in which the outcome of each job is an iid process with overrun probability $p$.}
     \label{fig:kappa:state-machine}
 \end{figure}
 %
@@ -407,7 +409,7 @@ This is a deterministic transition (no probabilities involved) in the automaton,
 \begin{figure}[t]
     \centering
     \input{\figdir/control-structure-abstraction}
-    \caption{\fix{TODO}}
+    \caption{An example of the code snippet executed by the control task together with the mathematical representation of the control algorithm (left) and the mathematical model of the plant dynamics (right).}
     \label{fig:control-structure-abstraction}
 \end{figure}
 %
