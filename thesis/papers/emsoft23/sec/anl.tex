@@ -121,8 +121,10 @@ $\tilde x_k^{\Kill} = [ x_k^\T{}, z_k^\T{}, u_k^\T{}, \hat y_{k-1}^\T{} ]^\T{}.$
 %
 The introduced auxiliary state $\hat y_{k-1}$ records the old sensor value, that is used if \texttt{read\_sensor\_ch} times out (see Listing~\ref{lst:continue}).
 
-The set of closed-loop matrices describing the system behaviour for the different outcome configurations is 
+The set of closed-loop matrices describing the system behaviour for the different outcome configurations is
+{\small
 \input{\thisdir/sec/matrices/cont-kill}%
+}
 Each outcome ($s$, $c$, and $a$) has $2$ possible configurations in the \tK{} case.
 Hence, there are $2^3 = 8$ possible $sca$, where $s \in \osets$, $c \in \osetck$, and $a \in \oseta$.
 As anticipated, the symbol $\Delta_\actuator$ in Equation~\eqref{eq:cont-kill} is used to distinguish the actuator mode, and is either $\Delta_\actuator = I$ for the \tH{} mode or $\Delta_\actuator = 0$ for the \tZ{} mode.
@@ -142,7 +144,9 @@ In this case, the new control signal is sent to the actuator at the end of the c
 The closed-loop state vector for the continue and \tK{} case can be reused to describe the system evolution of the continue and \tS{} case, i.e., $\tilde x_k^{\Skip} = [ x_k^\T{}, z_k^\T{}, u_k^\T{}, \hat y_{k-1}^\T{} ]^\T{}$.
 Intuitively, there are $16$ possible outcome configurations since $\osetcs{}$ contains four outcomes rather than two, i.e., $2^2\cdot 4=16$.
 Using $\Delta_\actuator = I$ and $\Delta_\actuator = 0$ to indicate, respectively, the \tH{} and \tZ{} actuation mode, the closed-loop matrices are
+{\small
 \input{\thisdir/sec/matrices/cont-skip}%
+}
 
 When $c=\cR$ or $c=\cN$, the sensor packet's outcome is irrelevant for the system dynamics.
 This follows since the control task does not poll the sensor channel for packets if it is still executing the body of the control algorithm (unless its outcome is $\cM$, since it is the first period that experiences an overrun).
@@ -196,6 +200,7 @@ For compactness, we use the notation $1_x$ to denote $(1-p_x)$, e.g., $1_s = (1-
 \subsubsection*{\tK{}:}
 For the \tK{} case, in principle there are $8$ states in the Markov chain (stemming from the $8$ possible matrices), but the equivalence between two pairs of matrices reduces the discrete states in which the system can be found to $6$, corresponding to the closed-loop matrices $\clmat^{\Kill}_{\cT\cH\cT}$, $\clmat^{\Kill}_{\cF\cH\cT}$, $\clmat^{\Kill}_{\cT\cH\cF}$, $\clmat^{\Kill}_{\cF\cH\cF}$, $\clmat^{\Kill}_{\cF\cM\cX}$ and $\clmat^{\Kill}_{\cT\cM\cX}$, where $\cX$ indicates that the outcome is irrelevant for this specific case.
 The Markov chain for the \tK{} strategy is encoded in the transition probability matrix
+{\small
 \begin{equation}
 \label{eq:pikill}
 \Pi^{\Kill} = \begin{bmatrix}
@@ -207,6 +212,7 @@ The Markov chain for the \tK{} strategy is encoded in the transition probability
         1_s1_c1_a & p_s1_c1_a & 1_s1_cp_a & p_s1_cp_a & p_sp_c & 1_sp_c \\
 \end{bmatrix}.
 \end{equation}
+}
 
 In $\Pi^{\Kill}$, the rows correspond to the following dynamical system matrices: $\clmat^{\Kill}_{\cT\cH\cT}$, $\clmat^{\Kill}_{\cF\cH\cT}$, $\clmat^{\Kill}_{\cT\cH\cF}$, $\clmat^{\Kill}_{\cF\cH\cF}$, $\clmat^{\Kill}_{\cF\cM\cX}$, $\clmat^{\Kill}_{\cT\cM\cX}$.
 The transition matrix is fully connected, as from each state it is possible to reach any other state.
@@ -217,6 +223,7 @@ In the \tS{} case, the transition matrix is not fully connected.
 In fact, each sequence of outcomes should satisfy Constraint~\ref{rule:1}, enforcing that $\cH$ can only occur after either another $\cH$ or $\cR$.
 Also, $\cN$ must directly follow $\cM$, and a $\cR$ can only follow a $\cM$ or $\cN$.
 Hence, the transition matrix $\Pi^{\Skip}$ of the Markov chain for the continue and \tS{} case is
+{\small
 \begin{equation}
 \label{eq:piskip}
 \Pi^{\Skip} = \begin{bmatrix}
@@ -231,6 +238,7 @@ Hence, the transition matrix $\Pi^{\Skip}$ of the Markov chain for the continue 
             1_s1_c1_a & p_s1_c1_a & 1_s1_cp_a & p_s1_cp_a & p_sp_c & 1_sp_c & 0 & 0 & 0 \\
 \end{bmatrix}.
 \end{equation}
+}
 In $\Pi^{\Skip}$, the rows correspond to the following dynamical system matrices: $\clmat^{\Skip}_{\cT\cH\cT}$, $\clmat^{\Skip}_{\cF\cH\cT}$, $\clmat^{\Skip}_{\cT\cH\cF}$, $\clmat^{\Skip}_{\cF\cH\cF}$, $\clmat^{\Skip}_{\cF\cM\cX}$, $\clmat^{\Skip}_{\cT\cM\cX}$, $\clmat^{\Skip}_{\cX\cN\cX}$, $\clmat^{\Skip}_{\cX\cR\cT}$, $\clmat^{\Skip}_{\cX\cR\cF}$.
 As can be seen for example in the fifth row, a miss can only be followed by either another miss or a recovery hit, i.e., a period in which no new job is released, but a previously released job is completed.
  

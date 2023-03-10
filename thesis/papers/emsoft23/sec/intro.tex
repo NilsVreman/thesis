@@ -33,7 +33,7 @@ In solving this problem, we aim at bringing the control analysis one step closer
 
 To analyse the simultaneous presence of faults in computational units and communication channels, this paper casts the problem into the formalism of Markov Jump Linear Systems~\cite{Costa:2005} and provides a stochastic analysis of the controller behaviour.
 Specifically, we provide the following contributions:
-\begin{itemize}
+\begin{itemize}[itemsep=0mm]
     \item We compile a model of what happens to the control system when the different faults are experienced. This model includes both the discrete state (which encodes whether data transmissions and control computation have been successful) and the dynamical state of the physical part of the system (which describes the quantities that are affected by the controller execution both in the controller itself and in the physical world).
     \item We leverage the literature on stochastic control to provide a probabilistic analysis of control systems subject to simultaneous communication and computation faults. The analysis aims to provide a certificate of \emph{mean square stability}, i.e., the simultaneous convergence of the average value of the state vector to a precise point, and of its covariance (and hence standard deviation) to zero.
     \item We apply the analysis to two different case studies taken from the literature, showing how resilient their controllers are to faults that may occur during the lifetime and execution of the controller.
