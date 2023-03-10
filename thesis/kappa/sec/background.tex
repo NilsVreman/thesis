@@ -622,13 +622,13 @@ Using the introduced notation, the following definition provides a formal defini
 %
 \begin{definition}[Joint Spectral Radius]%
     \label{def:jsr}%
-    Given a bounded set of matrices $\Aa$, the \emph{joint spectral radius} (JSR) of $\Aa$ is defined as:
+    Given a bounded \mm{What does ``bounded'' mean here?} set of matrices $\Aa$, the \emph{joint spectral radius} (JSR) of $\Aa$ is defined as:
     \begin{equation*}
         \rho\funof{\Aa} = \underset{k\rightarrow\infty}{\lim{}\sup{}} \left\{ \norm{\clmat}^{\sfrac{1}{k}} \,\mid\, \clmat \in \Aa^k \right\}
     \end{equation*}
 \end{definition}
 
-Intuitively, since an LTI system is Schur stable if the spectral radius is less than one, it is easy to argue that a switching system is stable if the joint spectral radius is less than.
+Intuitively, since an LTI system is Schur stable if the spectral radius is less than one, it is easy to argue that a switching system is stable if the joint spectral radius is less than. \mm{Is it really so intuitive and easy to argue?}
 Since $\rho\funof{\Aa} < 1$ implies that the worst-case sequence of matrices $\clmat_{WC} \in \Aa^k$ has a bounded growth rate $\norm{\clmat_{WC}} < 1$, it must mean that the switching system $\tilde{x}_k = \clmat_{WC}\cdot \tilde{x}_0$ is bounded by the triangle inequality, i.e., $\abs{\tilde{x}_k} \leq \norm{\clmat_{WC}}\abs{\tilde{x}_0} \rightarrow 0$.
 Stability of a switched dynamical system via the joint spectral radius is outlined in the following theorem (for more details and a formal proof we refer the interested reader to~\cite{Jungers:2009}).
 %
@@ -637,7 +637,7 @@ Stability of a switched dynamical system via the joint spectral radius is outlin
     For any bounded set of matrices $\Aa$, the corresponding switched dynamical system is stable if and only if $\rho\funof{\Aa} < 1$.
 \end{theorem}
 %
-Furthermore, Theorem~\ref{thm:switching-stability} raises an interesting question about the converse case: which is the switching sequence $\clmat \in \Aa^k$ resulting in $\rho\funof{\Aa} \geq 1$?
+Furthermore, Theorem~\ref{thm:switching-stability} raises an interesting question about the converse case: which is the switching sequence $\clmat \in \Aa^k$ \mm{I think I am a bit confused by $\clmat \in \Aa^k$ -- I guess what confuses me is the use of $\clmat$ when you also have $\clmat_1$ in the previous equation, and you also wrote $\clmat_{WC}$ above. Here $\clmat$ is one of the matrices that belong to $\Aa^k$ but then I would somehow expect it to have a subscript, and the subscript cannot be $i$ or anything like it (I get it) because then it would be the $i$-th of the $k$ matrices. Maybe you could reuse the WC subscript? Although it is a slight abuse in notation because it is not necessarily the only one that exposes instability. Maybe you could use $\bar{\clmat}$?} resulting in $\rho\funof{\Aa} \geq 1$?
 To the best of this thesis' author's knowledge, there are currently no results outlining \emph{which} sequence that destabilises the switched dynamical system.
 
 The JSR is a powerful tool since it makes it possible to determine whether a switching system is asymptotically stable ($\rho\funof{\Aa} < 1$) or not ($\rho\funof{\Aa} \geq 1$).
@@ -674,6 +674,8 @@ Additionally, the authors show how the upper bound on the JSR achieved by the SO
 Trivially, since $\rho^{LB}\funof{\Aa} \leq \rho\funof{\Aa} \leq \rho^{UB}\funof{\Aa}$, if an approximation method provides an upper bound $\rho^{UB}\funof{\Aa}$ that is below one for the switched dynamical system, it is confirmed to be stable; conversely, if the lower bound $\rho^{LB}\funof{\Aa}$ is above one, the system is guaranteed unstable.
 The active research in this field continues to enhance the bounds as well as algorithmic complexities, thus constantly improving the applicability of the JSR notion.
 
+\mm{I have the feeling that you need a header here to separate deterministic from probabilistic. Which also means that you needed a header before for deterministic and you need a sentence introducing the fact that most of the thesis is set in the deterministic framework, but you have also investigated the probabilistic one.}
+
 % MSS, MS
 If the overrun process in Equation~\eqref{eq:tv-clsys} is governed by a Markov model, it is possible to utilise well-known results for Markov jump linear systems (MJLS)~\cite{Lincoln:2002, Feng:1992, Nilsson:1998}.
 While the switching system stability analysis (e.g., JSR) provides a deterministic stability certificate, i.e., the switching system stability analysis provides guarantees that the dynamical system will be stable under \emph{all} configurations of the different modes, the MJLS stability analysis provides a stochastic certificate.
@@ -684,7 +686,7 @@ Arguably the most well-known stability analysis methods are \emph{stochastic sta
 Paraphrased from~\cite{Costa:2005}, we say that the dynamical system in~\eqref{eq:tv-clsys}, governed by a Markov process $\theta_k$, is mean-square stable if:
 %
 \begin{equation*}%
-    \lim_{k\rightarrow \infty} \E{\norm{\tilde{x}_k}^2} = \varepsilon < \infty
+    \lim_{k\rightarrow \infty} \E{\norm{\tilde{x}_k}^2} = \varepsilon < \infty.
 \end{equation*}
 %
 In practice, testing for mean-square stability implies verifying that the spectral radius of the operator $\Psi$, i.e., the operator defining the Markov jump linear system's covariance, is less than one.
@@ -697,13 +699,13 @@ The following theorem then holds~\cite{Costa:2005}:
     The dynamical system in Equation~\eqref{eq:tv-clsys}, governed by an $N$-state Markov chain with transition probability matrix $\Pi \in \R^{N \times N}$, is MSS if:
     %
     \begin{equation*}%
-        \rho\funof{\Psi} < 1
+        \rho\funof{\Psi} < 1,
     \end{equation*}
     %
     where:
     %
     \begin{equation*}%
-        \Psi = \left( \Pi^\T{} \otimes I_{n^2} \right) \cdot \blkdiag{ \left\{ \clmat_i \otimes \clmat_i \, \mid \, i \in 1, 2, \ldots, N \right\} }
+        \Psi = \left( \Pi^\T{} \otimes I_{n^2} \right) \cdot \blkdiag{ \left\{ \clmat_i \otimes \clmat_i \, \mid \, i \in 1, 2, \ldots, N \right\} }.
     \end{equation*}
 \end{theorem}
 %
@@ -750,18 +752,18 @@ The system is therefore first evaluated in extensive simulations and tests~\cite
 
 % Describe our performance analysis
 Innumerable different methods for analysing control system performance have been developed.
-This thesis facilitates a performance analysis of real-time control systems subject to computational overruns, where the performance is evaluated on the closed-loop system using a stochastic quadratic cost function $J_k$:
+This thesis facilitates a performance analysis of real-time control systems subject to computational overruns, where the performance is evaluated on the closed-loop system using a stochastic quadratic cost function $J_k$,
 %
 \begin{equation}%
     \label{eq:cost}%
-    J_k = \E{\tilde{x}_k^\T{}\, Q\, \tilde{x}_k}
+    J_k = \E{\tilde{x}_k^\T{}\, Q\, \tilde{x}_k}.
 \end{equation}
 %
 Here $J_k$ is the closed-loop state's cost increment in the $k$-th period and $Q$ is a positive semidefinite weight matrix penalising large closed-loop state deviations.
 The model is based on well-known theory for linear stochastic systems~\cite{Astrom:1970, Astrom:1997, Cervin:2019}.
 
 We assume that the desired reference point for the closed-loop state $\tilde{x}_k$ is zero and that the disturbance $w_k$ is an independent, discrete-time, zero mean, Gaussian white noise process with covariance $\E{w_k\,w_k^\T{}} = R_1$.
-The assumptions may seem overly restrictive, but we emphasise that more elaborate and advanced disturbance processes (and reference trajectories) can be realised by augmenting the closed-loop system with additional states describing the exogenous dynamics\footnote{In both \note{Paper I and II} we augment the system state to model respectively brown noise (integrated white noise) and reference trajectories.}.
+The assumptions may seem overly restrictive, but we emphasise that more elaborate and advanced disturbance processes (and reference trajectories) can be realised by augmenting the closed-loop system with additional states describing the exogenous dynamics.\footnote{In both \note{Paper I and II} we augment the system state to model respectively brown noise (integrated white noise) and reference trajectories.}
 With these assumptions, together with the initial condition on the closed-loop state's mean value and covariance being respectively $\E{\tilde{x}_0} = m_0$ and $\E{\tilde{x}_0\,\tilde{x}_0^\T{}} = R_0$, it is now possible to describe how to evaluate Equation~\eqref{eq:cost}.
 
 The expression in Equation~\eqref{eq:cost} is difficult to compute in practice.
@@ -790,7 +792,7 @@ From~\eqref{eq:cl-def} it then follows that~\eqref{eq:cost} can equivalently be 
         &= \E{\trace{Q\, \tilde{x}_k\, \tilde{x}_k^\T{}}} \\
         &= \trace{Q\, \E{\tilde{x}_k\,\tilde{x}_k^\T{}}} \\
         &= \trace{Q\, \left( P_k + m_k\,m_k^\T{} \right)} \\
-        &= \trace{Q\, P_k} + m_k^\T{}\, Q\, m_k
+        &= \trace{Q\, P_k} + m_k^\T{}\, Q\, m_k.
     \end{aligned}
 \end{equation}
 %
@@ -811,15 +813,15 @@ Recalling that $\tilde{x}_k$ and $w_k$ are independent, evolving the covariance 
         &= \clmat\,\E{ \tilde{x}_k\,\tilde{x}_k^\T{} }\,\clmat^\T{} + \clinp_w\,\E{ w_k\,w_k^\T{} }\,\clinp_w^\T{} - \clmat\, m_{k}\,m_{k}^\T{}\,\clmat^\T{} \\
         &= \clmat\,\left( \cov{\tilde{x}_k} + m_k\,m_k^\T{} \right)\,\clmat^\T{} + \clinp_w\,\E{ w_k\,w_k^\T{} }\,\clinp_w^\T{} - \clmat\, m_k\,m_{k}^\T{}\,\clmat^\T{} \\
         &= \clmat\,\cov{\tilde{x}_k}\,\clmat^\T{} + \clinp_w\,\E{ w_k\,w_k^\T{} }\,\clinp_w^\T{} \\
-        &= \clmat\,P_k\,\clmat^\T{} + \clinp_w\,R_1\,\clinp_w^\T{}
+        &= \clmat\,P_k\,\clmat^\T{} + \clinp_w\,R_1\,\clinp_w^\T{}.
     \end{aligned}
 \end{equation}
 %
 Trivially, Equations~\eqref{eq:tr-cost} and~\eqref{eq:cov} establish the foundation for the performance analysis on a nominally executing dynamical system, such as the one in~\eqref{eq:clsys}.
-When the control task starts experiencing deadline overruns, the switching dynamics alters the performance analysis accordingly, i.e., swapping $\clmat$ for $\clmat_{\theta_k}$ in Equation~\eqref{eq:cov}\footnote{In \note{Papers I and II} we make additional alterations to the performance analysis to properly facilitate it under the specific system conditions.}.
+When the control task starts experiencing deadline overruns, the switching dynamics alters the performance analysis accordingly, i.e., swapping $\clmat$ for $\clmat_{\theta_k}$ in Equation~\eqref{eq:cov}.\footnote{In \note{Papers I and II} we make additional alterations to the performance analysis to properly facilitate it under the specific system conditions.}
 
 % Mention some tools to analyse performance
-The research community have developed multiple different tools to simplify the performance analysis of real-time embedded (or networked) control systems~\cite{Ohlin:2006}.
+The research community developed multiple different tools to simplify the performance analysis of real-time embedded (or networked) control systems~\cite{Ohlin:2006}.
 For instance, \code{JitterBug}~\cite{Lincoln:2002} is a tool to evaluate precisely the quadratic cost function considered in this thesis~\eqref{eq:tr-cost} for mixed continuous-/discrete-time system components.
 The \code{JitterBug} toolbox models the execution time of different components as stochastic variables (in a Markov process) with known probabilistic properties.
 This allows the entire system to be modeled as a MJLS where the stationary performance can be computed by solving a set of linear equations.
@@ -830,4 +832,6 @@ The user-driven timing models make it possible to analyse the quadratic cost fun
 Additionally, different complex scheduling policies and deadline overrun handling strategies, e.g., the \tK{}, \tS{}, or \tQ{} strategies, can freely be implemented.
 One of the main disadvantages with \code{JitterTime} compared to \code{JitterBug} is that infinite horizon or stochastic timing scenarios might require a Monte Carlo or scenario theory based approach to provide accurate performance results.
 
+\mm{I think the \code{JitterBug} and \code{JitterTime} part comes a bit out of the blue, and provides a level of details that I am not sure is consistent with the rest. It is also not clear if this is your work or simply something that the community did and you are using in your papers. Also not clear if you are using it in your papers or not at this point.}
 
+\mm{You should have a description of \tZ{} and \tH{} near the \tK{}, \tS{} and \tQ{}.}

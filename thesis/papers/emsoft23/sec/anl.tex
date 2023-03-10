@@ -63,7 +63,7 @@ The occurrence of $\cR$ and $\cN$ impose constraints on the outcome ordering.
 We note that if we use the \tS{} overrun strategy, there is a natural valid order between the job outcomes.
 The following constraint enforces that a sequence of job outcomes is valid, i.e., it can be produced by a control task.
 %
-\begin{rule_}%
+\begin{constraint}%
     \label{rule:1}%
     For a sequence of job outcomes under the \tS{} overrun strategy, it holds that: 
     \begin{itemize}
@@ -71,7 +71,7 @@ The following constraint enforces that a sequence of job outcomes is valid, i.e.
         \item an $\cN$ can only follow an $\cM$, and
         \item an $\cR$ may only directly follow an $\cN$ or $\cM$.
     \end{itemize}
-\end{rule_}
+\end{constraint}
 
 \subsection{Closed-Loop System Dynamics}%
 \label{sec:dynamics}%
