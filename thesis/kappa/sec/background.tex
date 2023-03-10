@@ -196,10 +196,10 @@ Respectively, if the job completes before its deadline, it \emph{meets} its dead
 %
 \begin{definition}[Deadline Overrun]%
     \label{def:kappa:overrun}%
-    The $k$-th job ($j_k$) of a task $\tau_i$ is said to experience a deadline overrun if
-    \begin{equation}
-        f_k > a_k + d_i.
-    \end{equation}
+    The $k$-th job ($j_k$) of a task $\tau_i$ is said to experience a deadline overrun if:
+    \begin{equation*}
+        f_k > a_k + d_i
+    \end{equation*}
 \end{definition}
 %
 Computational overruns are present in generally all real-time domains from avionics and defence to consumer electronics~\cite{Akesson:2020}, thus highlighting the importance of analysing their impact on the systems' functional correctness.
@@ -257,9 +257,9 @@ With a slight abuse of notation we will let $w \vdash \lambda$ represent the cas
 \begin{definition}[Satisfaction Set]
     The \emph{satisfaction set} $\sset{N}{\lambda}$ of an arbitrary weakly-hard constraint $\lambda$, is the set of all length $N \in \N^{>}$ words $w$ satisfying $\lambda$.
     Formally:
-    \begin{equation}
-        \sset{N}{\lambda} = \left\{ w \mid w \in \Sigma^N,\, w \vdash \lambda \right\}.
-    \end{equation}
+    \begin{equation*}
+        \sset{N}{\lambda} = \left\{ w \mid w \in \Sigma^N,\, w \vdash \lambda \right\}
+    \end{equation*}
 \end{definition}
 %
 To simplify notation, the set of infinite length words satisfying a constraint will be denoted as $\sset{\infty}{\lambda} \equiv \sset{}{\lambda}$.
@@ -275,31 +275,29 @@ We formalise the partial ordering in the following definition:
     \label{def:kappa:dominance}%
     Given two arbitrary weakly-hard constraints $\lambda_1$ and $\lambda_2$, we say that $\lambda_1$ \emph{dominates} $\lambda_2$ (denoted $\lambda_1 \preceq \lambda_2$) if and only if all words satisfying $\lambda_1$ also satisfy $\lambda_2$.
     Formally:
-    \begin{equation}
+    \begin{equation*}
         \lambda_1 \preceq \lambda_2 \Leftrightarrow \sset{}{\lambda_1} \subseteq \sset{}{\lambda_2}
-    \end{equation}
+    \end{equation*}
 \end{definition}
 %
 Definition~\ref{def:kappa:dominance} confirms that $\lambda_1 = \binom{1}{1}$ dominates $\lambda_2 = \binom{0}{1}$, because $\sset{}{\lambda_1} \subseteq \sset{}{\lambda_2}$.
 Many constraint dominance relations have been derived in literature\footnote{In \note{Paper III} we extend the known orderings with two theorems relating the \tAH{} and \tRH{} constraints, thus making it possible to relate \emph{all} the different weakly-hard constraints.}~\cite{Bernat:2001}.
-Additionally, the partial ordering motivates the notion of \emph{constraint equivalence}.
-Formally
+Additionally, the partial ordering motivates the notion of \emph{constraint equivalence}:
 %
-\begin{equation}
-    \lambda_1 \preceq \lambda_2 \land \lambda_2 \preceq \lambda_1 \Leftrightarrow \lambda_1 \equiv \lambda_2,
-\end{equation}
+\begin{equation*}
+    \lambda_1 \preceq \lambda_2 \land \lambda_2 \preceq \lambda_1 \Leftrightarrow \lambda_1 \equiv \lambda_2
+\end{equation*}
 %
 where $\land$ is the logical conjunction operator.
 The constraint equivalence is also expressible through the satisfaction sets, i.e., $\lambda_1 \equiv \lambda_2 \Leftrightarrow \sset{}{\lambda_1} = \sset{}{\lambda_2}$.
 
 Despite not having gained a lot of traction in the research community, a real-time task can be subjected to \emph{multiple} weakly-hard constraints.
 However, the nature of the weakly-hard constraints still require that every constraint is satisfied for a particular sequence.
-Since one of the main mathematical advantages of the weakly-hard constraints is that they are fully representable by the closed set that is their respective satisfaction sets; if a task $\tau$ satisfies a set of $N$ constraints $\Lambda = \left\{ \lambda_1, \lambda_2, \ldots, \lambda_N \right\}$, the joint satisfaction set has to be the intersection of all the individual satisfaction sets.
-Formally
+Since one of the main mathematical advantages of the weakly-hard constraints is that they are fully representable by the closed set that is their respective satisfaction sets; if a task $\tau$ satisfies a set of $N$ constraints $\Lambda = \left\{ \lambda_1, \lambda_2, \ldots, \lambda_N \right\}$, the joint satisfaction set has to be the intersection of all the individual satisfaction sets:
 %
-\begin{equation}
-    \sset{}{\Lambda} = \bigcap_{i=0}^N \, \sset{}{\lambda_i}.
-\end{equation}
+\begin{equation*}
+    \sset{}{\Lambda} = \bigcap_{i=0}^N \, \sset{}{\lambda_i}
+\end{equation*}
 
 % Scheduler deadline handling
 % NOTE: This should be put after the discussion of the weakly-hard and soft models
@@ -359,7 +357,6 @@ For a task's jobs, the computational overrun process have been modelled using fi
 In~\cite{Horssen:2016} the authors model the \tAM{} weakly-hard constraint using an automaton where the transition events between states are represented by the job outcomes.
 A \emph{Markov chain} (MC) model was used in~\cite{Ling:2003} to model the dropout rate of sensor packets in a soft networked control system.
 \cite{Kwak:2001} utilise a Markov chain to select optimal time points for memory checkpointing in real-time systems where tasks may experience transient faults.
-\note{Mention UPPAAL!~}
 We will henceforth sloppily refer to finite state machines as \emph{automata}\footnote{To keep notation consistent with \note{Papers III and IV}.}.
 
 % Introduce notation for the FSM
@@ -378,10 +375,10 @@ The MC is represented by a set of states $v_i \in \VV{}$ where the transitions b
 Unlike the automata model, the transition here defines a transitional probability $p_{i, j}$ between two states $v_i$ and $v_j$, i.e., a transition from state $v_i$ to state $v_j$ occurs with probability $p_{i, j} \in [0, 1]$.
 Trivially, the cumulative probability of leaving any state $v_i$ is $1$:
 %
-\begin{equation}
+\begin{equation*}
     %\sum_{j=0}^{\abs{\VV{}}}\, p_{i, j} = 1.
-    \sum_{v_j\in\VV{}}\, p_{i, j} = 1.
-\end{equation}
+    \sum_{v_j\in\VV{}}\, p_{i, j} = 1
+\end{equation*}
 %
 Note that $p_{i, i}$ is not necessarily $0$, meaning that with probability $p_{i, i}$ state $v_i$ remains the active state.
 A Markov state is said to be \emph{absorbing} if it, once entered, is never left, i.e., has probability $p_{i, i} = 1$.
@@ -478,7 +475,7 @@ Therefore, the discrete, time-invariant state-space representation of a general 
 \end{equation}
 %
 Here, the \emph{control state vector} $z_k \in \R^{n_z}$ represent the controller's dynamics, the \emph{control signals} $u_k \in \R^{n_u}$ are also the inputs to the plant, and the functions $p$ and $q$ govern the dynamical behaviour of the controller.
-Similar to the plant, if $p$ and $q$ can be expressed as linear combinations of their arguments, i.e., $p(z_k,\, y_k) = \Ac\,z_k+\Bc\,y_k$ and $q(z_k,\, y_k) = \Cc\,z_k+\Dc\,y_k$, then the controller $\ctrler$ is linear.
+Similar to the plant, if $p$ and $q$ can be expressed as linear combinations of their arguments, i.e., $p(z_k,\, y_k) = \Ac\,z_k+\Bc\,y_k$ and $q(z_k,\, y_k) = \Cc\,z_k+\Dc\,y_k$, then the controller $\ctrler$ is linear:
 %
 \begin{equation}%
     \label{eq:discrete-lti-ctrler}%
@@ -514,14 +511,18 @@ Typically, the closed-loop system (i.e., all components involved in the closed-l
 %
 \begin{equation}%
     \label{eq:clsys}%
-    \tilde{x}_{k+1} = \clmat\, \tilde{x}_k + \clinp_w\, w_k.
+    \tilde{x}_{k+1} = \clmat\, \tilde{x}_k + \clinp_w\, w_k
 \end{equation}
 %
-where $\tilde{x}_k$ is the closed-loop system's state vector, $\clmat$ is the closed-loop system matrix responsible for encoding the closed-loop system's dynamics, and
-$$\clinp_w = \begin{bmatrix}
-    \Wp \\
-    0
-\end{bmatrix}$$
+where $\tilde{x}_k$ is the closed-loop system's state vector, $\clmat$ is the closed-loop system matrix responsible for encoding the closed-loop system's dynamics, and:
+%
+\begin{equation*}%
+    \clinp_w = \begin{bmatrix}
+        \Wp \\
+        0
+    \end{bmatrix}
+\end{equation*}
+%
 is the dynamic matrix of the exogenous stochastic variable $w_k$.
 
 Thus far, the system execution has been assumed to be faultless.
@@ -545,7 +546,7 @@ The changing control equations do in turn also change the closed-loop dynamics f
 %
 \begin{equation}%
     \label{eq:tv-clsys}%
-    \tilde{x}_{k+1} = \clmat_{\theta_k}\, \tilde{x}_k + \clinp_w\, w_k.
+    \tilde{x}_{k+1} = \clmat_{\theta_k}\, \tilde{x}_k + \clinp_w\, w_k
 \end{equation}
 %
 If $\theta_k$ is governed by a Markov process, then Equation~\eqref{eq:tv-clsys} is denoted a \emph{Markov jump linear system} (MJLS)~\cite{Feng:1992}.
@@ -578,23 +579,20 @@ Very simplified, the criteria could be summarised by:
 In practice, these conditions directly correspond to verifying that all the system's eigenvalues are either strictly in the left half plane (continuous systems) or strictly inside the unit disc (discrete systems).
 The Hurwitz stability criterion for a continuous-time LTI system with system matrix $\clmat^c$ and the Schur stability criterion for a discrete-time LTI system with system matrix $\clmat$ is then:
 %
-\begin{table}[h]
-    \def\arraystretch{1.5}%
-    \centering%
-    \begin{tabular}{c|c}
-        Hurwitz & Schur \\ \hline
-        $\max{ \left\{ \mathrm{Re}\funof{\eig{i}{\clmat^c}} \right\}} < 0$ & $\max{ \left\{ \abs{\eig{i}{\clmat}} \right\}} < 1$
-    \end{tabular}
-\end{table}
+\begin{equation*}%
+    \begin{matrix*}[l]
+        \text{Hurwitz: } & \max{ \left\{ \mathrm{Re}\funof{\eig{i}{\clmat^c}} \right\}} < 0 \\
+        \text{Schur: } & \max{ \left\{ \abs{\eig{i}{\clmat}} \right\}} < 1
+    \end{matrix*}
+\end{equation*}
 %
-\newline\noindent
 where $\eig{i}{\clmat}$ retrieves the $i$-th eigenvalue of $\clmat$ and $\mathrm{Re}\funof{\cdot}$ extracts the real-part of a complex number (element-wise when applied to a vector).
 It is worth noting that the Schur stability criterion is dependent on the \emph{spectral radius} of the system, i.e., the maximum asymptotic growth rate of the system.
 Denoting with $\rho\funof{\clmat}$ the spectral radius of a square matrix $\clmat \in \R^{n \times n}$, it is then defined as\footnote{The second equality is a well-established relation known as Gelfand's formula. The equality holds true regardless of the chosen matrix norm.}:
 %
 \begin{equation}%
     \label{eq:spectral-radius}%
-    \rho\funof{\clmat} = \max \left\{ \abs{\eig{1}{\clmat}}, \abs{\eig{2}{\clmat}}, \ldots, \abs{\eig{n}{\clmat}} \right\} = \lim_{k\rightarrow\infty} \norm{\clmat^k}^{\sfrac{1}{k}}.
+    \rho\funof{\clmat} = \max \left\{ \abs{\eig{1}{\clmat}}, \abs{\eig{2}{\clmat}}, \ldots, \abs{\eig{n}{\clmat}} \right\} = \lim_{k\rightarrow\infty} \norm{\clmat^k}^{\sfrac{1}{k}}
 \end{equation}
 
 % Lyapunov stability
@@ -613,16 +611,16 @@ Trivially, if the switching set only contains one matrix, i.e., $\Aa = \left\{ \
 
 To simplify the generalisation, we borrow the following notation from~\cite{Jungers:2009}:
 %
-\begin{equation}
+\begin{equation*}
     \Aa^k \triangleq \left\{ \clmat_1 \cdots \clmat_k \,\mid\, \clmat_i \in \Aa \right\}
-\end{equation}
+\end{equation*}
 %
 Thus, $\Aa^k$ is the set of \emph{all} matrix multiplications involving $k$ matrices from the set $\Aa$.
 Using the introduced notation, the following definition provides a formal definition of the JSR~\cite{Jungers:2009}.
 %
 \begin{definition}[Joint Spectral Radius]%
     \label{def:jsr}%
-    Given a bounded set of matrices $\Aa$, the \emph{joint spectral radius} (JSR) of $\Aa$ is defined as
+    Given a bounded set of matrices $\Aa$, the \emph{joint spectral radius} (JSR) of $\Aa$ is defined as:
     \begin{equation*}
         \rho\funof{\Aa} = \underset{k\rightarrow\infty}{\lim{}\sup{}} \left\{ \norm{\clmat}^{\sfrac{1}{k}} \,\mid\, \clmat \in \Aa^k \right\}
     \end{equation*}
@@ -630,7 +628,7 @@ Using the introduced notation, the following definition provides a formal defini
 
 Intuitively, since an LTI system is Schur stable if the spectral radius is less than one, it is easy to argue that a switching system is stable if the joint spectral radius is less than.
 Since $\rho\funof{\Aa} < 1$ implies that the worst-case sequence of matrices $\clmat_{WC} \in \Aa^k$ has a bounded growth rate $\norm{\clmat_{WC}} < 1$, it must mean that the switching system $\tilde{x}_k = \clmat_{WC}\cdot \tilde{x}_0$ is bounded by the triangle inequality, i.e., $\abs{\tilde{x}_k} \leq \norm{\clmat_{WC}}\abs{\tilde{x}_0} \rightarrow 0$.
-Stability of a switched dynamical system via the joint spectral radius is outlined in the following theorem (for more details and a formal proof we refer the interested reader to~\cite{Jungers:2009}): 
+Stability of a switched dynamical system via the joint spectral radius is outlined in the following theorem (for more details and a formal proof we refer the interested reader to~\cite{Jungers:2009}).
 %
 \begin{theorem}[Switching Stability]%
     \label{thm:switching-stability}%
@@ -654,7 +652,7 @@ Instead, the authors of~\cite{Parrilo:2008} prove that if the solution to the SO
     \item $\gamma < 1$,
 \end{enumerate*}
 %
-then $p\funof{x}$ is positive definite and decreases along all trajectories, meaning that $p\funof{x}$ is a Lyapunov function for the switching system defined by $\Aa$.
+then $p\funof{x}$ is positive definite and decreases along all trajectories, meaning that $p\funof{x}$ is a Lyapunov function for the switching system defined by $\Aa$:
 %
 \begin{equation}%
     \label{eq:sos}%
@@ -662,8 +660,8 @@ then $p\funof{x}$ is positive definite and decreases along all trajectories, mea
         \rho_{\mathrm{SOS},2d}\funof{\Aa} =& \inf_{p\funof{x} \in \R_{2d}\left[x\right], \gamma}  \gamma \\
         \textrm{s.t.}\quad&
         \left\{\begin{matrix*}[l]
-                p\funof{x} &\text{is SOS},\\
-                \gamma^{2d} p\funof{x} - p\funof{\clmat_i x} &\text{is SOS},\; \clmat_i \in \Aa.
+                p\funof{x} &\text{is SOS}\\
+                \gamma^{2d} p\funof{x} - p\funof{\clmat_i x} &\text{is SOS},\; \clmat_i \in \Aa
         \end{matrix*}\right.
     \end{aligned}
 \end{equation}
@@ -681,10 +679,10 @@ This certificate does in turn provide probabilistic guarantees that the MJLS wil
 
 Since MJLS are stochastic by nature, the existing stability analyses typically investigate how the expected value of the system's states evolve in time.
 Arguably the most well-known stability analysis methods are \emph{stochastic stability} (SS) and different variants of \emph{mean-square stability} (MSS)~\cite{Feng:1992}.
-Paraphrased from~\cite{Costa:2005}, we say that the dynamical system in~\eqref{eq:tv-clsys}, governed by a Markov process $\theta_k$, is mean-square stable if
+Paraphrased from~\cite{Costa:2005}, we say that the dynamical system in~\eqref{eq:tv-clsys}, governed by a Markov process $\theta_k$, is mean-square stable if:
 %
 \begin{equation*}%
-    \lim_{k\rightarrow \infty} \E{\norm{\tilde{x}_k}^2} = \varepsilon < \infty.
+    \lim_{k\rightarrow \infty} \E{\norm{\tilde{x}_k}^2} = \varepsilon < \infty
 \end{equation*}
 %
 In practice, testing for mean-square stability implies verifying that the spectral radius of the operator $\Psi$, i.e., the operator defining the Markov jump linear system's covariance, is less than one.
@@ -694,16 +692,16 @@ The following theorem then holds~\cite{Costa:2005}:
 %
 \begin{theorem}[Mean-Square Stability]%
     \label{thm:mss}%
-    The dynamical system in Equation~\eqref{eq:tv-clsys}, governed by an $N$-state Markov chain with transition probability matrix $\Pi \in \R^{N \times N}$, is MSS if
+    The dynamical system in Equation~\eqref{eq:tv-clsys}, governed by an $N$-state Markov chain with transition probability matrix $\Pi \in \R^{N \times N}$, is MSS if:
     %
     \begin{equation*}%
-        \rho\funof{\Psi} < 1,
+        \rho\funof{\Psi} < 1
     \end{equation*}
     %
-    where
+    where:
     %
     \begin{equation*}%
-        \Psi = \left( \Pi^\T{} \otimes I_{n^2} \right) \cdot \blkdiag{ \left\{ \clmat_i \otimes \clmat_i \, \mid \, i \in 1, 2, \ldots, N \right\} }.
+        \Psi = \left( \Pi^\T{} \otimes I_{n^2} \right) \cdot \blkdiag{ \left\{ \clmat_i \otimes \clmat_i \, \mid \, i \in 1, 2, \ldots, N \right\} }
     \end{equation*}
 \end{theorem}
 %
@@ -754,7 +752,7 @@ This thesis facilitates a performance analysis of real-time control systems subj
 %
 \begin{equation}%
     \label{eq:cost}%
-    J_k = \E{\tilde{x}_k^\T{}\, Q\, \tilde{x}_k}.
+    J_k = \E{\tilde{x}_k^\T{}\, Q\, \tilde{x}_k}
 \end{equation}
 %
 Here $J_k$ is the closed-loop state's cost increment in the $k$-th period and $Q$ is a positive semidefinite weight matrix penalising large closed-loop state deviations.
@@ -766,18 +764,18 @@ With these assumptions, together with the initial condition on the closed-loop s
 
 The expression in Equation~\eqref{eq:cost} is difficult to compute in practice.
 Instead, it is easier to first transform the cost $J_k$ into an equivalent form before evaluating it.
-We define the closed-loop system's mean value and covariance functions as $m_k$ and $P_k$ respectively
+We define the closed-loop system's mean value and covariance functions as $m_k$ and $P_k$ respectively:
 %
 \begin{equation}%
     \label{eq:cl-def}%
-    m_k = \E{\tilde{x}_k}, \quad P_k = \cov{\tilde{x}_k} = \E{\tilde{x}_k\, \tilde{x}_k^\T{}} - \E{\tilde{x}_k}\,\E{\tilde{x}_k}^\T{}.
+    m_k = \E{\tilde{x}_k}, \quad P_k = \cov{\tilde{x}_k} = \E{\tilde{x}_k\, \tilde{x}_k^\T{}} - \E{\tilde{x}_k}\,\E{\tilde{x}_k}^\T{}
 \end{equation}
 %
 Note that because $\E{w_k} = 0$, the mean value of the state adhere to the following dynamical equation:
 %
-\begin{equation}%
-    m_{k+1} = \E{\clmat\,\tilde{x}_k + \clinp_w\,w_k} = \clmat\, m_k.
-\end{equation}
+\begin{equation*}%
+    m_{k+1} = \E{\clmat\,\tilde{x}_k + \clinp_w\,w_k} = \clmat\, m_k
+\end{equation*}
 %
 From~\eqref{eq:cl-def} it then follows that~\eqref{eq:cost} can equivalently be written as~\cite{Bates:2011}:
 %
@@ -790,7 +788,7 @@ From~\eqref{eq:cl-def} it then follows that~\eqref{eq:cost} can equivalently be 
         &= \E{\trace{Q\, \tilde{x}_k\, \tilde{x}_k^\T{}}} \\
         &= \trace{Q\, \E{\tilde{x}_k\,\tilde{x}_k^\T{}}} \\
         &= \trace{Q\, \left( P_k + m_k\,m_k^\T{} \right)} \\
-        &= \trace{Q\, P_k} + m_k^\T{}\, Q\, m_k.
+        &= \trace{Q\, P_k} + m_k^\T{}\, Q\, m_k
     \end{aligned}
 \end{equation}
 %
@@ -808,7 +806,6 @@ Recalling that $\tilde{x}_k$ and $w_k$ are independent, evolving the covariance 
         &= \E{\tilde{x}_{k+1}\,\tilde{x}_{k+1}^\T{}} - m_{k+1}\,m_{k+1}^\T{} \\
         &= \E{\tilde{x}_{k+1}\,\tilde{x}_{k+1}^\T{}} - \clmat\, m_{k}\,m_{k}^\T{}\,\clmat^\T{} \\
         &= \E{ \left( \clmat\,\tilde{x}_k + \clinp_w\, w_k \right)\left( \clmat\,\tilde{x}_k + \clinp_w\, w_k \right)^\T{} } - \clmat\, m_{k}\,m_{k}^\T{}\,\clmat^\T{} \\
-        %&= \E{ \clmat\,\tilde{x}_k\,\tilde{x}_k^\T{}\,\clmat^\T{} + \clmat\,\tilde{x}_k\,w_k^\T{}\,\clinp_w^\T{} + \clinp_w\,w_k\,\tilde{x}_k^\T{}\,\clmat^\T{} + \clinp_w\,w_k\,w_k^\T{}\,\clinp_w^\T{}} - \clmat\, m_{k}\,m_{k}^\T{}\,\clmat^\T{} \\
         &= \clmat\,\E{ \tilde{x}_k\,\tilde{x}_k^\T{} }\,\clmat^\T{} + \clinp_w\,\E{ w_k\,w_k^\T{} }\,\clinp_w^\T{} - \clmat\, m_{k}\,m_{k}^\T{}\,\clmat^\T{} \\
         &= \clmat\,\left( \cov{\tilde{x}_k} + m_k\,m_k^\T{} \right)\,\clmat^\T{} + \clinp_w\,\E{ w_k\,w_k^\T{} }\,\clinp_w^\T{} - \clmat\, m_k\,m_{k}^\T{}\,\clmat^\T{} \\
         &= \clmat\,\cov{\tilde{x}_k}\,\clmat^\T{} + \clinp_w\,\E{ w_k\,w_k^\T{} }\,\clinp_w^\T{} \\
