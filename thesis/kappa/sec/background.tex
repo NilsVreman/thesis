@@ -597,8 +597,16 @@ Denoting with $\rho\funof{\clmat}$ the spectral radius of a square matrix $\clma
     \rho\funof{\clmat} = \max \left\{ \abs{\eig{1}{\clmat}}, \abs{\eig{2}{\clmat}}, \ldots, \abs{\eig{n}{\clmat}} \right\} = \lim_{k\rightarrow\infty} \norm{\clmat^k}^{\sfrac{1}{k}}
 \end{equation}
 
+\subsubsection*{Deterministic Switching Stability}%
+%
+The classical notions of linear systems stability do not hold when the closed-loop dynamics is time-variant.
+Instead, more powerful mathematical tools are needed, dependent on the definition of the switching process $\theta_k$, i.e., whether the system is subject to \emph{deterministic} or \emph{stochastic} switching.
+By deterministic switching we mean systems where the switching process $\theta_k$ is a deterministic worst-case constraint, such as the weakly-hard constraints; in other words, a switching system where stability is independent of the probability of transitioning between different execution modes (vertices in the graph representation).
+On the other hand, stochastic switching refer to systems where $\theta_k$ is governed by an entirely stochastic process, e.g., a Markov chain, and the switching stability is hence highly dependent on the transition probabilities.
+In this thesis, emphasis has been to analyse switching stability from the deterministic framework, using methods introduced next.
+
 % Lyapunov stability
-Another useful tool for determining stability of a dynamical system is \emph{Lyapunov's second method} -- more frequently referred to as \emph{Lyapunov's stability criterion}.
+A useful tool for determining stability of most dynamical systems is \emph{Lyapunov's second method} -- more frequently referred to as \emph{Lyapunov's stability criterion}.
 Essentially, the stability criterion is based on finding a function with particular properties (denoted the \emph{Lyapunov function}) for the system under consideration; if a Lyapunov function exists, the system is globally asymptotically stable~\cite{Astrom:1997}.
 The Lyapunov function is an energy function which is zero at the unique point of equilibrium, positive everywhere else, and decreases along all trajectories of the system.
 For instance, consider an oscillating pendulum; it will always move toward the position with the lowest energy, finally reaching its resting state when it is hanging freely downwards, i.e., where the potential energy of the pendulum has reached its equilibrium.
@@ -637,7 +645,7 @@ Stability of a switched dynamical system via the joint spectral radius is outlin
     For any bounded set of matrices $\Aa$, the corresponding switched dynamical system is stable if and only if $\rho\funof{\Aa} < 1$.
 \end{theorem}
 %
-Furthermore, Theorem~\ref{thm:switching-stability} raises an interesting question about the converse case: which is the switching sequence $\clmat \in \Aa^k$ \mm{I think I am a bit confused by $\clmat \in \Aa^k$ -- I guess what confuses me is the use of $\clmat$ when you also have $\clmat_1$ in the previous equation, and you also wrote $\clmat_{WC}$ above. Here $\clmat$ is one of the matrices that belong to $\Aa^k$ but then I would somehow expect it to have a subscript, and the subscript cannot be $i$ or anything like it (I get it) because then it would be the $i$-th of the $k$ matrices. Maybe you could reuse the WC subscript? Although it is a slight abuse in notation because it is not necessarily the only one that exposes instability. Maybe you could use $\bar{\clmat}$?} resulting in $\rho\funof{\Aa} \geq 1$?
+Furthermore, Theorem~\ref{thm:switching-stability} raises an interesting question about the converse case: which is the switching sequence $\clmat_1 \cdots \clmat_k \in \Aa^k$ resulting in $\rho\funof{\Aa} \geq 1$? %\mm{I think I am a bit confused by $\clmat \in \Aa^k$ -- I guess what confuses me is the use of $\clmat$ when you also have $\clmat_1$ in the previous equation, and you also wrote $\clmat_{WC}$ above. Here $\clmat$ is one of the matrices that belong to $\Aa^k$ but then I would somehow expect it to have a subscript, and the subscript cannot be $i$ or anything like it (I get it) because then it would be the $i$-th of the $k$ matrices. Maybe you could reuse the WC subscript? Although it is a slight abuse in notation because it is not necessarily the only one that exposes instability. Maybe you could use $\bar{\clmat}$?} 
 To the best of this thesis' author's knowledge, there are currently no results outlining \emph{which} sequence that destabilises the switched dynamical system.
 
 The JSR is a powerful tool since it makes it possible to determine whether a switching system is asymptotically stable ($\rho\funof{\Aa} < 1$) or not ($\rho\funof{\Aa} \geq 1$).
@@ -674,8 +682,8 @@ Additionally, the authors show how the upper bound on the JSR achieved by the SO
 Trivially, since $\rho^{LB}\funof{\Aa} \leq \rho\funof{\Aa} \leq \rho^{UB}\funof{\Aa}$, if an approximation method provides an upper bound $\rho^{UB}\funof{\Aa}$ that is below one for the switched dynamical system, it is confirmed to be stable; conversely, if the lower bound $\rho^{LB}\funof{\Aa}$ is above one, the system is guaranteed unstable.
 The active research in this field continues to enhance the bounds as well as algorithmic complexities, thus constantly improving the applicability of the JSR notion.
 
-\mm{I have the feeling that you need a header here to separate deterministic from probabilistic. Which also means that you needed a header before for deterministic and you need a sentence introducing the fact that most of the thesis is set in the deterministic framework, but you have also investigated the probabilistic one.}
-
+\subsubsection*{Stochastic Switching Stability}%
+%
 % MSS, MS
 If the overrun process in Equation~\eqref{eq:tv-clsys} is governed by a Markov model, it is possible to utilise well-known results for Markov jump linear systems (MJLS)~\cite{Lincoln:2002, Feng:1992, Nilsson:1998}.
 While the switching system stability analysis (e.g., JSR) provides a deterministic stability certificate, i.e., the switching system stability analysis provides guarantees that the dynamical system will be stable under \emph{all} configurations of the different modes, the MJLS stability analysis provides a stochastic certificate.
