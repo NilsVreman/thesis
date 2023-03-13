@@ -11,9 +11,10 @@ These publications have been omitted to improve the cohesion of this manuscript,
 
 \subsubsection*{Difference Between Published and Included Version:}%
 There are two differences between the published papers and the version included in this thesis:
+%
 \begin{enumerate*}[label=(\roman*)]
-\item the language and mathematical notation of the papers presented in this thesis have been uniformed for readability and consistency,
-\item figures and tables have been resided to match the format of the thesis.
+    \item the language and mathematical notation of the papers presented in this thesis have been uniformed for readability and consistency,
+    \item figures and tables have been resided to match the format of the thesis.
 \end{enumerate*}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -143,7 +144,7 @@ The manuscript was written by N. Vreman and M. Maggio, with input from R. Pates.
 Despite the weakly-hard models having steadily gained more traction in the analysis of control systems, the weakly-hard model fails at expressing some characteristics of the implementation of control systems, e.g., how the actual controller implementation deals with deadline misses.
 Paper IV rectifies this discrepancy, by extending the formal language defining the weakly-hard constraints, and connecting the analysis on weakly-hard control systems to the actual implementation of controllers.
 
-The paper uses the automata-based model produced by \tool{} and presented in Paper III, proposing a post-processing step that refines the automaton and handles the analysis of \emph{extended weakly-hard constraints}, the extension being the implementation's specification characteristics.
+The paper uses the automata-based model produced by \tool{} (presented in Paper III), proposing a post-processing step that refines the automaton and handles the analysis of \emph{extended weakly-hard constraints}, the extension being the implementation's specification characteristics.
 The paper presents a stability analysis based on switching linear systems, that advances the state of the art of analysing implementation of control systems.
 
 The dynamics of the linear control system is Kronecker lifted with the adjacency matrix of the automaton to obtain an equivalent system model, now also subject to the extended weakly-hard constraint.
@@ -169,22 +170,27 @@ The manuscript was written by P. Pazzaglia and N. Vreman, with input and revisio
     \fullcite{Vreman:2023}
 \end{quote}
 
-\nv{Change what is written here below.}
-
 \subsubsection*{Scientific Summary:}%
 %
-Control theory allows one to design controllers that are robust to external disturbances, model simplification, and modelling inaccuracy.
-Researchers have investigated whether the robustness carries on to the controller's digital implementation, mostly looking at how the controller reacts to either communication or computational problems.
-Communication problems are typically modelled using random variables (i.e., estimating the probability that a fault will occur during a transmission), while computational problems are modelled using deterministic guarantees on the number of deadlines that the control task has to meet.
-These fault models allows the engineer to both design robust controllers and assess the controllers' behaviour in the presence of faults.
-However, the question of what happens when these faults occur simultaneously, as is the case for real implementations, is still open.
-In this paper, we answer this question in the stochastic setting, using the theory of Markov Jump Linear Systems to provide stability contracts with \emph{almost sure} guarantees of convergence.
-We apply our method to three case studies from the recent literature and show their robustness to a comprehensive set of faults.
+Research into fault-tolerant real-time control systems have been split between focusing on networked systems experiencing communication dropouts, i.e., packet losses, or embedded systems suffering computational overruns.
+Despite carrying very different information, the computational overruns have been compared to communication dropouts when analysing the system dynamics, and vice versa.
+The paper aims to clarify this discrepancy by analysing what happens when these faults can occur simultaneously, as is the case for real implementations.
+
+Most modern results on switched system analysis provide certificates of stability or performance under worst-case conditions.
+However, the worst-case conditions may be exceedinly rare, resulting in overly conservative guarantees.
+Instead, typical methods for deriving bounds on both packet losses and computational overruns are probabilistic by nature.
+By modelling both the packet losses on the input/output channels (to and from the plant) and the computational overruns as stochastic variables, we are able to utilise powerful results from Markov Jump Linear Systems theory, providing stability constracts with \emph{almost sure} convergence guarantees.
+
+We apply the analysis to two case studies from the recent literature and show their robustness to a comprehensive set of faults.
+The analysis clearly shows how the systems are distinctly affected by either individually or jointly occuring compuational and communication faults.
+
 
 \subsubsection*{Contribution Statement:}%
 %
-M. Maggio proposed the idea of looking into the analysis of systems with a combination of fault and provided guidance for the Markov Jump Linear Systems Analysis. The implementation of the analysis and the generation of the results was done by N. Vreman. The manuscript writing was shared between the two authors.
-
+M. Maggio proposed the idea of looking into the analysis of systems with a combination of fault and provided guidance for the Markov Jump Linear Systems Analysis.
+The implementation of the analysis and the generation of the results was done by N. Vreman.
+N. Vreman took a leading role in the manuscript writing, and M. Maggio contributed to the Markov theoretical section and gave inputs for the remainder of the paper.
+% The manuscript writing was shared between the two authors
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
