@@ -16,7 +16,7 @@
     \vspace*{-3mm}
     \sffamily
     \begin{flushleft}
-        \huge Vad är det Värsta som kan Hända när Datorn Krånglar? \\[2mm]
+        \huge Vad är det värsta som kan hända när datorn krånglar? \\[2mm]
         \Large Nils Vreman\\[1mm]
         \normalsize Institutionen för Reglerteknik
     \end{flushleft}
@@ -32,13 +32,13 @@
 \vspace{2mm}\hrule\vspace{3mm}
 
 \noindent
-Datorer i olika storlekar och styrka finns runt omkring oss hela tiden.
+Datorer i olika storlekar och med olika styrka finns runt omkring oss hela tiden.
 Allt från mobilen i din ficka till bilen du åker med till jobbet innehåller många små datorer, också kallade \emph{inbyggda system}.
-Varje litet inbyggt system har uppgifter som måste uträttas, t.ex., beräkna hastigheten på din bil.
+Varje litet inbyggt system har uppgifter som måste uträttas, t.ex., beräkna hastigheten.
 I de flesta fall finns det krav och specifikationer på att beräkningarna måste uträttas inom en viss tidsram.
 Till exempel, om bromsen trycks in förväntas bilen sakta ner direkt.
 I verkligheten tar det lite tid för det inbyggda systemet att beräkna nedbromsningshastigheten innan kommandot kan skickas till bromssystemet.
-Det är dock inget märkligt, och systemet är oftast designat med den extra tiden det tar att uträtta hela uppgiften i åtanke.
+Systemet är dock alltid designat med hänsyn till den extra tiden det tar att uträtta hela uppgiften.
 
 \begin{wrapfigure}{r}{0.45\textwidth}
     \vspace*{-2mm}
@@ -50,32 +50,33 @@ Det är dock inget märkligt, och systemet är oftast designat med den extra tid
 \end{wrapfigure}
 \footnotetext{Laserlicht, CC BY-SA 4.0, \url{https://creativecommons.org/licenses/by-sa/4.0/}, via Wikimedia Commons}
 
-Tyvärr så kan inbyggda system krångla, precis som en persondator kan.
+Tyvärr kan inbyggda system krångla, precis som en persondator.
 Bland annat kan bakgrundsprogram, virus, och föråldrad hårdvara/programvara störa beräkningen.
 Det kan försena beräkningen, och i värsta fall medföra att uppgiften inte blir klar alls.
 Vad händer då om det inbyggda systemet krånglar på ett sådant sätt att tidsramen för beräkningen inte respekteras?
 Just den frågan besvaras i den här avhandlingen.
 
-Många inbyggda system sitter i apparater där det inte gör så mycket ifall något krånglar.
+Många inbyggda system sitter i apparater där det inte gör så mycket om något krånglar.
 Till exempel har mycket hemelektronik (så som moderna stereosystem, TV-apparater, och kylskåp) inbyggda system för att styra funktionaliteten och kommunicera med andra smarta system.
 Det är irriterande om smart-TVns bild blir oskarp, men det är inget som påverkar oss märkbart.
-Värre konsekvenser uppstår ifall det inbyggda systemet krånglar i bilens bromssystem, en pacemaker, eller i ett flygplans styrsystem; då kan det uppstå verklig fara för människor i närheten och värstascenariot inkluderar även dödsfall.
+Värre konsekvenser uppstår om det inbyggda systemet krånglar i bilens bromssystem, en pacemaker, eller i ett flygplans styrsystem.
+Då kan det uppstå verklig fara för människor i närheten och värstascenariot inkluderar även dödsfall.
 
-Den här avhandlingen utvecklar matematiska verktyg och metoder för att förbättra analysen av säkerhetskritiska inbyggda system, så som bromssystemet i en bil.
-Eftersom det är livsviktigt att ingen person kommer till skada fokuserar analysen på att se till att hela systemet är säkert, även under väldigt dåliga förhållanden.
+Den här avhandlingen utvecklar matematiska verktyg och metoder för att förbättra analysen av dessa säkerhetskritiska inbyggda system.
+Det är livsviktigt att ingen person kommer till skada och därför fokuserar analysen på att se till att hela systemet är säkert, även under väldigt dåliga förhållanden.
 Dåliga förhållanden innebär här, bland annat, att det inbyggda systemet inte lyckas beräkna något under en väldigt lång tid på grund av, t.ex., en hacker-attack.
 Med förhandsinformation om hur länge systemet är säkert när något går fel är det möjligt att utveckla metoder för att säkert stänga av eller starta om systemet innan någon kommer till skada.
 
-Ett säkerhetskritiskt system blir nödvändigtvis inte osäkert bara för att beräkningen tar lite extra tid då och då, men det kan göra att upplevelsen blir väldigt obehaglig för användaren.
-Till exempel så kan bilens nedbromsning bli ryckig och oregelbunden.
-På lång sikt är det då troligt att systemet bryts ner och går sönder på grund utav utförandets oregelbundenhet, och som konsument kommer du antagligen inte återkomma till tillverkaren.
+Ett säkerhetskritiskt system blir inte nödvändigtvis osäkert bara för att beräkningen tar lite extra tid då och då, men det kan göra att upplevelsen blir väldigt obehaglig för användaren.
+Till exempel kan bilens nedbromsning bli ryckig och oregelbunden.
+På lång sikt är det då troligt att systemet bryts ner och går sönder på grund av utförandets oregelbundenhet, och som konsument överger du antagligen tillverkaren.
 Detta kan kosta tillverkaren väldigt mycket pengar och försämrar generellt sett företagets rykte.
 Därför räcker det inte att enbart se till att produkten är helt säker, den måste också nå upp till en viss kvalitet för att det ska bli lönsamt att producera den.
 
 I avhandlingen utformas både algoritmer för att förbättra produktkvaliteten och metoder för att kvalitetsgranska slutprodukten.
-Genom att förändra beräkningarna som utförs av det inbyggda systemet i realtid visas det att det är möjligt att kompensera för den försämrade prestandan.
+Genom att förändra beräkningarna som utförs av det inbyggda systemet i realtid visas att det är möjligt att kompensera för den försämrade prestandan.
 Nya metoder för att undersöka prestandan utvecklas och används för att garantera att algoritmerna fungerar enligt förväntan när det inbyggda systemet krånglar.
-För att bekräfta att avhandlingens bidrag går att använda i verkligheten, testas både algoritmerna, säkerhetsanalysen, och prestandaanalysen på flertalet verkliga system.
-Experimenten visar att metoderna är både enkla att använda och ger de en bra bild av hur det verkliga systemet påverkas av problem med de inbyggda systemen.
+För att bekräfta att avhandlingens bidrag går att använda i verkligheten testas både algoritmerna, säkerhetsanalysen och prestandaanalysen på flertalet verkliga system.
+Experimenten visar att metoderna både är enkla att använda och ger en bra bild av hur det verkliga systemet påverkas av problem med de inbyggda systemen.
 
 \end{document}

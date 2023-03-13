@@ -628,8 +628,8 @@ Using the introduced notation, the following definition provides a formal defini
     \end{equation*}
 \end{definition}
 
-Intuitively, since an LTI system is Schur stable if the spectral radius is less than one, it is easy to argue that a switching system is stable if the joint spectral radius is less than. \mm{Is it really so intuitive and easy to argue?}
-Since $\rho\funof{\Aa} < 1$ implies that the worst-case sequence of matrices $\clmat_{WC} \in \Aa^k$ has a bounded growth rate $\norm{\clmat_{WC}} < 1$, it must mean that the switching system $\tilde{x}_k = \clmat_{WC}\cdot \tilde{x}_0$ is bounded by the triangle inequality, i.e., $\abs{\tilde{x}_k} \leq \norm{\clmat_{WC}}\abs{\tilde{x}_0} \rightarrow 0$.
+%Intuitively, since an LTI system is Schur stable if the spectral radius is less than one, it is easy to argue that a switching system is stable if the joint spectral radius is less than. \mm{Is it really so intuitive and easy to argue?}
+Since $\rho\funof{\Aa}$ correspond to the maximum asymptotic growth rate of the arbitrary switching between matrices in the set $\Aa$, if the worst-case sequence of matrices $\overbar{\clmat} \in \Aa^k$ has a bounded growth rate $\norm{\overbar{\clmat}} < 1$, it implies that the switching system $\tilde{x}_k = \overbar{\clmat}\cdot \tilde{x}_0$ is bounded by the triangle inequality, i.e., $\abs{\tilde{x}_k} \leq \norm{\overbar{\clmat}}\abs{\tilde{x}_0} \rightarrow 0$.
 Stability of a switched dynamical system via the joint spectral radius is outlined in the following theorem (for more details and a formal proof we refer the interested reader to~\cite{Jungers:2009}).
 %
 \begin{theorem}[Switching Stability]%
