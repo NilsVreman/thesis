@@ -510,9 +510,9 @@ The vast treatise on synthesis and analysis of both linear and non-linear contro
 Arguably the most famous control structure is the proportional-integral-derivative (PID) controller, in which the error between the sensor measurements and the desired plant states are used to compute the new control signal~\cite{Astrom:2006}.
 The PID controller is linear and stateful, assuming that either the I or D part is included.
 From the domain of optimal control, the linear-quadratic regulator (LQR) was derived to analytically minimise a quadratic cost function penalising large control signals and plant state deviations.
-The linear and stateless LQR algorithm has been the subject to a large research effort~\addref{}, likely due to its elegant mathematical properties.
-Additionally, the LQR is a fundamental part of solving the linear-quadratic-Gaussian (LQG) problem~\addref{}.
-Like LQR, model predictive control (MPC) originate from optimal control~\addref{}; however, they differ in the cost function's structure.
+The linear and stateless LQR algorithm has been the subject to a large research effort~\cite{Goswami:2012, Linsenmayer:2018}, likely due to its elegant mathematical properties.
+Additionally, the LQR is a fundamental part of solving the linear-quadratic-Gaussian (LQG) problem~\cite{Astrom:1997}.
+Like LQR, model predictive control (MPC) originate from optimal control~\cite{Allgower:1999}; however, they differ in the cost function's structure.
 When LQR optimises the control structure over a full time window, MPC provides a receding time horizon solution while also supporting constraints on the trajectory, control state, and control signal.
 
 Control theory is dedicated to developing models and algorithms (such as PID, LQR, LQG, and MPC) for designing $p$ and $q$ such that the control system's state follows a desired trajectory while minimising undesirable effects such as noise, disturbances, and large actuator commands.
@@ -580,7 +580,7 @@ Conversely, if a system is \emph{unstable} the solution grows unbounded.
 As an example, if the taxiing system was unstable, under certain conditions the wheel velocity would rapidly increase until the wheel engine shut down or broke down (a highly undesirable behaviour).
 
 In practice, these vague notions of stability are formalised in rigorous mathematical definitions.
-Two of the classic definitions of stability for \emph{linear} dynamical systems are the Routh-Hurwitz stability criterion for continuous systems~\addref{} and the Schur stability criterion for discrete systems~\addref{}.
+Two of the classic definitions of stability for \emph{linear} dynamical systems are the Routh-Hurwitz stability criterion for continuous systems~\cite{Astrom:2008} and the Schur stability criterion for discrete systems~\cite{Astrom:1997}.
 Very simplified, the criteria could be summarised by:
 %
 \begin{itemize}
