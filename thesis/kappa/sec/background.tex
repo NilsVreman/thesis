@@ -309,10 +309,10 @@ Since one of the main mathematical advantages of the weakly-hard constraints is 
 \end{figure}
 
 The chosen task model is important when analysing the execution pattern of the real-time task, but implementation details, such as the scheduler's functionality, are typically not included in the analysis.
-In fact, it has been shown that the implementation's design choices affect both the performance and safety properties of the system~\cite{Cervin:2005}.
+In fact, it has been shown that the implementation's design choices significantly affect both the performance and safety properties of the system~\cite{Cervin:2005}.
 This thesis addresses the discrepancy between the real-time models, control theoretical models, and the implementation specifications by including details about the implementation in the real-time control system analysis.
 For instance, consider the $k+3$-rd job in Figure~\ref{fig:schedule}; the behaviour of the real-time system is undefined, regardless of the chosen task model.
-Furthermore, the function that job $j_{k+3}$ is supposed to carry out remains unfinished, resulting in an unknown behaviour if the overrun deadline is left unmanaged.
+The function that job $j_{k+3}$ is supposed to carry out remains unfinished, resulting in an unknown behaviour if the overrun deadline is left unmanaged.
 It is therefore crucial to include some details about the implementation in the system analysis.
 
 In addition to orchestrating the tasks in the RTOS, the scheduler is also responsible for supervising the tasks overrunning their deadlines (denoted the \emph{overrun handling strategy}).
@@ -342,6 +342,17 @@ However, as described in~\cite{Cervin:2004b}, three of the simplest and most com
 A framework for switching between \tK{} and \tS{} to drop delayed packets in arbitrated networked control systems is presented in~\cite{Soudbakhsh:2018}.
 The authors of~\cite{Pazzaglia:2018} discuss the performance of real-time control systems subject to the \tAM{} constraints with respect to both the \tK{} and \tS{} strategies; additionally, the authors discuss how the overrun handling strategy affect the freshness of the control signal, i.e., the age of the actuated control signal.
 In~\cite{Ernst:2019} the authors extend an existing method for computing weakly-hard guarantees in multi-component systems where deadlines outcomes are considered binary events, i.e., adhering to the \tK{} strategy.
+
+Separately from the scheduler's overrun strategy, it is important to analyse what happens when the actuators do not receive a fresh control command due to, for instance, a deadline overrun or a packet loss on the network.
+The actuators typically employ an \emph{actuator mode} to decide which command to enact on the plant if no new control command has been received.
+The research community has proposed (among many other) smart actuator degradation policies~\cite{Ma:2018} and adaptive compensation schemes~\cite{Xing:2017} for actuators subject to intermittent faults.
+However, two of the simplest and most frequently employed policies are the \tZ{} and \tH{} actuator modes~\cite{Schenato:2009}.
+If no new control signal is received by the actuator, the \tH{} actuation mode holds the last received control command until a new directive is received.
+On the contrary, the \tZ{} actuation mode stops acting on the plant if no new control command is received.\footnote{We show in \note{Paper~I} that the choice of actuation mode can significantly affect both stability and performance properties of the physical system, when the controller is subject to computational overruns.}
+Choosing a proper actuator mode is non-trivial and is in general highly dependent on the plant and controller dynamics~\cite{Schenato:2009}.
+For controllers with integrating dynamics, \tH{} is a good choice pressuming that the controller command is keeping the system close to its desired execution point.
+On the contrary, the \tZ{} mode may be safer for plants with noisy or unstable dynamics, because avoiding to affect the system can be better than to act on outdated control commands.
+
 
 
 \subsection{Execution Modelling using State Machines}%
@@ -555,7 +566,6 @@ If $\theta_k$ is governed by a Markov process, then Equation~\eqref{eq:tv-clsys}
 Instead, if the process changing the closed-loop dynamics is deterministic, it is labeled a \emph{switching system}~\cite{Liberzon:2003}.
 We acknowledge that this simplified description of both Markov jump linear systems and switching systems is extremely coarse.
 In the upcoming sections, we will introduce notation for both MJLS and switching systems such that the stability and performance analyses are unambiguous.
-%\question{Is this too big of an oversimplification? Should I add something else?}{It is a bit too much of an oversimplification, but I think you can simply acknowledge that it is a simplified view, and that later on this will become more clear when you introduce proper notions etc. I would not add something else here (it will come later).}
 
 
 
@@ -694,26 +704,26 @@ Arguably the most well-known stability analysis methods are \emph{stochastic sta
 Paraphrased from~\cite{Costa:2005}, we say that the dynamical system in~\eqref{eq:tv-clsys}, governed by a Markov process $\theta_k$, is mean-square stable if:
 %
 \begin{equation*}%
-    \lim_{k\rightarrow \infty} \E{\norm{\tilde{x}_k}^2} = \varepsilon < \infty.
+    \lim_{k\rightarrow \infty} \E{\norm{\tilde{x}_k}^2} = \varepsilon < \infty
 \end{equation*}
 %
 In practice, testing for mean-square stability implies verifying that the spectral radius of the operator $\Psi$, i.e., the operator defining the Markov jump linear system's covariance, is less than one.
 We denote an $N$-state Markov chain's transition probability matrix with $\Pi = \left\{ p_{i,j} \right\} \in \R^{N \times N}$; this matrix specifies the probability of transitioning from the $i$-th to the $j$-th Markov state.
 Additionally, $I_{n}$ is defined as the size $n \times n $ identity matrix and $\otimes$ denotes the Kronecker product.
-The following theorem then holds~\cite{Costa:2005}:
+The following theorem then holds~\cite{Costa:2005}.
 %
 \begin{theorem}[Mean-Square Stability]%
     \label{thm:mss}%
     The dynamical system in Equation~\eqref{eq:tv-clsys}, governed by an $N$-state Markov chain with transition probability matrix $\Pi \in \R^{N \times N}$, is MSS if:
     %
     \begin{equation*}%
-        \rho\funof{\Psi} < 1,
+        \rho\funof{\Psi} < 1
     \end{equation*}
     %
     where:
     %
     \begin{equation*}%
-        \Psi = \left( \Pi^\T{} \otimes I_{n^2} \right) \cdot \blkdiag{ \left\{ \clmat_i \otimes \clmat_i \, \mid \, i \in 1, 2, \ldots, N \right\} }.
+        \Psi = \left( \Pi^\T{} \otimes I_{n^2} \right) \cdot \blkdiag{ \left\{ \clmat_i \otimes \clmat_i \, \mid \, i \in 1, 2, \ldots, N \right\} }
     \end{equation*}
 \end{theorem}
 %
@@ -760,11 +770,11 @@ The system is therefore first evaluated in extensive simulations and tests~\cite
 
 % Describe our performance analysis
 Innumerable different methods for analysing control system performance have been developed.
-This thesis facilitates a performance analysis of real-time control systems subject to computational overruns, where the performance is evaluated on the closed-loop system using a stochastic quadratic cost function $J_k$,
+This thesis facilitates a performance analysis of real-time control systems subject to computational overruns, where the performance is evaluated on the closed-loop system using a stochastic quadratic cost function $J_k$:
 %
 \begin{equation}%
     \label{eq:cost}%
-    J_k = \E{\tilde{x}_k^\T{}\, Q\, \tilde{x}_k}.
+    J_k = \E{\tilde{x}_k^\T{}\, Q\, \tilde{x}_k}
 \end{equation}
 %
 Here $J_k$ is the closed-loop state's cost increment in the $k$-th period and $Q$ is a positive semidefinite weight matrix penalising large closed-loop state deviations.
@@ -841,5 +851,3 @@ Additionally, different complex scheduling policies and deadline overrun handlin
 One of the main disadvantages with \code{JitterTime} compared to \code{JitterBug} is that infinite horizon or stochastic timing scenarios might require a Monte Carlo or scenario theory based approach to provide accurate performance results.
 
 \mm{I think the \code{JitterBug} and \code{JitterTime} part comes a bit out of the blue, and provides a level of details that I am not sure is consistent with the rest. It is also not clear if this is your work or simply something that the community did and you are using in your papers. Also not clear if you are using it in your papers or not at this point.}
-
-\mm{You should have a description of \tZ{} and \tH{} near the \tK{}, \tS{} and \tQ{}.}
