@@ -151,14 +151,12 @@ Using $\Delta_\actuator = I$ and $\Delta_\actuator = 0$ to indicate, respectivel
 When $c=\cR$ or $c=\cN$, the sensor packet's outcome is irrelevant for the system dynamics.
 This follows since the control task does not poll the sensor channel for packets if it is still executing the body of the control algorithm (unless its outcome is $\cM$, since it is the first period that experiences an overrun).
 Again, note that many matrices are identical:
-%\begin{equation*}
-%    \clmat^{\Skip}_{\cF\cM\cT} = \clmat^{\Skip}_{\cF\cM\cF};\quad \clmat^{\Skip}_{\cT\cM\cT} = \clmat^{\Skip}_{\cT\cM\cF};\quad \clmat^{\Skip}_{\cT\cN\cT} = \clmat^{\Skip}_{\cT\cN\cF} = \clmat^{\Skip}_{\cF\cN\cT} = \clmat^{\Skip}_{\cF\cN\cF};\quad \clmat^{\Skip}_{\cF\cR\cT} = \clmat^{\Skip}_{\cT\cR\cT};\quad \clmat^{\Skip}_{\cF\cR\cF} = \clmat^{\Skip}_{\cT\cR\cF},
-%\end{equation*}
-\begin{align*}
-    \clmat^{\Skip}_{\cF\cM\cT} &= \clmat^{\Skip}_{\cF\cM\cF},\quad \clmat^{\Skip}_{\cT\cM\cT} = \clmat^{\Skip}_{\cT\cM\cF} \\
-    \clmat^{\Skip}_{\cT\cN\cT} &= \clmat^{\Skip}_{\cT\cN\cF} = \clmat^{\Skip}_{\cF\cN\cT} = \clmat^{\Skip}_{\cF\cN\cF} \\
-    \clmat^{\Skip}_{\cF\cR\cT} &= \clmat^{\Skip}_{\cT\cR\cT},\quad \clmat^{\Skip}_{\cF\cR\cF} = \clmat^{\Skip}_{\cT\cR\cF},
-\end{align*}
+\begin{equation*}
+\begin{matrix}
+    \clmat^{\Skip}_{\cF\cM\cT} = \clmat^{\Skip}_{\cF\cM\cF},\quad \clmat^{\Skip}_{\cT\cM\cT} = \clmat^{\Skip}_{\cT\cM\cF}, \quad \clmat^{\Skip}_{\cF\cR\cT} = \clmat^{\Skip}_{\cT\cR\cT},\quad \clmat^{\Skip}_{\cF\cR\cF} = \clmat^{\Skip}_{\cT\cR\cF} \\[1ex]
+    \clmat^{\Skip}_{\cT\cN\cT} = \clmat^{\Skip}_{\cT\cN\cF} = \clmat^{\Skip}_{\cF\cN\cT} = \clmat^{\Skip}_{\cF\cN\cF} \\
+    \end{matrix}
+\end{equation*}
 which can be used to simplify the stability analysis below.
 
 While we introduced the dynamical system change associated with different events (i.e., with different combinations of sensor channel $s$, actuator channel $a$, and computational outcome $c$), so far we only described the deterministic evolution of the system.

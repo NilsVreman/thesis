@@ -640,7 +640,7 @@ Using the introduced notation, the following definition provides a formal defini
 %
 \begin{definition}[Joint Spectral Radius]%
     \label{def:jsr}%
-    Given a bounded \mm{What does ``bounded'' mean here?} set of matrices $\Aa$, the \emph{joint spectral radius} (JSR) of $\Aa$ is defined as:
+    Given a bounded set of matrices $\Aa$, the \emph{joint spectral radius} (JSR) of $\Aa$ is defined as:
     \begin{equation*}
         \rho\funof{\Aa} = \underset{k\rightarrow\infty}{\lim{}\sup{}} \left\{ \norm{\clmat}^{\sfrac{1}{k}} \,\mid\, \clmat \in \Aa^k \right\}
     \end{equation*}
@@ -840,14 +840,8 @@ When the control task starts experiencing deadline overruns, the switching dynam
 
 % Mention some tools to analyse performance
 The research community developed multiple different tools to simplify the performance analysis of real-time embedded (or networked) control systems~\cite{Ohlin:2006}.
-For instance, \code{JitterBug}~\cite{Lincoln:2002} is a tool to evaluate precisely the quadratic cost function considered in this thesis~\eqref{eq:tr-cost} for mixed continuous-/discrete-time system components.
-The \code{JitterBug} toolbox models the execution time of different components as stochastic variables (in a Markov process) with known probabilistic properties.
-This allows the entire system to be modeled as a MJLS where the stationary performance can be computed by solving a set of linear equations.
-For the complex timing model adopted in this thesis -- with job-level individual overruns and communication errors -- more flexible tools are required.
-
-As a response, the \code{JitterTime} toolbox for Matlab\footnote{The \code{JitterTime} toolbox has also been translated to the open-source programming language Julia~\cite{Julia:2017} by personnel affiliated with the department of automatic control, Lund University, e.g., this thesis' author: \url{https://github.com/X-N-C/JitterTime.jl}.} was developed to provide similar functionality as \code{JitterBug}, but with more freedom for the user to design the different components' timing models.
+For instance, \code{JitterBug}~\cite{Lincoln:2002} and \code{JitterTime}~\cite{Cervin:2019} are tools to precisely evaluate the quadratic cost function considered in this thesis~\eqref{eq:tr-cost} for mixed continuous-/discrete-time system components.\footnote{The \code{JitterBug} toolbox models the execution time of different components as stochastic variables (in a Markov process) with known probabilistic properties.
+This allows the entire system to be modeled as a MJLS where the stationary performance can be computed by solving a set of linear equations. The \code{JitterTime} toolbox for Matlab and Julia~(\url{https://github.com/X-N-C/JitterTime.jl}) was developed to provide similar functionality, with more freedom for the user to design the different components' timing models.
 The user-driven timing models make it possible to analyse the quadratic cost function~\eqref{eq:tr-cost} when, for instance, the control jobs overrun their corresponding deadlines or the communication between different components is lost.
 Additionally, different complex scheduling policies and deadline overrun handling strategies, e.g., the \tK{}, \tS{}, or \tQ{} strategies, can freely be implemented.
-One of the main disadvantages with \code{JitterTime} compared to \code{JitterBug} is that infinite horizon or stochastic timing scenarios might require a Monte Carlo or scenario theory based approach to provide accurate performance results.
-
-\mm{I think the \code{JitterBug} and \code{JitterTime} part comes a bit out of the blue, and provides a level of details that I am not sure is consistent with the rest. It is also not clear if this is your work or simply something that the community did and you are using in your papers. Also not clear if you are using it in your papers or not at this point.}
+One of the main disadvantages with \code{JitterTime} compared to \code{JitterBug} is that infinite horizon or stochastic timing scenarios might require a Monte Carlo or scenario theory based approach to provide accurate performance results.}

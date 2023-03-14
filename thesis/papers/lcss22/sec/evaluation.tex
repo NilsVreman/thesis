@@ -21,8 +21,7 @@ All numerical examples have been computed on an Intel Core i5-8265U@1.60GHz CPU 
 We here analyse a stable discrete-time plant $\plant_1$, representative of the process industry~\cite{Hagglund:2002}, controlled using a PI-controller $\ctrler_1$ (sampled using the sampling period $\Ts = 0.5$~s):
 \begin{equation*}
     %plant = batch 4, ID 1
-    \begin{aligned}
-        \plant_1: \,\, &\left\{
+        \plant_1: \,\, \left\{
         \begin{aligned}
             x_{k+1} &= \begin{bmatrix}
                 0.606 & 0.304 & 0.076 \\
@@ -36,13 +35,14 @@ We here analyse a stable discrete-time plant $\plant_1$, representative of the p
             y_k &= \begin{bmatrix}
                 1 & 0 & 0
             \end{bmatrix} x_k
-        \end{aligned} \right. \\
-        \ctrler_1: \,\, &\left\{
+        \end{aligned} \right.
+\end{equation*}
+\begin{equation*}
+        \ctrler_1: \,\, \left\{
         \begin{aligned}
             z_{k+1} &= z_k + 0.359\, y_k \\
             u_{k+1} &= 0.454\, z_k + 0.633\, y_k
         \end{aligned} \right.
-    \end{aligned}
 \end{equation*}
 
 \afterpage{
