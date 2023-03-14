@@ -21,28 +21,28 @@ All numerical examples have been computed on an Intel Core i5-8265U@1.60GHz CPU 
 We here analyse a stable discrete-time plant $\plant_1$, representative of the process industry~\cite{Hagglund:2002}, controlled using a PI-controller $\ctrler_1$ (sampled using the sampling period $\Ts = 0.5$~s):
 \begin{equation*}
     %plant = batch 4, ID 1
-        \plant_1: \,\, \left\{
-        \begin{aligned}
-            x_{k+1} &= \begin{bmatrix}
-                0.606 & 0.304 & 0.076 \\
-                0 & 0.606 & 0.304 \\
-                0 & 0 & 0.606 \\
-            \end{bmatrix} x_k + \begin{bmatrix}
-                0.014 \\
-                0.091 \\
-                0.394 \\
-            \end{bmatrix} u_k \\
-            y_k &= \begin{bmatrix}
-                1 & 0 & 0
-            \end{bmatrix} x_k
-        \end{aligned} \right.
+    \plant_1: \,\, \left\{
+    \begin{aligned}
+        x_{k+1} &= \begin{bmatrix}
+            0.606 & 0.304 & 0.076 \\
+            0 & 0.606 & 0.304 \\
+            0 & 0 & 0.606 \\
+        \end{bmatrix} x_k + \begin{bmatrix}
+            0.014 \\
+            0.091 \\
+            0.394 \\
+        \end{bmatrix} u_k \\
+        y_k &= \begin{bmatrix}
+            1 & 0 & 0
+        \end{bmatrix} x_k
+    \end{aligned} \right.
 \end{equation*}
 \begin{equation*}
-        \ctrler_1: \,\, \left\{
-        \begin{aligned}
-            z_{k+1} &= z_k + 0.359\, y_k \\
-            u_{k+1} &= 0.454\, z_k + 0.633\, y_k
-        \end{aligned} \right.
+    \ctrler_1: \,\, \left\{
+    \begin{aligned}
+        z_{k+1} &= z_k + 0.359\, y_k \\
+        u_{k+1} &= 0.454\, z_k + 0.633\, y_k
+    \end{aligned} \right.
 \end{equation*}
 
 \afterpage{
@@ -89,26 +89,26 @@ Our second case study treats the stability analysis of the altitude control on a
 The dynamics are given by an unstable discrete-time model $\plant_2$, which is stabilised using an LQR-controller $\ctrler_2$ ($\Ts = 0.01$~s):
 \begin{equation*}
     \begin{aligned}
-        \plant_2: \,\, &\left\{
-        \begin{aligned}
-            x_{k+1} &= \begin{bmatrix}
-                0.999 & 0.012 & -5.5 e^{-4} \\
-                0.020 & 1 & -5.5 e^{-6} \\
-                5.0 e^{-5} & 0.005 & 1 \\
-            \end{bmatrix} x_k + \begin{bmatrix}
-                0.020 \\
-                2.0e^{-4} \\
-                3.3e^{-7} \\
-            \end{bmatrix}u_k \\
-            y_k &= I x_k
-        \end{aligned} \right. \\
-        \ctrler_2: \,\, &\left\{
-        \begin{aligned}
-            u_{k+1} &= -\begin{bmatrix}
-                3.380 & 3.417 & 1.846
-            \end{bmatrix} x_k - 0.322 u_k
-        \end{aligned}\right.
-    \end{aligned}
+    \plant_2: \,\, &\left\{
+    \begin{aligned}
+        x_{k+1} &= \begin{bmatrix}
+            0.999 & 0.012 & -5.5 e^{-4} \\
+            0.020 & 1 & -5.5 e^{-6} \\
+            5.0 e^{-5} & 0.005 & 1 \\
+        \end{bmatrix} x_k + \begin{bmatrix}
+            0.020 \\
+            2.0e^{-4} \\
+            3.3e^{-7} \\
+        \end{bmatrix}u_k \\
+        y_k &= I x_k
+    \end{aligned} \right. \\
+    \ctrler_2: \,\, &\left\{
+    \begin{aligned}
+        u_{k+1} &= -\begin{bmatrix}
+            3.380 & 3.417 & 1.846
+        \end{bmatrix} x_k - 0.322 u_k
+    \end{aligned}\right.
+\end{aligned}
 \end{equation*}
 
 Table~\ref{table:unstable} displays the results.
