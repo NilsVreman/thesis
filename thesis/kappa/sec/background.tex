@@ -92,13 +92,13 @@ The communication protocol defines the rules determining how the transmitter sho
 The rules are highly dependent on the communication protocol and its application domain.
 We illustrate the idea of communication protocols with an example: consider the case where a transmitter wants to send the character \code{R} using the universal asynchronous receiver-transmitter (UART) protocol\footnote{Assuming ASCII encoding of the character, 8 data bits, no parity, and 1 stop bit, i.e., UART 8-N-1.}.
 The rules defined by this protocol states that each data packet contains exactly 8 bits of information, is prepended with a start bit ($0$), and is appended with a stop bit ($1$).
-Since the binary representation of \code{R} is $01010010$ (using ASCII encoding), the encoded character's packet representation to be sent over the network is then:
+Since the binary representation of \code{R} is $01010010$ (using ASCII encoding), the encoded character's packet representation to be sent over the network is then
 %
 \begin{equation*}
     \underbracket{0}_{\text{Start bit}} \;\, \underbracket{01010010}_{\text{Data bits}} \;\, \underbracket{1}_{\text{End bit}}.
 \end{equation*}
 %
-Transmitting a message, such as \code{RTS}, thus involve encoding each character individually before transmitting the encoded bit stream in sequence:
+Transmitting a message, such as \code{RTS}, thus involve encoding each character individually before transmitting the encoded bit stream in sequence,
 %
 \begin{equation*}
     0\underbracket{01010010}_{\code{R}}1 \;\;
@@ -167,10 +167,6 @@ Fundamentally, two different approaches have been taken to scheduling to a multi
 The former assumes one scheduler responsible for scheduling all the tasks in a global ready queue to the individual cores based on available and required resources.
 On the other hand, partitioned scheduling (sometimes referred to as \emph{clustered} scheduling) involves dividing the tasks into partitions that are then mapped to separate cores with individual schedulers.
 Despite having additional computational resources to work with, multi-core systems are subject to deadline overruns similarly to single-core systems, when the capacity is exceeded or due to other events such as deadlocks and locking of shared resources.
-% MM: I think I would get rid of what follows (commented out), you already made your point IMHO.
-%Trivially, since partitioned multi-core scheduled systems can be perceived as a set of single-core scheduled systems, they can also experience the same computational overruns that a single-core system can.
-%For global multi-core schedulers, \nv{I need some help completing this sentence, I got lost in pfair schedulers and got confused}
-%\fix{Concluding sentence that confirms that this thesis is relevant even for multi-core systems.}
 
 
 \subsubsection*{Tasks}%
@@ -196,9 +192,9 @@ Respectively, if the job completes before its deadline, it \emph{meets} its dead
 %
 \begin{definition}[Deadline Overrun]%
     \label{def:kappa:overrun}%
-    The $k$-th job ($j_k$) of a task $\tau_i$ is said to experience a deadline overrun if:
+    The $k$-th job ($j_k$) of a task $\tau_i$ is said to experience a deadline overrun if
     \begin{equation*}
-        f_k > a_k + d_i
+        f_k > a_k + d_i.
     \end{equation*}
 \end{definition}
 %
@@ -256,9 +252,9 @@ With a slight abuse of notation we will let $w \vdash \lambda$ represent the cas
 %
 \begin{definition}[Satisfaction Set]
     The \emph{satisfaction set} $\sset{N}{\lambda}$ of an arbitrary weakly-hard constraint $\lambda$, is the set of all length $N \in \N_{>}$ words $w$ satisfying $\lambda$.
-    Formally:
+    Formally,
     \begin{equation*}
-        \sset{N}{\lambda} = \left\{ w \mid w \in \Sigma^N,\, w \vdash \lambda \right\}
+        \sset{N}{\lambda} = \left\{ w \mid w \in \Sigma^N,\, w \vdash \lambda \right\}.
     \end{equation*}
 \end{definition}
 %
@@ -274,18 +270,18 @@ We formalise the partial ordering in the following definition:
 \begin{definition}[Constraint Dominance]%
     \label{def:kappa:dominance}%
     Given two arbitrary weakly-hard constraints $\lambda_1$ and $\lambda_2$, we say that $\lambda_1$ \emph{dominates} $\lambda_2$ (denoted $\lambda_1 \preceq \lambda_2$) if and only if all words satisfying $\lambda_1$ also satisfy $\lambda_2$.
-    Formally:
+    Formally,
     \begin{equation*}
-        \lambda_1 \preceq \lambda_2 \Leftrightarrow \sset{}{\lambda_1} \subseteq \sset{}{\lambda_2}
+        \lambda_1 \preceq \lambda_2 \Leftrightarrow \sset{}{\lambda_1} \subseteq \sset{}{\lambda_2}.
     \end{equation*}
 \end{definition}
 %
 Definition~\ref{def:kappa:dominance} confirms that $\lambda_1 = \binom{1}{1}$ dominates $\lambda_2 = \binom{0}{1}$, because $\sset{}{\lambda_1} \subseteq \sset{}{\lambda_2}$.
 Many constraint dominance relations have been derived in literature\footnote{In Paper III we extend the known orderings with two theorems relating the \tAH{} and \tRH{} constraints, thus making it possible to relate \emph{all} the different weakly-hard constraints.}~\cite{Bernat:2001}.
-Additionally, the partial ordering motivates the notion of \emph{constraint equivalence}:
+Additionally, the partial ordering motivates the notion of \emph{constraint equivalence}
 %
 \begin{equation*}
-    \lambda_1 \preceq \lambda_2 \land \lambda_2 \preceq \lambda_1 \Leftrightarrow \lambda_1 \equiv \lambda_2
+    \lambda_1 \preceq \lambda_2 \land \lambda_2 \preceq \lambda_1 \Leftrightarrow \lambda_1 \equiv \lambda_2,
 \end{equation*}
 %
 where $\land$ is the logical conjunction operator.
@@ -293,10 +289,10 @@ The constraint equivalence is also expressible through the satisfaction sets, i.
 
 Despite not having gained a lot of traction in the research community, a real-time task can be subjected to \emph{multiple} weakly-hard constraints.
 However, the nature of the weakly-hard constraints still require that every constraint is satisfied for a particular sequence.
-Since one of the main mathematical advantages of the weakly-hard constraints is that they are fully representable by the closed set that is their respective satisfaction sets; if a task $\tau$ satisfies a set of $N$ constraints $\Lambda = \left\{ \lambda_1, \lambda_2, \ldots, \lambda_N \right\}$, the joint satisfaction set has to be the intersection of all the individual satisfaction sets:
+Since one of the main mathematical advantages of the weakly-hard constraints is that they are fully representable by the closed set that is their respective satisfaction sets; if a task $\tau$ satisfies a set of $N$ constraints $\Lambda = \left\{ \lambda_1, \lambda_2, \ldots, \lambda_N \right\}$, the joint satisfaction set has to be the intersection of all the individual satisfaction sets
 %
 \begin{equation*}
-    \sset{}{\Lambda} = \bigcap_{i=0}^N \, \sset{}{\lambda_i}
+    \sset{}{\Lambda} = \bigcap_{i=0}^N \, \sset{}{\lambda_i}.
 \end{equation*}
 
 % Scheduler deadline handling
@@ -304,7 +300,8 @@ Since one of the main mathematical advantages of the weakly-hard constraints is 
 \begin{figure}[t]
     \centering
     \input{\figdir/schedule-overrun}
-    \caption{\fix{I know this figure sucks, but I wanted an initial placeholder}}
+    \caption{Example of the execution trace belonging to a task $\tau$, where four jobs are depicted.
+    The $k+3$-rd job reaches its corresponding deadline (the activation of the next job) without having completed its execution.}
     \label{fig:schedule}
 \end{figure}
 
@@ -384,11 +381,10 @@ In other words, if there exists a permissible sequence of deadline hits and miss
 When modelling stochastic computational overruns\footnote{The Markov chain is utilised in Papers~II and V.}, the Markov chain models are naturally better-suited than the automaton model.
 The MC is represented by a set of states $v_i \in \VV{}$ where the transitions between states is again a triplet $e_{i, j} = (v_i, v_j, p_{i, j}) \in \EE{}$.
 Unlike the automata model, the transition here defines a transitional probability $p_{i, j}$ between two states $v_i$ and $v_j$, i.e., a transition from state $v_i$ to state $v_j$ occurs with probability $p_{i, j} \in [0, 1]$.
-Trivially, the cumulative probability of leaving any state $v_i$ is $1$:
+Trivially, the cumulative probability of leaving any state $v_i$ is $1$
 %
 \begin{equation*}
-    %\sum_{j=0}^{\abs{\VV{}}}\, p_{i, j} = 1.
-    \sum_{v_j\in\VV{}}\, p_{i, j} = 1
+    \sum_{v_j\in\VV{}}\, p_{i, j} = 1.
 \end{equation*}
 %
 Note that $p_{i, i}$ is not necessarily $0$, meaning that with probability $p_{i, i}$ state $v_i$ remains the active state.
@@ -427,26 +423,26 @@ This is a deterministic transition (no probabilities involved) in the automaton,
 By omitting the implementation details, such as the real-time system's hardware layer and operating system, the remaining components are the mathematical models of the plant and controllers.
 Figure~\ref{fig:control-structure-abstraction} highlights how these models relate to the relevant system architecture.
 It is the purpose of computer-controlled systems theory to model and control continuous-time systems via digital components and discrete-time models~\cite{Astrom:1997}.
-The mathematical models characterise the system's behaviour in time, typically via a dynamical system of differential (or difference) equations written on \emph{state-space} form:
+The mathematical models characterise the system's behaviour in time, typically via a dynamical system of differential (or difference) equations written on \emph{state-space} form
 %
 \begin{equation}%
     \label{eq:state-space}%
     \left\{\begin{aligned}
         \dot{x}(t) &= f(x(t),\, u(t),\, t) \\
-        y(t) &= g(x(t),\, u(t),\, t) \\
+        y(t) &= g(x(t),\, u(t),\, t). \\
     \end{aligned}\right.
 \end{equation}
 
 Practically all real-world plants can be modelled using continuous-time, non-linear state-space equations on the same form as Equation~\eqref{eq:state-space}.
 The physical properties of the plant (e.g., velocity, position, rotation, etc.) are collected in the \emph{state vector} $x(t) \in \R^{n_x}$, the exogenous signals affecting the plant are collected in the \emph{input vector} $u(t) \in \R^{n_u}$, and the measurable quantities are collected in the \emph{output vector} $y(t) \in \R^{n_y}$.
 The dynamical behaviour of the system is described by the functions $f$ and $g$, which we say are \emph{time-variant} if they explicitly depend on the time variable $k$ and \emph{time-invariant} if they do not, i.e., if $f(x(t),\, u(t),\, t) = f(x(t),\, u(t))$ and $g(x(t),\, u(t),\, t) = g(x(t),\, u(t))$.
-A state-space system is linear if the functions $f$ and $g$ can be expressed as linear combinations of their arguments, i.e., a linear state-space system can be written as:
+A state-space system is linear if the functions $f$ and $g$ can be expressed as linear combinations of their arguments, i.e., a linear state-space system can be written as
 %
 \begin{equation}%
     \label{eq:linear-state-space}%
     \left\{\begin{aligned}
         \dot{x}(t) &= \Ap_c(t)\,x(t) + \Bp_c(t)\,u(t) \\
-        y(t) &= \Cp_c(t)\,x(t) + \Dp_c(t)\,u(t) \\
+        y(t) &= \Cp_c(t)\,x(t) + \Dp_c(t)\,u(t). \\
     \end{aligned}\right.
 \end{equation}
 %
@@ -461,13 +457,13 @@ One of the most commonly applied sampling techniques is the zero-order hold (ZOH
 The sensors are generally configured to sample the plant at the discrete time instants when the control signal to the plant changes.
 In other words, if the DAC receives and converts discrete values at time instants $\left\{\, t_k \,\right\}_k$, the sensors sample the system in the same time points.
 For periodically sampled systems, the sampling instants are equidistant with a sampling period of $\Ts$, i.e., $t_k = k\cdot \Ts$.
-The resulting discrete-time, LTI model of the plant $\plant$ is then:
+The resulting discrete-time, LTI model of the plant $\plant$ is then
 %
 \begin{equation}%
     \label{eq:discrete-lti-plant}%
     \plant \; : \; \left\{\begin{aligned}
         x_{k+1} &= \Ap\,x_k + \Bp\,u_k + \Wp\, w_k\\
-        y_k &= \Cp\,x_k + \Dp\,u_k \\
+        y_k &= \Cp\,x_k + \Dp\,u_k, \\
     \end{aligned}\right.
 \end{equation}
 %
@@ -477,24 +473,24 @@ The disturbance process $w_k$ is typically a stochastic process with (assumed) k
 
 Similarly to how the plant is described using a dynamical system on state-space form, controllers are typically also defined on the same format (denoted the controller's \emph{control law}).
 Section~\ref{sec:background:rts} described how the control algorithm is implemented as a function governed by a task executing in the RTOS; modern controllers are hence unlikely to be continuous.
-Therefore, the discrete, time-invariant state-space representation of a general control law is:
+Therefore, the discrete, time-invariant state-space representation of a general control law is
 %
 \begin{equation}%
     \label{eq:discrete-state-space}%
     \left\{\begin{aligned}
         z_{k+1} &= p(z_k,\, y_k) \\
-        u_k &= q(z_k,\, y_k) \\
+        u_k &= q(z_k,\, y_k). \\
     \end{aligned}\right.
 \end{equation}
 %
 Here, the \emph{control state vector} $z_k \in \R^{n_z}$ represent the controller's dynamics, the \emph{control signals} $u_k \in \R^{n_u}$ are also the inputs to the plant, and the functions $p$ and $q$ govern the dynamical behaviour of the controller.
-Similar to the plant, if $p$ and $q$ can be expressed as linear combinations of their arguments, i.e., $p(z_k,\, y_k) = \Ac\,z_k+\Bc\,y_k$ and $q(z_k,\, y_k) = \Cc\,z_k+\Dc\,y_k$, then the controller $\ctrler$ is linear:
+Similar to the plant, if $p$ and $q$ can be expressed as linear combinations of their arguments, i.e., $p(z_k,\, y_k) = \Ac\,z_k+\Bc\,y_k$ and $q(z_k,\, y_k) = \Cc\,z_k+\Dc\,y_k$, then the controller $\ctrler$ is linear
 %
 \begin{equation}%
     \label{eq:discrete-lti-ctrler}%
     \ctrler \; : \; \left\{\begin{aligned}
         z_{k+1} &= \Ac\,z_k + \Bc\,y_k \\
-        u_k &= \Cc\,z_k + \Dc\,y_k \\
+        u_k &= \Cc\,z_k + \Dc\,y_k. \\
     \end{aligned}\right.
 \end{equation}
 %
@@ -520,14 +516,14 @@ In Sections~\ref{sec:background:stability} and~\ref{sec:background:performance},
 However, to discuss stability and performance in real-time control systems, it is crucial to first properly introduce \emph{feedback}.
 The sensor signals that are received at the controller are processed by the control algorithm before the computed control signal is transmitted back to the actuators.
 Routing signals back into the plant like this is called \emph{feedback control} (or \emph{closed-loop control}).
-Typically, the closed-loop system (i.e., all components involved in the closed-loop control) is also described by a dynamical equation, acquired by combining Equations~\eqref{eq:discrete-lti-plant} and~\eqref{eq:discrete-lti-ctrler}:
+Typically, the closed-loop system (i.e., all components involved in the closed-loop control) is also described by a dynamical equation, acquired by combining Equations~\eqref{eq:discrete-lti-plant} and~\eqref{eq:discrete-lti-ctrler}
 %
 \begin{equation}%
     \label{eq:clsys}%
-    \tilde{x}_{k+1} = \clmat\, \tilde{x}_k + \clinp_w\, w_k
+    \tilde{x}_{k+1} = \clmat\, \tilde{x}_k + \clinp_w\, w_k,
 \end{equation}
 %
-where $\tilde{x}_k$ is the closed-loop system's state vector, $\clmat$ is the closed-loop system matrix responsible for encoding the closed-loop system's dynamics, and:
+where $\tilde{x}_k$ is the closed-loop system's state vector, $\clmat$ is the closed-loop system matrix responsible for encoding the closed-loop system's dynamics, and
 %
 \begin{equation*}%
     \clinp_w = \begin{bmatrix}
@@ -541,13 +537,13 @@ is the dynamic matrix of the exogenous stochastic variable $w_k$.
 Thus far, the system execution has been assumed to be faultless.
 However, we are interested in analysing the real-time control system when the control tasks are subject to computational overruns.
 Despite only having system components that are discrete-time, linear, and time-invariant, the closed-loop system dynamics become time-variant when introducing computational faults.
-In place of Equation~\eqref{eq:discrete-lti-ctrler}, the controller $\ctrler$ is then characterised by:
+In place of Equation~\eqref{eq:discrete-lti-ctrler}, the controller $\ctrler$ is then characterised by
 %
 \begin{equation}%
     \label{eq:tv-ctrler}%
     \ctrler \; : \; \left\{\begin{aligned}
         z_{k+1} &= \Ac_{\theta_k}\,z_k + \Bc_{\theta_k}\,y_k \\
-        u_k &= \Cc_{\theta_k}\,z_k + \Dc_{\theta_k}\,y_k \\
+        u_k &= \Cc_{\theta_k}\,z_k + \Dc_{\theta_k}\,y_k, \\
     \end{aligned}\right.
 \end{equation}
 %
@@ -555,11 +551,11 @@ where $\theta_k$ is the process governing the overruns, e.g., a weakly-hard sequ
 For instance, given a sequence $w$ of job outcomes adhering to the weakly-hard \tRH{} constraint $\genfrac{<}{>}{0pt}{}{2}{5}$, e.g., $w = 110011011$; indexing the $k$-th character in the word $w$ as $c_k$, the outcome process is $\theta_k = c_k$.
 The controller dynamics then depend on whether the deadline was met ($1$) or overrun ($0$) as well as the scheduler's overrun policy, i.e., whether \tK{}, \tS{}, \tQ{}, or some other deadline overrun strategy was employed.
 
-The changing control equations do in turn also change the closed-loop dynamics from Equation~\eqref{eq:clsys}:
+The changing control equations do in turn also change the closed-loop dynamics from Equation~\eqref{eq:clsys}
 %
 \begin{equation}%
     \label{eq:tv-clsys}%
-    \tilde{x}_{k+1} = \clmat_{\theta_k}\, \tilde{x}_k + \clinp_w\, w_k
+    \tilde{x}_{k+1} = \clmat_{\theta_k}\, \tilde{x}_k + \clinp_w\, w_k.
 \end{equation}
 %
 If $\theta_k$ is governed by a Markov process, then Equation~\eqref{eq:tv-clsys} is denoted a \emph{Markov jump linear system} (MJLS)~\cite{Feng:1992}.
@@ -589,22 +585,22 @@ Very simplified, the criteria could be summarised by:
 \end{itemize}
 %
 In practice, these conditions directly correspond to verifying that all the system's eigenvalues are either strictly in the left half plane (continuous systems) or strictly inside the unit disc (discrete systems).
-The Hurwitz stability criterion for a continuous-time LTI system with system matrix $\clmat^c$ and the Schur stability criterion for a discrete-time LTI system with system matrix $\clmat$ is then:
+The Hurwitz stability criterion for a continuous-time LTI system with system matrix $\clmat^c$ and the Schur stability criterion for a discrete-time LTI system with system matrix $\clmat$ is then
 %
 \begin{equation*}%
     \begin{matrix*}[l]
-        \text{Hurwitz: } & \max{ \left\{ \mathrm{Re}\funof{\eig{i}{\clmat^c}} \right\}} < 0 \\
-        \text{Schur: } & \max{ \left\{ \abs{\eig{i}{\clmat}} \right\}} < 1
+        \text{Hurwitz: } & \max{ \left\{ \mathrm{Re}\funof{\eig{i}{\clmat^c}} \right\}} < 0, \\
+        \text{Schur: } & \max{ \left\{ \abs{\eig{i}{\clmat}} \right\}} < 1,
     \end{matrix*}
 \end{equation*}
 %
 where $\eig{i}{\clmat}$ retrieves the $i$-th eigenvalue of $\clmat$ and $\mathrm{Re}\funof{\cdot}$ extracts the real-part of a complex number (element-wise when applied to a vector).
 It is worth noting that the Schur stability criterion is dependent on the \emph{spectral radius} of the system, i.e., the maximum asymptotic growth rate of the system.
-Denoting with $\rho\funof{\clmat}$ the spectral radius of a square matrix $\clmat \in \R^{n \times n}$, it is then defined as\footnote{The second equality is a well-established relation known as Gelfand's formula. The equality holds true regardless of the chosen matrix norm.}:
+Denoting with $\rho\funof{\clmat}$ the spectral radius of a square matrix $\clmat \in \R^{n \times n}$, it is then defined as\footnote{The second equality is a well-established relation known as Gelfand's formula. The equality holds true regardless of the chosen matrix norm.}
 %
 \begin{equation}%
     \label{eq:spectral-radius}%
-    \rho\funof{\clmat} = \max \left\{ \abs{\eig{1}{\clmat}}, \abs{\eig{2}{\clmat}}, \ldots, \abs{\eig{n}{\clmat}} \right\} = \lim_{k\rightarrow\infty} \norm{\clmat^k}^{\sfrac{1}{k}}
+    \rho\funof{\clmat} = \max \left\{ \abs{\eig{1}{\clmat}}, \abs{\eig{2}{\clmat}}, \ldots, \abs{\eig{n}{\clmat}} \right\} = \lim_{k\rightarrow\infty} \norm{\clmat^k}^{\sfrac{1}{k}}.
 \end{equation}
 
 \subsubsection*{Deterministic Switching Stability}%
@@ -629,10 +625,10 @@ In fact, the JSR generalises the spectral radius to a set of matrices $\Aa = \le
 For the switched dynamical system in Equation~\eqref{eq:tv-clsys}, each matrix $\clmat_i \in \Aa$ is a unique matrix describing one switching mode of $\theta_k$ and the JSR is then the maximal asymptotic growth rate of the closed-loop states $\tilde{x}_k$ under arbitrary switching of the matrices $\clmat_i \in \Aa$.
 Trivially, if the switching set only contains one matrix, i.e., $\Aa = \left\{ \clmat \right\}$, then the joint spectral radius and the spectral radius are equivalent.
 
-To simplify the generalisation, we borrow the following notation from~\cite{Jungers:2009}:
+To simplify notation, we borrow the following definition from~\cite{Jungers:2009}
 %
 \begin{equation*}
-    \Aa^k \triangleq \left\{ \clmat_1 \cdots \clmat_k \,\mid\, \clmat_i \in \Aa \right\}
+    \Aa^k \triangleq \left\{ \clmat_1 \cdots \clmat_k \,\mid\, \clmat_i \in \Aa \right\}.
 \end{equation*}
 %
 Thus, $\Aa^k$ is the set of \emph{all} matrix multiplications involving $k$ matrices from the set $\Aa$.
@@ -640,9 +636,9 @@ Using the introduced notation, the following definition provides a formal defini
 %
 \begin{definition}[Joint Spectral Radius]%
     \label{def:jsr}%
-    Given a bounded set of matrices $\Aa$, the \emph{joint spectral radius} (JSR) of $\Aa$ is defined as:
+    Given a bounded set of matrices $\Aa$, the \emph{joint spectral radius} (JSR) of $\Aa$ is defined as
     \begin{equation*}
-        \rho\funof{\Aa} = \underset{k\rightarrow\infty}{\lim{}\sup{}} \left\{ \norm{\clmat}^{\sfrac{1}{k}} \,\mid\, \clmat \in \Aa^k \right\}
+        \rho\funof{\Aa} = \underset{k\rightarrow\infty}{\lim{}\sup{}} \left\{ \norm{\clmat}^{\sfrac{1}{k}} \,\mid\, \clmat \in \Aa^k \right\}.
     \end{equation*}
 \end{definition}
 
@@ -655,7 +651,7 @@ Stability of a switched dynamical system via the joint spectral radius is outlin
     For any bounded set of matrices $\Aa$, the corresponding switched dynamical system is stable if and only if $\rho\funof{\Aa} < 1$.
 \end{theorem}
 %
-Furthermore, Theorem~\ref{thm:switching-stability} raises an interesting question about the converse case: which is the switching sequence $\clmat_1 \cdots \clmat_k \in \Aa^k$ resulting in $\rho\funof{\Aa} \geq 1$? %\mm{I think I am a bit confused by $\clmat \in \Aa^k$ -- I guess what confuses me is the use of $\clmat$ when you also have $\clmat_1$ in the previous equation, and you also wrote $\clmat_{WC}$ above. Here $\clmat$ is one of the matrices that belong to $\Aa^k$ but then I would somehow expect it to have a subscript, and the subscript cannot be $i$ or anything like it (I get it) because then it would be the $i$-th of the $k$ matrices. Maybe you could reuse the WC subscript? Although it is a slight abuse in notation because it is not necessarily the only one that exposes instability. Maybe you could use $\bar{\clmat}$?} 
+Furthermore, Theorem~\ref{thm:switching-stability} raises an interesting question about the converse case: which is the switching sequence $\clmat_1 \cdots \clmat_k \in \Aa^k$ resulting in $\rho\funof{\Aa} \geq 1$?
 To the best of this thesis' author's knowledge, there are currently no results outlining \emph{which} sequence that destabilises the switched dynamical system.
 
 The JSR is a powerful tool since it makes it possible to determine whether a switching system is asymptotically stable ($\rho\funof{\Aa} < 1$) or not ($\rho\funof{\Aa} \geq 1$).
@@ -672,7 +668,7 @@ Instead, the authors of~\cite{Parrilo:2008} prove that if the solution to the SO
     \item $\gamma < 1$,
 \end{enumerate*}
 %
-then $p\funof{x}$ is positive definite and decreases along all trajectories, meaning that $p\funof{x}$ is a Lyapunov function for the switching system defined by $\Aa$:
+then $p\funof{x}$ is positive definite and decreases along all trajectories, meaning that $p\funof{x}$ is a Lyapunov function for the switching system defined by $\Aa$.
 %
 \begin{equation}%
     \label{eq:sos}%
@@ -681,7 +677,7 @@ then $p\funof{x}$ is positive definite and decreases along all trajectories, mea
         \textrm{s.t.}\quad&
         \left\{\begin{matrix*}[l]
                 p\funof{x} &\text{is SOS}\\
-                \gamma^{2d} p\funof{x} - p\funof{\clmat_i x} &\text{is SOS},\; \clmat_i \in \Aa
+                \gamma^{2d} p\funof{x} - p\funof{\clmat_i x} &\text{is SOS},\; \clmat_i \in \Aa.
         \end{matrix*}\right.
     \end{aligned}
 \end{equation}
@@ -701,10 +697,10 @@ This certificate does in turn provide probabilistic guarantees that the MJLS wil
 
 Since MJLS are stochastic by nature, the existing stability analyses typically investigate how the expected value of the system's states evolve in time.
 Arguably the most well-known stability analysis methods are \emph{stochastic stability} (SS) and different variants of \emph{mean-square stability} (MSS)~\cite{Feng:1992}.
-Paraphrased from~\cite{Costa:2005}, we say that the dynamical system in~\eqref{eq:tv-clsys}, governed by a Markov process $\theta_k$, is mean-square stable if:
+Paraphrased from~\cite{Costa:2005}, we say that the dynamical system in~\eqref{eq:tv-clsys}, governed by a Markov process $\theta_k$, is mean-square stable if
 %
 \begin{equation*}%
-    \lim_{k\rightarrow \infty} \E{\norm{\tilde{x}_k}^2} = \varepsilon < \infty
+    \lim_{k\rightarrow \infty} \E{\norm{\tilde{x}_k}^2} = \varepsilon < \infty.
 \end{equation*}
 %
 In practice, testing for mean-square stability implies verifying that the spectral radius of the operator $\Psi$, i.e., the operator defining the Markov jump linear system's covariance, is less than one.
@@ -714,16 +710,16 @@ The following theorem then holds~\cite{Costa:2005}.
 %
 \begin{theorem}[Mean-Square Stability]%
     \label{thm:mss}%
-    The dynamical system in Equation~\eqref{eq:tv-clsys}, governed by an $N$-state Markov chain with transition probability matrix $\Pi \in \R^{N \times N}$, is MSS if:
+    The dynamical system in Equation~\eqref{eq:tv-clsys}, governed by an $N$-state Markov chain with transition probability matrix $\Pi \in \R^{N \times N}$, is MSS if
     %
     \begin{equation*}%
-        \rho\funof{\Psi} < 1
+        \rho\funof{\Psi} < 1,
     \end{equation*}
     %
-    where:
+    where
     %
     \begin{equation*}%
-        \Psi = \left( \Pi^\T{} \otimes I_{n^2} \right) \cdot \blkdiag{ \left\{ \clmat_i \otimes \clmat_i \, \mid \, i \in 1, 2, \ldots, N \right\} }
+        \Psi = \left( \Pi^\T{} \otimes I_{n^2} \right) \cdot \blkdiag{ \left\{ \clmat_i \otimes \clmat_i \, \mid \, i \in 1, 2, \ldots, N \right\} }.
     \end{equation*}
 \end{theorem}
 %
@@ -770,11 +766,11 @@ The system is therefore first evaluated in extensive simulations and tests~\cite
 
 % Describe our performance analysis
 Innumerable different methods for analysing control system performance have been developed.
-This thesis facilitates a performance analysis of real-time control systems subject to computational overruns, where the performance is evaluated on the closed-loop system using a stochastic quadratic cost function $J_k$:
+This thesis facilitates a performance analysis of real-time control systems subject to computational overruns, where the performance is evaluated on the closed-loop system using a stochastic quadratic cost function
 %
 \begin{equation}%
     \label{eq:cost}%
-    J_k = \E{\tilde{x}_k^\T{}\, Q\, \tilde{x}_k}
+    J_k = \E{\tilde{x}_k^\T{}\, Q\, \tilde{x}_k}.
 \end{equation}
 %
 Here $J_k$ is the closed-loop state's cost increment in the $k$-th period and $Q$ is a positive semidefinite weight matrix penalising large closed-loop state deviations.
@@ -786,20 +782,20 @@ With these assumptions, together with the initial condition on the closed-loop s
 
 The expression in Equation~\eqref{eq:cost} is difficult to compute in practice.
 Instead, it is easier to first transform the cost $J_k$ into an equivalent form before evaluating it.
-We define the closed-loop system's mean value and covariance functions as $m_k$ and $P_k$ respectively:
+We define the closed-loop system's mean value and covariance functions as $m_k$ and $P_k$ respectively
 %
 \begin{equation}%
     \label{eq:cl-def}%
-    m_k = \E{\tilde{x}_k}, \quad P_k = \cov{\tilde{x}_k} = \E{\tilde{x}_k\, \tilde{x}_k^\T{}} - \E{\tilde{x}_k}\,\E{\tilde{x}_k}^\T{}
+    m_k = \E{\tilde{x}_k}, \quad P_k = \cov{\tilde{x}_k} = \E{\tilde{x}_k\, \tilde{x}_k^\T{}} - \E{\tilde{x}_k}\,\E{\tilde{x}_k}^\T{}.
 \end{equation}
 %
-Note that because $\E{w_k} = 0$, the mean value of the state adhere to the following dynamical equation:
+Note that because $\E{w_k} = 0$, the mean value of the state adhere to the following dynamical equation
 %
 \begin{equation*}%
-    m_{k+1} = \E{\clmat\,\tilde{x}_k + \clinp_w\,w_k} = \clmat\, m_k
+    m_{k+1} = \E{\clmat\,\tilde{x}_k + \clinp_w\,w_k} = \clmat\, m_k.
 \end{equation*}
 %
-From~\eqref{eq:cl-def} it then follows that~\eqref{eq:cost} can equivalently be written as~\cite{Bates:2011}:
+From~\eqref{eq:cl-def} it then follows that~\eqref{eq:cost} can equivalently be written as~\cite{Bates:2011}
 %
 \begin{equation}%
     \label{eq:tr-cost}%
@@ -818,7 +814,7 @@ Here, $\trace{\cdot}$ computes the trace of its argument.
 If the condition $\E{\tilde{x}_0} = m_0 = 0$ is enforced, the expression can be reduced to solving $J_k = \trace{Q\, P_k}$.
 
 Solving Equation~\eqref{eq:tr-cost} still requires knowledge about how the closed-loop state's covariance $P_k$ propagates in time.
-Recalling that $\tilde{x}_k$ and $w_k$ are independent, evolving the covariance results in the following dynamical equation:
+Recalling that $\tilde{x}_k$ and $w_k$ are independent, evolving the covariance results in the following dynamical equation
 %
 \begin{equation}%
     \label{eq:cov}%
@@ -841,7 +837,8 @@ When the control task starts experiencing deadline overruns, the switching dynam
 % Mention some tools to analyse performance
 The research community developed multiple different tools to simplify the performance analysis of real-time embedded (or networked) control systems~\cite{Ohlin:2006}.
 For instance, \code{JitterBug}~\cite{Lincoln:2002} and \code{JitterTime}~\cite{Cervin:2019} are tools to precisely evaluate the quadratic cost function considered in this thesis~\eqref{eq:tr-cost} for mixed continuous-/discrete-time system components.\footnote{The \code{JitterBug} toolbox models the execution time of different components as stochastic variables (in a Markov process) with known probabilistic properties.
-This allows the entire system to be modeled as a MJLS where the stationary performance can be computed by solving a set of linear equations. The \code{JitterTime} toolbox for Matlab and Julia~(\url{https://github.com/X-N-C/JitterTime.jl}) was developed to provide similar functionality, with more freedom for the user to design the different components' timing models.
-The user-driven timing models make it possible to analyse the quadratic cost function~\eqref{eq:tr-cost} when, for instance, the control jobs overrun their corresponding deadlines or the communication between different components is lost.
+This allows the entire system to be modeled as a MJLS where the stationary performance can be computed by solving a set of linear equations.
+The \code{JitterTime} toolbox for Matlab and Julia~(\url{https://github.com/X-N-C/JitterTime.jl}) was developed to provide similar functionality, with more freedom for the user to design the different components' timing models.
+These timing models make it possible to analyse the quadratic cost function~\eqref{eq:tr-cost} when, for instance, the control jobs overrun their corresponding deadlines or the communication between different components is lost.
 Additionally, different complex scheduling policies and deadline overrun handling strategies, e.g., the \tK{}, \tS{}, or \tQ{} strategies, can freely be implemented.
 One of the main disadvantages with \code{JitterTime} compared to \code{JitterBug} is that infinite horizon or stochastic timing scenarios might require a Monte Carlo or scenario theory based approach to provide accurate performance results.}
