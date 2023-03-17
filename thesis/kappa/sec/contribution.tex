@@ -3,16 +3,16 @@
 %
 The main scientific contribution of this thesis is presented in the five papers that follow this chapter.
 This chapter provides an overview of the scientific contributions of each of the five publications to the real-time control research.
-Additionally, each authors's contribution to the papers is described in detail.
-We conclude the chapter with Section~\ref{sec:additional-publications}, that lists additional peer-reviewed publications that were excluded from this thesis.
+Additionally, each author's contribution to the papers is described in detail.
+We conclude the chapter with Section~\ref{sec:additional-publications}, which lists additional peer-reviewed publications that were excluded from this thesis.
 These publications have been omitted to improve the cohesion of this manuscript, as they cover tangential topics with respect to the research presented in the thesis.
 
 \subsubsection*{Difference Between Published and Included Version:}%
 There are two differences between the published papers and the version included in this thesis:
 %
 \begin{enumerate*}[label=(\roman*)]
-    \item the language and mathematical notation of the papers presented in this thesis have been uniformed for readability and consistency,
-    \item figures and tables have been resided to match the format of the thesis.
+    \item the language and mathematical notation of the papers presented in this thesis have been unified for readability and consistency,
+    \item figures and tables have been resized to match the format of the thesis.
 \end{enumerate*}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -30,7 +30,7 @@ There are two differences between the published papers and the version included 
 
 \subsubsection*{Scientific Summary:}%
 %
-In Paper I, linear control system stability and performance is analysed when the controller experiences persistent computational blackouts.
+In Paper I, linear control system stability and performance are analysed when the controller experiences persistent computational blackouts.
 Historically, the models to analyse such events have been either stochastic or overly conservative.
 These models have been thoroughly investigated in the literature, but few have been shown to achieve similar results on industrial applications.
 
@@ -39,8 +39,8 @@ The fault model is coupled together with different actuator (\tZ{} and \tH{}) an
 To properly analyse the specific fault model, a methodology for analysing the stability and performance is also derived.
 The stability analysis is based on a switched system stability approach, whilst the performance analysis is based on evolving a quadratic cost function in time.
 
-To reinforce the analysis methodology's applicability to industrial application, an experimental campaign is carried out.
-The paper analyses both a non-linear physical system (a Furuta pendulum) and a set of linear system models representative for the process industry.
+To reinforce the analysis methodology's applicability to industrial applications, an experimental campaign is carried out.
+The paper analyses both a non-linear physical system (a Furuta pendulum) and a set of linear system models representative of the process industry.
 From the analysis performed on the physical system, the paper shows that it is possible to draw accurate conclusions about the physical process' behaviour using simulation results.
 
 \subsubsection*{Contribution Statement:}%
@@ -82,7 +82,7 @@ The adaptive controller assumes that there exists a controller that has been syn
 Assuming that the \tK{} strategy is employed, the adaptation then alters the controller matrices (based on the number of computational overruns) to quickly restore nominal control performance.
 To analyse the performance gain of the adaptive controller, the existing stochastic performance analyses based on Markov jump linear system's theory is extended to compute the \emph{relative performance degradation}, i.e., the performance degradation caused by using a controller other than the ideal controller.
 
-The adaptive controller is validated on a physical process (a Ball and Beam) and on the set of process industrial models used also in Paper I.
+The adaptive controller is validated on a physical process (a Ball and Beam) and on the set of process industrial models, used also in Paper I.
 Significant performance gain is shown despite having an immense number of computational overruns.
 Additionally, since the proposed method does not guarantee any a priori stability guarantees, the paper analyses the switched system stability a posteriori.
 
@@ -91,7 +91,7 @@ Additionally, since the proposed method does not guarantee any a priori stabilit
 The initial observation, that many fault-tolerant controllers are restricted to overly specific system conditions, was made by C. Mandrioli.
 A set of limitations was identified together by C. Mandrioli and N. Vreman; who also derived the adaptive controller addressing these limitations.
 A. Cervin derived the performance analysis to validate the controller.
-The adaptive controller was implemented on the Ball and Beam by N. Vreman, and the data was collected by both N. Vreman and C. Mandrioli.
+The adaptive controller was implemented on the Ball and Beam plant by N. Vreman, and the data was collected by both N. Vreman and C. Mandrioli.
 The manuscript writing and editing effort was shared among all three authors.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -116,15 +116,15 @@ Paper III aspires to
     \item propose a scalable, open-source tool (\tool{}) that can be used to analyse \emph{all} the weakly-hard constraints.
 \end{enumerate*}
 In order to switch the attention to the \tRH{} constraint, we provide two novel theorems on the relation between it and the \tAH{} constraint, finalising the relationship graph between all the weakly-hard constraints.
-The \tool{} tool employ an automaton model to describe the discrete-time execution of a task subject to a specific weakly-hard constraint.
+The \tool{} tool employs an automaton model to describe the discrete-time execution of a task subject to a specific weakly-hard constraint.
 Additionally, \tool{} is the first tool to address \emph{sets} of weakly-hard constraints.
 The paper reports the results of an experimental campaign that addresses the both scalability of \tool{} compared to the state-of-the-art alternative and tests the novel features of \tool{}.
 
 \subsubsection*{Contribution Statement:}%
 %
-The idea behind the paper and the tool was developed entirely by N. Vreman. 
+The idea behind the paper and the tool was developed by N. Vreman. 
 The tool and its underlying algorithms was developed by N. Vreman, with input from M. Maggio.
-The formulation of the theorems that relate \tAH{} and \tRH{} constraints were derived by N. Vreman, with proof-sketches that R. Pates helped refining.
+The formulation of the theorems relating the \tAH{} and \tRH{} constraints were derived by N. Vreman, with proof-sketches that R. Pates helped refining.
 The manuscript was written by N. Vreman and M. Maggio, with input from R. Pates.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -142,7 +142,8 @@ The manuscript was written by N. Vreman and M. Maggio, with input from R. Pates.
 Despite the weakly-hard models having steadily gained more traction in the analysis of control systems, the weakly-hard model fails at expressing some characteristics of the implementation of control systems, e.g., how the actual controller implementation deals with deadline misses.
 Paper IV rectifies this discrepancy, by extending the formal language defining the weakly-hard constraints, and connecting the analysis on weakly-hard control systems to the actual implementation of controllers.
 
-The paper uses the automata-based model produced by \tool{} (presented in Paper III), proposing a post-processing step that refines the automaton and handles the analysis of \emph{extended weakly-hard constraints}, the extension being the implementation's specification characteristics.
+The paper uses the automata-based model produced by \tool{} (presented in Paper III).
+A post-processing step is proposed that refines the automaton and handles the analysis of \emph{extended weakly-hard constraints}, the extension being the implementation's characteristics.
 The paper presents a stability analysis based on switching linear systems, that advances the state of the art of analysing implementation of control systems.
 
 The dynamics of the linear control system is Kronecker lifted with the adjacency matrix of the automaton to obtain an equivalent system model, now also subject to the extended weakly-hard constraint.
@@ -152,7 +153,7 @@ In addition to the stability analysis, the paper discusses theoretical results r
 
 \subsubsection*{Contribution Statement:}%
 %
-P. Pazzaglia came up with the idea to the paper after discussions with N. Vreman.
+P. Pazzaglia came up with the idea for the paper after discussions with N. Vreman.
 The theoretical results presented in the paper were developed together by N. Vreman and P. Pazzaglia.
 N. Vreman extended the functionality of \tool{} with the ability to handle a more expressive formal language for implementation concerns.
 V. Magron and M. Maggio discussed the JSR analysis, which was implemented by J. Wang.
@@ -170,25 +171,24 @@ The manuscript was written by P. Pazzaglia and N. Vreman, with input and revisio
 
 \subsubsection*{Scientific Summary:}%
 %
-Research into fault-tolerant real-time control systems have been split between focusing on networked systems experiencing communication dropouts, i.e., packet losses, or embedded systems suffering computational overruns.
+Research into fault-tolerant real-time control systems has been split between focusing on networked systems experiencing communication dropouts, i.e., packet losses, or embedded systems suffering computational overruns.
 Despite carrying very different information, the computational overruns have been compared to communication dropouts when analysing the system dynamics, and vice versa.
 The paper aims to clarify this discrepancy by analysing what happens when these faults can occur simultaneously, as is the case for real implementations.
 
 Most modern results on switched system analysis provide certificates of stability or performance under worst-case conditions.
-However, the worst-case conditions may be exceedinly rare, resulting in overly conservative guarantees.
+However, the worst-case conditions may be exceedingly rare, resulting in overly conservative guarantees.
 Instead, typical methods for deriving bounds on both packet losses and computational overruns are probabilistic by nature.
-By modelling both the packet losses on the input/output channels (to and from the plant) and the computational overruns as stochastic variables, we are able to utilise powerful results from Markov Jump Linear Systems theory, providing stability constracts with \emph{almost sure} convergence guarantees.
+By modelling both the packet losses on the input/output channels (to and from the plant) and the computational overruns as stochastic variables, we are able to utilise powerful results from Markov Jump Linear Systems theory, providing stability contracts with \emph{almost sure} convergence guarantees.
 
 We apply the analysis to two case studies from the recent literature and show their robustness to a comprehensive set of faults.
-The analysis clearly shows how the systems are distinctly affected by either individually or jointly occuring compuational and communication faults.
+The analysis clearly shows how the systems are distinctly affected by either individually or jointly occurring computational and communication faults.
 
 
 \subsubsection*{Contribution Statement:}%
 %
-M. Maggio proposed the idea of looking into the analysis of systems with a combination of fault and provided guidance for the Markov Jump Linear Systems Analysis.
-The implementation of the analysis and the generation of the results was done by N. Vreman.
-N. Vreman took a leading role in the manuscript writing, and M. Maggio contributed to the Markov theoretical section and gave inputs for the remainder of the paper.
-% The manuscript writing was shared between the two authors
+M. Maggio proposed the idea of looking into the analysis of systems with a combination of faults.
+The implementation of the analysis and the generation of the results was done by N. Vreman, with input from M. Maggio.
+The manuscript writing was shared between the two authors with N. Vreman taking a leading role.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% NOTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
