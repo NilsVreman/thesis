@@ -32,31 +32,31 @@ The proof is based on restricting the \tAH{} constraint's minimum number of hits
     \end{equation}
     First observe that $\bar{s}\in\mathcal{S}$.
     Using the definitions of floor and modulo operator, for any integer value (including $p=k_1+1$) we can rewrite $k_2$ as $k_2=\floor{k_2/p}+\funof{k_2\ourmod{}p}$.
-    From the definition of sequence $\bar{s}$ in Equation~\eqref{eq:ss1}, $\bar{s}$ certainly contains a sub-string of length $k_2$ with
+    From the definition of sequence $\bar{s}$ in Equation~\eqref{eq:ss1}, $\bar{s}$ certainly contains a sub-word of length $k_2$ with
     \[
         x_1\floor{k_2/p}+\max\{0,x_1-p+\funof{k_2\ourmod{}p}\}
     \]
     $1$'s.
-    If the inequality in \textit{(ii)} does not hold, then $\bar{s}$ does not satisfy the \tAH{} constraint $\lambda_2 = \anyhit{2}$ (the sub-string of length $k_2$ above would contain fewer than $x_2$ $1$s).
+    If the inequality in \textit{(ii)} does not hold, then $\bar{s}$ does not satisfy the \tAH{} constraint $\lambda_2 = \anyhit{2}$ (the sub-word of length $k_2$ above would contain fewer than $x_2$ $1$s).
 
     \textit{(ii)}$\;\Rightarrow{}$\textit{(i)}: Let $s$ be any sequence in $\mathcal{S}$.
-    Now let $s'$ be equal to $s$, except that every maximal sub-string of $1$s with fewer than $x_1$ elements has been replaced with a sub-string of zeros:
+    Now let $s'$ be equal to $s$, except that every maximal sub-word of $1$s with fewer than $x_1$ elements has been replaced with a sub-word of zeros:
     \[
         s'_i=\begin{cases}
-            1&\text{if $s_i$ is part of a sub-string of at least $x_1$ $1$s,}\\
+            1&\text{if $s_i$ is part of a sub-word of at least $x_1$ $1$s,}\\
             0&{\text{otherwise}}.
         \end{cases}
     \]
     First observe that $s\in\mathcal{S}$ implies $s'\in\mathcal{S}$.
-    This is because maximal sub-strings of $1$s with fewer than $x_1$ elements do not contribute to the satisfaction of a \tRH{} constraint (from the perspective of this constraint, such sub-strings may as well be zeros).
+    This is because maximal sub-words of $1$s with fewer than $x_1$ elements do not contribute to the satisfaction of a \tRH{} constraint (from the perspective of this constraint, such sub-words may as well be zeros).
     Also note that if $s'$ satisfies an \tAH{} constraint, so does $s$.
     This is because $s$ can be obtained from $s'$ by flipping $0$s to $1$s, which cannot lead to a violation of an \tAH{} constraint.
     Therefore, it is sufficient to show that if \textit{(ii)} holds, any such $s'$ satisfies the \tAH{} constraint in \textit{(i)}.
-    By construction, $s'$ alternates between sub-strings of $1$'s with at least $x_1$ elements, and sub-strings of zeros of at most $p-x_1$ elements
+    By construction, $s'$ alternates between sub-words of $1$'s with at least $x_1$ elements, and sub-words of zeros of at most $p-x_1$ elements
     \[
         s'=\ldots{}\underbrace{1\ldots{}1}_{\text{$\geq{}x_1$}}\overbrace{0\ldots{}0}^{\text{$\leq{}p-x_1$}}\underbrace{1\ldots{}1}_{\text{$\geq{}x_1$}}\overbrace{0\ldots{}0}^{\text{$\leq{}p-x_1$}}\ldots{}
     \]
-    It then follows that every sub-string of length $k_2$ in $s'$ has at least as many $1$'s as every sub-string of length $k_2$ in the sequence $\bar{s}$ from \eqref{eq:ss1}.
+    It then follows that every sub-word of length $k_2$ in $s'$ has at least as many $1$'s as every sub-word of length $k_2$ in the sequence $\bar{s}$ from \eqref{eq:ss1}.
     Since $\bar{s}$ satisfies the \tAH{} constraint, so does $s'$, and therefore so does every $s\in\mathcal{S}$ as required.
 \end{proof}
 
@@ -83,7 +83,7 @@ where $z_1 = k_1-x_1$.
     \textit{$\lnot$(ii)}$\;\Rightarrow{}\lnot{}$\textit{(i)}: We split the proof into three cases.
 
     \textit{Case 1: $0<k_2\leq{}z_1$.}
-    Let $\bar{s}=\ldots{}s_ds_ds_d\ldots{}$ (i.e. the sequence constructed by repeating the sub-string $s_d$), where
+    Let $\bar{s}=\ldots{}s_ds_ds_d\ldots{}$ (i.e. the sequence constructed by repeating the sub-word $s_d$), where
     \[
         s_d=\underbrace{1\ldots{}1}_{\text{$x_1$}}\overbrace{0\ldots{}0}^{\text{$z_1$}}.
     \]
@@ -92,15 +92,15 @@ where $z_1 = k_1-x_1$.
     This implies \textit{$\lnot$(i)} because $\bar{s}$ contains at least $k_2$ consecutive 0s, and therefore cannot satisfy the \tRH{} constraint $\rowhit{2}$.
 
     \textit{Case 2: $k_2>z_1\wedge{}\ceil{x_1/z_1}\geq{}\floor{k_2/\funof{z_1+1}}$.}
-    Let $s_d$ be a sequence of length $k_2$ consisting of $k_2-z_1$ 1s and $z_1$ 0s, with the 1s arranged into $z_1+1$ sub-strings
+    Let $s_d$ be a sequence of length $k_2$ consisting of $k_2-z_1$ 1s and $z_1$ 0s, with the 1s arranged into $z_1+1$ sub-words
     $$
         s_d = \underbrace{1\ldots{}1}_{\text{$l_1$}}0\underbrace{1\ldots{}1}_{\text{$l_2$}}0\ldots{}0\underbrace{1\ldots{}1}_{\text{$l_{z_1+1}$}},
     $$
-    where the lengths of the sub-strings $l_k$ satisfy
+    where the lengths of the sub-words $l_k$ satisfy
     $$
         l_k\in\left\{\floor*{\frac{k_2-z_1}{z_1+1}},\ceil*{\frac{k_2-z_1}{z_1+1}}\right\}.
     $$
-    Let $\bar{s}=\ldots{}111s_d111\ldots{}$ (i.e. a sequence of all 1s except for a single sub-string $s_d$).
+    Let $\bar{s}=\ldots{}111s_d111\ldots{}$ (i.e. a sequence of all 1s except for a single sub-word $s_d$).
     Since this sequence contains only $z_1$ 0s, $\bar{s}\in\mathcal{S}$.
     The conclusion now follows since
     $$
@@ -109,24 +109,24 @@ where $z_1 = k_1-x_1$.
     and so if $x_2>\floor{k_2/\funof{z_1+1}}$, then this $\bar{s}$ does not satisfy the \tRH{} constraint $\rowhit{2}$.
 
     \textit{Case 3: $k_2>z_1\wedge{}\ceil{x_1/z_1}<\floor{k_2/\funof{z_1+1}}$.}
-    Let $s_d$ be a sequence of length $k_1$ consisting of $x_1$ 1s and $z_1$ 0s, with the 1s arranged into $z_1$ sub-strings
+    Let $s_d$ be a sequence of length $k_1$ consisting of $x_1$ 1s and $z_1$ 0s, with the 1s arranged into $z_1$ sub-words
     $$
         s_d = \underbrace{1\ldots{}1}_{\text{$l_1$}}0\underbrace{1\ldots{}1}_{\text{$l_2$}}0\ldots{}0\underbrace{1\ldots{}1}_{\text{$l_{z_1}$}}0,
     $$
-    where the lengths of the sub-strings $l_k$ satisfy $l_k\in\{\floor{x_1/z_1},\ceil{x_1/z_1}\}$.
-    Let $\bar{s}=\ldots{}s_ds_ds_d\ldots{}$ (i.e. the sequence constructed by repeating the sub-string $s_d$).
-    Observe that every sub-string of length $k_1$ in $\bar{s}$ contains exactly $x_1$ 1s, and therefore $\bar{s}\in\mathcal{S}$.
-    Observe also that $\bar{s}$ contains no sub-strings of more than $\ceil{x_1/z_1}$ consecutive 1s, and therefore if $x_2>\ceil{x_1/z_1}$, $\bar{s}$ does not satisfy the \tRH{} constraint $\rowhit{2}$.
+    where the lengths of the sub-words $l_k$ satisfy $l_k\in\{\floor{x_1/z_1},\ceil{x_1/z_1}\}$.
+    Let $\bar{s}=\ldots{}s_ds_ds_d\ldots{}$ (i.e. the sequence constructed by repeating the sub-word $s_d$).
+    Observe that every sub-word of length $k_1$ in $\bar{s}$ contains exactly $x_1$ 1s, and therefore $\bar{s}\in\mathcal{S}$.
+    Observe also that $\bar{s}$ contains no sub-words of more than $\ceil{x_1/z_1}$ consecutive 1s, and therefore if $x_2>\ceil{x_1/z_1}$, $\bar{s}$ does not satisfy the \tRH{} constraint $\rowhit{2}$.
 
     \textit{$\lnot{}$(i)}$\;\Rightarrow{}\lnot{}$\textit{(ii)}: Under the hypothesis of \textit{$\lnot{}$(i)}, there exists a sequence $s\in\mathcal{S}$ such that $s$ does not satisfy the \tRH{} constraint $\rowhit{2}$. 
 
-    Let $s'$ be the sequence obtained from $s$ by removing all 0s from the start of $s$, and then replacing all sub-strings of 0s with length greater than one with a single 0 (for example, if $s=011001010001\ldots$, then $s'=11010101\ldots$.
+    Let $s'$ be the sequence obtained from $s$ by removing all 0s from the start of $s$, and then replacing all sub-words of 0s with length greater than one with a single 0 (for example, if $s=011001010001\ldots$, then $s'=11010101\ldots$.
     Clearly $s'\in\mathcal{S}$ since this process only removes 0s, and $s'$ also does not satisfy the \tRH{} constraint.
-    Consider now the sub-string $s_d$ formed from the first $k_2$ elements of $s'$.\footnote{Strictly speaking if $s$ is too short, then the sequence $s'$ resulting from this process might have length less than $\min\{k_1,k_2\}$ which would mean that the statement $s'\in\mathcal{S}$ is ill defined.
+    Consider now the sub-word $s_d$ formed from the first $k_2$ elements of $s'$.\footnote{Strictly speaking if $s$ is too short, then the sequence $s'$ resulting from this process might have length less than $\min\{k_1,k_2\}$ which would mean that the statement $s'\in\mathcal{S}$ is ill defined.
     In this case 0s should only be removed until $s'$ has length $\min\{k_1,k_2\}$.
     This will still result in a sequence that satisfies the \tAH{} constraint but violates the \tRH{} constraint.
-    All the given arguments remain valid for such an $s'$, since they only depend on inequalities based on the number of 0s in particular sub-strings of length $k_1$ as guaranteed by the \tAH{} constraint (note in \textit{Case 1} it is perfectly valid for $l_1=0$).}
-    This sub-string will take the form
+    All the given arguments remain valid for such an $s'$, since they only depend on inequalities based on the number of 0s in particular sub-words of length $k_1$ as guaranteed by the \tAH{} constraint (note in \textit{Case 1} it is perfectly valid for $l_1=0$).}
+    This sub-word will take the form
     \[
         s_d = \begin{cases}
             \underbrace{1\ldots{}1}_{\text{$l_1$}}0\underbrace{1\ldots{}1}_{\text{$l_2$}}0\ldots{}0\underbrace{1\ldots{}1}_{\text{$l_{n}$}},&\text{or}\\
@@ -134,16 +134,16 @@ where $z_1 = k_1-x_1$.
         \end{cases}
     \]
     depending on whether the final element is 0 or 1.
-    Note that the lengths of the sub-strings of 1s satisfy $0\leq{}l_k<x_2$.
-    We will now show that the existence of such a sub-string implies \textit{$\lnot{}$(ii)} by considering two cases.
+    Note that the lengths of the sub-words of 1s satisfy $0\leq{}l_k<x_2$.
+    We will now show that the existence of such a sub-word implies \textit{$\lnot{}$(ii)} by considering two cases.
 
     \textit{Case 1: $k_2\leq{}k_1+l_1$.}
-    In this case the sub-string $s_d$ contains at most $z_1$ 0s, and so $n\leq{}z_1+1$.
+    In this case the sub-word $s_d$ contains at most $z_1$ 0s, and so $n\leq{}z_1+1$.
     The pigeonhole principle then demonstrates that there must be an integer $1\leq{}k\leq{}n$ such that
     $$
         l_k\geq{}\ceil*{\frac{k_2-z_1}{n}}.
     $$
-    To see this, note that $s_d$ has at least $k_2-z_1$ 1s, and these must be allocated into $n$ pigeonholes corresponding to the $n$ sub-strings of 1s.
+    To see this, note that $s_d$ has at least $k_2-z_1$ 1s, and these must be allocated into $n$ pigeonholes corresponding to the $n$ sub-words of 1s.
     This implies that
     $$
         x_2>l_k\geq{}\ceil*{\frac{k_2-z_1}{n}}\geq{}\ceil*{\frac{k_2-z_1}{z_1+1}}=\floor*{\frac{k_2}{z_1+1}}
@@ -151,8 +151,8 @@ where $z_1 = k_1-x_1$.
     and $\floor{\sfrac{k_2}{(z_1+1)}}\geq{} \min\{\floor{\sfrac{k_2}{(z_1+1)}},\ceil*{\sfrac{x_1}{z_1}}\}$ as required.
 
     \textit{Case 2: $k_2>k_1+l_1$.}
-    Let $s_d'$ denote the sub-string obtained by removing the first $l_1$ elements of $s_d$, and also removing elements from the end of $s_d$, until $s_d'$ has length $k_1$.
-    This sub-string takes the form
+    Let $s_d'$ denote the sub-word obtained by removing the first $l_1$ elements of $s_d$, and also removing elements from the end of $s_d$, until $s_d'$ has length $k_1$.
+    This sub-word takes the form
     $$
         s_d' = \begin{cases}
             0\underbrace{1\ldots{}1}_{\text{$l_2$}}0\underbrace{1\ldots{}1}_{\text{$l_3$}}0\ldots{}0\underbrace{1\ldots{}1}_{\text{$l_{m+1}$}},&\text{or}\\

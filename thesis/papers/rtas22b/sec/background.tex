@@ -49,7 +49,7 @@ To characterise the possible sequences of outcomes that satisfy a constraint, we
 Using well-established notation, we denote the \emph{character} $c_i \in \Sigma$ as the outcome of job $j_i$.
 A \emph{word} $w$ of length $\abs{w} = N$ is a sequence of characters $w = \left( c_1, c_2, \ldots, c_N \right)$ that specifies a sequence of consecutive job outcomes for a task.
 Without loss of generality, we assume that all words are preceded and followed only by hits.
-We denote the subword of a word $w$ from index $a$ to $b$ with $w\funof{a, b} = \left( c_a, c_{a+1}, \ldots, c_b \right)$.
+We denote the sub-word of a word $w$ from index $a$ to $b$ with $w\funof{a, b} = \left( c_a, c_{a+1}, \ldots, c_b \right)$.
 Finally, $\Sigma^N$ denotes the set of all possible words of length $N$.
 
 With a slight abuse of notation, we use $w \vdash \lambda$ to indicate that the word $w$ satisfies the constraint $\lambda$.
@@ -61,7 +61,7 @@ Obtaining the set of words satisfying $\lambda$ follows directly from the defini
     Formally, $\sset{N}{\lambda} = \left\{ w \in \Sigma^N \, | \, w \vdash \lambda \right\},\, N \geq 1$.
 \end{definition}
 %
-Trivially, all words in $\sset{M}{\lambda}$ are subwords of words existing in $\sset{N}{\lambda}$, if $M \leq N$.
+Trivially, all words in $\sset{M}{\lambda}$ are sub-words of words existing in $\sset{N}{\lambda}$, if $M \leq N$.
 To simplify notation we define the set containing all words of infinite length as $\sset{}{\lambda} \equiv \sset{\infty}{\lambda}$.
 
 Using satisfaction sets, it is possible to formally define a partial ordering between two constraints $\lambda_i$ and $\lambda_j$.

@@ -1,92 +1,52 @@
-\begin{figure}[t]
-    \input{\figdir/min-kill}%
-    \input{\figdir/min-skip}%
-    \caption{Automata $\GG{\lambda^{\strat}}$ for Examples 1 and 2.}
-    \label{fig:min-graph}
-\end{figure}
-%
 Any \ewhc{}, as presented in Definition~\ref{def:new-mk}, can be systematically represented using an \emph{automaton}.
-In this paper we build upon the \tool{} automaton model presented in~{\cite{Vreman:2022}}.
+In this paper we build upon the \tool{} automaton model presented in~\cite{Vreman:2022}.
 Here, a (minimal) automaton $\GG{\lambda^\strat} = \left(\VV{\lambda^\strat}, \EE{\lambda^\strat}\right)$ associated to $\lambda^\strat$ consists of a set of vertices ($\VV{\lambda^\strat}$) and a set of directed labeled edges ($\EE{\lambda^\strat}$). 
-Each vertex $v_i \in \VV{\lambda^\strat}$ is represented by a sequence (word) of outcomes of the extended weakly-hard task executions, $w_i$. 
+Each vertex $v_i \in \VV{\lambda^\strat}$ corresponds to a word of outcomes of the extended weakly-hard task executions. 
 Trivially, there exists no vertices for words that do not satisfy the \ewhc{}.
-A directed labeled edge $e_{i, j} = \left(v_i, v_j, c \right) \in \EE{\lambda^\strat}$ (also denoted \emph{transition}) connects two vertices if and only if the outcome $c \in \Sigma\left(\strat\right)$ -- the edge's label -- appended to the tail vertex's word representation ($v_i$) would result in the word equivalent to the one of the head vertex ($v_j$).
+A directed labeled edge $e_{i, j} = \left(v_i, v_j, c \right) \in \EE{\lambda^\strat}$ (also denoted \emph{transition}) connects two vertices iff the outcome $c \in \Sigma\left(\strat\right)$ -- the edge's label -- appended to the tail vertex's word representation ($v_i$) would result in the word equivalent to the one of the head vertex ($v_j$).
 Thus, a random walk in the automaton corresponds to a random word satisfying the \ewhc{}.
 In particular, all the walks in the automaton corresponds to \emph{all} words in $\sset{}{\lambda^{\strat}}$.
 
-The \tool{} automaton model only operate on the binary alphabet $\Sigma = \left\{\cM, \cH\right\}$. 
-To deal with the discrepancy between the \tool{} automaton model and the \ewhc{}, we introduce an additional auxiliary character $\cT$ to represent all outcomes where a job is completed (ergo; $\cT = \left\{ \cH,\, \cR \right\}$).
-Thus, we first construct the automaton using the binary alphabet $\Sigma = \{\cM, \cT\}$ and then perform a post-processing step where Rule~\ref{rule:R} is enforced (for the \tS{} strategy) and the transitions are corrected, i.e., switching the labels on some edges from $\cT$ to $\cH$ or $\cR$ respectively. 
-
-\begin{example}%
-    \label{ex:auto-kill}%
-    Given an \ewhc{}, $\lambda^{\strat} = \overbar{\binom{1}{3}}^{K}$, the automaton $\GG{\lambda^{\strat}}$ is shown in the left-hand side of Figure~\ref{fig:min-graph}.
-    The vertex represented by the word $\cX\cH\cH$ is obtained by merging $\cH\cH\cH$ and $\cM\cH\cH$.
-\end{example}
-
-\begin{example}%
-    \label{ex:auto-skip}%
-    Given an \ewhc{}, $\lambda^{\strat} = \overbar{\binom{1}{3}}^{S}$, the automaton $\GG{\lambda^{\strat}}$ is shown in the right-hand side of Figure~\ref{fig:min-graph}.
-\end{example}
-
-The minimal automaton for \tK{} and \tS{} in Figure~\ref{fig:min-graph} have identical number of vertices but slightly different transitions.
-This is not a coincidence, but follows directly from Definition~\ref{def:new-mk} and the extended alphabet $\Sigma\left(\strat\right)$.
-Since we build the automaton using the job completion character $\cT$, both automata will always have the same structure.
-It is only the first job completion, after a period of no job completions ($\cM$), that differ.
+Since the \tool{} automaton model only uses the binary alphabet $\Sigma = \left\{\cM, \cH\right\}$, we require the additional character $\cR$ to handle the \tS{} strategy properly.
+Recall that both a hit ($\cH$) and a recovery ($\cR$) are considered job completions.
+Thus, for the \tS{} strategy, we post-process the automaton by enforcing that Rule~\ref{rule:R} is honoured and that the corresponding transitions are correct, i.e., switching the labels on some edges from $\cH$ to $\cR$. 
 We emphasise that despite the extended automaton model appear similar for the \tK{} and \tS{} strategies, the differing transitions of the two automata significantly affect the corresponding closed-loop systems, as will be clear in Section~\ref{sec:stability}.
 
-The \tool{} automaton model can also handle the case where a task $\tau$ is subject to a set of multiple constraints.
-Intuitively, building upon Definition~\ref{def:satisfaction}, the satisfaction set of $\Lambda^{\strat}$ can be derived as follows:
-%
-\begin{equation}
-    \label{eq:satisfaction-multi}
-    \sset{N}{\Lambda^{\strat}} = \bigcap_{\lambda^{\strat}_i \in \Lambda^{\strat}_0} \sset{N}{\lambda^{\strat}_i}, \quad N \geq 1.
-\end{equation}
-%
-With the notion of a satisfaction sets for sets of \ewhc{}, it is trivial to see that the domination relations also hold (Definition~\ref{def:domination}).
-Since the stability analysis presented in this paper is invariant to the type (and amount) of constraints acting on the control task $\tau$, we henceforth say that $\tau$ is subject to a set of \ewhc{} $\Lambda^\strat$ (unless stated otherwise).
+The \tool{} automaton model also allows for the case where the task $\tau$ is subject to a set of multiple constraints.
+Since the stability analysis presented in this paper is invariant to the type (and amount) of the constraints acting on the control task $\tau$, we henceforth say that $\tau$ is subject to a set of \ewhc{} $\Lambda^\strat$ (unless stated otherwise).
 
 
-\subsection{Dynamic Model of an Automaton}
-\label{ssec:dynamicgraph}
-%
-Extracting all the transitions in $\EE{\Lambda^\strat}$ corresponding to a character $c \in \Sigma\left(\strat\right)$ yields what is generally known as a \emph{directed adjacency matrix}~\cite{xu2012matrix}, denoted here as a \emph{transition matrix}.
+Extracting all transitions in $\EE{\Lambda^\strat}$ corresponding to a character $c \in \Sigma\left(\strat\right)$ yields what is generally known as a \emph{directed adjacency matrix}~\cite{xu2012matrix}, denoted here as a \emph{transition matrix}.
 \begin{definition}[Transition matrix]%
     \label{def:transition}%
-    Given an automaton $\GG{\Lambda^\strat}$, the \emph{transition matrix} $F_{c} ( \GG{\Lambda^\strat} ) \in \R^{\abs{\VV{\Lambda^\strat}} \times \abs{\VV{\Lambda^\strat}}}$ for $c\in\Sigma\left(\strat\right)$, is computed as $F_{c} ( \GG{\Lambda^\strat} ) = \{f_{i,j}(c)\}$ with
+    Given an automaton $\GG{\Lambda^\strat}$, the \emph{transition matrix} $F_{c} ( \GG{\Lambda^\strat} ) \in \R^{n_V\times n_V}$, with $n_V =\abs{\VV{\Lambda^\strat}} $ and $c \in \Sigma\left(\strat\right)$, is computed as $F_{c} ( \GG{\Lambda^\strat} ) = \{f_{i,j}(c)\}$ with
     %
     \begin{equation*}
-        f_{i,j}\funof{c}=
+        f_{i,j}\left(c\right)=
         \begin{cases}
-            1, &\text{ if } \exists \, e=(v_j,v_i,c) \in \EE{\Lambda^\strat} \\
+            1, &\text{ if } \exists \, e_{i, j} = (v_i,v_j,c) \in \EE{\Lambda^\strat} \\
             0, &\text{ otherwise.}
         \end{cases}
         \end{equation*}%
 \end{definition}
 %
-Since there can exist \emph{at most one} successor from each vertex with a transition labeled with $c$, the transition matrix $F_c$ will have a column sum of either 1 or 0.
-We introduce a vector $q_k\in \R^{n_{\VV{}}}$ called \emph{G-state}, with $n_{\VV{}} =\abs{\VV{\Lambda^\strat}}$, representing the state of the given automaton $\GG{\Lambda^\strat}$, which is associated to the interval $\pi_k$.
-%
-\begin{definition}[G-state]%
+Since \emph{at most one} successor exists from each vertex with a transition labeled with $c \in \Sigma\left(\strat\right)$, matrix $F_c$ will have a column sum of either 1 or 0.
+We now introduce a vector $q_t \in \R^{n_V}$ called \emph{G-state}, with $n_V =\abs{\VV{\Lambda^\strat}} $, representing the state of the given automaton $\GG{\Lambda^\strat}$ at interval $\pi_t$.
+\begin{definition}[G-state $q_t$]%
     \label{def:qt}%
-    Given an automaton $\GG{\Lambda^\strat} = (\VV{\Lambda^\strat}, \EE{\Lambda^\strat})$ and a word $w = \seq{c_1,c_2,\dots,c_N} \in \Sigma\left( \strat \right)^N$, for $\ell = \abs{v_i}, v_i\in\VV{\Lambda^\strat}$, we define the $i$-th element of $q_k\in \R^{n_{\VV{}}}$ as $q_{k,i}$:
+    Given an automaton $\GG{\Lambda^\strat}$ and a word $w \in \Sigma\left( \strat \right)^N$, $w=\langle c_1,c_2,\dots,c_N \rangle$, for $k = \abs{v},\,\, v\in\VV{\Lambda^\strat}$, we define $q_t\in \R^{n_V}$, where the $i$-th element $q_{t,i}$ is:
     \begin{equation*}
-        q_{k,i}=
+        q_{t,i}=
         \begin{cases}
-            1, &\text{ if } \seq{c_{k-\ell},\dots,c_{k-1}} \equiv v_i \in \VV{\Lambda^\strat} \\
+            1, &\text{ if } \seq{c_{t-k},\dots,c_{t-1}} \equiv v_i \in \VV{\Lambda^\strat} \\
             0, &\text{otherwise}.
         \end{cases}
     \end{equation*}
 \end{definition}
-%
-The G-state $q_k$ is the vector representation of the vertex that was \emph{departed} at step $k$, i.e., $q_k=0$ means that the transition at step $k-1$ was infeasible for the automaton. 
-Given an arbitrary string $w=\seq{c_1,\dots,c_k,\dots}$, the G-state dynamics is defined as $q_{k+1} = F_{c_k}\funof{\GG{\Lambda^\strat}} \cdot q_k$, and the following property holds~\cite{xu2012matrix}.
-%
+The G-state $q_t$ is the vector representation of the vertex \emph{left} at step $t$: here, $q_t=0$ means that the transition at step $t-1$ was infeasible for the automaton. 
+Given an arbitrary word $w=\seq{c_1,\dots,c_t,\dots}$, the G-state dynamics is defined as $q_{t+1} = F_{c} ( \GG{\Lambda^\strat} )\cdot q_t$, and the following property holds~\cite{xu2012matrix}.
 \begin{lemma}[Infeasible sequence]%
     \label{cor:Fseqnotinlambda}%
-    If $\seq{c_1,\dots,c_k,\dots} \notin \sset{N}{ \Lambda^\strat }$, then 
-    \begin{equation*}
-        F_{c_N}\funof{\GG{\Lambda^\strat}} \cdots F_{c_2}\funof{\GG{\Lambda^\strat}} \cdot F_{c_1}\funof{\GG{\Lambda^\strat}} = 0.
-    \end{equation*}
+    If $w \notin \sset{N}{\Lambda^\strat}$, then $F_{w} ( \GG{\Lambda^\strat} ) = F_{c_N} ( \GG{\Lambda^\strat} )\cdots F_{c_2} ( \GG{\Lambda^\strat} )\cdot F_{c_1} ( \GG{\Lambda^\strat} ) = 0$
 \end{lemma}
-Thus, if $q_k=0$ for any $k$, then $q_{k'}=0$ for $k' \geq k$.
+Thus, if $q_t=0$ for an arbitrary $t$, then $q_{t'}=0$ for $t' \geq t$.

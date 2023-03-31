@@ -1,42 +1,43 @@
-Using the alphabet $\Sigma\left(\strat\right)$ and the chosen actuator mode (i.e., \tZ{}ing, or \tH{}ing the previous value), we compute the closed-loop behaviour of the system.
+Using the alphabet $\Sigma\left(\strat\right)$ and the chosen actuator mode (i.e., \tZ{}ing, or \tH{}ing the previous value), we compute the closed-loop behaviour of the controlled system.
 We identify one matrix for each dynamics corresponding to an interval $\pi_k$ associated by $c \in \Sigma\left( \strat \right)$, building the set $\Aa^\strat$.
 
 \textbf{\tK{}: }%
 %
-We define $\tilde x_k^{K} = \left[ x_k^\T{}\,\, z_k^\T{}\,\, u_k^\T{} \right]^\T{}$ as the closed-loop state vector and compute the closed-loop dynamics $\clmat{}^{K}_{\cH}$, corresponding to the character $\cH$.
+Defining $\tilde x_k^{\,\Kill} = \left[ x_k^\T{}\,\, z_k^\T{}\,\, u_k^\T{} \right]^\T{}$ as the closed-loop state vector,
+we compute the discrete time closed-loop system dynamics $\clmat{}^{\,\Kill}_{\cH}$, corresponding to the character $\cH$:
 \begin{equation*}
-    \tilde x_{k+1}^{K} = \clmat{}^{K}_{\cH}\,\tilde x_k^{K}, \quad
-    \clmat{}^{K}_{\cH} = \begin{bmatrix}
+    \tilde x_{k+1}^{\,\Kill} = \clmat{}^{\,\Kill}_{\cH}\,\tilde x_k^{\,\Kill}, \quad\;
+     \clmat{}^{\,\Kill}_{\cH} = \begin{bmatrix}
         \Ap       & 0    & \Bp       \\
         -\Bc\Cp   & \Ac  & -\Bc\Dp   \\
         -\Dc\Cp   & \Cc  & -\Dc\Dp   \\
-    \end{bmatrix}
+    \end{bmatrix}.
 \end{equation*}
 %
-For the case of $\cM$, the controller execution terminates prematurely, thus not updating its states ($z_{k+1} = z_k$).
-Depending on the actuation mode, the controller output is either zeroed ($u_{k+1} = 0$) or held ($u_{k+1} = u_k$).
-The resulting closed-loop system in state-space form is denoted with $\clmat{}^{K}_{\cM}$:
+For the case of $\cM$, the controller execution terminates prematurely and its states are not updated ($z_{k+1} = z_k$).
+Therefore, depending on the actuation mode (\tZ{} or \tH{}), the controller output is either zeroed ($u_{k+1} = 0$) or held ($u_{k+1} = u_k$).
+The resulting closed-loop system in state-space form is denoted with $\clmat{}^{\,\Kill}_{\cM}$:
 \begin{equation*}
-    \tilde x_{k+1}^{K} = \clmat{}^{K}_{\cM}\,\tilde x_k^{K}, \quad
-    \clmat{}^{K}_{\cM} = \begin{bmatrix}
+    \tilde x_{k+1}^{\,\Kill} = \clmat{}^{\,\Kill}_{\cM}\,\tilde x_k^{\,\Kill}, \quad
+   \clmat{}^{\,\Kill}_{\cM} = \begin{bmatrix}
         \Ap & 0  & \Bp \\
         0   & I  & 0   \\
         0   & 0  & \Delta
-    \end{bmatrix}
+    \end{bmatrix}.
 \end{equation*}
-Here, $\Delta = I$ (identity matrix) if the control signal is held and $\Delta = 0$ if it is zeroed.
-The set of dynamic matrices that a controlled system under the \tK{} strategy may experience is then $\Aa^{K}=\left\{\clmat{}^{K}_{\cH},\clmat{}^{K}_{\cM}\right\}$.
+Here, $\Delta = I$ (identity matrix) if the control signal is held and $\Delta = 0$ if zeroed.
+The set of dynamic matrices under the \tK{} strategy is then $\Aa^{\,\Kill}=\left\{\clmat{}^{\,\Kill}_{\cH},\clmat{}^{\,\Kill}_{\cM}\right\}$.
 
 \textbf{\tS{}: }%
 %
 For the \tS{} strategy, we introduce two additional states $\hat x_k$ and $\hat u_k$ storing the old values of $x_k$ and $u_k$ while the controller awaits an update.
-The resulting state vector then becomes $\tilde x_k^{S} = \left[ x_k^\T{}\,\,z_k^\T{}\,\, u_k^\T{}\,\, \hat{x}_k^\T{}\,\, \hat{u}_k^\T{} \right]^\T{}$.
+The resulting state vector then becomes $\tilde x_k^{\,\Skip} = \left[ x_k^\T{}\,\,z_k^\T{}\,\, u_k^\T{}\,\, \hat{x}_k^\T{}\,\, \hat{u}_k^\T{} \right]^\T{}$.
 When $\pi_k$ is associated to $\cH$, the two additional states mirror the behaviour of the states of which they are storing data.
-The resulting closed-loop system is described using $\clmat{}^{S}_{\cH}$:
-%
+The resulting closed-loop system is described using $\clmat{}^{\,\Skip}_{\cH}$:
 \begin{equation*}
-    \tilde x_{k+1}^{S} = \clmat{}^{S}_{\cH}\,\tilde x_k^{S}, \quad
-    \clmat{}^{S}_{\cH} = \begin{bmatrix}
+    \setlength\arraycolsep{3pt}
+    \tilde x_{k+1}^{\,\Skip} = \clmat{}^{\,\Skip}_{\cH}\,\tilde x_k^{\,\Skip}, \quad
+    \clmat{}^{\,\Skip}_{\cH} = \begin{bmatrix}
         \Ap       & 0    & \Bp      & 0 & 0 \\
         -\Bc\Cp   & \Ac  & -\Bc\Dp  & 0 & 0 \\
         -\Dc\Cp   & \Cc  & -\Dc\Dp  & 0 & 0 \\
@@ -45,26 +46,28 @@ The resulting closed-loop system is described using $\clmat{}^{S}_{\cH}$:
     \end{bmatrix}.
 \end{equation*}
 %
-For the case of $\cM$ in $\pi_k$ the two augmented states hold their previous values.
-The resulting closed-loop system is described by $\clmat{}^{S}_{\cM}$:
+For the case of $\cM$ in $\pi_k$, $\hat x_k$ and $\hat u_k$ maintain their previous values. The
+resulting closed-loop is described by $\clmat{}^{\,\Skip}_{\cM}$:
 %
 \begin{equation*}
-    \tilde x_{k+1}^{S} = \clmat{}^{S}_{\cM}\,\tilde x_k^{S}, \quad
-    \clmat{}^{S}_{\cM}=\begin{bmatrix}
+    \setlength\arraycolsep{3pt}
+    \tilde x_{k+1}^{\,\Skip} = \clmat{}^{\,\Skip}_{\cM}\,\tilde x_k^{\,\Skip}, \quad
+    \clmat{}^{\,\Skip}_{\cM}=\begin{bmatrix}
         \Ap & 0  & \Bp & 0 & 0 \\
         0   & I  & 0   & 0 & 0 \\
         0   & 0  & \Delta   & 0 & 0 \\
         0   & 0  & 0   & I & 0 \\
         0   & 0  & 0   & 0 & I \\
-    \end{bmatrix}.
+	\end{bmatrix}.
 \end{equation*}
 %
-Finally, for the case of recovery $\cR$ in $\pi_k$, the new control command is calculated using the values stored in $\hat x_k$ and $\hat u_k$.
-The resulting closed-loop system is described by $\clmat{}^{S}_{\cR}$:
+Finally, for the case of $\cR$, the new control command is calculated using the values stored in $\hat x_k$ and $\hat u_k$.
+The resulting closed-loop system is described by $\clmat{}^{\,\Skip}_{\cR}$:
 %
 \begin{equation*}
-    \tilde x_{k+1}^{S} = \clmat{}^{S}_{\cR} \, \tilde x_{k}^{S}, \quad
-    \clmat{}^{S}_{\cR} = \begin{bmatrix}
+    \setlength\arraycolsep{3pt}
+    \tilde x_{k+1}^{\,\Skip} = \clmat{}^{\,\Skip}_{\cR} \, \tilde x_{k}^{\,\Skip},\quad
+    \clmat{}^{\,\Skip}_{\cR} = \begin{bmatrix}
         \Ap & 0    & \Bp & 0       & 0 \\
         0   & \Ac  & 0   & -\Bc\Cp & -\Bc\Dp \\
         0   & \Cc  & 0   & -\Dc\Cp & -\Dc\Dp \\
@@ -73,174 +76,132 @@ The resulting closed-loop system is described by $\clmat{}^{S}_{\cR}$:
     \end{bmatrix}.
 \end{equation*}
 %
-The set of dynamic matrices under the \tS{} strategy is then defined as $\Aa^{S}=\left\{\clmat{}^{S}_{\cH},\clmat{}^{S}_{\cM},\clmat{}^{S}_{\cR}\right\}$.
+The resulting set of matrices under the \tS{} strategy is then defined as $\Aa^{\,\Skip}=\left\{\clmat{}^{\,\Skip}_{\cH},\clmat{}^{\,\Skip}_{\cM},\clmat{}^{\,\Skip}_{\cR}\right\}$.
 
-\subsection{Kronecker Lifted Switching System}%
+
+\subsection{Kronecker lifted switching system}%
 \label{sec:system_dynamics}
-%
-A straightforward approach to analyse the switching system's ($\Aa^\strat$) stability under any switching pattern constrained by $\Lambda^\strat$ would be configuring a CJSR problem in the form of Equation~\eqref{cjsr}, obtaining $\rho\,(\Aa^\strat,\GG{\Lambda^\strat})$.
-However, few efficient CJSR computation methods exist.
 
-Instead, building upon the recent work of~\cite{xu2020approximation}, we seek to obtain an equivalent system model based on \emph{Kronecker lifting}~\cite{horn2012matrix}, characterized by a set of matrices denoted by $\Alifted_{\Lambda^\strat}$ and behaving as an \emph{arbitrary switching system}, such that $\rho\funof{\Alifted_{\Lambda^\strat}} = \rho\funof{\Aa^{\strat},\GG{\Lambda^\strat}}$.
-This way, powerful algorithms applicable to arbitrary switching system~\cite{vankeerberghen2014jsr,sparsejsr} can be used to find tight stability bounds.
+Combining the set of system dynamics $\Aa^\strat$ with the associated automaton $\GG{\Lambda^\strat}$, we seek to obtain an equivalent system model based on Kronecker lifting, characterized by a set of matrices denoted by $\Alifted_{\Lambda^\strat}$ and behaving as an \emph{arbitrary switching system}, such that $\rho\,(\Alifted_{\Lambda^\strat})= \rho\,(\Aa^{\strat},\GG{\Lambda^\strat})$.
+In this way, powerful algorithms applicable to arbitrary switching system~\cite{vankeerberghen2014jsr,sparsejsr} can be used to find tight stability bounds.
 %
-By leveraging the vector $q_k$ of Definition~\ref{def:qt}, we introduce the \emph{lifted discrete-time state}, $\xi_k\in\R^{n\cdot n_{\VV{}}}$, defined as 
-\begin{equation*}
-    \xi_k = q_k\otimes \tilde x_k,
-\end{equation*}
-where $n$ is the number of closed-loop states $\tilde x_k$, $n_{\VV{}} = \abs{\VV{\Lambda^\strat}}$, and $\otimes$ is the Kronecker product operator.
-By construction, $\xi_k$ is then a vector composed of $n_{\VV{}}$ blocks of size $n$, where at most one block is equal to $\tilde x_k$ and all other blocks are equal to the $0$ vector.
+We build upon the Kronecker lifting approach of~\cite{xu2020approximation}.
+Leveraging the vector $q_k$ of Definition~\ref{def:qt}, we introduce the \emph{lifted discrete-time state} $\xi_k \in \R^{n\cdot n_V}$, defined as $\xi_k = q_k\otimes x_k$, where $n_V = \abs{\VV{\Lambda^\strat}}$ and $\otimes$ is the Kronecker product.
+By construction, $\xi_k$ is a vector composed of $n_V$ blocks of size $n$, where at most one block is equal to $x_k$ and all other blocks are equal to the $0$ vector.
 %
-Then, we build a set of lifted matrices $L_{c} ( \GG{\Lambda^\strat} )\in\R^{n\cdot n_{\VV{}}\times n\cdot n_{\VV{}}}$ that includes information about both the system dynamics and the possible transitions given a certain outcome $c \in \Sigma\left(\strat\right)$:
+Then, we build a set of lifted matrices $L_{c} ( \GG{\Lambda^\strat} ) \in \R^{n\cdot n_V\times n\cdot n_V}$, which incorporates both the system dynamics and the possible transitions given a certain outcome $c\in\Sigma\left(\strat\right)$:
 %
-\begin{equation*}
-    L_{c} ( \GG{\Lambda^\strat} ) = F_{c} ( \GG{\Lambda^\strat} )\otimes \clmat{}_c^\strat,\quad c \in \Sigma \left( \strat \right).
-\end{equation*}
+\begin{equation}\label{eq:lifted_matrix}
+    L_{c} ( \GG{\Lambda^\strat} ) = F_{c} ( \GG{\Lambda^\strat} )\otimes \clmat^\strat_c, \quad c \in \Sigma \left( \strat \right).
+\end{equation}
 %
-The lifted dynamics of the closed loop system then become%
-%
-\begin{equation*}
-    \xi_{k+1} = L_{c} ( \GG{\Lambda^\strat} )\,\xi_k.
-\end{equation*}
-%
-Formally, we obtain an equivalent closed-loop system composed of a set of lifted dynamic matrices, $\Alifted_{\Lambda^\strat}$.
+The lifted dynamics of the closed loop system then become $ \xi_{k+1} = L_{c} ( \GG{\Lambda^\strat} )\cdot\xi_k.  $
+Formally, we obtain a system composed of a set of switching dynamic matrices, $\Alifted_{\Lambda^\strat}$.
 %
 \begin{definition}[Lifted switching set $\Alifted_{\Lambda^\strat}$]%
     \label{def:switching_set}%
-    Given a set of dynamic matrices $\Aa^{\strat}$ and an automaton $\GG{\Lambda^\strat}$, the switching set $\Alifted_{\Lambda^\strat}$ is defined as the set of all lifted matrices corresponding to $\Aa^{\strat}$.
-    Formally,
-    %
-    \begin{equation*}
+    Given a set of dynamic matrices $\Aa^{\strat}$ and an automaton $\GG{\Lambda^\strat}$, the switching set $\Alifted_{\Lambda^\strat}$ is defined as:
+    $$
         \Alifted_{\Lambda^\strat} = \left\{ L_{c} ( \GG{\Lambda^\strat} ) \,\, | \,\, c \in \Sigma\left(\strat\right) \right\}.
-    \end{equation*}
-\end{definition}
+    $$
+\end{definition}%
 %
-By leveraging the mixed-product property~\cite{horn2012matrix} of $\otimes$ and by introducing a proper submultiplicative norm, it is possible to prove that $\rho\left(\Alifted_{\Lambda^\strat}\right)= \rho\,(\Aa^{\strat},\GG{\Lambda^\strat})$.
-In other words, it holds that
-%
-\begin{equation*}%
-    \rho\left(\Alifted_{\Lambda^\strat}\right)= \rho\,(\Aa^{\strat},\GG{\Lambda^\strat}) = \lim_{\ell\rightarrow \infty} \max_{w \in \sset{\ell}{\Lambda^\strat}}\norm{\clmat{}_{w}}^{1/\ell},
-\end{equation*}
-%
-where $\clmat{}_{w} = \clmat{}_{c_1}\clmat{}_{c_2}\cdots\clmat{}_{c_\ell}$, for a sequence $w = \seq{c_1, c_2, \ldots, c_\ell} \in \sset{\ell}{\Lambda^\strat}$.
+Leveraging the mixed-product property of $\otimes$ and introducing a proper submultiplicative norm, it is possible to prove that $\rho\left(\Alifted_{\Lambda^\strat}\right)= \rho\,(\Aa^{\strat},\GG{\Lambda^\strat})$.
 For more details and a formal proof we refer the interested reader to~\cite{xu2020approximation}.
 
-
-\subsection{Extended Weakly Hard and JSR Properties}
+\subsection{Extended weakly hard and JSR properties}
 \label{sec:analytic_results}
-%
 We now provide a general relation between \emph{all} \ewhc{}s in terms of the joint spectral radii.
-
-\begin{theorem}[JSR dominance]%
-    \label{th:rho_dominance_general}%
-    Given two arbitrary \ewhc{}, $\lambda_1^\strat$ and $\lambda_2^\strat$.
-    If $\lambda_1^\strat \preceq \lambda_2^\strat$, then
-    \begin{equation*}
-        \rho\funof{\Alifted_{\lambda_1^\strat}} \leq \rho\funof{\Alifted_{\lambda_2^\strat}}.
-    \end{equation*}
-
+%
+\begin{theorem}[JSR dominance]
+    \label{th:rho_dominance_general}
+    Given $\lambda_1^\strat$ and $\lambda_2^\strat$ as arbitrary \ewhc{}s, if $\lambda_2^\strat \preceq \lambda_1^\strat$ then
+    $$
+        \rho\funof{\Alifted_{\lambda_2^\strat}} \leq \rho\funof{\Alifted_{\lambda_1^\strat}}.
+    $$
+%
     \begin{proof}
         From Equation~\eqref{jsr}, for a generic \ewhc{} $\lambda^\strat$,
         \begin{equation*}
-            \rho\funof{\Alifted_{\lambda^\strat}} = \lim_{\ell\rightarrow \infty} \max_{w \in \sset{\ell}{\lambda^\strat}}\norm{\clmat{}_{w}}^{1/\ell}.
+            \rho\left(\Alifted_{\lambda^\strat}\right) = \lim_{\ell\rightarrow \infty} \rho_\ell \left(\Alifted_{\lambda^\strat}\right), \;\, 
+            \rho_\ell\left(\Alifted_{\lambda^\strat}\right) = \max_{a \in \sset{\ell}{\lambda^\strat}}\norm{\clmat_{a}}^{1/\ell}.
         \end{equation*}
-        According to Definition~\ref{def:domination}, it holds that $\lambda^\strat_1 \preceq \lambda^\strat_2$ if and only if $\sset{}{\lambda^\strat_1} \subseteq \sset{}{\lambda^\strat_2}$.
-        Thus, if for a word $a$ it holds that $a \in \sset{\ell}{\lambda^\strat_1}$, then it also holds that $a \in \sset{\ell}{\lambda^\strat_2}$.
-        The set of all possible $\clmat{}_{a}$ is thus included in the set of all possible $\clmat{}_{b},\, b \in \sset{\ell}{\lambda^\strat_2}$.
-        As a consequence it holds that
+        Definition~\ref{def:domination} gave us that $\lambda^\strat_2 \preceq \lambda^\strat_1$ iff $\sset{}{\lambda^\strat_2} \subseteq \sset{}{\lambda^\strat_1}$.
+        Thus, if for a word $b$ it holds that $b \in \sset{\ell}{\lambda^\strat_2}$, then it also holds that $b \in \sset{\ell}{\lambda^\strat_1}$.
+        The set of all possible $\clmat_{b}$ is thus included in the set of all possible $\clmat_{a},\, a \in \sset{\ell}{\lambda^\strat_1}$, thus:
         \begin{equation*}
-            \max_{a \in \sset{\ell}{\lambda^\strat_1}}\norm{\clmat{}_{a}}^{1/\ell} \leq
-            \max_{b \in \sset{\ell}{\lambda^\strat_2}}\norm{\clmat{}_{b}}^{1/\ell}, \quad
-            \forall \ell\in\N_{>}.
+            \max_{b \in \sset{\ell}{\lambda^\strat_2}}\norm{\clmat_{b}}^{1/\ell} \leq
+            \max_{a \in \sset{\ell}{\lambda^\strat_1}}\norm{\clmat_{a}}^{1/\ell}, \quad \forall \ell \in \N_{>}.
         \end{equation*}
         The theorem follows immediately when $\ell\rightarrow \infty$.
     \end{proof}
 \end{theorem}
-
-Theorem~\ref{th:rho_dominance_general} is the first result that provides a clear, analytic, correlation between the control theoretical analysis and real-time implementation.
+%
+Theorem~\ref{th:rho_dominance_general} is the first result that provides an analytic, correlation between the control theoretical analysis and real-time implementation.
 Primarily, it implies that the constraint dominance from Definition~\ref{def:domination} also carries on to the JSR, giving us a notion of \emph{JSR dominance}.
-If stability under a specific \ewhc{} is shown, Theorem~\ref{th:rho_dominance_general} guarantees stability for all \ewhc{} which are harder to satisfy.
-The results of Theorem~\ref{th:rho_dominance_general} are strategy independent, further reducing the coupling between the control analysis and implementation approach.
-Additionally, the results are independent of the dynamics and apply to open-loop as well as closed-loop systems, including feedforward controllers and any linear feedback control strategy -- provided that an appropriate reformulation of matrices $\Aa^\strat$ is given.
+The results of Theorem~\ref{th:rho_dominance_general} are strategy-independent, further reducing the coupling between the control analysis and real-time implementation, and are also independent of the controlled system's dynamics.
 
 Two Corollaries of Theorem~\ref{th:rho_dominance_general} are derived for the commonly used models $\erowmiss{}{\strat}$ and $\eanymiss{}{\strat}$, highlighting some practical relations between such constraints.
 \begin{corollary}[$\eanymiss{}{\strat}$ dominance]%
     \label{cor:rho_dominance_mk}%
-    Given two \ewhc{}, $\lambda^\strat_1 = \overbar{\binom{x}{k_1}}^{\strat}$ and $\lambda^\strat_2 = \overbar{\binom{x}{k_2}}^{\strat}$, if $k_1 \leq k_2$ then
-    \begin{equation*}
-        \rho\bigl(\Alifted_{\lambda^\strat_2}\bigr) \leq \rho\bigl(\Alifted_{\lambda^\strat_1}\bigr).
-    \end{equation*}
-    %
-    \begin{proof}
-        According to~\cite{Wu:2020}, $\overbar{\binom{x}{k_2}}^{\strat}\preceq\overbar{\binom{x}{k_1}}^{\strat}$ if $k_1 \leq k_2$.
-        The corollary follows directly from~\cite{Wu:2020} and Theorem~\ref{th:rho_dominance_general}.
-    \end{proof}
+    Given $\lambda^\strat_1 = \overbar{\binom{x}{k_1}}^{\strat}$ and $\lambda^\strat_2 = \overbar{\binom{x}{k_2}}^{\strat}$, if $k_1 \leq k_2$ then
+    $$
+        \rho\funof{\Alifted_{\lambda^\strat_2}} \leq \rho\funof{\Alifted_{\lambda^\strat_1}}.
+    $$
 \end{corollary}
-%
 \begin{corollary}[$\erowmiss{}{\strat}$ dominance]%
     \label{cor:rho_dominance_cons}%
-    Given two \ewhc{}, $\lambda^\strat_1 = \erowmiss{}{\strat}$ and $\lambda^\strat_2 =\eanymiss{}{\strat}$, then
-    \begin{equation*}
-        \rho\bigl(\Alifted_{\lambda^\strat_2}\bigr) \leq \rho\bigl(\Alifted_{\lambda^\strat_1}\bigr).
-    \end{equation*}
-    %
-    \begin{proof}
-        According to~\cite{Maggio:2020} it holds that $\erowmiss{}{\strat} \equiv \overbar{\binom{x}{x+1}}^{\strat}$.
-        The corollary follows directly from~\cite{Maggio:2020} and Corollary~\ref{cor:rho_dominance_mk}.
-    \end{proof}
+    Given $\lambda^\strat_1 = \erowmiss{}{\strat}$ and $\lambda^\strat_2 = \eanymiss{}{\strat}$, then
+    $$
+        \rho\funof{\Alifted_{\lambda^\strat_2}} \leq \rho\funof{\Alifted_{\lambda^\strat_1}}.
+    $$
 \end{corollary}
 %
 The conclusions drawn from Theorem~\ref{th:rho_dominance_general} are theoretical, but its practical applicability lies in the algorithm used to find $\rho^{LB}$ and $\rho^{UB}$, i.e., lower and upper bounds for the JSR value.
 Using these bounds we can determine the stability of the corresponding switching systems, as follows:
 %
 $$
-\rho^{LB} \bigl( \Alifted_{\lambda^\strat_1} \bigr) \leq \rho \bigl( \Alifted_{\lambda^\strat_1} \bigr) \leq \rho \bigl( \Alifted_{\lambda^\strat_2} \bigr) \leq \rho^{UB} \bigl( \Alifted_{\lambda^\strat_2} \bigr).
+\rho^{LB} \funof{ \Alifted_{\lambda^\strat_2} } \leq \rho \funof{ \Alifted_{\lambda^\strat_2} } \leq \rho \funof{ \Alifted_{\lambda^\strat_1} } \leq \rho^{UB} \funof{ \Alifted_{\lambda^\strat_1} }.
 $$
 %
-Regardless of the algorithm used to find the bounds, we can generally conclude that if $\rho^{UB} \left( \Alifted_{\lambda^\strat} \right) < 1$ the constrained system is switching stable.
-Similarly, if $\rho^{LB} \left( \Alifted_{\lambda^\strat} \right) > 1$ the system is unstable.
-Thus, if $\lambda^\strat_1 \preceq \lambda^\strat_2$, where $\rho^{UB} \left( \Alifted_{\lambda^\strat_2} \right) < 1$, we know that the system under $\lambda^\strat_1$ constraints is switching stable.
+Regardless of the algorithm used to find the bounds, if $\lambda^\strat_2 \preceq \lambda^\strat_1$ and $\rho^{UB} ( \Alifted_{\lambda^\strat_1} ) < 1$, the system under $\lambda^\strat_2$ is switching stable.
 A similar relation holds for the lower bound.
 
-We now extend the results of Theorem~\ref{th:rho_dominance_general} by relating the joint spectral radius of a single constraint to sets of constraints.
+Theorem~\ref{th:rho_dominance_general} can be further extended by relating the joint spectral radius of a single constraint to sets of constraints.
 \begin{theorem}%
     \label{th:rho_dominance_set_general}%
     Given an arbitrary \ewhc{} $\lambda^\strat$, it holds that
-    \begin{equation*}
+    $$
         \rho\left(\Alifted_{\Lambda^\strat}\right) \leq \rho \left( \Alifted_{\lambda^\strat} \right) ,\,\, \forall \Lambda^\strat \ni \lambda^\strat.
-    \end{equation*}
-    %
+    $$
     \begin{proof}
-        For an arbitrary \ewhc{} set $\Lambda^\strat = \{\lambda^\strat_1, \dots, \lambda^\strat_N\}$, its satisfaction set is 
-        \begin{equation*}%
-            \sset{\ell}{\Lambda^\strat} = \bigcap_{i = 1}^N \sset{\ell}{\lambda^\strat_i}.
-        \end{equation*}
-        Thus, for any $\lambda^\strat \in \Lambda^\strat$ it holds that 
-        \begin{equation*}
-            \sset{\ell}{\Lambda^\strat} \subseteq \sset{\ell}{\lambda^\strat}.
-        \end{equation*}
-        If a word $a$ is in $\sset{\ell}{\Lambda^\strat}$ it also belongs to $\sset{\ell}{\lambda^\strat}$. 
-        The set of all possible $\clmat{}_{a}$ is thus included in the set of all possible $\clmat{}_{b},\, b \in \sset{\ell}{\lambda^\strat}$.
+        For an arbitrary \ewhc{} set $\Lambda^\strat = \{\lambda^\strat_1, \dots, \lambda^\strat_N\}$, its satisfaction set is
+        $$
+            \sset{\ell}{\Lambda^\strat} = \bigcap_{i \in \{1,\dots, N\}} \sset{\ell}{\lambda^\strat_i}.
+        $$
+        Thus, for any $\lambda^\strat_i \in \Lambda^\strat$ it holds that 
+        $$
+            \sset{\ell}{ \Lambda^\strat } \subseteq \sset{\ell}{\lambda^\strat}.
+        $$
+        If a word $b$ is in $\sset{\ell}{\Lambda^\strat}$ it also belongs to $\sset{\ell}{\lambda^\strat}$. 
+        The set of all possible $\clmat_{b}$ is thus included in the set of all possible $\clmat_{a},\, a \in \sset{\ell}{\lambda^\strat}$.
         As a consequence it holds that
         \begin{equation*}
-            \max_{a \in \sset{\ell}{\Lambda^\strat }} \norm{\clmat{}_{a}}^{1/\ell} \leq
-            \max_{b \in \sset{\ell}{\lambda^\strat }} \norm{\clmat{}_{b}}^{1/\ell}, \quad
-            \forall \ell\in\N_{>}.
+            \max_{b \in \sset{\ell}{\Lambda^\strat}} \norm{\clmat_{b}}^{1/\ell} \leq
+            \max_{a \in \sset{\ell}{\lambda^\strat}} \norm{\clmat_{a}}^{1/\ell}, \quad
+            \forall \ell \in \N_{>}.
         \end{equation*}
         The theorem follows immediately when $\ell\rightarrow \infty$.
     \end{proof}
 \end{theorem}
 
 As in Theorem~\ref{th:rho_dominance_general}, the more we restrict the execution pattern of the control task with sets of constraints, the lower its JSR will be.
+%
 Theorem~\ref{th:rho_dominance_set_general} delivers the practical insight that enforcing tighter \ewhc{} to a stable system will \emph{never} destabilise it, as formally stated in the following corollary.
 \begin{corollary}%
     \label{cor:rho_dominance_set}%
-    Given an arbitrary \ewhc{}, $\lambda^\strat$, if $\rho \left( \Alifted_{\lambda^\strat} \right) < 1$ then
-    \begin{equation*}
+    Given an arbitrary \ewhc{} $\lambda^\strat$, if $\rho \left( \Alifted_{\lambda^\strat} \right) < 1$ then
+    $$
         \rho\left(\Alifted_{\Lambda^\strat}\right) < 1 ,\,\, \forall \Lambda^\strat \ni \lambda^\strat.
-    \end{equation*}
-
-    \begin{proof}
-        The corollary follows immediately from Theorem~\ref{th:rho_dominance_set_general} when $\rho \left( \Alifted_{\lambda^\strat} \right) < 1$.
-    \end{proof}
+    $$
 \end{corollary}
