@@ -12,12 +12,12 @@ Not only is the number of computational devices increasing, but their independen
 Obviously, the increased efficiency and reduced cost opened up new businesses and domains, in particular within the IT-domain, whilst also consolidating and automating preexisting industry.
 Integrating digital components and software solutions is nowadays the norm rather than the exception; this does not come as a surprise, considering that automating and simplifying the decision making and data collection yield both economical and safety benefits.
 Generally, integrating software into any domain help monitor system safety, log and transmit important data, orchestrate the execution of different components, and remotely micromanage system updates.
-Subsequently, software integration is a powerful tool that improves both efficiency and increase revenue, when everything behaves as intended.
+Subsequently, software integration is a powerful tool that both improves efficiency and increases revenue, assuming everything behaves as intended.
 
 % The complexity and reduced prices increase error surfaces
 Interconnecting multiple systems is, however, not a trivial task.
-When the systems are getting increasingly more complex, the surface for possible errors is also growing.
-In addition to the components' individual faults, after connecting two components together, additional problems can be encountered; for instance, problems with the coupling of the components' or new problems in the individual components.
+As the systems are getting increasingly more complex, the surface for possible errors is also growing.
+After connecting two components together, new problems can be encountered in addition to the components' individual faults; for instance, problems with the coupling or new problems in the individual components.
 A motorbike can experience all the same problems that a normal bike can encounter (such as a loose chain), but it can also experience issues from connecting the bike together with a motor (such as electric clutch).
 Similarly to the motorbike, systems relying on the interconnection of computational devices and digital components can experience complex coupling issues.
 For example, data transmissions can easily be delayed or stall indefinitely if data is lost, a computer's orchestrator can get overloaded, and systems with remote updates have the potential to break every time a new patch is installed.
@@ -27,7 +27,7 @@ These problems are neither easy to detect nor troubleshoot; particularly since t
 % Costs
 The effects of such errors can be extremely expensive and in the worst case cause companies to lose billions of dollars.
 Typically the outcome of system faults is that the normal operation of the device (or machine) is degraded.
-The degradation can over time accumulate and either wear down the device or affect the end product.
+The degradation can accumulate over time and either wear down the device or affect the end product.
 Obviously, there is a lot of money to be gained by extending the devices' lifetime through proper fault analysis.
 Furthermore, if the end product is inferior to the promised product, the consumers would go elsewhere --- no matter whether the product is a service, such as cloud storage, or a physical product, such as a cellphone.
 
@@ -35,10 +35,10 @@ Furthermore, if the end product is inferior to the promised product, the consume
 Arguably more important than the economic consequences are the risks to personal safety, security, and privacy.
 One of the modern era's most famous examples are the Boeing's 737 MAX\footnote{\url{https://en.wikipedia.org/wiki/Boeing_737_MAX_groundings}} crashes, killing 346 people in two subsequent crashes.
 The crashes were caused by erroneous sensor readings being misinterpreted by the flight control system, resulting in the planes nosediving into the ground.
-Another relevant (although less lethal) example is the infamous Stuxnet worm\footnote{\url{https://en.wikipedia.org/wiki/Stuxnet}}.
-Stuxnet infiltrated the system controlling the gas-centrifuges in multiple Iranian nuclear plants, significantly damaging them whilst also collecting critical information. 
+Another relevant (although less lethal) example is the infamous Stuxnet worm.\footnote{\url{https://en.wikipedia.org/wiki/Stuxnet}}
+Stuxnet infiltrated the system controlling the gas centrifuges in multiple Iranian nuclear plants, significantly damaging them whilst also collecting critical information. 
 
-Generally it is impossible to guarantee that today's complex computer systems are absolutely safe, secure, and performs according to specifications under all conditions.
+It is generally impossible to guarantee that today's complex computer systems are absolutely safe, secure, and performs according to specifications under all conditions.
 Additionally, testing for all possible future problems is expensive and time consuming at best and infeasible in practice.
 It is therefore crucial to develop easy-to-use, powerful tools to simplify the analysis of both the systems' performance and safety properties.
 
@@ -88,7 +88,7 @@ Next, the individual components seen in the figure are introduced.
 The right part of the figure depict the process we are trying to control (denoted the \emph{plant}).
 This could be anything from an airplane's taxiing system, indoor heating systems, or the load on a server in a data centre.
 In this and following chapters, the taxiing system will be used as a recurring example to illustrate the different concepts.
-The arrows going to and from the plant indicate the flow of data; actuation data goes into the plant and sensor data is collected on the plant.
+The arrows going to and from the plant indicate the flow of data; actuation data goes into the plant and sensor data is collected from the plant.
 Actuation data refers to the commands sent to the components responsible for movement or change in the plant, i.e., the actuators.
 Similarly, the sensor data is all information collected by the sensors, e.g., the rotational velocity of the wheel or the friction between the wheel and the ground in the taxiing system.
 These signals are transmitted via the hardware interfaces on the computational unit responsible for controlling the plant.
@@ -96,12 +96,12 @@ Historically, these signals were transmitted via wire, but in the last couple of
 
 A communication protocol\footnote{A communication protocol is a set of rules setup in order for two or more actors in a network to be able to transmit information to one another. The rules include (but are not limited to) semantics, i.e., how to format the information, and synchronisation, i.e., how much and how fast the information is transmitted.} is used for the plant to communicate with the hardware interfaces.
 The choice of protocol is domain dependent, e.g., the controller area network (CAN) is very common in the automotive industry~\cite{Voss:2005}.
-There exists a plethora of domain specific communication protocols, but some established ones include CAN, Profibus, Modbus, and Ethernet/IP.
+There exists a plethora of domain specific communication protocols, but some established ones include Profibus, Modbus, Ethernet/IP, and (as already mentioned) CAN.
 
 \subsubsection{Hardware}% Hardware
 %
 Depending on the application, the hardware used to control the plant can be anything from a logic-based system (e.g., programmable logic controllers) to a general purpose computer (e.g., laptops or server systems).
-We mainly refer to \emph{microcontrollers} (MCUs), i.e., small computers with integrated memory, central processing units (CPUs), graphical processing units (GPUs), and programmable input/output peripherals (GPIOs) all on a single chip; however, we emphasise that the presented results are not bound to a specific hardware architecture.
+We mainly refer to \emph{microcontrollers} (MCUs), i.e., small computers with integrated memory, central processing units (CPUs), graphical processing units (GPUs), and programmable input/output peripherals (PIOs) all on a single chip; however, we emphasise that the presented results are not bound to a specific hardware architecture.
 It is also common to connect multiple levels of control hardware together.
 For instance, having a high-level trajectory planner communicate with a low-level control structure whose objective is to enforce that the desired trajectory is followed, e.g., the taxiways on the airfield.
 
@@ -113,7 +113,7 @@ Another common architecture choice is having many single objective, specialised 
 \subsubsection{Clocks}% Clocks
 %
 There exists another discrepancy between the components of the real-time control system: the time quantisation.
-The plant, hardware, and RTOS are most likely executing in different time scales, where the plant (at least in the taxiing example) is likely to execute in a continuous time scale while the hardware and RTOS are both executing in (different) discrete quanta.
+The plant, hardware, and RTOS are most likely executing in different time scales, where the plant (at least in the taxiing example) is likely to execute in continuous time while the hardware and RTOS are both executing in (different) discrete quanta.
 Extremely simplified, the hardware contains a \emph{clock} that measures the progress of physical time in \emph{ticks} rather than seconds (like a wall-clock would).
 For the hardware clock, these ticks are physical events (typically the oscillations of a crystal) occurring with a known frequency.
 The RTOS clock is then based on the hardware clock; it reads the hardware clock at a frequency specified by the user and wraps it in a virtual layer to improve applicability. 
@@ -153,7 +153,7 @@ The control tasks are all the tasks responsible for controlling the plant, while
 Taking the taxiing system as an example, the control tasks can be two tasks where one is controlling the velocity of the landing gear while the other is controlling its retraction mechanism.
 Additionally, there are other tasks communicating sensor data (e.g., tire-pressure, temperature, etc.) to the aircraft's central computer.
 
-As elaborated in Chapter~\ref{ch:background}, we partition the tasks in these two categories because we are specifically interested in analysing the control tasks' effect on the real-time control system when their temporal execution is unreliable.
+As is elaborated upon in Chapter~\ref{ch:background}, we partition the tasks in these two categories because we are specifically interested in analysing the control tasks' effect on the real-time control system when their temporal execution is unreliable.
 In particular, the aim of the thesis is to investigate the control system's behaviour when the control tasks overrun their respective deadlines.
 This is particularly relevant for control systems, because enforcing that the control task's WCRT is shorter than its deadline (i.e., that the task \emph{never} overruns its deadline) would involve postponing the deadline.
 Holding off the deadline results in fewer control updates, hence severely degrading the control system's performance.
@@ -164,7 +164,7 @@ Consequently, allowing a certain number of deadline overruns can improve the con
 %
 In some situations, real-time control systems are executed under suboptimal timing conditions.
 As already mentioned, faults typically lead to reduced quality of the end product and can in the worst case be lethal.
-However, the term ``timing faults'' is an oversimplification for a complex class of problems.
+However, the term ``timing faults'' is an oversimplification of a complex class of problems.
 When analysing timing faults and irregularities it is thus important to properly define the fault type under analysis.
 The following list include some of the most general timing irregularities analysed in literature.
 %
@@ -172,7 +172,7 @@ The following list include some of the most general timing irregularities analys
     \item \emph{Computational overruns} -- When there exists computational elements in the system, i.e., something that takes the current state of the system and transforms or translates it, there is the possibility that it will not complete its execution, either on time or at all. % TODO: Skeptical about this statement
         Generally, this is connected to a real-time system if the computation has to complete before a predetermined \emph{deadline}.
 
-    \item \emph{Time delays} -- Time delays might be some of the eldest timing problems analysed in the literature.
+    \item \emph{Time delays} -- Time delays might be some of the oldest timing problems analysed in the literature.
         Nowadays, time delays involve both internal time delays and input/output delays, i.e., respectively when the plant includes time delays or when the sensing, actuation, or control contains time delays.
         The control community has developed ways to both analyse and design controllers for systems with known time delays~\cite{Mirkin:2004, Mirkin:2005}.
 
