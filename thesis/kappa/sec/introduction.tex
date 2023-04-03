@@ -5,7 +5,7 @@
 Entering the digital age has forever changed how we interact with the world and how it interacts with us.
 Unlike only 20 years ago, from the moment we wake up in the morning till the moment we close our eyes at night, we interact with advanced computer systems.
 Our cellphones, work computers, and even our cars contain many computational devices, performing everything from menial tasks, such as checking the weather and accessing mail clients, to safety critical tasks, such as the car's ABS breaks and most of the engine's functionality.
-To put the digital growth rate in perspective, the semiconductor\footnote{Semiconductors are components constituting the foundation of generally \emph{all} electronic devices.} market share has more than quadrupled over the last 20 years~\cite{statista:2022}.
+To put the digital growth rate in perspective, the semiconductor market share has more than quadrupled over the last 20 years~\cite{statista:2022}.\footnote{Semiconductors are components constituting the foundation of generally \emph{all} electronic devices.}
 
 % The hardware architecture is getting more powerful and cheaper to use
 Not only is the number of computational devices increasing, but their independent capabilities, functionalities, and complexities are growing steadily, all while the cost to buy and manufacture them has become cheaper.
@@ -17,7 +17,7 @@ Subsequently, software integration is a powerful tool that both improves efficie
 % The complexity and reduced prices increase error surfaces
 Interconnecting multiple systems is, however, not a trivial task.
 As the systems are getting increasingly more complex, the surface for possible errors is also growing.
-After connecting two components together, new problems can be encountered in addition to the components' individual faults; for instance, problems with the coupling or new problems in the individual components.
+After connecting two components together, new problems can be encountered in addition to the components individual faults; for instance, problems with the coupling or new problems in the individual components.
 A motorbike can experience all the same problems that a normal bike can encounter (such as a loose chain), but it can also experience issues from connecting the bike together with a motor (such as electric clutch).
 Similarly to the motorbike, systems relying on the interconnection of computational devices and digital components can experience complex coupling issues.
 For example, data transmissions can easily be delayed or stall indefinitely if data is lost, a computer's orchestrator can get overloaded, and systems with remote updates have the potential to break every time a new patch is installed.
@@ -33,7 +33,7 @@ Furthermore, if the end product is inferior to the promised product, the consume
 
 % Safety and security
 Arguably more important than the economic consequences are the risks to personal safety, security, and privacy.
-One of the modern era's most famous examples are the Boeing's 737 MAX\footnote{\url{https://en.wikipedia.org/wiki/Boeing_737_MAX_groundings}} crashes, killing 346 people in two subsequent crashes.
+One of the modern era's most famous examples are the Boeing's 737 MAX crashes, killing 346 people in two subsequent crashes.\footnote{\url{https://en.wikipedia.org/wiki/Boeing_737_MAX_groundings}}
 The crashes were caused by erroneous sensor readings being misinterpreted by the flight control system, resulting in the planes nosediving into the ground.
 Another relevant (although less lethal) example is the infamous Stuxnet worm.\footnote{\url{https://en.wikipedia.org/wiki/Stuxnet}}
 Stuxnet infiltrated the system controlling the gas centrifuges in multiple Iranian nuclear plants, significantly damaging them whilst also collecting critical information. 
@@ -94,7 +94,7 @@ Similarly, the sensor data is all information collected by the sensors, e.g., th
 These signals are transmitted via the hardware interfaces on the computational unit responsible for controlling the plant.
 Historically, these signals were transmitted via wire, but in the last couple of decades wireless communication has become more common~\cite{Park:2018}.
 
-A communication protocol\footnote{A communication protocol is a set of rules setup in order for two or more actors in a network to be able to transmit information to one another. The rules include (but are not limited to) semantics, i.e., how to format the information, and synchronisation, i.e., how much and how fast the information is transmitted.} is used for the plant to communicate with the hardware interfaces.
+A communication protocol is used for the plant to communicate with the hardware interfaces.\footnote{A communication protocol is a set of rules setup in order for two or more actors in a network to be able to transmit information to one another. The rules include (but are not limited to) semantics, i.e., how to format the information, and synchronisation, i.e., how much and how fast the information is transmitted.}
 The choice of protocol is domain dependent, e.g., the controller area network (CAN) is very common in the automotive industry~\cite{Voss:2005}.
 There exists a plethora of domain specific communication protocols, but some established ones include Profibus, Modbus, Ethernet/IP, and (as already mentioned) CAN.
 
@@ -136,7 +136,7 @@ The orchestration is based on a scheduling algorithm, where some of the most pop
 Additionally, the tasks are not supposed to have any information about the RTOS orchestration and it is thus the RTOS responsibility to ensure that the task has access to its own \emph{context}, i.e., the resources it requires. 
 
 The time it takes for a task to finish executing its corresponding function can vary greatly between iterations.
-For instance, if a task contains different conditional branches\footnote{If a function's behaviour change depending on a logical condition, it is said to have conditional branches.} its execution time may be dependent on the branch taken.
+For instance, if a task contains different conditional branches its execution time may be dependent on the branch taken.\footnote{If a function's behaviour change depending on a logical condition, it is said to have conditional branches.}
 To quantify a task's execution time, the simplest task models approximate it as the \emph{worst-case execution time} (WCET), i.e., the maximum length of time the task could execute on the specific hardware.
 The WCET is typically pessimistic, but it is also important for for guaranteeing reliability in safety-critical real-time systems.
 

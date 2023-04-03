@@ -3,7 +3,7 @@
 
 This chapter presents the necessary background and motivation for the remainder of the thesis.
 We divide the chapter in two primary parts.
-First, a discussion on the real-time theoretical aspects is provided.
+First, a discussion on the theoretical aspects of real-time systems is provided.
 An extended introduction to how real-time operating systems operates is presented, e.g., processor sharing, task states, scheduling strategies, etc.
 However, the main focus is dedicated to the most commonly used task models and their respective advantages and disadvantages, with respect to deadline overruns.
 Additionally, we provide a brief discussion on state-machine applicability to the aforementioned task models. 
@@ -35,11 +35,11 @@ Although this thesis does not discern different hardware architectures from one 
 Despite being two different hardware architectures, the terms embedded system and microcontroller will carelessly be used interchangeably due to their natural similarities.
 As introduced in Chapter~\ref{ch:intro}, microcontrollers (MCUs) are small computers with integrated processors, memory, and I/O peripherals.
 Most embedded systems are based on microcontroller architectures, however, some embedded systems are based on one or more microprocessors with external memory and I/O peripherals.
-Hence, microcontrollers are embedded systems and can be used to develop more complex embedded systems, but an embedded system is not necessarily a microcontroller.
+Hence, microcontrollers are embedded systems which can also be used to develop more complex embedded systems, but an embedded system is not necessarily a microcontroller.
 
 % CPU and cores
 The basis of every hardware architecture is a \emph{central processing unit} (CPU, or simply \emph{processor}).
-This is the electronic component responsible for executing the task functions.
+This is the electronic component responsible for executing the desired functions.
 Each function (or program) is translated into a list of instructions to be executed on the CPU.
 These instructions belong to the machine's language used to tell the processor what type of operation to execute, e.g., load a specific memory register or execute an arithmetic operation.
 The time it takes for the CPU to execute one instruction, i.e., fetching the instruction from memory before decoding and executing it, is typically called an \emph{instruction cycle} (or simply \emph{cycle}); this is the basic unit used to measure CPU speed.
@@ -68,8 +68,8 @@ Additionally, the longer a task executes, the less likely it is to contract cach
 Intuitively, the task will experience a few initial cache misses when the data is loaded into the cache, but thereafter the cache will be occupied by relevant data and the cache misses should decrease.
 This is also known as \emph{cache warming}.
 If the task continues to experience significant cache misses even after the cache warming phase, it is said to be \emph{thrashing} the cache, i.e., continuously experiencing cache misses.
-Thrashing can severely impact both real-time performance, energy consumption, and even collapse the execution~\cite{Wadleigh:2000}.
-In multi-core setups where different cores share a layer-X cache, thrashing is a big concern; however, there exists strategies to mitigate frequent interference from different tasks sharing the same cache~\cite{Brandenburg:2011}.
+Thrashing can severely impact both real-time performance, energy consumption, and even collapse system execution~\cite{Wadleigh:2000}.
+In multi-core setups where different cores share a cache layer, thrashing is a big concern; however, there exists strategies to mitigate frequent interference from different tasks sharing the same cache~\cite{Brandenburg:2011}.
 To help mitigate cache eviction (both in single- and multi-core setups), \emph{cache partitioning} is typically employed.
 Cache partitioning reserves specific memory addresses for specific tasks, whilst reserving others for shared data.
 Thus, cache evictions are limited to the specific cache memory regions that are shared among multiple tasks; unless, the cache is flushed due to security reasons.
@@ -90,7 +90,7 @@ However, it is an important component of real-time networked control systems and
 Information transmitted over a network (wired or wireless) is generally represented as a set of bits (ones and zeroes) to be read in series or parallel; without loss of generality, we will only mention the serial case.
 The communication protocol defines the rules determining how the transmitter should encode its data in order for the receiver to decode it using the same set of rules.
 The rules are highly dependent on the communication protocol and its application domain.
-We illustrate the idea of communication protocols with an example: consider the case where a transmitter wants to send the character \code{R} using the universal asynchronous receiver-transmitter (UART) protocol\footnote{Assuming ASCII encoding of the character, 8 data bits, no parity, and 1 stop bit, i.e., UART 8-N-1.}.
+We illustrate the idea of communication protocols with an example: consider the case where a transmitter wants to send the character \code{R} using the universal asynchronous receiver-transmitter (UART) protocol.\footnote{Assuming ASCII encoding of the character, 8 data bits, no parity, and 1 stop bit, i.e., UART 8-N-1.}
 The rules defined by this protocol states that each data packet contains exactly 8 bits of information, is prepended with a start bit ($0$), and is appended with a stop bit ($1$).
 Since the binary representation of \code{R} is $01010010$ (using ASCII encoding), the encoded character's packet representation to be sent over the network is then
 %
@@ -107,13 +107,13 @@ Transmitting a message, such as \code{RTS}, thus involve encoding each character
 \end{equation*}
 
 The network over which the packets are transmitted, typically consist of one or more routers forwarding the packets between different target locations.
-To determine where to forward the packet to, the packet includes a \emph{network address}\footnote{The network address is an identifier to help recognise where to forward the packet to. Common examples of network addresses are IP addresses and MAC addresses.} that is read by the router before rerouting the packet according to a routing policy.
+To determine where to forward the packet to, the packet includes a \emph{network address} that is read by the router before rerouting the packet according to a routing policy.\footnote{The network address is an identifier to help recognise where to forward the packet to. Common examples of network addresses are IP addresses and MAC addresses.}
 Additionally, each router contains a buffer to store incoming packets before processing them.
 Processing the packets in the buffer is efficient, but it requires some non-negligible overhead, i.e., reading the network address and deciding where to forward the packet.
 Thus, under normal conditions the receiver will experience packet latency and jitter, but if the network traffic is heavy the buffer space can quickly be exhausted.
 In other words, if the packets arrive faster than what the router can process it becomes congested.
 
-Multiple policies have been developed to control the congestion, such as tail drop~\cite{Comer:2013}.
+Multiple policies have been developed to control the congestion, one common example being the tail drop policy~\cite{Comer:2013}.
 Common among all the congestion control strategies is that they employ intentional \emph{packet dropping}, i.e., if a packet arrives while the buffer space is exhausted, the congestion controller will remove either the arriving packet or one in the buffer (depending on the strategy).
 In addition to the congestion controller dropping packets, there are intermittent packet drops due to, e.g., packets being misrouted~\cite{Bradley:1998}, security threats~\cite{Hansman:2005}, software bugs~\cite{Mai:2011}, or wireless communication~\cite{Zhu:2021}.
 
@@ -127,7 +127,7 @@ The RTOS is responsible for orchestrating the tasks' execution and allocating re
 The terms ``task'', ``process'', and ``thread'' are frequently confused in many documents; to avoid this confusion we provide a definition in the context of real-time operating systems:
 %
 \begin{itemize}
-    \item \emph{Process} -- A process is a computer program with its own stack, control block\footnote{A task's control block (TCB) includes descriptive information about the task, for instance, the identifier used by the scheduler, its priority, and the task's state (running, ready, blocked, suspended, etc.).}, and instruction set.
+    \item \emph{Process} -- A process is a computer program with its own stack, control block, and instruction set.\footnote{A task's control block (TCB) includes descriptive information about the task, for instance, the identifier used by the scheduler, its priority, and the task's state (running, ready, blocked, suspended, etc.).}
 
     \item \emph{Thread} -- A thread is an entity within a process that share the memory context with additional threads.
 
@@ -155,7 +155,7 @@ For instance, two different scheduling strategies applied to one set of real-tim
 If the RTOS tasks are not schedulable there exists tasks overrunning their corresponding deadlines.
 
 In order for the scheduler to know when to stop the currently running task in favour of switching in another, the RTOS clock triggers an \emph{interrupt} at every clock tick.
-Interrupts can come from both hardware\footnote{Hardware interrupts come from events changing the state of the system, e.g., external signals triggering that they need attention from the RTOS, watchdog timers triggering an interrupt at set time intervals, or spurious interrupts (electrical anomalies)~\cite{Drepper:2003}.} and software, but the RTOS ticks are triggered by the software clock in the RTOS.
+Interrupts can come from both hardware and software, but the RTOS ticks are triggered by the software clock in the RTOS.\footnote{Hardware interrupts come from events changing the state of the system, e.g., external signals triggering that they need attention from the RTOS, watchdog timers triggering an interrupt at set time intervals, or spurious interrupts (electrical anomalies)~\cite{Drepper:2003}.}
 Attached to the interrupt is generally an \emph{interrupt service routine} (ISR), i.e., a callback function to execute when the specific interrupt is triggered.
 For instance, in the context of the scheduler's tick interrupt, the ISR may be responsible for switching out the currently active task before switching in a new task and its relevant context.
 The ISR connected to the RTOS clock tick is also one of the major culprits behind \emph{release jitter} in RTOS, i.e., the time it takes to put the suspended task into the ready queue before picking a new candidate to execute varies between invocations.
@@ -216,11 +216,11 @@ To analyse these systems, their deadline overruns are typically modelled using s
 For instance, the simplest models assume that jobs' deadline outcomes are independent and identically distributed random variables, i.e., that the outcome of each job depend only on the probability that this specific job overruns its deadline.
 Intuitively, this assumption is too simplistic for real systems and instead stochastic models for the task execution were developed based on, for instance, Markov chains~\cite{Liu:2005, Friebe:2022, Abeni:2017, Lincoln:2002} and task chains~\cite{Manolache:2004, Liu:2010}, where the transitions between states are probabilistic.
 Despite the hard and soft classes covering many real-time systems, they do not cover all cases.
-In particular, embedded systems can be described using the \emph{firm real-time systems} model, characterised by being able to overrun a few, but not too many, deadlines before causing critical system failure.
+In particular, embedded controllers are typically better described using the \emph{firm real-time systems} model, characterised by being able to overrun a few, but not too many, deadlines before causing critical system failure.
 
 Arguably the most recognised firm model is the \emph{weakly-hard} task model~\cite{Bernat:2001}.
 These models were originally devised to provide formal guarantees to tasks that can tolerate occasional deadline overruns, e.g., control tasks where decreasing the sampling time would improve the overall performance whilst introducing intermittent computational overruns.
-What defines a weakly-hard task is that the distribution of deadline hits and misses during a window of $k$ jobs is precisely bounded\footnote{From the context it will always be clear when $k$ is used to respectively denote the window length of a weakly-hard constraint and to count the discrete number of job iterations of a recurrent task.}.
+What defines a weakly-hard task is that the distribution of deadline hits and misses during a window of $k$ jobs is precisely bounded.\footnote{From the context it will always be clear when $k$ is used to respectively denote the window length of a weakly-hard constraint and to count the discrete number of job iterations of a recurrent task.}
 In other words, in addition to the number of overrun deadlines that a task experiences in a window, the sequence in which they appear is also affecting the task execution.
 We here compile the definitions of the weakly-hard models:
 %
@@ -238,8 +238,8 @@ We here compile the definitions of the weakly-hard models:
 %
 Here, the $\vdash$ symbol is used to indicate that all possible sequences of deadline hits and misses of $\tau$ satisfy the right hand side.
 
-To formalise which sequences of deadline hits and misses that are permitted under a specific weakly-hard constraint an alphabet is introduced.
-For historical reasons, the language used to characterise the deadline outcomes of a weakly-hard task is binary, i.e., it consisted solely of two unique character mappings to a deadline hit and a deadline miss\footnote{In Paper~IV we extend this notation to also encompass more appropriate languages in the real-time control systems setting.}.
+To formalise which sequences of deadline hits and misses that are permitted under a specific weakly-hard constraint, an alphabet is introduced.
+For historical reasons, the language used to characterise the deadline outcomes of a weakly-hard task is binary, i.e., it consisted solely of two unique character mappings to a deadline hit and a deadline miss.\footnote{In Paper~IV we extend this notation to also encompass more appropriate languages in the real-time control systems setting.}
 Formally, the \emph{alphabet} of outcomes is denoted $\Sigma = \left\{ 0, 1 \right\}$, where $0$ indicates a job overrunning its corresponding deadline and $1$ represents a job meeting its deadline.
 With the use of the alphabet and conventional language theoretical notation~\cite{Hopcroft:2006}, a \emph{character} $c_k \in \Sigma$ is defined as the outcome of the $k$-th job.
 Similarly, a \emph{word} $w$ is a sequence of $\abs{w}$ characters, i.e., $w = \seq{c_1, c_2, \ldots, c_{\abs{w}}}$.
@@ -251,7 +251,7 @@ In~\cite{Bernat:2001}, the authors show that the constraints are in fact compara
 With a slight abuse of notation we will let $w \vdash \lambda$ represent the case when a word $w$ (outcome sequence) satisfies the weakly-hard constraint $\lambda$.
 %
 \begin{definition}[Satisfaction Set]
-    The \emph{satisfaction set} $\sset{N}{\lambda}$ of an arbitrary weakly-hard constraint $\lambda$, is the set of all length $N \in \N_{>}$ words $w$ satisfying $\lambda$.
+    The satisfaction set $\sset{N}{\lambda}$ of an arbitrary weakly-hard constraint $\lambda$, is the set of all length $N \in \N_{>}$ words $w$ satisfying $\lambda$.
     Formally,
     \begin{equation*}
         \sset{N}{\lambda} = \left\{ w \mid w \in \Sigma^N,\, w \vdash \lambda \right\}.
@@ -269,7 +269,7 @@ We formalise the partial ordering in the following definition:
 %
 \begin{definition}[Constraint Dominance]%
     \label{def:kappa:dominance}%
-    Given two arbitrary weakly-hard constraints $\lambda_1$ and $\lambda_2$, we say that $\lambda_1$ \emph{dominates} $\lambda_2$ (denoted $\lambda_1 \preceq \lambda_2$) if and only if all words satisfying $\lambda_1$ also satisfy $\lambda_2$.
+    Given two arbitrary weakly-hard constraints $\lambda_1$ and $\lambda_2$, we say that $\lambda_1$ dominates $\lambda_2$ (denoted $\lambda_1 \preceq \lambda_2$) if and only if all words satisfying $\lambda_1$ also satisfy $\lambda_2$.
     Formally,
     \begin{equation*}
         \lambda_1 \preceq \lambda_2 \Leftrightarrow \sset{}{\lambda_1} \subseteq \sset{}{\lambda_2}.
@@ -277,7 +277,7 @@ We formalise the partial ordering in the following definition:
 \end{definition}
 %
 Definition~\ref{def:kappa:dominance} confirms that $\lambda_1 = \binom{1}{1}$ dominates $\lambda_2 = \binom{0}{1}$, because $\sset{}{\lambda_1} \subseteq \sset{}{\lambda_2}$.
-Many constraint dominance relations have been derived in literature\footnote{In Paper III we extend the known orderings with two theorems relating the \tAH{} and \tRH{} constraints, thus making it possible to relate \emph{all} the different weakly-hard constraints.}~\cite{Bernat:2001}.
+Many constraint dominance relations have been derived in literature~\cite{Bernat:2001}.\footnote{In Paper III we extend the known orderings with two theorems relating the \tAH{} and \tRH{} constraints, thus making it possible to relate \emph{all} the different weakly-hard constraints.}
 Additionally, the partial ordering motivates the notion of \emph{constraint equivalence}
 %
 \begin{equation*}
@@ -331,9 +331,9 @@ However, as described in~\cite{Cervin:2004b}, three of the simplest and most com
     \item \tK{} -- If a job overruns its deadline under the \tK{} strategy (sometimes referred to as the \code{Abort} strategy), the job is immediately terminated allowing the subsequent job to be released and activated on time.
         One of the main advantages with the \tK{} strategy comes from its binary outcome representation, i.e., either the job is completed or it is not.
         This fits well together with, for instance, the weakly-hard task models' language representation.
-        On the other hand, one of the drawbacks with \tK{} are that many subsequent job deadlines can be overrun if the job iterations are not independent.
-        Additionally, if the task function depend on an internal state, the part of the computation that was completed may need to be rolled back to a previous state via, e.g., memory checkpointing~\cite{Vogt:2015}.
+        On the other hand, one drawback with \tK{} is that if the task function depends on an internal state, the part of the computation that was completed may need to be rolled back to a previous state via, e.g., memory checkpointing~\cite{Vogt:2015}.
         Since such an operation requires additional overhead, it further increases the risk of missing the subsequent job's deadline.
+        Additionally, if many consecutive job deadlines are overrun, the corresponding task risks never doing any actual work.
 \end{itemize}
 %
 A framework for switching between \tK{} and \tS{} to drop delayed packets in arbitrated networked control systems is presented in~\cite{Soudbakhsh:2018}.
@@ -365,20 +365,20 @@ For a task's jobs, the computational overrun process have been modelled using fi
 In~\cite{Horssen:2016} the authors model the \tAM{} weakly-hard constraint using an automaton where the transition events between states are represented by the job outcomes.
 A \emph{Markov chain} (MC) model was used in~\cite{Ling:2003} to model the dropout rate of sensor packets in a soft networked control system.
 \cite{Kwak:2001} utilise a Markov chain to select optimal time points for memory checkpointing in real-time systems where tasks may experience transient faults.
-We will henceforth sloppily refer to finite state machines as \emph{automata}\footnote{To keep notation consistent with Papers III and IV.}.
+Henceforth, we will sloppily refer to finite state machines as \emph{automata}.\footnote{To keep notation consistent with Papers III and IV.}
 
 % Introduce notation for the FSM
 Both automata and Markov chains are constructed from directed graphs, with the main difference that the automata transitions are deterministic by nature whilst the Markov chain requires a distribution of probabilities to model the transitions between states.
 In this thesis, both the automata and MC denotes the underlying graph $\GG{} = (\VV{}, \EE{})$, where $\VV{}$ is the set of \emph{vertices} (or \emph{states}) and $\EE{}$ is the set of \emph{edges} (or \emph{transitions}).
 However, the vertices and transitions symbolise different deadline overrun models for the automata and Markov chain.
 
-The automaton model is used to represent the feasible sequences of deadline hits and misses for the weakly-hard constraints\footnote{The automaton model is derived in Paper III and utilised in Paper IV.}.
+The automaton model is used to represent the feasible sequences of deadline hits and misses for the weakly-hard constraints.\footnote{The automaton model is derived in Paper III and utilised in Paper IV.}
 Here, the underlying graph depend on the chosen constraint, i.e., $\GG{\lambda} = (\VV{\lambda}, \EE{\lambda})$.
-Each vertex $v_i \in \VV{\lambda}$ represent a word $w_i \in \sset{\abs{w_i}}{\lambda}$.
+Each vertex $v_i \in \VV{\lambda}$ represents a word $w_i \in \sset{k}{\lambda}$, where $k$ is the window length of $\lambda$.
 A transition $e_{i, j} = (v_i, v_j, c_{i,j}) \in \EE{\lambda}$ is a triplet describing the transition condition $c_{i,j} \in \Sigma$ to get from vertex $v_i$ to $v_j$.
 In other words, if there exists a permissible sequence of deadline hits and misses $w_i$ which still satisfies the constraint $\lambda$ if followed by a deadline miss (i.e., $c_{i,j} = 0$), there exists a transition $e_{i,j} = (v_i, v_j, 0)$ between $v_i$ and $v_j$.
 
-When modelling stochastic computational overruns\footnote{The Markov chain is utilised in Papers~II and V.}, the Markov chain models are naturally better-suited than the automaton model.
+When modelling stochastic computational overruns, the Markov chain models are naturally better-suited than the automaton model.\footnote{The Markov chain is utilised in Papers~II and V.}
 The MC is represented by a set of states $v_i \in \VV{}$ where the transitions between states is again a triplet $e_{i, j} = (v_i, v_j, p_{i, j}) \in \EE{}$.
 Unlike the automata model, the transition here defines a transitional probability $p_{i, j}$ between two states $v_i$ and $v_j$, i.e., a transition from state $v_i$ to state $v_j$ occurs with probability $p_{i, j} \in [0, 1]$.
 Trivially, the cumulative probability of leaving any state $v_i$ is $1$
@@ -403,6 +403,7 @@ The transitional probability depends on the specific probability distribution.
 To demonstrate the similarities and differences between the automaton and Markov chain, an example is shown in Figure~\ref{fig:kappa:state-machine}.
 Here, the automaton is constructed from a weakly-hard real-time task subject to the constraint $\anyhit{} = \binom{1}{2}$, i.e., at least one job has to meet its deadline in every window of two consecutive job activations.
 Recall that the characters $0$ and $1$ respectively represent an overrun and a met deadline in the automaton's language.
+Then, the vertex $v_1$ represent a sequence with a met deadline as its most recent job outcome whilst $v_2$ correspond to a sequence where the last job overran its deadline.
 Since the constraint does not tolerate two consecutive deadline overruns, if a deadline overrun occur from vertex $v_2$ the constraint would be violated and the fail-state is entered.
 In comparison, the MC represent a soft real-time task where every job has an independent and identically distributed (i.i.d) probability $p$ of overrunning its deadline.
 Notice that the transitions in both the automaton and in the Markov chain represent the outcome of exactly one job execution.
@@ -435,7 +436,7 @@ The mathematical models characterise the system's behaviour in time, typically v
 
 Practically all real-world plants can be modelled using continuous-time, non-linear state-space equations on the same form as Equation~\eqref{eq:state-space}.
 The physical properties of the plant (e.g., velocity, position, rotation, etc.) are collected in the \emph{state vector} $x(t) \in \R^{n_x}$, the exogenous signals affecting the plant are collected in the \emph{input vector} $u(t) \in \R^{n_u}$, and the measurable quantities are collected in the \emph{output vector} $y(t) \in \R^{n_y}$.
-The dynamical behaviour of the system is described by the functions $f$ and $g$, which we say are \emph{time-variant} if they explicitly depend on the time variable $k$ and \emph{time-invariant} if they do not, i.e., if $f(x(t),\, u(t),\, t) = f(x(t),\, u(t))$ and $g(x(t),\, u(t),\, t) = g(x(t),\, u(t))$.
+The dynamical behaviour of the system is described by the functions $f$ and $g$, which we say are \emph{time-variant} if they explicitly depend on the variable $t$ and \emph{time-invariant} if they do not, i.e., if $f(x(t),\, u(t),\, t) = f(x(t),\, u(t))$ and $g(x(t),\, u(t),\, t) = g(x(t),\, u(t))$.
 A state-space system is linear if the functions $f$ and $g$ can be expressed as linear combinations of their arguments, i.e., a linear state-space system can be written as
 %
 \begin{equation}%
@@ -455,7 +456,7 @@ The DAC is located near the actuators and translates the digital value received 
 Similarly, the ADC transforms the analog sensor values to digital signals to be sent to the controlling hardware.
 One of the most commonly applied sampling techniques is the zero-order hold (ZOH) circuit, where the DAC holds the last converted analog signal constant until a new discrete value is received and converted.
 The sensors are generally configured to sample the plant at the discrete time instants when the control signal to the plant changes.
-In other words, if the DAC receives and converts discrete values at time instants $\left\{\, t_k \,\right\}_k$, the sensors sample the system in the same time points.
+In other words, if the DAC receives and converts discrete values at time instants $\left\{\, t_k \,\right\}_{k\in\N_{\geq}}$, the sensors sample the system in the same time points.
 For periodically sampled systems, the sampling instants are equidistant with a sampling period of $\Ts$, i.e., $t_k = k\cdot \Ts$.
 The resulting discrete-time, LTI model of the plant $\plant$ is then
 %
@@ -497,8 +498,8 @@ Similar to the plant, if $p$ and $q$ can be expressed as linear combinations of 
 We say that a controller $\ctrler$ is \emph{stateless} (or \emph{static}) if it has no dependence on the internal state $z$, i.e., $n_z = 0$.
 Furthermore, a \emph{stateful} (or \emph{dynamic}) controller $\ctrler$ is any controller that depend on its internal state $z$, i.e., $n_z > 0$.
 
-To improve timing predictability whilst also reducing input-output jitter one-step delay controllers are frequently employed\footnote{If the controller adopts a one-step delay approach, the order of the last two statements of the control algorithm in Figure~\ref{fig:control-structure-abstraction} has to be swapped, suggesting that the second equation of the system of equations~\eqref{eq:discrete-lti-ctrler} instead should be read as $u_{k+1} = \Cc\,z_k+\Dc\,y_k$. However, the control law's reformulation is typically made implicitly by augmenting the controller's state with the control signal.}.
-The one-step delay is generally taken into consideration during the control design process, in other words, the control algorithm is designed for the control signal to be computed during the $t$-th control period and to be set out to the actuators at the release of the $k+1$-st control job.
+To improve timing predictability whilst also reducing input-output jitter one-step delay controllers are frequently employed.\footnote{If the controller adopts a one-step delay approach, the order of the last two statements of the control algorithm in Figure~\ref{fig:control-structure-abstraction} has to be swapped, suggesting that the second equation of the system of equations~\eqref{eq:discrete-lti-ctrler} instead should be read as $u_{k+1} = \Cc\,z_k+\Dc\,y_k$. However, the control law's reformulation is typically made implicitly by augmenting the controller's state with the control signal.}
+The one-step delay is generally taken into consideration during the control design process, in other words, the control algorithm is designed for the control signal to be computed during the $k$-th control period and to be deployed by the actuators at the release of the $k+1$-st control job.
 In the real-time literature, one-step delay are commonly referred to as \emph{logical execution time} (LET) controllers~\cite{Ernst:2018, Gemlau:2021, Kirsch:2012}.
 The LET paradigm simplifies the schedulability analysis, improves timing predictability, and removes time-varying computational delays (e.g., release jitter, context switching overhead, and interrupts), but it comes at the cost of introducing a time-delay in the actuation.
 
@@ -570,10 +571,10 @@ In the upcoming sections, we will introduce notation for both MJLS and switching
 %
 One of the fundamental objectives of all control synthesis is to \emph{stabilise} the system.
 Stability theory is a broad domain and there exists many both weak and strong definitions of stability.
-For dynamical systems (such as control systems), a common notion of stability is that bounded perturbations in the initial conditions of a differential (or difference) equation results in bounded perturbations in the solution\footnote{Note that this implies that the disturbances do not affect the linear system's stability.}.
+For dynamical systems (such as control systems), a common notion of stability is that bounded perturbations in the initial conditions of a differential (or difference) equation results in bounded perturbations in the solution.\footnote{Note that this implies that the disturbances do not affect the linear system's stability.}
 In other words, if a system is \emph{stable} for a bounded set of initial condition then the solution will not grow unbounded.
 Conversely, if a system is \emph{unstable} the solution grows unbounded.
-As an example, if the taxiing system was unstable, under certain conditions the wheel velocity would rapidly increase until the wheel engine shut down or broke down (a highly undesirable behaviour).
+As an example, if the taxiing system from Chapter~\ref{ch:intro} was unstable, under certain conditions the wheel velocity would rapidly increase until the wheel engine shut down or broke down (a highly undesirable behaviour).
 
 In practice, these vague notions of stability are formalised in rigorous mathematical definitions.
 Two of the classic definitions of stability for \emph{linear} dynamical systems are the Routh-Hurwitz stability criterion for continuous systems~\cite{Astrom:2008} and the Schur stability criterion for discrete systems~\cite{Astrom:1997}.
@@ -596,7 +597,7 @@ The Hurwitz stability criterion for a continuous-time LTI system with system mat
 %
 where $\eig{i}{\clmat}$ retrieves the $i$-th eigenvalue of $\clmat$ and $\mathrm{Re}\funof{\cdot}$ extracts the real-part of a complex number (element-wise when applied to a vector).
 It is worth noting that the Schur stability criterion is dependent on the \emph{spectral radius} of the system, i.e., the maximum asymptotic growth rate of the system.
-Denoting with $\rho\funof{\clmat}$ the spectral radius of a square matrix $\clmat \in \R^{n \times n}$, it is then defined as\footnote{The second equality is a well-established relation known as Gelfand's formula. The equality holds true regardless of the chosen matrix norm.}
+Denoting the spectral radius of a square matrix $\clmat \in \R^{n \times n}$ with $\rho\funof{\clmat}$, it is then defined as\footnote{The second equality is a well-established relation known as Gelfand's formula. The equality holds true regardless of the chosen matrix norm.}
 %
 \begin{equation}%
     \label{eq:spectral-radius}%
@@ -636,7 +637,7 @@ Using the introduced notation, the following definition provides a formal defini
 %
 \begin{definition}[Joint Spectral Radius]%
     \label{def:jsr}%
-    Given a bounded set of matrices $\Aa$, the \emph{joint spectral radius} (JSR) of $\Aa$ is defined as
+    Given a bounded set of matrices $\Aa$, the joint spectral radius (JSR) of $\Aa$ is defined as
     \begin{equation*}
         \rho\funof{\Aa} = \underset{k\rightarrow\infty}{\lim{}\sup{}} \left\{ \norm{\clmat}^{\sfrac{1}{k}} \,\mid\, \clmat \in \Aa^k \right\}.
     \end{equation*}
@@ -693,7 +694,7 @@ The active research in this field continues to enhance the bounds as well as alg
 % MSS, MS
 If the overrun process in Equation~\eqref{eq:tv-clsys} is governed by a Markov model, it is possible to utilise well-known results for Markov jump linear systems (MJLS)~\cite{Lincoln:2002, Feng:1992, Nilsson:1998}.
 While the switching system stability analysis (e.g., JSR) provides a deterministic stability certificate, i.e., the switching system stability analysis provides guarantees that the dynamical system will be stable under \emph{all} configurations of the different modes, the MJLS stability analysis provides a stochastic certificate.
-This certificate does in turn provide probabilistic guarantees that the MJLS will \emph{almost surely}\footnote{In probability theory, the notion of \emph{almost surely} means that an event will happen with probability $1$.} converge to its equilibrium point~\cite{Feng:1992}.
+This certificate does in turn provide probabilistic guarantees that the MJLS will \emph{almost surely} converge to its equilibrium point~\cite{Feng:1992}.\footnote{In probability theory, the notion of \emph{almost surely} means that an event will happen with probability $1$.}
 
 Since MJLS are stochastic by nature, the existing stability analyses typically investigate how the expected value of the system's states evolve in time.
 Arguably the most well-known stability analysis methods are \emph{stochastic stability} (SS) and different variants of \emph{mean-square stability} (MSS)~\cite{Feng:1992}.
