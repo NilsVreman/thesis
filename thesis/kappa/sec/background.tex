@@ -127,7 +127,7 @@ The RTOS is responsible for orchestrating the tasks' execution and allocating re
 The terms ``task'', ``process'', and ``thread'' are frequently confused in many documents; to avoid this confusion we provide a definition in the context of real-time operating systems:
 %
 \begin{itemize}
-    \item \emph{Process} -- A process is a computer program with its own stack, control block, and instruction set.\footnote{A task's control block (TCB) includes descriptive information about the task, for instance, the identifier used by the scheduler, its priority, and the task's state (running, ready, blocked, suspended, etc.).}
+    \item \emph{Process} -- A process is a computer program with its own stack, control block\footnote{A task's control block (TCB) includes descriptive information about the task, for instance, the identifier used by the scheduler, its priority, and the task's state (running, ready, blocked, suspended, etc.).}, and instruction set.
 
     \item \emph{Thread} -- A thread is an entity within a process that share the memory context with additional threads.
 
@@ -220,7 +220,7 @@ In particular, embedded controllers are typically better described using the \em
 
 Arguably the most recognised firm model is the \emph{weakly-hard} task model~\cite{Bernat:2001}.
 These models were originally devised to provide formal guarantees to tasks that can tolerate occasional deadline overruns, e.g., control tasks where decreasing the sampling time would improve the overall performance whilst introducing intermittent computational overruns.
-What defines a weakly-hard task is that the distribution of deadline hits and misses during a window of $k$ jobs is precisely bounded.\footnote{From the context it will always be clear when $k$ is used to respectively denote the window length of a weakly-hard constraint and to count the discrete number of job iterations of a recurrent task.}
+What defines a weakly-hard task is that the distribution of deadline hits and misses during a window of $k$ jobs is precisely bounded.\footnote{From context it will always be clear whether $k$ is used to respectively denote the window length of a weakly-hard constraint or to count the discrete number of job iterations of a recurrent task.}
 In other words, in addition to the number of overrun deadlines that a task experiences in a window, the sequence in which they appear is also affecting the task execution.
 We here compile the definitions of the weakly-hard models:
 %
@@ -242,7 +242,7 @@ To formalise which sequences of deadline hits and misses that are permitted unde
 For historical reasons, the language used to characterise the deadline outcomes of a weakly-hard task is binary, i.e., it consisted solely of two unique character mappings to a deadline hit and a deadline miss.\footnote{In Paper~IV we extend this notation to also encompass more appropriate languages in the real-time control systems setting.}
 Formally, the \emph{alphabet} of outcomes is denoted $\Sigma = \left\{ 0, 1 \right\}$, where $0$ indicates a job overrunning its corresponding deadline and $1$ represents a job meeting its deadline.
 With the use of the alphabet and conventional language theoretical notation~\cite{Hopcroft:2006}, a \emph{character} $c_k \in \Sigma$ is defined as the outcome of the $k$-th job.
-Similarly, a \emph{word} $w$ is a sequence of $\abs{w}$ characters, i.e., $w = \seq{c_1, c_2, \ldots, c_{\abs{w}}}$.
+Similarly, a \emph{word} $w$ is a sequence of characters, i.e., $w = \seq{c_1, c_2, \ldots}$.
 Hence, a word is representing a sequence of deadline hits and misses.
 The set of all all length $N$ words that can be constructed from the alphabet $\Sigma$ is denoted $\Sigma^N$.
 
@@ -574,7 +574,7 @@ Stability theory is a broad domain and there exists many both weak and strong de
 For dynamical systems (such as control systems), a common notion of stability is that bounded perturbations in the initial conditions of a differential (or difference) equation results in bounded perturbations in the solution.\footnote{Note that this implies that the disturbances do not affect the linear system's stability.}
 In other words, if a system is \emph{stable} for a bounded set of initial condition then the solution will not grow unbounded.
 Conversely, if a system is \emph{unstable} the solution grows unbounded.
-As an example, if the taxiing system from Chapter~\ref{ch:intro} was unstable, under certain conditions the wheel velocity would rapidly increase until the wheel engine shut down or broke down (a highly undesirable behaviour).
+As an example, if the drone system from Chapter~\ref{ch:intro} was unstable, under certain conditions the motor velocity would rapidly increase (or decrease) until the drone finally crashed (a highly undesirable behaviour).
 
 In practice, these vague notions of stability are formalised in rigorous mathematical definitions.
 Two of the classic definitions of stability for \emph{linear} dynamical systems are the Routh-Hurwitz stability criterion for continuous systems~\cite{Astrom:2008} and the Schur stability criterion for discrete systems~\cite{Astrom:1997}.
@@ -639,7 +639,7 @@ Using the introduced notation, the following definition provides a formal defini
     \label{def:jsr}%
     Given a bounded set of matrices $\Aa$, the joint spectral radius (JSR) of $\Aa$ is defined as
     \begin{equation*}
-        \rho\funof{\Aa} = \underset{k\rightarrow\infty}{\lim{}\sup{}} \left\{ \norm{\clmat}^{\sfrac{1}{k}} \,\mid\, \clmat \in \Aa^k \right\}.
+        \rho\funof{\Aa} = \underset{k\rightarrow\infty}{\lim{}\sup{}} \left\{ \norm{\overbar{\clmat}}^{\sfrac{1}{k}} \,\mid\, \overbar{\clmat} \in \Aa^k \right\}.
     \end{equation*}
 \end{definition}
 
@@ -779,7 +779,7 @@ The model is based on well-known theory for linear stochastic systems~\cite{Astr
 
 We assume that the desired reference point for the closed-loop state $\tilde{x}_k$ is zero and that the disturbance $w_k$ is an independent, discrete-time, zero mean, Gaussian white noise process with covariance $\E{w_k\,w_k^\T{}} = R_1$.
 The assumptions may seem overly restrictive, but we emphasise that more elaborate and advanced disturbance processes (and reference trajectories) can be realised by augmenting the closed-loop system with additional states describing the exogenous dynamics.\footnote{In both Paper I and II we augment the system state to model respectively brown noise (integrated white noise) and reference trajectories.}
-With these assumptions, together with the initial condition on the closed-loop state's mean value and covariance being respectively $\E{\tilde{x}_0} = m_0$ and $\E{\tilde{x}_0\,\tilde{x}_0^\T{}} = R_0$, it is now possible to describe how to evaluate Equation~\eqref{eq:cost}.
+With these assumptions, together with the initial condition on the closed-loop state's mean value and covariance being respectively $\E{\tilde{x}_0} = m_0$ and $\cov{\tilde{x}_0} = R_0$, it is now possible to describe how to evaluate Equation~\eqref{eq:cost}.
 
 The expression in Equation~\eqref{eq:cost} is difficult to compute in practice.
 Instead, it is easier to first transform the cost $J_k$ into an equivalent form before evaluating it.

@@ -86,34 +86,34 @@ Next, the individual components seen in the figure are introduced.
 \subsubsection{Plant}% Plant, sensors, HW interface
 %
 The right part of the figure depict the process we are trying to control (denoted the \emph{plant}).
-This could be anything from an airplane's taxiing system, indoor heating systems, or the load on a server in a data centre.
-In this and following chapters, the taxiing system will be used as a recurring example to illustrate the different concepts.
+This could be anything from flight control of a drone (as in the figure), indoor heating systems, or the load on a server in a data centre.
+In this and following chapters, the drone flight control system will be used as a recurring example to illustrate the different concepts.
 The arrows going to and from the plant indicate the flow of data; actuation data goes into the plant and sensor data is collected from the plant.
 Actuation data refers to the commands sent to the components responsible for movement or change in the plant, i.e., the actuators.
-Similarly, the sensor data is all information collected by the sensors, e.g., the rotational velocity of the wheel or the friction between the wheel and the ground in the taxiing system.
+Similarly, the sensor data is all information collected by the sensors, e.g., the drone's acceleration in different directions or its angular velocity.
 These signals are transmitted via the hardware interfaces on the computational unit responsible for controlling the plant.
 Historically, these signals were transmitted via wire, but in the last couple of decades wireless communication has become more common~\cite{Park:2018}.
 
 A communication protocol is used for the plant to communicate with the hardware interfaces.\footnote{A communication protocol is a set of rules setup in order for two or more actors in a network to be able to transmit information to one another. The rules include (but are not limited to) semantics, i.e., how to format the information, and synchronisation, i.e., how much and how fast the information is transmitted.}
-The choice of protocol is domain dependent, e.g., the controller area network (CAN) is very common in the automotive industry~\cite{Voss:2005}.
-There exists a plethora of domain specific communication protocols, but some established ones include Profibus, Modbus, Ethernet/IP, and (as already mentioned) CAN.
+The choice of protocol is domain dependent, for instance, in the automotive industry the controller area network (CAN) is widely used~\cite{Voss:2005}.
+There exists a plethora of domain specific communication protocols, but some established ones include Profibus, Modbus, Ethernet/IP, and (the already mentioned) CAN.
 
 \subsubsection{Hardware}% Hardware
 %
 Depending on the application, the hardware used to control the plant can be anything from a logic-based system (e.g., programmable logic controllers) to a general purpose computer (e.g., laptops or server systems).
 We mainly refer to \emph{microcontrollers} (MCUs), i.e., small computers with integrated memory, central processing units (CPUs), graphical processing units (GPUs), and programmable input/output peripherals (PIOs) all on a single chip; however, we emphasise that the presented results are not bound to a specific hardware architecture.
 It is also common to connect multiple levels of control hardware together.
-For instance, having a high-level trajectory planner communicate with a low-level control structure whose objective is to enforce that the desired trajectory is followed, e.g., the taxiways on the airfield.
+For instance, having a high-level trajectory planner communicate with a low-level control structure whose objective is to enforce that the desired trajectory is followed, e.g., the hovering height of a drone.
 
 The choice of computer architecture is often flexible and can be changed depending on the plant structure.
 It is for instance not uncommon that the plant sensors include their own MCU to perform data processing before transmitting it to the central control hardware~\cite{Karray:2018}.
-Another common architecture choice is having many single objective, specialised MCU nodes operating together towards a global target, e.g., controlling the rotational velocity of the individual wheels of a plane to move it along the taxiway.
+Another common architecture choice is having many single objective, specialised MCU nodes operating together towards a global target, e.g., controlling the rotational velocity of the individual drone propellers during flight.
 %\question{Write something more about this, like distributed control?}{Yes. I think you want to state that depending on the hardware that is chosen the computer architecture can be distributed, and there could be for example sensors with their own MCUs, that execute some operations on the data before sending it to a controller etc.}
 
 \subsubsection{Clocks}% Clocks
 %
 There exists another discrepancy between the components of the real-time control system: the time quantisation.
-The plant, hardware, and RTOS are most likely executing in different time scales, where the plant (at least in the taxiing example) is likely to execute in continuous time while the hardware and RTOS are both executing in (different) discrete quanta.
+The plant, hardware, and RTOS are most likely executing in different time scales, where the plant (at least in the drone example) is likely to execute in continuous time while the hardware and RTOS are both executing in (different) discrete quanta.
 Extremely simplified, the hardware contains a \emph{clock} that measures the progress of physical time in \emph{ticks} rather than seconds (like a wall-clock would).
 For the hardware clock, these ticks are physical events (typically the oscillations of a crystal) occurring with a known frequency.
 The RTOS clock is then based on the hardware clock; it reads the hardware clock at a frequency specified by the user and wraps it in a virtual layer to improve applicability. 
@@ -150,8 +150,8 @@ If a task's WCRT is smaller than its deadline, the task will be guaranteed to al
 %
 As can be seen in Figure~\ref{fig:high-level-abstraction}, we conceptually distinguish \emph{control tasks} from normal tasks, even though there is no discernible difference between these tasks from the RTOS perspective.
 The control tasks are all the tasks responsible for controlling the plant, while the normal tasks take care of everything else.
-Taking the taxiing system as an example, the control tasks can be two tasks where one is controlling the velocity of the landing gear while the other is controlling its retraction mechanism.
-Additionally, there are other tasks communicating sensor data (e.g., tire-pressure, temperature, etc.) to the aircraft's central computer.
+Taking the drone as an example, the control tasks can be two tasks where one is making sure that the rotational velocity of each propeller is following the desired setpoint whilst the other is controlling the motors' relative speeds to propel the drone forwards.
+Additionally, there are other tasks communicating sensor data (e.g., barometric pressure, MCU temperature, acceleration, etc.) to the central processing unit.
 
 As is elaborated upon in Chapter~\ref{ch:background}, we partition the tasks in these two categories because we are specifically interested in analysing the control tasks' effect on the real-time control system when their temporal execution is unreliable.
 In particular, the aim of the thesis is to investigate the control system's behaviour when the control tasks overrun their respective deadlines.
