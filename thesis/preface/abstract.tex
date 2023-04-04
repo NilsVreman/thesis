@@ -1,48 +1,75 @@
 \chapter*{Abstract}
 
-\note{
-    5 parts
-    \begin{enumerate}
-        \item setting context: embedded contorl systems, constrained resources, stuff executing on
-            microcontrollers
-        \item What is missing from context: These systems can experience deadline misses, very
-            little analysis theoretically of assessing these deadline misses (problem or not)
-        \item One block: How I'm gonna fill this hole, which methods am I using, i.e., mix
-            between theoretica, experimental
-        \item One block: Main results of the thesis
-        \item One closing sentence: What is the impact of this? This allows us to verify control
-            systems also in the presence of computational overruns.
-    \end{enumerate}
-}
+% Setting the context
+Microcontrollers have become an integral part of modern everyday embedded systems, such as smart bikes, cars, and drones.
+Typically, microcontrollers employ real-time constraints requiring the timely execution of the programs operating on the resource constrained hardware.
+When the embedded systems are becoming increasingly more complex, the microcontrollers risks violating their timing constraints (overrunning their deadlines).
+Breaking these constraints can cause severe damage to both the embedded system as well as to humans interacting with the device.
+% What is missing from the context
+It is crucial to properly analyse the embedded system to guarantee that it does not represent any significant danger if the microcontroller overruns a few deadlines.
+However, very few tools exists for assessing the safety and performance of embedded control systems when the implementation of the microcontroller is also considered.
 
-\nv{The following abstract was generated using Chat-GPT3.}
+% What methods have I used to fill this hole
+This thesis aims to fill this hole in the literature by presenting five papers on the analysis of embedded controllers subject to computational overruns.
+In particular, we include details about the real-time operating system's implementation into the analysis, such as what happens with the controller's internal state representation when the timing constraints are violated.
+The contribution is a combination of theoretical and computational tools for analysing the embedded system's stability, performance, and real-time properties.
+% What are the main results of the thesis
+We analyse the embedded controller under three different types of timing violations:
+%
+\begin{enumerate*}[label=(\roman*)]
+    \item blackout events -- no control computation is completed during long time periods;
+    \item weakly-hard constraints -- the number of deadline overruns are constrained over a sliding window; and
+    \item stochastic overruns -- violations of the timing constraints is governed by a probabilistic process.
+\end{enumerate*}
+%
+These scenarios are combined with different implementation policies to reduce the gap between the analysis and its practical applicability.
+We further validate the analyses with a comprehensive experimental campaign, performed on both a set of physical processes and in multiple simulations.
 
-Embedded controllers have become an integral part of modern systems, with real-time constraints being increasingly essential.
-These constraints require precise timing of control algorithms, necessitating real-time task scheduling to guarantee their timely execution.
-A missed deadline in such tasks can result in system instability and performance degradation, thus posing a critical challenge for real-time systems.
-
-This Ph.D. thesis investigates the impact of deadline overruns of real-time tasks on embedded controllers.
-The study focuses on the effects of such overruns on the control algorithm's performance, stability, and overall system reliability.
-Through simulation experiments and empirical analysis, we aim to provide insights into the effects of such deadline overruns, the factors that contribute to them, and possible solutions to mitigate their impact.
-
-The first part of the research is devoted to exploring the causes of deadline overruns in real-time tasks.
-The study identifies several factors that affect real-time task execution, including task interdependencies, task priority, and resource availability.
-The findings reveal that missed deadlines are often caused by task interdependencies, which make it difficult to guarantee the timely execution of dependent tasks.
-Furthermore, priority inversion, a common problem in scheduling real-time tasks, can significantly contribute to deadline misses.
-These findings underscore the need for proper task scheduling mechanisms to ensure timely execution and avoid deadline overruns.
-
-The second part of the research investigates the impact of deadline overruns on embedded controllers' performance and stability.
-Through empirical analysis and simulation experiments, the study shows that missed deadlines can result in significant performance degradation and system instability.
-Specifically, the study shows that a delay in task execution can cause the system's output to deviate from its desired state, leading to instability and oscillations.
-The findings also reveal that the degree of performance degradation and instability depends on the control algorithm's sensitivity to timing errors, the magnitude of the delay, and the frequency of the missed deadline.
-
-The final part of the research focuses on mitigating the impact of deadline overruns on embedded controllers.
-The study proposes a novel approach to handling deadline misses based on a hybrid control algorithm that combines feedback and feedforward control techniques.
-The approach aims to provide robustness against timing errors and improve the system's stability and performance.
-The findings show that the proposed approach can significantly reduce the impact of deadline overruns on the system's performance and stability while ensuring real-time constraints are met.
-
-In conclusion, the findings of this Ph.D. thesis reveal the critical role of real-time task scheduling in ensuring the timely execution of control algorithms in embedded controllers.
-The study provides insights into the factors that contribute to deadline overruns, the impact of such overruns on system stability and performance, and possible solutions to mitigate their impact.
-The results of this research have significant implications for the design of real-time systems and the
+% What is the impact of this thesis?
+In conclusion, the findings of this thesis reveal that the effect deadline overruns have on the embedded system heavily depends on both the implementation details and on the system's dynamics.
+Additionally, the stability analysis of embedded controllers subject to deadline overruns is typically conservative, thus implying that additional insights can be gained by also analysing the system performance.
 
 
+
+%\note{
+%    5 parts
+%    \begin{enumerate}
+%        \item setting context: embedded control systems, constrained resources, stuff executing on
+%            microcontrollers
+%        \item What is missing from context: These systems can experience deadline misses, very
+%            little analysis theoretically of assessing these deadline misses (problem or not)
+%        \item One block: How I'm gonna fill this hole, which methods am I using, i.e., mix
+%            between theoretical, experimental
+%        \item One block: Main results of the thesis
+%        \item One closing sentence: What is the impact of this? This allows us to verify control
+%            systems also in the presence of computational overruns.
+%    \end{enumerate}
+%}
+%
+%Embedded controllers have become an integral part of modern systems, with real-time constraints being increasingly essential.
+%These constraints require precise timing of control algorithms, necessitating real-time task scheduling to guarantee their timely execution.
+%A missed deadline in such tasks can result in system instability and performance degradation, thus posing a critical challenge for real-time systems.
+%
+%This Ph.D. thesis investigates the impact of deadline overruns of real-time tasks on embedded controllers.
+%The study focuses on the effects of such overruns on the control algorithm's performance, stability, and overall system reliability.
+%Through simulation experiments and empirical analysis, we aim to provide insights into the effects of such deadline overruns, the factors that contribute to them, and possible solutions to mitigate their impact.
+%
+%The first part of the research is devoted to exploring the causes of deadline overruns in real-time tasks.
+%The study identifies several factors that affect real-time task execution, including task interdependencies, task priority, and resource availability.
+%The findings reveal that missed deadlines are often caused by task interdependencies, which make it difficult to guarantee the timely execution of dependent tasks.
+%Furthermore, priority inversion, a common problem in scheduling real-time tasks, can significantly contribute to deadline misses.
+%These findings underscore the need for proper task scheduling mechanisms to ensure timely execution and avoid deadline overruns.
+%
+%The second part of the research investigates the impact of deadline overruns on embedded controllers' performance and stability.
+%Through empirical analysis and simulation experiments, the study shows that missed deadlines can result in significant performance degradation and system instability.
+%Specifically, the study shows that a delay in task execution can cause the system's output to deviate from its desired state, leading to instability and oscillations.
+%The findings also reveal that the degree of performance degradation and instability depends on the control algorithm's sensitivity to timing errors, the magnitude of the delay, and the frequency of the missed deadline.
+%
+%The final part of the research focuses on mitigating the impact of deadline overruns on embedded controllers.
+%The study proposes a novel approach to handling deadline misses based on a hybrid control algorithm that combines feedback and feedforward control techniques.
+%The approach aims to provide robustness against timing errors and improve the system's stability and performance.
+%The findings show that the proposed approach can significantly reduce the impact of deadline overruns on the system's performance and stability while ensuring real-time constraints are met.
+%
+%In conclusion, the findings of this Ph.D. thesis reveal the critical role of real-time task scheduling in ensuring the timely execution of control algorithms in embedded controllers.
+%The study provides insights into the factors that contribute to deadline overruns, the impact of such overruns on system stability and performance, and possible solutions to mitigate their impact.
+%The results of this research have significant implications for the design of real-time systems and the
