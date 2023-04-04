@@ -2,32 +2,26 @@
 
 % Setting the context
 Microcontrollers have become an integral part of modern everyday embedded systems, such as smart bikes, cars, and drones.
-Typically, microcontrollers employ real-time constraints requiring the timely execution of the programs operating on the resource constrained hardware.
-When the embedded systems are becoming increasingly more complex, the microcontrollers risks violating their timing constraints (overrunning their deadlines).
-Breaking these constraints can cause severe damage to both the embedded system as well as to humans interacting with the device.
+Typically, microcontrollers operate under real-time constraints, which require the timely execution of programs on the resource-constrained hardware.
+As embedded systems are becoming increasingly more complex, microcontrollers run the risk of violating their timing constraints, i.e., overrunning the program deadlines.
+Breaking these constraints can cause severe damage to both the embedded system and the humans interacting with the device.
 % What is missing from the context
-It is crucial to properly analyse the embedded system to guarantee that it does not represent any significant danger if the microcontroller overruns a few deadlines.
-However, very few tools exists for assessing the safety and performance of embedded control systems when the implementation of the microcontroller is also considered.
+Therefore, it is crucial to analyse embedded systems properly to ensure that they do not pose any significant danger if the microcontroller overruns a few deadlines.
 
 % What methods have I used to fill this hole
-This thesis aims to fill this hole in the literature by presenting five papers on the analysis of embedded controllers subject to computational overruns.
-In particular, we include details about the real-time operating system's implementation into the analysis, such as what happens with the controller's internal state representation when the timing constraints are violated.
-The contribution is a combination of theoretical and computational tools for analysing the embedded system's stability, performance, and real-time properties.
+However, there are very few tools available for assessing the safety and performance of embedded control systems when considering the implementation of the microcontroller.
+This thesis aims to fill this gap in the literature by presenting five papers on the analysis of embedded controllers subject to computational overruns.
+We include details about the real-time operating system's implementation into the analysis, such as what happens to the controller's internal state representation when the timing constraints are violated.
+Our contribution includes theoretical and computational tools for analysing the embedded system's stability, performance, and real-time properties.
+
 % What are the main results of the thesis
-We analyse the embedded controller under three different types of timing violations:
-%
-\begin{enumerate*}[label=(\roman*)]
-    \item blackout events -- no control computation is completed during long time periods;
-    \item weakly-hard constraints -- the number of deadline overruns are constrained over a sliding window; and
-    \item stochastic overruns -- violations of the timing constraints is governed by a probabilistic process.
-\end{enumerate*}
-%
+We analyse the embedded controller under three different types of timing violations: blackout events (when no control computation is completed during long periods), weakly-hard constraints (when the number of deadline overruns is constrained over a sliding window), and stochastic overruns (when violations of timing constraints are governed by a probabilistic process).
 These scenarios are combined with different implementation policies to reduce the gap between the analysis and its practical applicability.
-We further validate the analyses with a comprehensive experimental campaign, performed on both a set of physical processes and in multiple simulations.
+We further validate the analyses with a comprehensive experimental campaign performed on both a set of physical processes and multiple simulations.
 
 % What is the impact of this thesis?
-In conclusion, the findings of this thesis reveal that the effect deadline overruns have on the embedded system heavily depends on both the implementation details and on the system's dynamics.
-Additionally, the stability analysis of embedded controllers subject to deadline overruns is typically conservative, thus implying that additional insights can be gained by also analysing the system performance.
+In conclusion, the findings of this thesis reveal that the effect deadline overruns have on the embedded system heavily depends the implementation details and the system's dynamics.
+Additionally, the stability analysis of embedded controllers subject to deadline overruns is typically conservative, implying that additional insights can be gained by also analysing the system's performance.
 
 
 
