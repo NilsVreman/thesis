@@ -11,16 +11,16 @@ To analyse the system, we need to clarify three aspects about the miss behaviour
     \item The computational model used for the analysis (how many deadlines can we miss, and in what pattern).
 \end{enumerate}
 
-For the first item, the actuator can either output a \emph{\tZ{}} ($u_k = 0_{n_u \times 1}$), or \emph{\tH{}} the previous value ($u_k = u_{k-1}$).
+For the first item, the actuator can either output a \tZ{} ($u_k = 0_{n_u \times 1}$), or \tH{} the previous value ($u_k = u_{k-1}$).
 The choice depends on both the plant dynamics and on the controller, as no strategy in general dominates the other one \cite{schenato09}.
 For controllers with integral action, it makes sense to hold the previous control value, under the presumption that the system is still disturbed and that a non-zero control signal is needed to keep the plant close to its operating point.
 On the other hand, the \tZ{} strategy may be preferred for plants with unstable or integrator dynamics, where outputting a zero control action may be the safer option.
 
 Considering the second item, at least three different strategies can be employed to deal with a control task that misses its deadline~\cite{Cervin:2005}:
 \begin{enumerate*}[label=(\roman*)]
-    \item \emph{\tK{}},
-    \item \emph{\tS{}},
-    \item and \emph{\tQ{}$\funof{\sigma}$} ($\sigma \in \left\{ 1, 2, 3, \ldots \right\}$).
+    \item \tK{},
+    \item \tS{},
+    \item and \tQ{}$\funof{\sigma}$ ($\sigma \in \left\{ 1, 2, 3, \ldots \right\}$).
 \end{enumerate*}
 %
 When the \tK{} strategy is used, the job that missed its deadline is terminated, its changes are rolled back, and the next job is released.

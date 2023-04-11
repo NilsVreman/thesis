@@ -11,10 +11,10 @@ When the fault is resolved, then the original situation is recovered (possibly a
 Specifically, given a system $\clsys$, we define a \emph{burst interval} $\miss$ as an interval of controller activations in which the control task executing $\ctrler$ consecutively misses $\nummisses$ deadlines, regardless of the strategy used to handle the misses.
 We assume that the burst interval $\miss$ is followed by a \emph{recovery interval} $\recovery$, defined as an interval in which the control task consecutively hits $\numhits$ deadlines.
 
-During the burst interval, the deadline misses of the control task are handled using a \emph{deadline handling strategy} $\dstrat$ (\tK{}, $K$, or \tS{}, $S$).
-The control signal $u_k$ is selected in accordance with the \emph{actuation strategy} $\hstrat$ (\tZ{}, $Z$, or \tH{}, $H$).
+During the burst interval, the deadline misses of the control task are handled using a \emph{deadline handling strategy} $\dstrat$ (\tK{}, \Kill, or \tS{}, \Skip).
+The control signal $u_k$ is selected in accordance with the \emph{actuation strategy} $\hstrat$ (\tZ{}, \Zero, or \tH{}, \Hold).
 We denote the combination of $\dstrat$ and $\hstrat$ with~$\strat = \left(\dstrat,\hstrat\right)$.
-For example $\strat$ could be $SZ$ to indicate that the \tS{} deadline handling strategy is paired with the \tZ{} actuation strategy.
+For example $\strat$ could be $\Skip\Zero$ to indicate that the \tS{} deadline handling strategy is paired with the \tZ{} actuation strategy.
 The system \emph{recovers} once it operates close to steady-state.
 
 %%%%%%%%%%%%%%% Nils' Version %%%%%%%%%%%%%%%
@@ -58,7 +58,7 @@ If a control task deadline miss occurs at time instant $k$, the plant states $x_
 However, the controller terminates its execution prematurely by killing the job, thus not updating its states ($z_{k+1} = z_k$).
 The controller output is determined by the actuation strategy and is here zero ($u_{k+1} = 0$).
 Now, consider a burst interval of length $\nummisses$ after time instant $k$.
-Recalling that $\tilde{x}_k = \left[ {x_k}^\T {z_k}^\T {u_k}^\T \right]^\T$, we can write the evolution of the closed-loop system for the sequence of $m$ deadline misses followed by a single deadline hit as the product of a matrix representing the behaviour of the system for a hit and a matrix representing the behaviour in case of miss elevated to the power of $m$ to indicate $m$ steps of the system evolution.
+Recalling that $\tilde{x}_k = [ {x_k}^\T{}\, {z_k}^\T{}\, {u_k}^\T{} ]^\T$, we can write the evolution of the closed-loop system for the sequence of $m$ deadline misses followed by a single deadline hit as the product of a matrix representing the behaviour of the system for a hit and a matrix representing the behaviour in case of miss elevated to the power of $m$ to indicate $m$ steps of the system evolution.
 
 The resulting closed-loop system in state-space form is
 %
@@ -74,7 +74,7 @@ The resulting closed-loop system in state-space form is
         \Ap                                         & 0_{n_x \times n_z}  & \Bp \\
         0_{n_z \times n_x}    & I                                         & 0_{n_z \times n_u} \\
         0_{n_u \times n_x}   & 0_{n_u \times n_z}   & 0_{n_u \times n_u}
-    \end{bmatrix}^{\nummisses}}_{\clmat{}_{KZ}\funof{\nummisses}}
+    \end{bmatrix}^{\nummisses}}_{\clmat{}_{\Kill\Zero}\funof{\nummisses}}
     \begin{bmatrix}
         x_{k} \\
         z_{k} \\
@@ -82,7 +82,7 @@ The resulting closed-loop system in state-space form is
     \end{bmatrix},
 \end{equation}
 %
-where $\clmat{}_{KZ}\funof{\nummisses}$ represents the system matrix for $\nummisses$ misses under the \tKZ{} strategy, followed by a single hit (the matrix $\clmat{}$ that is multiplied to the left of the equation).
+where $\clmat{}_{\Kill\Zero}\funof{\nummisses}$ represents the system matrix for $\nummisses$ misses under the \tKZ{} strategy, followed by a single hit (the matrix $\clmat{}$ that is multiplied to the left of the equation).
 The matrix $\clmat{}$ is the same specified in~\eqref{eq:matrixA}, and represents the first hit that follows the $\nummisses$ misses, hence, we determine how $\tilde{x}_k$ influences $\tilde{x}_{k+m+1}$ ($\nummisses$ misses and one hit).
 
 \textbf{\tKH{}: }%
@@ -90,7 +90,7 @@ The matrix $\clmat{}$ is the same specified in~\eqref{eq:matrixA}, and represent
 Changing the actuation strategy to \tH{}, slightly alters the system matrix we derived for the \tKZ{} case.
 The plant states $x_k$ evolve as normal and the control states $z_k$ are still not updated ($z_{k+1} = z_k$).
 However, due to the change in actuation strategy, the last actuated value is instead held ($u_{k+1} = u_k$).
-The resulting closed-loop state-space form can be seen in~\eqref{eq:KH}, where $\clmat{}_{KH}\funof{\nummisses}$ is used to represent the system matrix for $\nummisses$ misses under the \tKH{} strategy and matrix $\clmat{}$ is specified in~\eqref{eq:matrixA}.
+The resulting closed-loop state-space form can be seen in~\eqref{eq:KH}, where $\clmat{}_{\Kill\Hold}\funof{\nummisses}$ is used to represent the system matrix for $\nummisses$ misses under the \tKH{} strategy and matrix $\clmat{}$ is specified in~\eqref{eq:matrixA}.
 %
 \begin{equation}
     \setlength\arraycolsep{2pt}
@@ -104,7 +104,7 @@ The resulting closed-loop state-space form can be seen in~\eqref{eq:KH}, where $
         \Ap                                         & 0_{n_x \times n_z}  & \Bp \\
         0_{n_z \times n_x}    & I                                         & 0_{n_z \times n_u} \\
         0_{n_u \times n_x}   & 0_{n_u \times n_z}   & I
-    \end{bmatrix}^{\nummisses}}_{\clmat{}_{KH}\funof{\nummisses}}
+    \end{bmatrix}^{\nummisses}}_{\clmat{}_{\Kill\Hold}\funof{\nummisses}}
     \begin{bmatrix}
         x_{k} \\
         z_{k} \\
@@ -133,7 +133,7 @@ The resulting closed-loop state-space form can be seen in~\eqref{eq:SZ}, where $
         \Ap^{\nummisses+1}  & 0_{n_x \times n_z}  & \Ap^\nummisses \Bp \\
         -\Bc\Cp             & \Ac                                       & -\Bc\Dp \\
         -\Dc\Cp             & \Cc                                       & -\Dc\Dp
-    \end{bmatrix}}_{\clmat{}_{SZ}\funof{\nummisses}}
+    \end{bmatrix}}_{\clmat{}_{\Skip\Zero}\funof{\nummisses}}
     \begin{bmatrix}
         x_{k} \\
         z_{k} \\
@@ -146,7 +146,7 @@ The resulting closed-loop state-space form can be seen in~\eqref{eq:SZ}, where $
 Similar to \tSZ{}, one job finishes execution after $\nummisses$ consecutive misses.
 However, the actuation strategy holds the previous control value during the entire burst interval.
 Therefore, the plant evolution is affected by a cumulative sum over the prior control values.
-The resulting closed-loop state-space form can be seen in~\eqref{eq:SH}, where $\clmat{}_{SH}\funof{\nummisses}$ is used to represent the system matrix for $\nummisses$ misses under the \tSH{} strategy.
+The resulting closed-loop state-space form can be seen in~\eqref{eq:SH}, where $\clmat{}_{\Skip\Hold}\funof{\nummisses}$ is used to represent the system matrix for $\nummisses$ misses under the \tSH{} strategy.
 %
 \begin{equation}
 \setlength\arraycolsep{2pt}
@@ -160,7 +160,7 @@ The resulting closed-loop state-space form can be seen in~\eqref{eq:SH}, where $
         \Ap^{\nummisses+1}  & 0_{n_x \times n_z}  & \sum_{i=0}^\nummisses \Ap^i\Bp \\
         -\Bc\Cp             & \Ac                                       & -\Bc\Dp \\
         -\Dc\Cp             & \Cc                                       & -\Dc\Dp
-    \end{bmatrix}}_{\clmat{}_{SH}\funof{\nummisses}}
+    \end{bmatrix}}_{\clmat{}_{\Skip\Hold}\funof{\nummisses}}
     \begin{bmatrix}
         x_{k} \\
         z_{k} \\
@@ -183,7 +183,7 @@ Hence, we can search for the shortest recovery interval length $\numhits$ such t
 %
 \begin{equation}
 \label{eq:stability-cond}
-    \underset{i}{\max}{\abs{\eig{i}{\clmat{}^{\numhits-1}\clmat{}_{\strat}\funof{\nummisses}}}} < 1, \quad \strat \in  \{ KZ, KH, SZ, SH \}.
+    \underset{i}{\max}{\abs{\eig{i}{\clmat{}^{\numhits-1}\clmat{}_{\strat}\funof{\nummisses}}}} < 1, \quad \strat \in  \{ \Kill\Zero, \Kill\Hold, \Skip\Zero, \Skip\Hold \}.
 \end{equation}
 %
 Recall that $\clmat{}_{\strat}\funof{m}$ already includes one hit, thus the left multiplication with $\clmat{}^{n-1}$. 
@@ -236,13 +236,13 @@ where
         \end{bmatrix}, \\
         j_{\nummisses} &= 
         \begin{cases} 
-            \nummisses - 1 & \text{ if } \dstrat = K\,\, \text{(\tK{}),} \\ 
-            \nummisses & \text{ if } \dstrat = S\,\,\,\, \text{(\tS{}),} 
+            \nummisses - 1 & \text{ if } \dstrat = \Kill\,\, \text{(\tK{}),} \\ 
+            \nummisses & \text{ if } \dstrat = \Skip\,\,\,\, \text{(\tS{}),} 
         \end{cases} \\
         j_{\numhits} &= 
         \begin{cases} 
-            1 \phantom{||222} & \text{ if } \dstrat = K\,\, \text{(\tK{}),} \\ 
-            0 & \text{ if } \dstrat = S\,\,\,\, \text{(\tS{}).}
+            1 \phantom{||222} & \text{ if } \dstrat = \Kill\,\, \text{(\tK{}),} \\ 
+            0 & \text{ if } \dstrat = \Skip\,\,\,\, \text{(\tS{}).}
         \end{cases}
         \end{aligned}
 \end{equation}
