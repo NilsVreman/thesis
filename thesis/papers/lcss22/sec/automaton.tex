@@ -31,22 +31,22 @@ Extracting all transitions in $\EE{\Lambda^\strat}$ corresponding to a character
 \end{definition}
 %
 Since \emph{at most one} successor exists from each vertex with a transition labeled with $c \in \Sigma\left(\strat\right)$, matrix $F_c$ will have a column sum of either 1 or 0.
-We now introduce a vector $q_t \in \R^{n_V}$ called \emph{G-state}, with $n_V =\abs{\VV{\Lambda^\strat}} $, representing the state of the given automaton $\GG{\Lambda^\strat}$ at interval $\pi_t$.
-\begin{definition}[G-state $q_t$]%
+We now introduce a vector $q_k \in \R^{n_V}$ called \emph{G-state}, with $n_V =\abs{\VV{\Lambda^\strat}} $, representing the state of the given automaton $\GG{\Lambda^\strat}$ at interval $\pi_k$.
+\begin{definition}[G-state $q_k$]%
     \label{def:qt}%
-    Given an automaton $\GG{\Lambda^\strat}$ and a word $w \in \Sigma\left( \strat \right)^N$, $w=\langle c_1,c_2,\dots,c_N \rangle$, for $k = \abs{v},\,\, v\in\VV{\Lambda^\strat}$, we define $q_t\in \R^{n_V}$, where the $i$-th element $q_{t,i}$ is:
+    Given an automaton $\GG{\Lambda^\strat}$ and a word $w \in \Sigma\left( \strat \right)^N$, $w=\langle c_1,c_2,\dots,c_N \rangle$, for $\ell = \abs{v},\,\, v\in\VV{\Lambda^\strat}$, we define $q_k\in \R^{n_V}$, where the $i$-th element $q_{k,i}$ is:
     \begin{equation*}
-        q_{t,i}=
+        q_{k,i}=
         \begin{cases}
-            1, &\text{ if } \seq{c_{t-k},\dots,c_{t-1}} \equiv v_i \in \VV{\Lambda^\strat} \\
+            1, &\text{ if } \seq{c_{k-\ell},\dots,c_{k-1}} \equiv v_i \in \VV{\Lambda^\strat} \\
             0, &\text{otherwise}.
         \end{cases}
     \end{equation*}
 \end{definition}
-The G-state $q_t$ is the vector representation of the vertex \emph{left} at step $t$: here, $q_t=0$ means that the transition at step $t-1$ was infeasible for the automaton. 
-Given an arbitrary word $w=\seq{c_1,\dots,c_t,\dots}$, the G-state dynamics is defined as $q_{t+1} = F_{c} ( \GG{\Lambda^\strat} )\cdot q_t$, and the following property holds~\cite{xu2012matrix}.
+The G-state $q_k$ is the vector representation of the vertex \emph{left} at step $k$: here, $q_k=0$ means that the transition at step $k-1$ was infeasible for the automaton. 
+Given an arbitrary word $w=\seq{c_1,\dots,c_k,\dots}$, the G-state dynamics is defined as $q_{k+1} = F_{c} ( \GG{\Lambda^\strat} )\cdot q_k$, and the following property holds~\cite{xu2012matrix}.
 \begin{lemma}[Infeasible sequence]%
     \label{cor:Fseqnotinlambda}%
     If $w \notin \sset{N}{\Lambda^\strat}$, then $F_{w} ( \GG{\Lambda^\strat} ) = F_{c_N} ( \GG{\Lambda^\strat} )\cdots F_{c_2} ( \GG{\Lambda^\strat} )\cdot F_{c_1} ( \GG{\Lambda^\strat} ) = 0$
 \end{lemma}
-Thus, if $q_t=0$ for an arbitrary $t$, then $q_{t'}=0$ for $t' \geq t$.
+Thus, if $q_k=0$ for an arbitrary $k$, then $q_{k'}=0$ for $k' \geq k$.

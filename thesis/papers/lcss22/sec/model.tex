@@ -1,4 +1,4 @@
-To provide a comprehensive analysis framework, we need to examine what occurs in each time interval $(\pi_i)_{i \in \N_{\geq}}$, with $\pi_i = [a_0 + i\cdot \Ts, a_0 + (i+1)\cdot \Ts)$. 
+To provide a comprehensive analysis framework, we need to examine what occurs in each time interval $(\pi_k)_{k \in \N_{\geq}}$, with $\pi_k = [a_0 + k\cdot \Ts, a_0 + (k+1)\cdot \Ts)$. 
 In this context, an extension of the weakly-hard model is required to account for the given deadline miss handling strategy, denoted with the symbol $\strat$.
 %
 \begin{definition}[Extended weakly-hard model $\tau \vdash \lambda^{\strat}$]%
@@ -16,11 +16,11 @@ In this context, an extension of the weakly-hard model is required to account fo
 The definition above differs from the original weakly-hard model of~\cite{Bernat:2001}, since
 \begin{enumerate*}[label=(\roman*)]
     \item it explicitly introduces the handling strategy $\strat$; and
-    \item it focuses on the presence of a new control command at the end of each time interval $\pi_i$, instead of checking the deadline miss events, which guarantees its applicability also for strategies different than \tK{}.
+    \item it focuses on the presence of a new control command at the end of each time interval $\pi_k$, instead of checking the deadline miss events, which guarantees its applicability also for strategies different than \tK{}.
 \end{enumerate*}
 
 We now require an expressive alphabet $\Sigma\left(\strat\right)$ to characterize the behaviour of task $\tau$ in each possible time interval.
-For both \tK{} and \tS{} strategies, each interval $\pi_i$ contains at most one activated and one completed job.
+For both \tK{} and \tS{} strategies, each interval $\pi_k$ contains at most one activated and one completed job.
 This restricts the possible behaviours to three cases:
 \begin{enumerate}[label=(\roman*)]
     \item a time interval in which the same job is both released and completed is denoted by $\cH$ (\emph{hit});
@@ -34,8 +34,8 @@ As a consequence, $\cR$ is treated equivalently to $\cH$ when verifying the exte
 
 
 The algebra presented in Section~\ref{ssec:whalgebra} is extended to the new alphabet.
-We assign a character of the alphabet $\Sigma\left(\strat\right)$ to each interval $\pi_i$.
-A word $w = \seq{c_1,c_2,\dots,c_N}$ is used to represent a sequence of $N$ outcomes for task $\tau$, with $c_i \in \Sigma\left(\strat\right)$ representing the outcome associated to the interval $\pi_i$. 
+We assign a character of the alphabet $\Sigma\left(\strat\right)$ to each interval $\pi_k$.
+A word $w = \seq{c_1,c_2,\dots,c_N}$ is used to represent a sequence of $N$ outcomes for task $\tau$, with $c_k \in \Sigma\left(\strat\right)$ representing the outcome associated to the interval $\pi_k$. 
 To enforce only feasible sequences, we introduce an order constraint for the $\cR$ character with the following Rule.
 %
 \begin{rule_}[Outcome ordering]%
