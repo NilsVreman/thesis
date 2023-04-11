@@ -63,7 +63,7 @@ Cache misses can arise if:
     \item the data has been evicted from the cache, e.g., to make room for more recently retrieved data, or because the cache has been flushed due to security reasons.
 \end{itemize}
 %
-Ideally, the number of cache misses that a task experiences are kept to a minimum, in particular since fetching data from the main memory can incur large timing overheads on the task execution.
+Ideally, the number of cache misses that a task experiences is kept to a minimum, in particular since fetching data from the main memory can incur large timing overheads on the task execution.
 Additionally, the longer a task executes, the less likely it is to contract cache misses.
 Intuitively, the task will experience a few initial cache misses when the data is loaded into the cache, but thereafter the cache will be occupied by relevant data and the cache misses should decrease.
 This is also known as \emph{cache warming}.
@@ -72,7 +72,7 @@ Thrashing can severely impact both real-time performance, energy consumption, an
 In multi-core setups where different cores share a cache layer, thrashing is a big concern; however, there exists strategies to mitigate frequent interference from different tasks sharing the same cache~\cite{Brandenburg:2011}.
 To help mitigate cache eviction (both in single- and multi-core setups), \emph{cache partitioning} is typically employed.
 Cache partitioning reserves specific memory addresses for specific tasks, whilst reserving others for shared data.
-Thus, cache evictions are limited to the specific cache memory regions that are shared among multiple tasks; unless, the cache is flushed due to security reasons.
+Thus, cache evictions are limited to the specific cache memory regions that are shared among multiple tasks, unless the cache is flushed due to security reasons.
 
 % GPIO 
 To interface with the external environment, the hardware uses \emph{input/output peripherals} (I/O peripherals).
@@ -82,7 +82,7 @@ If the link to the external environment is wireless, the I/O peripherals are not
 Typically, each peripheral is assigned to an \emph{I/O port} in the device, i.e., a unique number to know which physical pin to transmit and receive data through. 
 
 Separately from the I/O port, the \emph{communication protocol} defines the rules used to pack and unpack the packets sent between the peripherals and the hardware over the \emph{communication channel}.
-As an analogy, consider a postcard being sent between England and France; the port is where we choose to send the letter, i.e., the address to send it to and the postage stamp, while the protocol is the content of the message, i.e., the chosen communication format.
+As an analogy, consider a postcard being sent between England and France; the port is where we choose to send the letter, i.e., both the address to send it to and the postage stamp, while the protocol is the content of the message, i.e., the chosen communication format.
 Communication protocols and their implementation details belong to a vast research topic which falls outside the scope of this thesis.
 However, it is an important component of real-time networked control systems and is thus briefly introduced here.
 
@@ -114,7 +114,7 @@ Thus, under normal conditions the receiver will experience packet latency and ji
 In other words, if the packets arrive faster than what the router can process it becomes congested.
 
 Multiple policies have been developed to control the congestion, one common example being the tail drop policy~\cite{Comer:2013}.
-Common among all the congestion control strategies is that they employ intentional \emph{packet dropping}, i.e., if a packet arrives while the buffer space is exhausted, the congestion controller will remove either the arriving packet or one in the buffer (depending on the strategy).
+Generally all the congestion control strategies employ intentional \emph{packet dropping}, i.e., if a packet arrives while the buffer space is exhausted, the congestion controller will remove either the arriving packet or one in the buffer (depending on the strategy).
 In addition to the congestion controller dropping packets, there are intermittent packet drops due to, e.g., packets being misrouted~\cite{Bradley:1998}, security threats~\cite{Hansman:2005}, software bugs~\cite{Mai:2011}, or wireless communication~\cite{Zhu:2021}.
 
 Regardless of the packet drops' origins, they can have dire consequences for real-time control systems.
@@ -122,7 +122,7 @@ Losing packets on the network connecting the control hardware and the plant, is 
 Generally, this will degrade the control performance~\cite{Nilsson:1998b}, however, if enough packets are lost it could cause critical system failures or crashes~\cite{Xiong:2007}.
 
 % RTOS, threads
-A real-time operating system is commonly employed to simplify the interface with the hardware while guaranteeing timeliness.
+To simplify the interface with the hardware while guaranteeing timeliness, a real-time operating system is commonly employed.
 The RTOS is responsible for orchestrating the tasks' execution and allocating resources (e.g., memory and CPU time) to said tasks.
 The terms ``task'', ``process'', and ``thread'' are frequently confused in many documents; to avoid this confusion we provide a definition in the context of real-time operating systems:
 %
@@ -140,7 +140,7 @@ In a multiprocessing environment, multiple tasks can execute concurrently, each 
 % Scheduler (how it allocates resources), threads, mechanisms, ISR
 The RTOS typically employ a scheduler to orchestrate the tasks and to provide them with the appropriate resources.
 The scheduler is responsible for switching tasks in and out, making sure that the correct task context (the task's resources) is brought into scope, handling interrupts, and ensuring fairness among the entities sharing the resources, e.g., interrupts, tasks, and kernel methods.
-How the scheduler assigns resources is decided by the \emph{scheduling algorithm}.
+How the scheduler assigns resources is decided by the scheduling algorithm.
 Most scheduling algorithms adopt a \emph{preemptive} approach to assigning resources, i.e., the scheduler is run once every time slice (time quanta) to choose which task to switch in.
 Classical examples of preemptive scheduling algorithms are:
 %
@@ -158,7 +158,7 @@ In order for the scheduler to know when to stop the currently running task in fa
 Interrupts can come from both hardware and software, but the RTOS ticks are triggered by the software clock in the RTOS.\footnote{Hardware interrupts come from events changing the state of the system, e.g., external signals triggering that they need attention from the RTOS, watchdog timers triggering an interrupt at set time intervals, or spurious interrupts (electrical anomalies)~\cite{Drepper:2003}.}
 Attached to the interrupt is generally an \emph{interrupt service routine} (ISR), i.e., a callback function to execute when the specific interrupt is triggered.
 For instance, in the context of the scheduler's tick interrupt, the ISR may be responsible for switching out the currently active task before switching in a new task and its relevant context.
-The ISR connected to the RTOS clock tick is also one of the major culprits behind \emph{release jitter} in RTOS, i.e., the time it takes to put the suspended task into the ready queue before picking a new candidate to execute varies between invocations.
+The ISR connected to the RTOS clock tick is also one of the major culprits behind release jitter in RTOS, i.e., the time it takes to put the suspended task into the ready queue before picking a new candidate to execute varies between invocations.
 Since the RTOS suspends the execution of the active task whenever an interrupt is triggered (even if it happens in the middle of a time slice), it is crucial that the ISR is quick to execute to avoid stalling the processor.
 Hence, if the callback function takes too long to execute or if the ISR is triggered too often, it can cause significant time delays in the schedule execution.
 
@@ -172,7 +172,7 @@ Despite having additional computational resources to work with, multi-core syste
 \subsubsection*{Tasks}%
 % Tasks
 All the real-time tasks considered in this thesis are \emph{recurrent}, i.e., they do not terminate during system operation.
-The recurrent task model simplifies the \emph{a priori} analysis of the real-time workload's effect on the system execution.
+The recurrent task model simplifies the a priori analysis of the real-time workload's effect on the system execution.
 A plethora of methods have been derived to model the recurrent task execution, ranging in complexity from the classic Liu and Layland model~\cite{Liu:1973} to directed acyclic graph (DAG) models~\cite{Saifullah:2014}.
 Henceforth, the terms \emph{recurrent tasks} and \emph{tasks} will be used analogously.
 
@@ -239,7 +239,7 @@ We here compile the definitions of the weakly-hard models:
 Here, the $\vdash$ symbol is used to indicate that all possible sequences of deadline hits and misses of $\tau$ satisfy the right hand side.
 
 To formalise which sequences of deadline hits and misses that are permitted under a specific weakly-hard constraint, an alphabet is introduced.
-For historical reasons, the language used to characterise the deadline outcomes of a weakly-hard task is binary, i.e., it consisted solely of two unique character mappings to a deadline hit and a deadline miss.\footnote{In Paper~IV we extend this notation to also encompass more appropriate languages in the real-time control systems setting.}
+For historical reasons, the language used to characterise the deadline outcomes of a weakly-hard task is binary, i.e., it consists solely of two unique character mappings to a deadline hit and a deadline miss.\footnote{In Paper~IV we extend this notation to also encompass more appropriate languages in the real-time control systems setting.}
 Formally, the \emph{alphabet} of outcomes is denoted $\Sigma = \left\{ 0, 1 \right\}$, where $0$ indicates a job overrunning its corresponding deadline and $1$ represents a job meeting its deadline.
 With the use of the alphabet and conventional language theoretical notation~\cite{Hopcroft:2006}, a \emph{character} $c_k \in \Sigma$ is defined as the outcome of the $k$-th job.
 Similarly, a \emph{word} $w$ is a sequence of characters, i.e., $w = \seq{c_1, c_2, \ldots}$.
@@ -262,7 +262,7 @@ To simplify notation, the set of infinite length words satisfying a constraint w
 Using the satisfaction sets it is then possible to define a partial ordering among the constraints, i.e., relate them to one another based on their difficulty to satisfy.
 A weakly-hard constraint is \emph{harder to satisfy} if it is more restrictive in which sequences satisfy the constraint.
 Consider for instance the constraint $\lambda_1 = \binom{1}{1}$, which requires that every job meets its corresponding deadline.
-The constraint is extremely restrictive in what sequences it permits; in fact, the satisfaction set of this constraint only contains one sequence, $\sset{N}{\lambda_1} = \left\{ 1^N \right\}$.
+The constraint is extremely restrictive in what sequences it permits; in fact, the satisfaction set of this constraint only contains one sequence, $\sset{N}{\lambda_1} = \{ 1^N \}$.
 On the other hand, the constraint $\lambda_2 = \binom{0}{1}$ requires no job deadlines to be met to be satisfied; thus, all sequences satisfy this constraint, $\sset{N}{\lambda_2} = \Sigma^N$.
 Intuitively, since $\lambda_1$ is more restrictive than $\lambda_2$, we say that $\lambda_1$ \emph{dominates} $\lambda_2$.
 We formalise the partial ordering in the following definition:
@@ -316,7 +316,7 @@ In addition to orchestrating the tasks in the RTOS, the scheduler is also respon
 Different strategies have been developed to handle overruns in varying applications.
 In~\cite{Caccamo:2002}, the authors propose a method for avoiding deadline overruns by postponing the deadline of the job that requires more processor time to complete.
 An arbiter designed to drop certain jobs upon release (i.e., skipping them) is proposed in~\cite{Yoshimoto:2011}.
-However, as described in~\cite{Cervin:2004b}, three of the simplest and most commonly employed overrun handling strategies are:
+However, as described in~\cite{Cervin:2004b}, three of the simplest overrun handling strategies are:
 %
 \begin{itemize}
     \item \tQ{} -- The naive approach involves letting the job overrunning its deadline to continue its execution whilst queueing up subsequent jobs.
@@ -324,14 +324,14 @@ However, as described in~\cite{Cervin:2004b}, three of the simplest and most com
         Instead of queuing all subsequent jobs, it is common to only queue the most recent job; this is typically denoted the \tQ{}\code{(1)} strategy.
         However, the \tQ{} strategies risk successive jobs being delayed enough to induce domino effects in the system.
 
-    \item \tS{} -- Under the \tS{} strategy (sometimes referred to as the \code{Skip-Next} or \code{Continue} strategy), the job overrunning its deadline is allowed to continue executing until completion.
+    \item \tS{} -- Under the \tS{} strategy (sometimes referred to as \code{Skip-Next} or \code{Continue}), the job overrunning its deadline is allowed to continue executing until completion.
         Unlike the \tQ{} strategy, subsequent jobs are skipped (i.e., terminated before release) instead of being put into a job queue.
         Hence, the domino effects that can occur under \tQ{} are avoided; this does however come at the cost of skipping a full job even in the presence of infinitesimal overruns.
 
-    \item \tK{} -- If a job overruns its deadline under the \tK{} strategy (sometimes referred to as the \code{Abort} strategy), the job is immediately terminated allowing the subsequent job to be released and activated on time.
+    \item \tK{} -- If a job overruns its deadline under the \tK{} strategy (sometimes referred to as \code{Abort}), the job is immediately terminated allowing the subsequent job to be released and activated on time.
         One of the main advantages with the \tK{} strategy comes from its binary outcome representation, i.e., either the job is completed or it is not.
         This fits well together with, for instance, the weakly-hard task models' language representation.
-        On the other hand, one drawback with \tK{} is that if the task function depends on an internal state, the part of the computation that was completed may need to be rolled back to a previous state via, e.g., memory checkpointing~\cite{Vogt:2015}.
+        On the other hand, a drawback with \tK{} is that if the task function depends on an internal state, the part of the computation that was completed may need to be rolled back to a previous state via, e.g., memory checkpointing~\cite{Vogt:2015}.
         Since such an operation requires additional overhead, it further increases the risk of missing the subsequent job's deadline.
         Additionally, if many consecutive job deadlines are overrun, the corresponding task risks never doing any actual work.
 \end{itemize}
@@ -370,13 +370,13 @@ Henceforth, we will sloppily refer to finite state machines as \emph{automata}.\
 % Introduce notation for the FSM
 Both automata and Markov chains are constructed from directed graphs, with the main difference that the automata transitions are deterministic by nature whilst the Markov chain requires a distribution of probabilities to model the transitions between states.
 In this thesis, both the automata and MC denotes the underlying graph $\GG{} = (\VV{}, \EE{})$, where $\VV{}$ is the set of \emph{vertices} (or \emph{states}) and $\EE{}$ is the set of \emph{edges} (or \emph{transitions}).
-However, the vertices and transitions symbolise different deadline overrun models for the automata and Markov chain.
+However, the vertices and transitions symbolise different deadline overrun models for respectively the automata and Markov chain.
 
 The automaton model is used to represent the feasible sequences of deadline hits and misses for the weakly-hard constraints.\footnote{The automaton model is derived in Paper III and utilised in Paper IV.}
 Here, the underlying graph depend on the chosen constraint, i.e., $\GG{\lambda} = (\VV{\lambda}, \EE{\lambda})$.
 Each vertex $v_i \in \VV{\lambda}$ represents a word $w_i \in \sset{k}{\lambda}$, where $k$ is the window length of $\lambda$.
 A transition $e_{i, j} = (v_i, v_j, c_{i,j}) \in \EE{\lambda}$ is a triplet describing the transition condition $c_{i,j} \in \Sigma$ to get from vertex $v_i$ to $v_j$.
-In other words, if there exists a permissible sequence of deadline hits and misses $w_i$ which still satisfies the constraint $\lambda$ if followed by a deadline miss (i.e., $c_{i,j} = 0$), there exists a transition $e_{i,j} = (v_i, v_j, 0)$ between $v_i$ and $v_j$.
+In other words, if there exists a permissible sequence of deadline hits and misses $w_i$ which still satisfies the constraint $\lambda$ if followed by a deadline miss (i.e., $c_{i,j} = 0$) and the resulting sequence can be represented by $w_j$, there exists a transition $e_{i,j} = (v_i, v_j, 0)$ between $v_i$ and $v_j$.
 
 When modelling stochastic computational overruns, the Markov chain models are naturally better-suited than the automaton model.\footnote{The Markov chain is utilised in Papers~II and V.}
 The MC is represented by a set of states $v_i \in \VV{}$ where the transitions between states is again a triplet $e_{i, j} = (v_i, v_j, p_{i, j}) \in \EE{}$.
@@ -405,7 +405,7 @@ Here, the automaton is constructed from a weakly-hard real-time task subject to 
 Recall that the characters $0$ and $1$ respectively represent an overrun and a met deadline in the automaton's language.
 Then, the vertex $v_1$ represent a sequence with a met deadline as its most recent job outcome whilst $v_2$ correspond to a sequence where the last job overran its deadline.
 Since the constraint does not tolerate two consecutive deadline overruns, if a deadline overrun occur from vertex $v_2$ the constraint would be violated and the fail-state is entered.
-In comparison, the MC represent a soft real-time task where every job has an independent and identically distributed (i.i.d) probability $p$ of overrunning its deadline.
+In comparison, the MC represent a soft real-time task where every job has an independent and identically distributed (iid) probability $p$ of overrunning its deadline.
 Notice that the transitions in both the automaton and in the Markov chain represent the outcome of exactly one job execution.
 This is a deterministic transition (no probabilities involved) in the automaton, whilst it is stochastic for the MC.
 
@@ -501,7 +501,7 @@ Furthermore, a \emph{stateful} (or \emph{dynamic}) controller $\ctrler$ is any c
 To improve timing predictability whilst also reducing input-output jitter one-step delay controllers are frequently employed.\footnote{If the controller adopts a one-step delay approach, the order of the last two statements of the control algorithm in Figure~\ref{fig:control-structure-abstraction} has to be swapped, suggesting that the second equation of the system of equations~\eqref{eq:discrete-lti-ctrler} instead should be read as $u_{k+1} = \Cc\,z_k+\Dc\,y_k$. However, the control law's reformulation is typically made implicitly by augmenting the controller's state with the control signal.}
 The one-step delay is generally taken into consideration during the control design process, in other words, the control algorithm is designed for the control signal to be computed during the $k$-th control period and to be deployed by the actuators at the release of the $k+1$-st control job.
 In the real-time literature, one-step delay are commonly referred to as \emph{logical execution time} (LET) controllers~\cite{Ernst:2018, Gemlau:2021, Kirsch:2012}.
-The LET paradigm simplifies the schedulability analysis, improves timing predictability, and removes time-varying computational delays (e.g., release jitter, context switching overhead, and interrupts), but it comes at the cost of introducing a time-delay in the actuation.
+The LET paradigm simplifies the schedulability analysis, improves timing predictability, and removes time-varying computational delays (e.g., release jitter, context switching overhead, and interrupts), but it comes at the cost of introducing a time delay in the actuation.
 
 The vast treatise on synthesis and analysis of both linear and non-linear control laws that exists is likely too large to review in any thesis; however, some of the most known algorithms are outlined here.
 Arguably the most famous control structure is the proportional-integral-derivative (PID) controller, in which the error between the sensor measurements and the desired plant states are used to compute the new control signal~\cite{Astrom:2006}.
@@ -524,16 +524,7 @@ Typically, the closed-loop system (i.e., all components involved in the closed-l
     \tilde{x}_{k+1} = \clmat\, \tilde{x}_k + \clinp_w\, w_k,
 \end{equation}
 %
-where $\tilde{x}_k$ is the closed-loop system's state vector, $\clmat$ is the closed-loop system matrix responsible for encoding the closed-loop system's dynamics, and
-%
-\begin{equation*}%
-    \clinp_w = \begin{bmatrix}
-        \Wp \\
-        0
-    \end{bmatrix}
-\end{equation*}
-%
-is the dynamic matrix of the exogenous stochastic variable $w_k$.
+where $\tilde{x}_k$ is the closed-loop system's state vector, $\clmat$ is the closed-loop system matrix responsible for encoding the closed-loop system's dynamics, and $\clinp_w$ is the dynamic matrix of the exogenous stochastic variable $w_k$.
 
 Thus far, the system execution has been assumed to be faultless.
 However, we are interested in analysing the real-time control system when the control tasks are subject to computational overruns.
@@ -550,7 +541,7 @@ In place of Equation~\eqref{eq:discrete-lti-ctrler}, the controller $\ctrler$ is
 %
 where $\theta_k$ is the process governing the overruns, e.g., a weakly-hard sequence or Markov process.
 For instance, given a sequence $w$ of job outcomes adhering to the weakly-hard \tRH{} constraint $\genfrac{<}{>}{0pt}{}{2}{5}$, e.g., $w = 110011011$; indexing the $k$-th character in the word $w$ as $c_k$, the outcome process is $\theta_k = c_k$.
-The controller dynamics then depend on whether the deadline was met ($1$) or overrun ($0$) as well as the scheduler's overrun policy, i.e., whether \tK{}, \tS{}, \tQ{}, or some other deadline overrun strategy was employed.
+The controller dynamics then depend on whether the deadline was met ($1$) or overrun ($0$) as well as the scheduler's overrun policy, i.e., \tK{}, \tS{}, \tQ{}, or some other deadline overrun strategy.
 
 The changing control equations do in turn also change the closed-loop dynamics from Equation~\eqref{eq:clsys}
 %
@@ -608,7 +599,7 @@ Denoting the spectral radius of a square matrix $\clmat \in \R^{n \times n}$ wit
 %
 The classical notions of linear systems stability do not hold when the closed-loop dynamics is time-variant.
 Instead, more powerful mathematical tools are needed, dependent on the definition of the switching process $\theta_k$, i.e., whether the system is subject to \emph{deterministic} or \emph{stochastic} switching.
-By deterministic switching we mean systems where the switching process $\theta_k$ is a deterministic worst-case constraint, such as the weakly-hard constraints; in other words, a switching system where stability is independent of the probability of transitioning between different execution modes (vertices in the graph representation).
+By deterministic switching we mean systems where the switching process $\theta_k$ is a deterministic constraint, such as the weakly-hard constraints; in other words, a switching system where stability is independent of the probability of transitioning between different execution modes (vertices in the graph representation).
 On the other hand, stochastic switching refer to systems where $\theta_k$ is governed by an entirely stochastic process, e.g., a Markov chain, and the switching stability is hence highly dependent on the transition probabilities.
 In this thesis, emphasis has been to analyse switching stability from the deterministic framework, using methods introduced next.
 
@@ -701,7 +692,7 @@ Arguably the most well-known stability analysis methods are \emph{stochastic sta
 Paraphrased from~\cite{Costa:2005}, we say that the dynamical system in~\eqref{eq:tv-clsys}, governed by a Markov process $\theta_k$, is mean-square stable if
 %
 \begin{equation*}%
-    \lim_{k\rightarrow \infty} \E{\norm{\tilde{x}_k}^2} = \varepsilon < \infty.
+    \lim_{k\rightarrow \infty} \E{\norm{\tilde{x}_k}^2} < \infty.
 \end{equation*}
 %
 In practice, testing for mean-square stability implies verifying that the spectral radius of the operator $\Psi$, i.e., the operator defining the Markov jump linear system's covariance, is less than one.
@@ -729,13 +720,12 @@ Finding the spectral radius of a matrix is intuitively much faster than, for ins
 This is one of the advantages with the stochastic certificate received by the MSS in comparison to the deterministic one received by computing the JSR.
 
 
-
 \subsection{Control System Performance}%
 \label{sec:background:performance}%
 %
 % Talk about performance on a high level: Why performance analysis? What is its relation to stability analysis?
-Stability analysis, such as the one discussed in Section~\ref{sec:background:stability} is undeniably a black and white concept, where the system is either stable or it is not.
-A control system can for instance neither be 90\% nor 10\% stable.
+Stability analysis, such as the one discussed in Section~\ref{sec:background:stability} is undeniably a black and white concept.
+A control system can for instance neither be 90\% nor 10\% stable, the system is either stable or it is not.
 This stands in contrast to the notion of \emph{control system performance} which is a more ambivalent and fluctuating concept.
 Performance as a metric to be measured exists in many differing domains, however, we will unequivocally use the notion of \emph{performance} in place of \emph{control system performance}, unless otherwise stated.
 
@@ -752,7 +742,7 @@ Aside from the obvious stability necessity, the requirements typically involve (
 \end{enumerate*}
 %
 Ideally, any controller's ultimate goal is to track the desired system trajectory perfectly whilst also rejecting all disturbances and keeping the control effort to a minimum.
-Unfortunately, there exists a trade-off between the controller's \emph{robustness} and \emph{tracking performance}, i.e., how well it handles disturbances and how well it handles setpoint changes.
+Unfortunately, there exists a trade-off between the controller's \emph{robustness} and \emph{tracking performance}, i.e., how well it handles respectively disturbances and setpoint changes.
 The trade-off expresses itself implicitly as a limit on how efficiently the desired setpoint can be tracked if disturbances and unmodeled dynamics are also to be effectively rejected.
 Conclusively, how the different control objectives are valued is dependent on the particular application.
 
@@ -767,19 +757,19 @@ The system is therefore first evaluated in extensive simulations and tests~\cite
 
 % Describe our performance analysis
 Innumerable different methods for analysing control system performance have been developed.
-This thesis facilitates a performance analysis of real-time control systems subject to computational overruns, where the performance is evaluated on the closed-loop system using a stochastic quadratic cost function
+This thesis facilitates a performance analysis of real-time control systems subject to computational overruns using a stochastic quadratic cost function
 %
 \begin{equation}%
     \label{eq:cost}%
     J_k = \E{\tilde{x}_k^\T{}\, Q\, \tilde{x}_k}.
 \end{equation}
 %
-Here $J_k$ is the closed-loop state's cost increment in the $k$-th period and $Q$ is a positive semidefinite weight matrix penalising large closed-loop state deviations.
+Here, $J_k$ is the closed-loop state's cost increment in the $k$-th period and $Q$ is a positive semidefinite weight matrix penalising large closed-loop state deviations.
 The model is based on well-known theory for linear stochastic systems~\cite{Astrom:1970, Astrom:1997, Cervin:2019}.
 
 We assume that the desired reference point for the closed-loop state $\tilde{x}_k$ is zero and that the disturbance $w_k$ is an independent, discrete-time, zero mean, Gaussian white noise process with covariance $\E{w_k\,w_k^\T{}} = R_1$.
 The assumptions may seem overly restrictive, but we emphasise that more elaborate and advanced disturbance processes (and reference trajectories) can be realised by augmenting the closed-loop system with additional states describing the exogenous dynamics.\footnote{In both Paper I and II we augment the system state to model respectively brown noise (integrated white noise) and reference trajectories.}
-With these assumptions, together with the initial condition on the closed-loop state's mean value and covariance being respectively $\E{\tilde{x}_0} = m_0$ and $\cov{\tilde{x}_0} = R_0$, it is now possible to describe how to evaluate Equation~\eqref{eq:cost}.
+With these assumptions, together with the initial condition on the closed-loop state's mean value and covariance being respectively $\E{\tilde{x}_0} = m_0$ and $\cov{\tilde{x}_0} = R_0$, it is possible to describe how to evaluate Equation~\eqref{eq:cost}.
 
 The expression in Equation~\eqref{eq:cost} is difficult to compute in practice.
 Instead, it is easier to first transform the cost $J_k$ into an equivalent form before evaluating it.
@@ -832,14 +822,15 @@ Recalling that $\tilde{x}_k$ and $w_k$ are independent, evolving the covariance 
     \end{aligned}
 \end{equation}
 %
-Trivially, Equations~\eqref{eq:tr-cost} and~\eqref{eq:cov} establish the foundation for the performance analysis on a nominally executing dynamical system, such as the one in~\eqref{eq:clsys}.
+Equations~\eqref{eq:tr-cost} and~\eqref{eq:cov} establish the foundation for the performance analysis on a nominally executing dynamical system, such as the one in~\eqref{eq:clsys}.
 When the control task starts experiencing deadline overruns, the switching dynamics alters the performance analysis accordingly, i.e., swapping $\clmat$ for $\clmat_{\theta_k}$ in Equation~\eqref{eq:cov}.\footnote{In Papers I and II we make additional alterations to the performance analysis to properly facilitate it under the specific system conditions.}
 
 % Mention some tools to analyse performance
 The research community developed multiple different tools to simplify the performance analysis of real-time embedded (or networked) control systems~\cite{Ohlin:2006}.
-For instance, \code{JitterBug}~\cite{Lincoln:2002} and \code{JitterTime}~\cite{Cervin:2019} are tools to precisely evaluate the quadratic cost function considered in this thesis~\eqref{eq:tr-cost} for mixed continuous-/discrete-time system components.\footnote{The \code{JitterBug} toolbox models the execution time of different components as stochastic variables (in a Markov process) with known probabilistic properties.
-This allows the entire system to be modeled as a MJLS where the stationary performance can be computed by solving a set of linear equations.
-The \code{JitterTime} toolbox for Matlab and Julia~(\url{https://github.com/X-N-C/JitterTime.jl}) was developed to provide similar functionality, with more freedom for the user to design the different components' timing models.
-These timing models make it possible to analyse the quadratic cost function~\eqref{eq:tr-cost} when, for instance, the control jobs overrun their corresponding deadlines or the communication between different components is lost.
-Additionally, different complex scheduling policies and deadline overrun handling strategies, e.g., the \tK{}, \tS{}, or \tQ{} strategies, can freely be implemented.
-One of the main disadvantages with \code{JitterTime} compared to \code{JitterBug} is that infinite horizon or stochastic timing scenarios might require a Monte Carlo or scenario theory based approach to provide accurate performance results.}
+For instance, \code{JitterBug}~\cite{Lincoln:2002} and \code{JitterTime}~\cite{Cervin:2019} are tools to precisely evaluate the quadratic cost function considered in this thesis~\eqref{eq:tr-cost} for mixed continuous-/discrete-time system components.%
+%\footnote{The \code{JitterBug} toolbox models the execution time of different components as stochastic variables (in a Markov process) with known probabilistic properties.
+%This allows the entire system to be modeled as a MJLS where the stationary performance can be computed by solving a set of linear equations.
+%The \code{JitterTime} toolbox for Matlab and Julia~(\url{https://github.com/X-N-C/JitterTime.jl}) was developed to provide similar functionality, with more freedom for the user to design the different components' timing models.
+%These timing models make it possible to analyse the quadratic cost function~\eqref{eq:tr-cost} when, for instance, the control jobs overrun their corresponding deadlines or the communication between different components is lost.
+%Additionally, different complex scheduling policies and deadline overrun handling strategies, e.g., the \tK{}, \tS{}, or \tQ{} strategies, can freely be implemented.
+%One of the main disadvantages with \code{JitterTime} compared to \code{JitterBug} is that infinite horizon or stochastic timing scenarios might require a Monte Carlo or scenario theory based approach to provide accurate performance results.}

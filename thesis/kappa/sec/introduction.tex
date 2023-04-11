@@ -96,7 +96,7 @@ Historically, these signals were transmitted via wire, but in the last couple of
 
 A communication protocol is used for the plant to communicate with the hardware interfaces.\footnote{A communication protocol is a set of rules setup in order for two or more actors in a network to be able to transmit information to one another. The rules include (but are not limited to) semantics, i.e., how to format the information, and synchronisation, i.e., how much and how fast the information is transmitted.}
 The choice of protocol is domain dependent, for instance, in the automotive industry the controller area network (CAN) is widely used~\cite{Voss:2005}.
-There exists a plethora of domain specific communication protocols, but some established ones include Profibus, Modbus, Ethernet/IP, and (the already mentioned) CAN.
+There exists a plethora of domain specific communication protocols, but some established ones include Profibus, Modbus, Ethernet/IP, and (the aforementioned) CAN.
 
 \subsubsection{Hardware}% Hardware
 %
@@ -138,7 +138,7 @@ Additionally, the tasks are not supposed to have any information about the RTOS 
 The time it takes for a task to finish executing its corresponding function can vary greatly between iterations.
 For instance, if a task contains different conditional branches its execution time may be dependent on the branch taken.\footnote{If a function's behaviour change depending on a logical condition, it is said to have conditional branches.}
 To quantify a task's execution time, the simplest task models approximate it as the \emph{worst-case execution time} (WCET), i.e., the maximum length of time the task could execute on the specific hardware.
-The WCET is typically pessimistic, but it is also important for for guaranteeing reliability in safety-critical real-time systems.
+The WCET is typically pessimistic, but it is also important for guaranteeing reliability in safety-critical real-time systems.
 
 Since there may exist many tasks in the RTOS and the scheduler can swap them in and out arbitrarily, there are no guarantees that a task will execute its entire function consecutively.
 Firstly, as tasks can be dependent of one another, one task may have to wait for another task to change its state (or compute a value) before completing its execution.
@@ -159,7 +159,7 @@ This is particularly relevant for control systems, because enforcing that the co
 Holding off the deadline results in fewer control updates, hence severely degrading the control system's performance.
 Consequently, allowing a certain number of deadline overruns can improve the control system's overall performance.
 
-\subsection{Timeliness}%
+\subsection*{Timeliness}%
 \label{sec:intro:timeliness}%
 %
 In some situations, real-time control systems are executed under suboptimal timing conditions.
@@ -170,26 +170,26 @@ The following list include some of the most general timing irregularities analys
 %
 \begin{itemize}
     \item \emph{Computational overruns} -- When there exists computational elements in the system, i.e., something that takes the current state of the system and transforms or translates it, there is the possibility that it will not complete its execution, either on time or at all. % TODO: Skeptical about this statement
-        Generally, this is connected to a real-time system if the computation has to complete before a predetermined \emph{deadline}.
+        Generally, this is connected to a real-time system if the computation has to complete before a predetermined deadline.
 
     \item \emph{Time delays} -- Time delays might be some of the oldest timing problems analysed in the literature.
         Nowadays, time delays involve both internal time delays and input/output delays, i.e., respectively when the plant includes time delays or when the sensing, actuation, or control contains time delays.
-        The control community has developed ways to both analyse and design controllers for systems with known time delays~\cite{Mirkin:2004, Mirkin:2005}.
+        The control community has developed methods to both analyse and design controllers for systems with known time delays~\cite{Mirkin:2004, Mirkin:2005}.
 
     \item \emph{Jitter} -- Variations in the time delay are called jitter.
-        Note that the previously mentioned \emph{release jitter}, originating from the coarse granularity of the RTOS clock, is just \emph{one} type of jitter.
+        Note that the previously mentioned release jitter, originating from the coarse granularity of the RTOS clock, is just one type of jitter.
         Another type of jitter appear when transmitting data over a network; if the packet latency (time delay) is constant in time, there is no jitter in the system.
         Instead, if the latency varies over time (as it usually does), there exists jitter in the system.
         The jitter intensity depends on the size of the latency fluctuations.
         In the control literature, methods to compensate for jitter have been proposed~\cite{Cervin:2004}.
 
-    \item \emph{Communication losses} -- If data packets transmitted over a network are lost along their route or too delayed to be useful, they are considered \emph{lost}.
+    \item \emph{Communication losses} -- If data packets transmitted over a network are either lost along their route or too delayed to be useful, they are considered \emph{lost}.
         Another case when the packets are dropped is when the network is shut down or overloaded, either by too much traffic or an attack.
         The packet loss can occur both on the way to and from the hardware.
 \end{itemize}
 %
 Conceptually, it may be natural to view some of the timing irregularities as equivalent from a system-wide perspective.
-Distinguishing time delays from jitter or communication losses from computation overruns in this context is difficult.
+Distinguishing time delays from jitter or communication losses from computation overruns is difficult in this context.
 For instance, both communicational losses and computational overruns affect the underlying software implementation; thus, it is only natural to assume that one can be substituted for the other when analysing the system in order to save both time and effort.
 However, the different models hold unique information that does not necessarily overlap.
 It is therefore crucial to analyse all the appropriate models in order to get a comprehensive picture of the specific system's behaviour.
@@ -198,7 +198,7 @@ This thesis specifically targets systems subject to computational overruns, and 
 Of particular interest are the problems that occur in real-time control systems due to control tasks overrunning their corresponding deadlines.
 It is convenient to blame computational overruns on poor system design and programming errors; however, even a flawless system design can experience overruns due to, for instance, cache memory misses~\cite{Gracioli:2015} or radiation-induced faults~\cite{Tsog:2021}.
 More commonly, it is known that the real-time control system's nominal performance is degraded if a design that completely avoids overruns is used, i.e., if the deadline is postponed until after the WCRT of the controller.
-Thus, with the awareness that it can cause transient faults, the control system engineers tolerate a few overruns when the control task's execution time is near its worst case, in order to improve the system's nominal performance.
+Thus, with the awareness that it can cause transient faults, the control system engineers can choose to tolerate a few overruns when the control task's execution time is near its worst case, in order to improve the system's nominal performance.
 
 
 

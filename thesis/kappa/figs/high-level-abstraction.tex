@@ -3,7 +3,7 @@
 \def \circleshiftcm {0.125cm}
 \def \armlength {0.625}
 \def \armwidthcm {0.1cm}
-\def \bodywidthcm {0.425cm}
+\def \bodywidthcm {0.5cm}
 
 \begin{tikzpicture}
 \tikzstyle{task} = [draw,thick,fill=white,align=center]
@@ -26,7 +26,7 @@
 \node[thick, fit=(rtos)(t1)(ct1)(ct3),draw,yshift=1.5mm,xshift=0.75mm] (sw) {};
 \node[thick, draw, above left] (clock) at (sw.south east) {\faClock[regular]};
 \node[thick, fit=(sw)(hwi), inner sep=7pt, draw] (hw) {};
-\node[thick, above left, xshift=2.3cm, yshift=0.5mm] (hw-label) at (hw.south west) {Hardware};
+\node[thick, above left, xshift=2.30cm, yshift=0.5mm] (hw-label) at (hw.south west) {Hardware};
 \node[thick, draw, above right] (hwclock) at (hw.south west)  {\faClock[regular]};
 
 %%% PHYSICAL %%%

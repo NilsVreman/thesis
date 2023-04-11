@@ -3,7 +3,7 @@
 \def \circleshiftcm {0.125cm}
 \def \armlength {0.625}
 \def \armwidthcm {0.1cm}
-\def \bodywidthcm {0.425cm}
+\def \bodywidthcm {0.5cm}
 
 \begin{myverbbox}{\ctrlCode}
 readSensors(&y);
@@ -88,8 +88,8 @@ sleepUntil(period);
 \node[] (vct) at (-0.9-1*10*\delta, 0.0) {\ctrlCode};
 \node[align=center] (cmath) at (-0.9+1.5*10*\delta, 0.0) {%
     $\left\{\begin{aligned}
-        z_{k+1} &= p(z_k,\, y_k,\, k) \\
-        u_{k} &= q(z_k,\, y_k,\, k) \\
+        z_{k+1} &= p(z_k,\, y_k) \\
+        u_{k} &= q(z_k,\, y_k) \\
     \end{aligned}\right.$};
 
 \draw[thick, ->] ([yshift=0.2cm, xshift=-0.1cm]vct.east) to ([xshift=0.1cm]cmath.west);
@@ -97,7 +97,7 @@ sleepUntil(period);
 % Background 
 \begin{scope}[on background layer]
     \node[ultra thick, fill=white, fit=(vct)(cmath), draw, inner sep=4pt] (vctrl) {};
-    \draw[dashed, thick, opacity=0.5] ([xshift=0.5cm]vctrl.north) to ([xshift=0.5cm]vctrl.south);
+    \draw[dashed, thick, opacity=0.5] ([xshift=0.6cm]vctrl.north) to ([xshift=0.6cm]vctrl.south);
 
     % dashed lines between figures
     \draw[thick, dashed] (ct3.north west) to (vctrl.north west);
