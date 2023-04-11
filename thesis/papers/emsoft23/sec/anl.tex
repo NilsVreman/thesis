@@ -312,10 +312,11 @@ Finally, the last term is a block diagonal Kronecker product of the matrices in 
 
 We analyse the mean square stability of the system by constructing the operator $\Psi$ and calculating its eigenvalues, and hence $\rho\,(\Psi)$.
 The calculation of $\rho\,(\Psi)$ is not demanding for small- and medium-scale systems.
-The time-consuming part of analysing the mean square stability comes from the eigenvalue decomposition.
-Eigenvalue decomposition has a computational complexity of 
-$O(n^{2.376})$ using the Coppersmith and Winograd algorithm.
+The time-consuming part of analysing the mean square stability comes from the eigenvalue decomposition.%
+\footnote{%
+Eigenvalue decomposition has a computational complexity of $O(n^{2.376})$ using the Coppersmith and Winograd algorithm.
 For mean square stability, we compute the eigenvalues of a matrix with dimension $n^2\,m$, where $m$ is the dimension of transition matrix $\Pi$.
 The complexity is thus $O(n^{4.752}m^{2.376}) \approx O(n^{4.752})$ (since $m$ is a constant).
-Based on empirical tests, for $8$ dimensional systems the analysis takes at most $1$ second.
+Based on empirical tests, for $n=8$ dimensional systems the analysis takes at most $1$ second.
+}
 We emphasise that the Markov Jump Linear Systems covariance matrix $\Psi$ is sparse, implying that a speedup could be achieved if this sparsity is taken into account, for instance by utilising the Lanczsos algorithm for computing the largest magnitude eigenvalues~\cite{Golub:1996}.
