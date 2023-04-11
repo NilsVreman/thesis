@@ -103,7 +103,7 @@ The first item refers to what happens to the internal state $z$ when the control
 Henceforth, we assume that when the controller misses its deadline, the controller state is \emph{not} updated (implying $z_{k+1} = z_k$). 
 This is motivated by the possibility to roll back $z_k$ to a previous state~\cite{akesson:2020, Seong:2001, Zhang:2003} and by the impossibility to guarantee that the state update was finished if the job was only partially completed.
 
-Regarding the second item, mainly two actuator models have previously been considered in the literature: \emph{\tZ{}} and \emph{\tH{}} \cite{Schenato:2009}.
+Regarding the second item, mainly two actuator models have previously been considered in the literature: \tZ{} and \tH{} \cite{Schenato:2009}.
 Under the \tZ{} model, if the job released at time $k\Ts$ misses its deadline at time  $(k+1)\Ts$, the actuator outputs $u_{k+1} = 0$.
 This strategy is uncommon in practice, because it performs well only in very specific cases~\cite{Vreman:2021ecrts}. 
 Instead, the more common actuator model is to hold the control signal in the case of a missed deadline: $u_{k+1} = u_k$.
@@ -112,9 +112,9 @@ Although our proposed adaptation is in itself independent of the actuator model,
 % For the final item, there exists at least three different employable strategies dealing with missed deadlines: 
 For what concerns the handling of the job that missed the deadline, there exist at least three different employable strategies:
 \begin{enumerate*}[label=(\alph*)] % roman already used for the three aspects
-    \item \emph{\tK{}}
-    \item \emph{\tS{}}, and 
-    \item \emph{\tQ{}}.
+    \item \tK{}
+    \item \tS{}, and 
+    \item \tQ{}.
 \end{enumerate*}
 When using the \tK{} strategy, the job that missed its deadline gets terminated, the controller state is rolled back, and the next job is released. 
 The \tS{} strategy does not terminate the job that missed its deadline. 
