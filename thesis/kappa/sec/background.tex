@@ -485,6 +485,7 @@ Therefore, the discrete, time-invariant state-space representation of a general 
 \end{equation}
 %
 Here, the \emph{control state vector} $z_k \in \R^{n_z}$ represent the controller's dynamics, the \emph{control signals} $u_k \in \R^{n_u}$ are also the inputs to the plant, and the functions $p$ and $q$ govern the dynamical behaviour of the controller.
+Intuitively, each time step $k$ corresponds to one job activation of the control task.
 Similar to the plant, if $p$ and $q$ can be expressed as linear combinations of their arguments, i.e., $p(z_k,\, y_k) = \Ac\,z_k+\Bc\,y_k$ and $q(z_k,\, y_k) = \Cc\,z_k+\Dc\,y_k$, then the controller $\ctrler$ is linear
 %
 \begin{equation}%
