@@ -8,9 +8,9 @@ With the word \emph{state} we denote the dynamical system's state vector $\tilde
 
 \subsection{Event Outcomes}%
 \label{sec:prel}%
-
+%
 Equation~\eqref{eq:nom} presented the dynamical model of the closed-loop system and the closed-loop state matrix $\clmat$ in nominal conditions, i.e., in the absence of faults.
-However, as discussed in Section~\ref{sec:prb}, the system dynamics are heavily impacted by whether the controller misses a control computation or experiences a packet loss on either of the communication channels.
+However, as discussed in Section~\ref{sec:prb}, the system dynamics are heavily impacted by whether the controller misses a control computation or experiences a packet loss on a communication channel.
 To analyse the system dynamics, we define the \emph{outcome set} $\Sigma$ for the transmission on IO channels and the computation of the controller.
 \begin{definition}[IO Channel Outcome Sets]%
     \label{def:comm}%
@@ -24,7 +24,7 @@ To analyse the system dynamics, we define the \emph{outcome set} $\Sigma$ for th
 Trivially, the outcome of each packet transmission is a binary event where either:
 \begin{enumerate*}[label=(\roman*)]
     \item the packet is successfully received (\cT), or
-    \item the packet is lost somewhere along its route (\cF).
+    \item the packet is lost along its route (\cF).
 \end{enumerate*}
 Since the contents of the packet (e.g., measurement data from the sensors or control commands to the actuators) is irrelevant to whether the packet is lost or not, the same outcome notation is used for both $\osets$ and $\oseta$.
 
@@ -120,30 +120,31 @@ To properly describe the closed-loop behaviour under continue and \tK{}, we defi
 $\tilde x_k^{\Kill} = [ x_k^\T{}, z_k^\T{}, u_k^\T{}, \hat y_{k-1}^\T{} ]^\T{}.$
 %
 The introduced auxiliary state $\hat y_{k-1}$ records the old sensor value, that is used if \texttt{read\_sensor\_ch} times out (see Listing~\ref{lst:continue}).
-
-The set of closed-loop matrices describing the system behaviour for the different outcome configurations is
+%%
+The set of closed-loop matrices describing the system behaviour for the different outcome configurations is then
 {\small
 \input{\thisdir/sec/matrices/cont-kill}%
 }
 Each outcome ($s$, $c$, and $a$) has $2$ possible configurations in the \tK{} case.
 Hence, there are $2^3 = 8$ possible $sca$, where $s \in \osets$, $c \in \osetck$, and $a \in \oseta$.
-As anticipated, the symbol $\Delta_\actuator$ in Equation~\eqref{eq:cont-kill} is used to distinguish the actuator mode, and is either $\Delta_\actuator = I$ for the \tH{} mode or $\Delta_\actuator = 0$ for the \tZ{} mode.
+The symbol $\Delta_\actuator$ in Equation~\eqref{eq:cont-kill} is used to distinguish the actuator mode, and is either $\Delta_\actuator = I$ for the \tH{} mode or $\Delta_\actuator = 0$ for the \tZ{} mode.
 The variable $\hat y_k$ is not updated for $s = \cF$, i.e., $\hat y_k = \hat y_{k-1}$.
 Additionally, some matrices are identical (e.g., $\clmat^{\Kill}_{\cT\cM\cT}=\clmat^{\Kill}_{\cT\cM\cF}$ and $\clmat^{\Kill}_{\cF\cM\cT}=\clmat^{\Kill}_{\cF\cM\cF}$), highlighting for example that in case of \tK{} when the computation does not complete, receiving or not receiving the actuator signal is irrelevant for the system evolution.
 
 \subsubsection*{\tS{}:}
-Similarly to the \tK{} case, when the computation mode for overruns is set to \tS{}, the physical states $x_k$ continue their evolution.
+Similarly to the \tK{} case, when the overrun mode is set to \tS{}, the physical states $x_k$ continue their evolution.
 However, in contrast to the \tK{} overrun strategy, when a job $j_k$ overruns its deadline, the job is allowed to continue its execution, and no subsequent jobs are released until $j_k$ completes its execution.
 
 As an example, assume that job $j_k$, released at time $a_k$, finishes its execution at time $f_k = a_k + 3.7\,\Ts$.
-In this case, three subsequent jobs are skipped.
-During the three control periods in which $j_k$ is still pending completion, no new job is released and the actuator outputs a control command that is in line with the actuation mode, either \tH{} or \tZ{}.
+In this example, three subsequent jobs are skipped.
+During the three periods in which $j_k$ is pending completion, no new job is released and the actuator outputs a control command that is in line with the actuation mode, either \tH{} or \tZ{}.
 When $j_k$ completes its execution, the controller state is updated and the control command is computed using the sensor value that was retrieved at time $a_k$, i.e., depending on whether the sensor packet at time $a_k$ was received or not.
 In this case, the new control signal is sent to the actuator at the end of the control period, at time instant $a_k+4\,\Ts$.
 
 The closed-loop state vector for the continue and \tK{} case can be reused to describe the system evolution of the continue and \tS{} case, i.e., $\tilde x_k^{\Skip} = [ x_k^\T{}, z_k^\T{}, u_k^\T{}, \hat y_{k-1}^\T{} ]^\T{}$.
 Intuitively, there are $16$ possible outcome configurations since $\osetcs{}$ contains four outcomes rather than two, i.e., $2^2\cdot 4=16$.
-Using $\Delta_\actuator = I$ and $\Delta_\actuator = 0$ to indicate, respectively, the \tH{} and \tZ{} actuation mode, the closed-loop matrices are
+The symbol $\Delta_\actuator$ is again used to indicate the chosen actuation mode.
+The closed-loop matrices are
 {\small
 \input{\thisdir/sec/matrices/cont-skip}%
 }
@@ -192,9 +193,9 @@ The transition probabilities of the Markov chain depend on respectively
     \item $p_c$ -- the probability of not completing the calculation of the control signal within one period, and
     \item $p_a$ -- the probability of not receiving the actuator data correctly.
 \end{enumerate*}
-As an example, the probability that in one period we transition to the state in which no faults occurred, $s=\cT$, $c=\cH$, $a=\cT$ is $(1-p_s)\,(1-p_c)\,(1-p_a)$.
+As an example, the probability that in one period we transition to the state in which no faults occur, $s=\cT$, $c=\cH$, $a=\cT$ is $(1-p_s)\,(1-p_c)\,(1-p_a)$.
 In such a discrete state, the discrete-time dynamics evolve according to $\clmat_{\cT\cH\cT}$.
-For compactness, we use the notation $1_x$ to denote $(1-p_x)$, e.g., $1_s = (1-p_s)$.
+For compactness, we use $1_x$ to denote $(1-p_x)$, e.g., $1_s = (1-p_s)$.
 
 \subsubsection*{\tK{}:}
 For the \tK{} case, in principle there are $8$ states in the Markov chain (stemming from the $8$ possible matrices), but the equivalence between two pairs of matrices reduces the discrete states in which the system can be found to $6$, corresponding to the closed-loop matrices $\clmat^{\Kill}_{\cT\cH\cT}$, $\clmat^{\Kill}_{\cF\cH\cT}$, $\clmat^{\Kill}_{\cT\cH\cF}$, $\clmat^{\Kill}_{\cF\cH\cF}$, $\clmat^{\Kill}_{\cF\cM\cX}$ and $\clmat^{\Kill}_{\cT\cM\cX}$, where $\cX$ indicates that the outcome is irrelevant for this specific case.
@@ -213,9 +214,10 @@ The Markov chain for the \tK{} strategy is encoded in the transition probability
 \end{equation}
 }
 
-In $\Pi^{\Kill}$, the rows correspond to the following dynamical system matrices: $\clmat^{\Kill}_{\cT\cH\cT}$, $\clmat^{\Kill}_{\cF\cH\cT}$, $\clmat^{\Kill}_{\cT\cH\cF}$, $\clmat^{\Kill}_{\cF\cH\cF}$, $\clmat^{\Kill}_{\cF\cM\cX}$, $\clmat^{\Kill}_{\cT\cM\cX}$.
+In $\Pi^{\Kill}$, the rows correspond to the dynamical system matrices: $\clmat^{\Kill}_{\cT\cH\cT}$, $\clmat^{\Kill}_{\cF\cH\cT}$, $\clmat^{\Kill}_{\cT\cH\cF}$, $\clmat^{\Kill}_{\cF\cH\cF}$, $\clmat^{\Kill}_{\cF\cM\cX}$, $\clmat^{\Kill}_{\cT\cM\cX}$.
 The transition matrix is fully connected, as from each state it is possible to reach any other state.
-Also, given the nature of the \tK{} action, every iteration of the control loop is independent, and therefore the probability to reach any state in the Markov chain is the same, regardless of the current state.
+Also, given the nature of the \tK{} action, every iteration of the control loop is independent.
+Therefore, the probability to reach any state in the Markov chain is the same, regardless of the current state.
 
 \subsubsection*{\tS{}:}
 In the \tS{} case, the transition matrix is not fully connected.
@@ -252,14 +254,14 @@ This is in particular interesting for $p_c$, as a deadline miss that follows ano
 
 \subsection{Markov Jump Linear Systems Analysis}%
 \label{sec:mjls}%
-
+%
 Discrete-Time Markov Jump Linear Systems~\cite{Costa:2005} describe systems that can switch between different linear dynamics based on a finite set of discrete states.
 Informally, these systems combine the concepts of (discrete-time) switched linear systems and Markov chains.
 The system is subject to stochastic mode transitions described by a probability matrix (that specifies the likelihood of transitioning from one mode to another), i.e., the transition probability matrix of a Markov chain.
 %
 \begin{definition}[Discrete-Time Autonomous Markov Jump Linear System]%
     \label{def:mjls}%
-    A Discrete-Time Autonomous Markov Jump Linear System is a dynamical system (with initial state $\{\tilde{x}_0, \theta_0\}$) of the form
+    A Discrete-Time Autonomous Markov Jump Linear System is a dynamical system (with initial state $\{\tilde{x}_0, \theta_0\}$),
     \begin{equation*}
         \tilde{x}_{k+1} = \clmat_{\theta_k} \tilde{x}_k,\text{  where}
     \end{equation*}
@@ -294,7 +296,7 @@ In particular, it implies that the fluctuations experienced by the system will d
 Mean square stability is closely related to the notion of Shur stability for deterministic systems presented in Equation~\eqref{eq:schur}, and is commonly used in the analysis and design of stochastic control and estimation algorithms.
 
 We want to test that the systems subject to fault are mean square stable.
-As extensively discussed in the literature~\cite{Costa:2005}, testing for mean square stability implies calculating the eigenvalues of the operator $\Psi$ that defines the evolution of the Markov Jump Linear System's covariance matrix.
+As extensively discussed in the literature~\cite{Costa:2005}, testing for mean square stability implies calculating the eigenvalues of the operator $\Psi$ representing the evolution of the Markov Jump Linear System's covariance matrix.
 In particular, a Discrete-Time Autonomous Markov Jump Linear System is mean square stable if and only if 
 \begin{equation}%
     \label{eq:stab-notion}%
@@ -315,6 +317,5 @@ Eigenvalue decomposition has a computational complexity of
 $O(n^{2.376})$ using the Coppersmith and Winograd algorithm.
 For mean square stability, we compute the eigenvalues of a matrix with dimension $n^2\,m$, where $m$ is the dimension of transition matrix $\Pi$.
 The complexity is thus $O(n^{4.752}m^{2.376}) \approx O(n^{4.752})$ (since $m$ is a constant).
-If we double the order of the system, the computation will take approximately $27$ times longer.
-Based on empirical tests, for $8$ dimensional systems the analysis takes around $1$ second.
-Furthermore, we emphasise that the Markov Jump Linear Systems covariance matrix $\Psi$ is sparse, implying that a speedup could be achieved if this sparsity is taken into account, for instance by utilising the Lanczsos algorithm for computing the largest magnitude eigenvalues~\cite{Golub:1996}.
+Based on empirical tests, for $8$ dimensional systems the analysis takes at most $1$ second.
+We emphasise that the Markov Jump Linear Systems covariance matrix $\Psi$ is sparse, implying that a speedup could be achieved if this sparsity is taken into account, for instance by utilising the Lanczsos algorithm for computing the largest magnitude eigenvalues~\cite{Golub:1996}.
