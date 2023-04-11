@@ -171,6 +171,7 @@ A Markov chain is a mathematical model for a stochastic process that describes a
 
 \begin{definition}[Markov Chain]
     A Markov chain is defined by:
+    \nv{should $\Theta$ be $\VV{}$ from kappa?}
     \begin{enumerate}[label=(\roman*)]
         \item A set $\Theta$ of $N$ possible states, $\Theta = \{ v_1, v_2, \dots, v_N \}$,
         \item A transition probability matrix $\Pi$, where the element $\Pi_{i, j}$ is the probability of transitioning from state $v_i$ to state $v_j$, for all $i,j \in \{ 1,2, \dots ,N \}$,
@@ -274,18 +275,18 @@ The convergence of Markov Jump Linear Systems can be analysed using different to
 Mean stability corresponds to convergence in probability, while the second notion, mean square stability, corresponds to almost sure convergence.\footnote{Other notions of stability also exist, like stochastic stability and mean square exponential stability. However, if a system is mean square stable it is also mean stochastically stable as well as mean square exponentially stable.}% Almost sure convergence is hence a \emph{stronger} notion of stability.}
 
 Mean stability is an important property for ensuring the robustness and reliability of stochastic systems, as it guarantees that the expected value of the system state will not exhibit unbounded growth over time.
-We analyse the expected value of the state $x_k$, i.e., $\mathbb{E}\,[x_k]$, and determine whether it converges to a specific value or not.
+We analyse the expected value of the state $\tilde{x}_k$, i.e., $\E{\tilde{x}_k}$, and determine whether it converges to a specific value or not.
 
 \begin{definition}[Mean Stability]%
-    The Discrete-Time Autonomous Markov Jump Linear System $\tilde{x}_{k+1} = \clmat_{\theta_k} \tilde{x}_k$ is mean stable if there exists a value $\mu$ such that for every initial state $\{\tilde{x}_0, \theta_0\}$, the expected value of the system state $\mathbb{E}\,[\tilde{x}_k] \to \mu$.
+    The Discrete-Time Autonomous Markov Jump Linear System $\tilde{x}_{k+1} = \clmat_{\theta_k} \tilde{x}_k$ is mean stable if there exists a value $\mu$ such that for every initial state $\{\tilde{x}_0, \theta_0\}$, the expected value of the system state $\E{\tilde{x}_k} \to \mu$.
 \end{definition}
 
-Mean square stability, on the other hand, analyses not only whether the expected value of the discrete-time system state converges, but also whether its covariance $\mathbb{E}\,[\tilde{x}_k \tilde{x}^\T_k]$ goes to zero; thus, implying \emph{almost sure convergence}, i.e., both the probability of the system state converging and the probability of the state covariance going to zero goes to $1$.
+Mean square stability, on the other hand, analyses not only whether the expected value of the discrete-time system state converges, but also whether its covariance $\E{\tilde{x}_k \tilde{x}^\T_k}$ goes to zero; thus, implying \emph{almost sure convergence}, i.e., both the probability of the system state converging and the probability of the state covariance going to zero goes to $1$.
 
 \begin{definition}[Mean Square Stability]%
     The Discrete-Time Autonomous Markov Jump Linear System $\tilde{x}_{k+1} = \clmat_{\theta_k} \tilde{x}_k$ is mean square stable if there exists a value $\mu$ such that for every initial state $\{\tilde{x}_0, \theta_0\}$,
     \begin{equation*}
-        \mathbb{E}\,[\tilde{x}_k] \to \mu, \quad \mathbb{E}\,[\tilde{x}_k \tilde{x}^\T_k] \to 0.
+        \E{\tilde{x}_k} \to \mu, \quad \E{\tilde{x}_k \tilde{x}^\T_k} \to 0.
     \end{equation*}
 \end{definition}
 Mean square stability is a desirable property for stochastic systems because it implies mean stability, but also provides more information about the rate of decay of the system's fluctuations.
@@ -299,7 +300,7 @@ In particular, a Discrete-Time Autonomous Markov Jump Linear System is mean squa
     \label{eq:stab-notion}%
     \begin{matrix}
         \rho\,(\Psi) = \max{\abs{\,\eig{}{\Psi}\,}} < 1 \\
-        \Psi = (\Pi^\T \otimes I_{n^2}) \cdot \text{blkdiag}\,(\,\{ \clmat_{i}^\T \otimes \clmat_{i} \}_{i} ).
+        \Psi = (\Pi^\T \otimes I_{n^2}) \cdot \blkdiag{\{ \clmat_{i}^\T \otimes \clmat_{i} \}_{i}}.
     \end{matrix}
 \end{equation}
 Here, $\otimes$ represents the Kronecker product.

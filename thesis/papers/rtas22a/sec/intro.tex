@@ -25,7 +25,7 @@ This idea is here translated to the real-time implementation, where instead the 
 
 To enable an automatic adaptation of the control algorithm for a wide range of systems, we make as few assumptions about the implementation platform as possible.
 The system requirements that we pose are nonintrusive and seen in industrial applications~\cite{akesson:2020}.
-The real-time operating system is required to be able to: schedule periodic tasks with implicit deadlines, abort (kill) instances of tasks that miss their deadlines, roll back the state of aborted tasks~\cite{Zhang:2003,Seong:2001}, and handle controller inputs and outputs at task release times~\cite{Kirsch:2012, Ernst:2018}.
+The real-time operating system is required to be able to: schedule periodic tasks with implicit deadlines, abort (\tK{}) instances of tasks that miss their deadlines, roll back the state of aborted tasks~\cite{Zhang:2003,Seong:2001}, and handle controller inputs and outputs at task release times~\cite{Kirsch:2012, Ernst:2018}.
 While previous co-design approaches require, e.g., probabilistic or weakly hard descriptions of deadline misses~\cite{Pazzaglia:2019,Chakraborty:2014}, our adaptation approach works for any deadline miss model.
 From the point of view of the controller, we assume a linear time-invariant control law, but we require no prior information about the control design, nor about the system to be controlled.
 Similarly to~\cite{Pazzaglia:2021}, our adaptive control implementation is applicable to general linear discrete-time controllers and not only static ones.
