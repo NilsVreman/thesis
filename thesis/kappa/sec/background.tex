@@ -471,6 +471,7 @@ The resulting discrete-time, LTI model of the plant $\plant$ is then
 where the variable subscripts counts the discrete time samples since system startup, i.e., $x_k = x(k\cdot \Ts)$ and $x_{k+1} = x(k\cdot \Ts + \Ts)$.
 Note that the process' stochastic disturbance process $w_k \in \R^{n_w}$ and dynamic matrix $\Wp \in \R^{n_x \times n_w}$ have been added.
 The disturbance process $w_k$ is typically a stochastic process with (assumed) known statistical properties, modelling the unknown plant dynamics and exogenous signals.
+\nv{Mention why we add it here? It is simple to remove the problem of discretising the continuous process disturbance. It could be added to the continuous plant as well and then discretise it (and be sad because of all the extra work we have to do).}
 
 Similarly to how the plant is described using a dynamical system on state-space form, controllers are typically also defined on the same format (denoted the controller's \emph{control law}).
 Section~\ref{sec:background:rts} described how the control algorithm is implemented as a function governed by a task executing in the RTOS; modern controllers are hence unlikely to be continuous.
