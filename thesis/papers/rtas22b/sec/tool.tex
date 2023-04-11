@@ -37,7 +37,7 @@ With a slight notational abuse, vertices $v_i$ will occasionally (when evident f
 The transition $e_{i,j} \in \EE{\lambda}$ corresponds to a tuple $e_{i,j} = \funof{v_i, v_j, c_{i, j}}$, where the vertex pair $v_i, v_j \in \VV{\lambda}$ denotes the tail and head of the transition, and the character $c_{i,j} \in \Sigma$ corresponds to the transition's label.
 A transition $e_{i, j}$ is feasible if and only if the concatenation of the character $c_{i,j}$ to the word $w_i$ satisfies $\lambda$. Formally: 
 \begin{equation*}
-    e_{i, j} \in \EE{\lambda} \Leftrightarrow \left( w_i\funof{2,\abs{w_i}},\, c_{i,j} \right) = w_j \vdash \lambda.
+    e_{i, j} \in \EE{\lambda} \Leftrightarrow \seq{ w_i\funof{2,\abs{w_i}},\, c_{i,j} } = w_j \vdash \lambda.
 \end{equation*}
 Finally, for two vertices $v_i, v_j \in \VV{\lambda}$ we say that $v_j$ is a direct successor of $v_i$ if there exists a transition $e_{i,j} \in \EE{\lambda}$.
 Without loss of generality, we will assume that each vertex $v_i \in \VV{\lambda}$ can have at most two direct successors with distinct transition outcomes, i.e., one successor $v_{j_1}$ through $e_{i, j_1} = \left( v_i, v_{j_1}, 1 \right)$ and (if permissible) one successor $v_{j_0}$ through $e_{i, j_0} = \left( v_i, v_{j_0}, 0 \right)$.
@@ -95,7 +95,7 @@ Since $\sset{}{\Lambda^*} = \sset{}{\Lambda}$, it also follows that $\GG{\Lambda
                     \EndIf
                     \State $\EE{\lambda} \leftarrow \EE{\lambda} \cup \left\{ e_{i, j_0} = (v_i, v_{j_0}, 0) \right\}$
                 \EndIf
-                \If{$v_{j_0} \not\in \VV{\lambda}$}
+                \If{$v_{j_1} \not\in \VV{\lambda}$}
                     \State $\VV{\lambda} \leftarrow \VV{\lambda} \cup \left\{ v_{j_1} \right\}$
                     \State $Q \leftarrow Q \cup \left\{ v_{j_1} \right\}$
                 \EndIf

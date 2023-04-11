@@ -47,9 +47,9 @@ To characterise the possible sequences of outcomes that satisfy a constraint, we
 \end{definition}
 %
 Using well-established notation, we denote the \emph{character} $c_i \in \Sigma$ as the outcome of job $j_i$.
-A \emph{word} $w$ of length $\abs{w} = N$ is a sequence of characters $w = \left( c_1, c_2, \ldots, c_N \right)$ that specifies a sequence of consecutive job outcomes for a task.
+A \emph{word} $w$ of length $\abs{w} = N$ is a sequence of characters $w = \seq{ c_1, c_2, \ldots, c_N }$ that specifies a sequence of consecutive job outcomes for a task.
 Without loss of generality, we assume that all words are preceded and followed only by hits.
-We denote the sub-word of a word $w$ from index $a$ to $b$ with $w\funof{a, b} = \left( c_a, c_{a+1}, \ldots, c_b \right)$.
+We denote the sub-word of a word $w$ from index $a$ to $b$ with $w\funof{a, b} = \seq{ c_a, c_{a+1}, \ldots, c_b }$.
 Finally, $\Sigma^N$ denotes the set of all possible words of length $N$.
 
 With a slight abuse of notation, we use $w \vdash \lambda$ to indicate that the word $w$ satisfies the constraint $\lambda$.
@@ -92,7 +92,7 @@ To provide dominance results, we first define the \emph{weakest} and \emph{harde
 \begin{definition}[Hardest Constraint $\lhard$]%
 \label{def:hardest}%
     The hardest constraint $\lhard$ is defined as the constraint satisfied \emph{solely} by the word containing all deadline hits.
-    Formally, $\sset{N}{\lhard} = \left\{ 1^N \right\},\,\forall N \in \N_{>}$.
+    Formally, $\sset{N}{\lhard} = \{ 1^N \},\,\forall N \in \N_{>}$.
 \end{definition}
 Using these definitions, we now review known constraint dominance relations.
 We refer the reader to~\cite{Bernat:1998} or any referenced paper for the corresponding proofs.
