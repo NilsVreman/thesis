@@ -123,17 +123,17 @@ We now provide a general relation between \emph{all} \ewhc{}s in terms of the jo
     \begin{proof}
         From Equation~\eqref{jsr}, for a generic \ewhc{} $\lambda^\strat$,
         \begin{equation*}
-            \rho\,(\Alifted_{\lambda^\strat}) = \lim_{\ell\rightarrow \infty} \rho_\ell \,(\Alifted_{\lambda^\strat}), \quad 
-            \rho_\ell\,(\Alifted_{\lambda^\strat}) = \max_{a \in \sset{\ell}{\lambda^\strat}}\norm{\clmat_{a}}^{1/\ell}.
+            \rho\,(\Alifted_{\lambda^\strat}) = \lim_{N\rightarrow \infty} \rho_N \,(\Alifted_{\lambda^\strat}), \quad 
+            \rho_N\,(\Alifted_{\lambda^\strat}) = \max_{a \in \sset{N}{\lambda^\strat}}\norm{\clmat_{a}}^{1/N}.
         \end{equation*}
         Definition~\ref{def:domination} gave us that $\lambda^\strat_2 \preceq \lambda^\strat_1$ iff $\sset{}{\lambda^\strat_2} \subseteq \sset{}{\lambda^\strat_1}$.
-        Thus, if for a word $b$ it holds that $b \in \sset{\ell}{\lambda^\strat_2}$, then it also holds that $b \in \sset{\ell}{\lambda^\strat_1}$.
-        The set of all possible $\clmat_{b}$ is thus included in the set of all possible $\clmat_{a},\, a \in \sset{\ell}{\lambda^\strat_1}$, thus:
+        Thus, if for a word $b$ it holds that $b \in \sset{N}{\lambda^\strat_2}$, then it also holds that $b \in \sset{N}{\lambda^\strat_1}$.
+        The set of all possible $\clmat_{b}$ is thus included in the set of all possible $\clmat_{a},\, a \in \sset{N}{\lambda^\strat_1}$, thus:
         \begin{equation*}
-            \max_{b \in \sset{\ell}{\lambda^\strat_2}}\norm{\clmat_{b}}^{1/\ell} \leq
-            \max_{a \in \sset{\ell}{\lambda^\strat_1}}\norm{\clmat_{a}}^{1/\ell}, \quad \forall \ell \in \N_{>}.
+            \max_{b \in \sset{N}{\lambda^\strat_2}}\norm{\clmat_{b}}^{1/N} \leq
+            \max_{a \in \sset{N}{\lambda^\strat_1}}\norm{\clmat_{a}}^{1/N}, \quad \forall N \in \N_{>}.
         \end{equation*}
-        The theorem follows immediately when $\ell\rightarrow \infty$.
+        The theorem follows immediately when $N\rightarrow \infty$.
     \end{proof}
 \end{theorem}
 %
@@ -141,17 +141,17 @@ Theorem~\ref{th:rho_dominance_general} is the first result that provides an anal
 Primarily, it implies that the constraint dominance from Definition~\ref{def:domination} also carries on to the JSR, giving us a notion of \emph{JSR dominance}.
 The results of Theorem~\ref{th:rho_dominance_general} are strategy-independent, further reducing the coupling between the control analysis and real-time implementation, and are also independent of the controlled system's dynamics.
 
-Two Corollaries of Theorem~\ref{th:rho_dominance_general} are derived for the commonly used models $\erowmiss{}{\strat}$ and $\eanymiss{}{\strat}$, highlighting some practical relations between such constraints.
-\begin{corollary}[$\eanymiss{}{\strat}$ dominance]%
+Two Corollaries of Theorem~\ref{th:rho_dominance_general} are derived for the commonly used models $\elcssrowmiss{}{\strat}$ and $\elcssanymiss{}{\strat}$, highlighting some practical relations between such constraints.
+\begin{corollary}[$\elcssanymiss{}{\strat}$ dominance]%
     \label{cor:rho_dominance_mk}%
-    Given $\lambda^\strat_1 = \overbar{\binom{x}{k_1}}^{\strat}$ and $\lambda^\strat_2 = \overbar{\binom{x}{k_2}}^{\strat}$, if $k_1 \leq k_2$ then
+    Given $\lambda^\strat_1 = \overbar{\binom{x}{\ell_1}}^{\strat}$ and $\lambda^\strat_2 = \overbar{\binom{x}{\ell_2}}^{\strat}$, if $\ell_1 \leq \ell_2$ then
     $$
         \rho\,(\Alifted_{\lambda^\strat_2}) \leq \rho\,(\Alifted_{\lambda^\strat_1}).
     $$
 \end{corollary}
-\begin{corollary}[$\erowmiss{}{\strat}$ dominance]%
+\begin{corollary}[$\elcssrowmiss{}{\strat}$ dominance]%
     \label{cor:rho_dominance_cons}%
-    Given $\lambda^\strat_1 = \erowmiss{}{\strat}$ and $\lambda^\strat_2 = \eanymiss{}{\strat}$, then
+    Given $\lambda^\strat_1 = \elcssrowmiss{}{\strat}$ and $\lambda^\strat_2 = \elcssanymiss{}{\strat}$, then
     $$
         \rho\,(\Alifted_{\lambda^\strat_2}) \leq \rho\,(\Alifted_{\lambda^\strat_1}).
     $$
@@ -175,23 +175,23 @@ Theorem~\ref{th:rho_dominance_general} can be further extended by relating the j
         \rho\,(\Alifted_{\Lambda^\strat}) \leq \rho \,( \Alifted_{\lambda^\strat} ) ,\quad \forall \Lambda^\strat \ni \lambda^\strat.
     $$
     \begin{proof}
-        For an arbitrary \ewhc{} set $\Lambda^\strat = \{\lambda^\strat_1, \dots, \lambda^\strat_N\}$, its satisfaction set is
+        For an arbitrary \ewhc{} set $\Lambda^\strat$, its satisfaction set is
         $$
-            \sset{\ell}{\Lambda^\strat} = \bigcap_{i \in \{1,\dots, N\}} \sset{\ell}{\lambda^\strat_i}.
+            \sset{N}{\Lambda^\strat} = \bigcap_{\lambda^\strat_i \in \Lambda^\strat} \sset{N}{\lambda^\strat_i}.
         $$
         Thus, for any $\lambda^\strat_i \in \Lambda^\strat$ it holds that 
         $$
-            \sset{\ell}{ \Lambda^\strat } \subseteq \sset{\ell}{\lambda^\strat}.
+            \sset{N}{ \Lambda^\strat } \subseteq \sset{N}{\lambda^\strat}.
         $$
-        If a word $b$ is in $\sset{\ell}{\Lambda^\strat}$ it also belongs to $\sset{\ell}{\lambda^\strat}$. 
-        The set of all possible $\clmat_{b}$ is thus included in the set of all possible $\clmat_{a},\, a \in \sset{\ell}{\lambda^\strat}$.
+        If a word $b$ is in $\sset{N}{\Lambda^\strat}$ it also belongs to $\sset{N}{\lambda^\strat}$. 
+        The set of all possible $\clmat_{b}$ is thus included in the set of all possible $\clmat_{a},\, a \in \sset{N}{\lambda^\strat}$.
         As a consequence it holds that
         \begin{equation*}
-            \max_{b \in \sset{\ell}{\Lambda^\strat}} \norm{\clmat_{b}}^{1/\ell} \leq
-            \max_{a \in \sset{\ell}{\lambda^\strat}} \norm{\clmat_{a}}^{1/\ell}, \quad
-            \forall \ell \in \N_{>}.
+            \max_{b \in \sset{N}{\Lambda^\strat}} \norm{\clmat_{b}}^{1/N} \leq
+            \max_{a \in \sset{N}{\lambda^\strat}} \norm{\clmat_{a}}^{1/N}, \quad
+            \forall N \in \N_{>}.
         \end{equation*}
-        The theorem follows immediately when $\ell\rightarrow \infty$.
+        The theorem follows immediately when $N\rightarrow \infty$.
     \end{proof}
 \end{theorem}
 

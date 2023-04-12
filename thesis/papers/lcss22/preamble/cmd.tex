@@ -3,3 +3,12 @@
 %%% Math Commands
 \newcommand{\Alifted}{\mathcal{L}}
 \newcommand{\sos}{\mathrm{SOS}}
+
+\newcommand{\lcssanyhit}[1]{\binom{x_{#1}}{\ell_{#1}}}% 
+\newcommand{\lcssanymiss}[1]{\overbar{\binom{x_{#1}}{\ell_{#1}}}}% 
+\newcommand{\lcssrowhit}[1]{\genfrac{<}{>}{0pt}{}{x_{#1}}{\ell_{#1}}}% 
+\newcommand{\lcssrowmiss}[1]{\overbar{\genfrac{<}{>}{0pt}{}{x_{#1}}{\ell_{#1}}}}% 
+\newcommand{\elcssanyhit}[2]{\binom{x_{#1}}{\ell_{#1}}^{#2}}% 
+\newcommand{\elcssanymiss}[2]{\overbar{\binom{x_{#1}}{\ell_{#1}}}^{#2}}% 
+\newcommand{\elcssrowhit}[2]{\genfrac{<}{>}{0pt}{}{x_{#1}}{\ell_{#1}}^{#2}}% 
+\newcommand{\elcssrowmiss}[2]{\overbar{\genfrac{<}{>}{0pt}{}{x_{#1}}{\ell_{#1}}}^{#2}}% 

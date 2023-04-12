@@ -19,7 +19,7 @@ We apply the lifted dynamics model presented in Section~\ref{sec:stability} to a
         \end{cases}
     \end{array}
 \end{equation*}
-We analyse the stability of the control systems subject to different $\eanymiss{}{\strat}$ constraints.
+We analyse the stability of the control systems subject to different $\elcssanymiss{}{\strat}$ constraints.
 We consider all combinations of strategy (\tK{} or \tS{}) and actuator mode (\tZ{} or \tH{}).
 %
 For each combination, we generate the lifted set $\Alifted_{\lambda^\strat}$. Its JSR $\rho \left( \Alifted_{\lambda^\strat} \right)$ is then approximated using three different algorithms.
@@ -54,6 +54,6 @@ We compare the time to run both SOS methods, indicating with ``$\times$'' the sp
 % \input{sec/evaluation-unstable.tex}
 
 All the upper bounds computed by \code{JSR toolbox} are greater than 1, while all lower bounds are \emph{below} 1, thus we cannot draw any conclusion using the \code{JSR toolbox}.
-For all \ewhc{}, $\eanymiss{}{\strat}$ where $x=1$ and $2 < k \leq 6$ the SOS upper bounds allow us to infer that the system is stable for all combinations of strategy and actuator mode, and also for $k=2$ under the \tS{} strategy.
-From Theorem~\ref{th:rho_dominance_general}, the stability will hold also for all constraints that are harder to satisfy; in particular, Corollary~\ref{cor:rho_dominance_mk} implies stability for all $\eanymiss{}{\strat}$ with $x=1$ and $k>6$.
-The speedup ratio is growing when $k$ increases, yielding a particularly high benefit of exploiting sparsity for \tSZ{}.
+For all \ewhc{}, $\elcssanymiss{}{\strat}$ where $x=1$ and $2 < \ell \leq 6$ the SOS upper bounds allow us to infer that the system is stable for all combinations of strategy and actuator mode, and also for $\ell=2$ under the \tS{} strategy.
+From Theorem~\ref{th:rho_dominance_general}, the stability will hold also for all constraints that are harder to satisfy; in particular, Corollary~\ref{cor:rho_dominance_mk} implies stability for all $\elcssanymiss{}{\strat}$ with $x=1$ and $\ell>6$.
+The speedup ratio is growing when $\ell$ increases, yielding a particularly high benefit of exploiting sparsity for \tSZ{}.

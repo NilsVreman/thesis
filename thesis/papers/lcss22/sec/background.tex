@@ -26,12 +26,12 @@ Without loss of generality, we consider $r_k = 0$.
 
 The controller in~\eqref{eq:controller} is implemented as a real-time task $\tau$, and designed to be executed periodically with period $\Ts$ in a real-time embedded platform.
 Under nominal conditions the task releases an instance (called \emph{job}) in each period, that should be completed before the release of the next instance.
-We denote the sequence of activation instants for $\tau$ with $(a_i)_{i \in \N_{\geq}}$, such that, in nominal conditions, $a_{i+1} = a_i+\Ts$, the sequence of completion instants $(f_i)_{i \in \N_{\geq}}$, and the sequence of job deadlines with $(d_i)_{i \in \N_{\geq}}$, such that $d_i = a_i + \Ts$ (also called \emph{implicit} deadline).
+We denote the sequence of activation instants for $\tau$ with $(a_k)_{k \in \N_{\geq}}$, such that, in nominal conditions, $a_{k+1} = a_k+\Ts$, the sequence of completion instants $(f_k)_{k \in \N_{\geq}}$, and the sequence of job deadlines with $(d_k)_{k \in \N_{\geq}}$, such that $d_k = a_k + \Ts$ (also called \emph{implicit} deadline).
 This requirement can be either satisfied or not, leading respectively to deadline hits and misses.
 
 \begin{definition}[Deadline hit and miss]%
     \label{def:hit}%
-    The $i$-th job of a periodic task $\tau$ with period $\Ts$ hits its deadline when $f_i \leq d_i$ and misses its deadline when $f_i > d_i$.
+    The $k$-th job of a periodic task $\tau$ with period $\Ts$ hits its deadline when $f_k \leq d_k$ and misses its deadline when $f_k > d_k$.
 \end{definition}
 
 We refer to both deadline hits and misses using the term \emph{outcome} of a job.
@@ -40,15 +40,15 @@ Given a taskset and a (worst-case) schedule, it is possible to bound the worst-c
 This bound is generally denoted using the \emph{weakly-hard model}~\cite{Bernat:2001}.
 Following such model, a task $\tau$ may satisfy any combination of these weakly-hard constraints, defined as follows.
 \begin{enumerate}[label=(\roman*)]
-    \item \label{item:mk} $\tau \vdash \anymiss{}$: in any window of $k$ consecutive jobs, at most $x$ deadlines are missed;
-    \item \label{item:hk} $\tau \vdash \anyhit{}$: in any window of $k$ consecutive jobs, at least $x$ deadlines are hit;
-    \item \label{item:cons} $\tau \vdash \rowmiss{}$: in any window of $k$ consecutive jobs, at most $x$ \emph{consecutive} deadlines are missed; and
-    \item $\tau \vdash \rowhit{}$: in any window of $k$ consecutive jobs, at least $x$ \emph{consecutive} deadlines are hit.
+    \item \label{item:mk} $\tau \vdash \lcssanymiss{}$: in any window of $\ell$ consecutive jobs, at most $x$ deadlines are missed;
+    \item \label{item:hk} $\tau \vdash \lcssanyhit{}$: in any window of $\ell$ consecutive jobs, at least $x$ deadlines are hit;
+    \item \label{item:cons} $\tau \vdash \lcssrowmiss{}$: in any window of $\ell$ consecutive jobs, at most $x$ \emph{consecutive} deadlines are missed; and
+    \item $\tau \vdash \lcssrowhit{}$: in any window of $\ell$ consecutive jobs, at least $x$ \emph{consecutive} deadlines are hit.
 \end{enumerate}
-In all such cases, $x\in \N_{\geq}$, $k \in \N_{>}$, and $x\leq k$.
+In all such cases, $x\in \N_{\geq}$, $\ell \in \N_{>}$, and $x\leq \ell$.
 A generic weakly-hard constraint is hereafter denoted with the symbol $\lambda$, while a set of $L$ constraints will be referred to as $\Lambda = \{ \lambda_1, \lambda_2, \dots, \lambda_L \}$.
 
-We define a \emph{word} $w= \seq{c_1, c_2, \dots, c_N}$ as a sequence of $N$ consecutive outcomes, where each outcome $c_i$ is a character in the alphabet $\Sigma = \{\cM, \cH\}$.
+We define a \emph{word} $w= \seq{c_1, c_2, \dots, c_N}$ as a sequence of $N$ consecutive outcomes, where each outcome $c_k$ is a character in the alphabet $\Sigma = \{\cM, \cH\}$.
 We use $w \vdash \lambda$ to denote that $w$ satisfies the constraint $\lambda$. 
 Stating that $\tau \vdash \lambda$ means that all the possible sequences of outcomes that $\tau$ can experience satisfy the corresponding constraint $\lambda$.
 The set of such sequences naturally results from the definition of $\lambda$, and is formally defined as the \emph{satisfaction set} as follows~\cite{Bernat:2001}.
@@ -79,35 +79,35 @@ A few handling strategies for periodic controllers have been proposed in literat
 \begin{definition}[\tK{} strategy]%
     \label{def:kill}%
     Under the \tK{} strategy, a job that misses its deadline is terminated immediately. 
-    Formally, for the $i$-th job of $\tau$ either $f_i\leq d_i$ or $f_i=\infty$.
+    Formally, for the $k$-th job of $\tau$ either $f_k\leq d_k$ or $f_k=\infty$.
 \end{definition}
 
 \begin{definition}[\tS{} strategy]%
     \label{def:skip}%
     Under the \tS{} strategy, a job that misses its deadline is allowed to continue during the following period.
-    Formally, if the $i$-th job of $\tau$ misses its deadline $d_i$, a new deadline $d^{+}_i = d_i + \Ts$ is set for the job, and $a_{i+1} = d^{+}_i$.
+    Formally, if the $k$-th job of $\tau$ misses its deadline $d_k$, a new deadline $d^{+}_k = d_k + \Ts$ is set for the job, and $a_{k+1} = d^{+}_k$.
 \end{definition}
 
 
 \subsection{Stability analysis techniques based on JSR}
 \label{sec:existing}
 
-In~\cite{Maggio:2020}, the authors identify a set of subsequences of hit and missed deadlines, which can be arbitrarily combined to obtain all possible sequences in $\sset{}{\rowmiss{}}$.
+In~\cite{Maggio:2020}, the authors identify a set of subsequences of hit and missed deadlines, which can be arbitrarily combined to obtain all possible sequences in $\sset{}{\lcssrowmiss{}}$.
 The stability analysis of the resulting arbitrary switching system is then obtained by leveraging the \emph{Joint Spectral Radius} (JSR)~\cite{rota}.
 
-Given $\ell \in \N_{>}$ and a set of matrices $\Aa = \{\clmat_1, \ldots, \clmat_\ell \} \subseteq \R^{n\times n}$, under the hypothesis of arbitrary switching over any sequence $s=\seq{a_1,a_2,\dots}$ of indices of matrices in $\Aa$, the JSR of $\Aa$ is defined by:
+Given $N \in \N_{>}$ and a set of matrices $\Aa = \{\clmat_1, \ldots, \clmat_N \} \subseteq \R^{n\times n}$, under the hypothesis of arbitrary switching over any sequence $s=\seq{a_1,a_2,\dots}$ of indices of matrices in $\Aa$, the JSR of $\Aa$ is defined by:
 \begin{equation}%
     \label{jsr}
-    \rho\funof{\Aa} = \lim_{k\rightarrow\infty} \max_{s \in \{1,\ldots,\ell\}^k} \norm{\clmat_{a_k} \cdots \clmat_{a_2}\clmat_{a_1}}^{\frac{1}{k}}.
+    \rho\funof{\Aa} = \lim_{k\rightarrow\infty} \max_{s \in \{1,\ldots,N\}^k} \norm{\clmat_{a_k} \cdots \clmat_{a_2}\clmat_{a_1}}^{\frac{1}{k}}.
 \end{equation}
 The number $\rho\left(\Aa\right)$ characterizes the maximal asymptotic growth rate of matrix products from $\Aa$ (thus $\rho(\Aa) < 1$ means that the system is asymptotically stable), and is independent of the norm $\norm{\cdot}$ used in \eqref{jsr}.
 Existing practical tools such as the JSR Matlab toolbox~\cite{vankeerberghen2014jsr} include multiple algorithms to compute both upper and lower bounds on $\rho\left(\Aa\right)$.
 
 When the switching sequences between the dynamics of $\Aa$ are not arbitrary, but constrained by a graph $\GG{}$, the so called \emph{constrained joint spectral radius} (CJSR)~\cite{dai2012gelfand} can be applied.
-Introducing $S_k\funof{\GG{}}$ as the set of all possible switching sequences $s$ of length $k$ that satisfy the constraints of a graph $\GG{}$, the CJSR of $\Aa$ is defined by
+Introducing $S_N\funof{\GG{}}$ as the set of all possible switching sequences $s$ of length $N$ that satisfy the constraints of a graph $\GG{}$, the CJSR of $\Aa$ is defined by
 \begin{equation}%
     \label{cjsr}%
-    \rho\funof{\Aa,\GG{}} = \lim_{k\rightarrow\infty} \max_{s \in S_k\funof{\GG{}}} \norm{\clmat_{a_k} \cdots \clmat_{a_2}\clmat_{a_1}}^{\frac{1}{k}}.
+    \rho\funof{\Aa,\GG{}} = \lim_{N\rightarrow\infty} \max_{s \in S_N\funof{\GG{}}} \norm{\clmat_{a_N} \cdots \clmat_{a_2}\clmat_{a_1}}^{\frac{1}{N}}.
 \end{equation}
 In general, computing or approximating the CJSR is harder than using the JSR. 
 In~\cite{philippe2016stability}, the authors propose a multinorm-based method to approximate with arbitrary accuracy the CJSR.

@@ -11,13 +11,13 @@ Therefore, it is crucial to analyse embedded systems properly to ensure that the
 % What methods have I used to fill this hole
 However, there are very few tools available for assessing the safety and performance of embedded control systems when considering the implementation of the microcontroller.
 This thesis aims to fill this gap in the literature by presenting five papers on the analysis of embedded controllers subject to computational overruns.
-We include details about the real-time operating system's implementation into the analysis, such as what happens to the controller's internal state representation when the timing constraints are violated.
-Our contribution includes theoretical and computational tools for analysing the embedded system's stability, performance, and real-time properties.
+Details about the real-time operating system's implementation are included into the analysis, such as what happens to the controller's internal state representation when the timing constraints are violated.
+The contribution includes theoretical and computational tools for analysing the embedded system's stability, performance, and real-time properties.
 
 % What are the main results of the thesis
 The embedded controller is analysed under three different types of timing violations: blackout events (when no control computation is completed during long periods), weakly-hard constraints (when the number of deadline overruns is constrained over a window), and stochastic overruns (when violations of timing constraints are governed by a probabilistic process).
 These scenarios are combined with different implementation policies to reduce the gap between the analysis and its practical applicability.
-We further validate the analyses with a comprehensive experimental campaign performed on both a set of physical processes and multiple simulations.
+The analyses are further validated with a comprehensive experimental campaign performed on both a set of physical processes and multiple simulations.
 
 % What is the impact of this thesis?
 In conclusion, the findings of this thesis reveal that the effect deadline overruns have on the embedded system heavily depends the implementation details and the system's dynamics.

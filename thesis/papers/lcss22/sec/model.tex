@@ -1,16 +1,16 @@
-To provide a comprehensive analysis framework, we need to examine what occurs in each time interval $(\pi_k)_{k \in \N_{\geq}}$, with $\pi_k = [a_0 + k\cdot \Ts, a_0 + (k+1)\cdot \Ts)$. 
+To provide a comprehensive analysis framework, we need to examine what occurs in each time interval $(\pi_k)_{k \in \N_{\geq}}$, with $\pi_k = [a_0 + k\cdot \Ts, a_0 + (k+1)\cdot \Ts)$.
 In this context, an extension of the weakly-hard model is required to account for the given deadline miss handling strategy, denoted with the symbol $\strat$.
 %
 \begin{definition}[Extended weakly-hard model $\tau \vdash \lambda^{\strat}$]%
     \label{def:new-mk}%
     A task $\tau$ may satisfy any combination of the four \emph{extended weakly-hard constraints} (\ewhc{}) $\lambda^{\strat}$:
     \begin{enumerate}[label=(\roman*)]
-        \item $\tau \vdash \eanymiss{}{\strat}$: in any window of $k$ consecutive jobs, at most $x$ intervals lack a job completion;
-        \item $\tau \vdash \eanyhit{}{\strat}$:  in any window of $k$ consecutive jobs, at least $x$ intervals have a job completion;
-        \item $\tau \vdash \erowmiss{}{\strat}$: in any window of $k$ consecutive jobs, at most $x$ \emph{consecutive} intervals lack a job completion;
-        \item $\tau \vdash \erowhit{}{\strat}$: in any window of $k$ consecutive jobs, at least $x$ \emph{consecutive} intervals have a job completion
+        \item $\tau \vdash \elcssanymiss{}{\strat}$: in any window of $\ell$ consecutive jobs, at most $x$ intervals lack a job completion;
+        \item $\tau \vdash \elcssanyhit{}{\strat}$:  in any window of $\ell$ consecutive jobs, at least $x$ intervals have a job completion;
+        \item $\tau \vdash \elcssrowmiss{}{\strat}$: in any window of $\ell$ consecutive jobs, at most $x$ \emph{consecutive} intervals lack a job completion;
+        \item $\tau \vdash \elcssrowhit{}{\strat}$: in any window of $\ell$ consecutive jobs, at least $x$ \emph{consecutive} intervals have a job completion
     \end{enumerate}
-    with $x\in \N_{\geq}$, $k \in \N_{>}$, and $x\leq k$, while using strategy $\strat$ to handle potential deadline misses.
+    with $x\in \N_{\geq}$, $\ell \in \N_{>}$, and $x\leq \ell$, while using strategy $\strat$ to handle potential deadline misses.
 \end{definition}
 %
 The definition above differs from the original weakly-hard model of~\cite{Bernat:2001}, since
