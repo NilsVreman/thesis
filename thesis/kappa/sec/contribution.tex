@@ -7,7 +7,7 @@ Additionally, each author's contribution to the papers is described in detail.
 We conclude the chapter with Section~\ref{sec:additional-publications}, which lists additional peer-reviewed publications that were excluded from this thesis.
 These publications have been omitted to improve the cohesion of this manuscript, as they cover tangential topics with respect to the research presented in the thesis.
 
-\subsubsection*{Difference Between Published and Included Version:}%
+\subsubsection*{Difference Between Published and Included Version}%
 There are two differences between the published papers and the version included in this thesis:
 %
 \begin{enumerate*}[label=(\roman*)]
@@ -28,7 +28,7 @@ There are two differences between the published papers and the version included 
     \fullcite{Vreman:2021}
 \end{quote}
 
-\subsubsection*{Scientific Summary:}%
+\subsubsection*{Scientific Summary}%
 %
 In Paper I, linear control system stability and performance is analysed when the controller experiences persistent computational blackouts.
 Historically, the models to analyse such events have been either stochastic or overly conservative.
@@ -43,7 +43,7 @@ To reinforce the analysis methodology's applicability to industrial applications
 The paper analyses both a non-linear physical system (a Furuta pendulum) and a set of linear system models representative of the process industry.
 From the analysis performed on the physical system, the paper shows that it is possible to draw accurate conclusions about the physical process' behaviour using simulation results.
 
-\subsubsection*{Contribution Statement:}%
+\subsubsection*{Contribution Statement}%
 %
 The idea of analysing control system stability using fault models that are matching industrial needs was proposed by M. Maggio.
 The physical testing environment and the experiments were implemented and executed by N. Vreman, who also developed the fault model and its formalisation.
@@ -61,7 +61,7 @@ The manuscript writing and editing effort was shared among all three authors.
     \fullcite{Vreman:2022a}
 \end{quote}
 
-\subsubsection*{Scientific Summary:}%
+\subsubsection*{Scientific Summary}%
 %
 Many different robust controllers exists, specifically targeting control systems where the controller can experience timing faults.
 The main advantage of using these synthesis methods is that they can guarantee a priori system stability, under their respective fault model.
@@ -86,7 +86,7 @@ The adaptive controller is validated on a physical process (a Ball and Beam) and
 Significant performance gain is shown despite having an immense number of computational overruns.
 Additionally, since the proposed method does not guarantee any a priori stability guarantees, the paper analyses the switched system stability a posteriori.
 
-\subsubsection*{Contribution Statement:}%
+\subsubsection*{Contribution Statement}%
 %
 The initial observation, that many fault-tolerant controllers are restricted to overly specific system conditions, was made by C. Mandrioli.
 A set of limitations was identified together by C. Mandrioli and N. Vreman; who also derived the adaptive controller addressing these limitations.
@@ -104,7 +104,7 @@ The manuscript writing and editing effort was shared among all three authors.
     \fullcite{Vreman:2022b}
 \end{quote}
 
-\subsubsection*{Scientific Summary:}%
+\subsubsection*{Scientific Summary}%
 %
 Ever since their introduction, the weakly-hard models have been steadily increasing in both academic and industrial popularity.
 The existing tools and research have focused on single constraints, in particular the \tAM{} constraint.
@@ -118,9 +118,9 @@ Paper III aspires to
 In order to switch the attention to the \tRH{} constraint, we provide two novel theorems on the relation between it and the \tAH{} constraint, finalising the relationship graph between all the weakly-hard constraints.
 The \tool{} tool employs an automaton model to describe the discrete-time execution of a task subject to a specific weakly-hard constraint.
 Additionally, \tool{} is the first tool to address \emph{sets} of weakly-hard constraints.
-The paper reports the results of an experimental campaign that addresses the both scalability of \tool{} compared to the state-of-the-art alternative and tests the novel features of \tool{}.
+The paper reports the results of an experimental campaign that addresses both scalability of \tool{} compared to the state-of-the-art alternative and tests the novel features of \tool{}.
 
-\subsubsection*{Contribution Statement:}%
+\subsubsection*{Contribution Statement}%
 %
 The idea behind the paper and the tool was developed by N. Vreman. 
 The tool and its underlying algorithms was developed by N. Vreman, with input from M. Maggio.
@@ -137,7 +137,7 @@ The manuscript was written by N. Vreman and M. Maggio, with input from R. Pates.
     \fullcite{Vreman:2022c}
 \end{quote}
 
-\subsubsection*{Scientific Summary:}%
+\subsubsection*{Scientific Summary}%
 %
 Despite the weakly-hard models having steadily gained more traction in the analysis of control systems, the weakly-hard model fails at expressing some characteristics of the implementation of control systems, e.g., how the actual controller implementation deals with deadline misses.
 Paper IV rectifies this discrepancy, by extending the formal language defining the weakly-hard constraints, and connecting the analysis on weakly-hard control systems to the actual implementation of controllers.
@@ -151,7 +151,7 @@ This system model can then be analysed using any method applicable to arbitrary 
 The paper uses a JSR approach, but other alternatives can be envisioned.
 In addition to the stability analysis, the paper discusses theoretical results relating the real-time constraints with the control system stability.
 
-\subsubsection*{Contribution Statement:}%
+\subsubsection*{Contribution Statement}%
 %
 P. Pazzaglia came up with the idea for the paper after discussions with N. Vreman.
 The theoretical results presented in the paper were developed together by N. Vreman and P. Pazzaglia.
@@ -169,7 +169,7 @@ The manuscript was written by P. Pazzaglia and N. Vreman, with input and revisio
     \fullcite{Vreman:2023}
 \end{quote}
 
-\subsubsection*{Scientific Summary:}%
+\subsubsection*{Scientific Summary}%
 %
 Research into fault-tolerant real-time control systems has been split between focusing on networked systems experiencing communication dropouts, i.e., packet losses, or embedded systems suffering computational overruns.
 Despite carrying very different information, the computational overruns have been compared to communication dropouts when analysing the system dynamics, and vice versa.
@@ -184,7 +184,7 @@ We apply the analysis to two case studies from the recent literature and show th
 The analysis clearly shows how the systems are distinctly affected by either individually or jointly occurring computational and communication faults.
 
 
-\subsubsection*{Contribution Statement:}%
+\subsubsection*{Contribution Statement}%
 %
 M. Maggio proposed the idea of looking into the analysis of systems with a combination of faults.
 The implementation of the analysis and the generation of the results was done by N. Vreman, with input from M. Maggio.

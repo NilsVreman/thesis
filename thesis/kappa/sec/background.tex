@@ -31,7 +31,7 @@ Next, we describe the underlying hardware and real-time architecture seen in Fig
     \label{fig:operating-system-abstraction}%
 \end{figure}
 
-Although this thesis does not discern different hardware architectures from one another, it is appropriate to talk about \emph{microcontrollers} and \emph{embedded systems}, in particular because of their growing recognition. 
+Although this thesis does not discern different hardware architectures from one another, it is appropriate to talk about \emph{microcontrollers} and \emph{embedded systems}, in particular due to their prevalence in real-time control systems. 
 Despite being two different hardware architectures, the terms embedded system and microcontroller will carelessly be used interchangeably due to their natural similarities.
 As introduced in Chapter~\ref{ch:intro}, microcontrollers (MCUs) are small computers with integrated processors, memory, and I/O peripherals.
 Most embedded systems are based on microcontroller architectures, however, some embedded systems are based on one or more microprocessors with external memory and I/O peripherals.
@@ -158,8 +158,8 @@ In order for the scheduler to know when to stop the currently running task in fa
 Interrupts can come from both hardware and software, but the RTOS ticks are triggered by the software clock in the RTOS.\footnote{Hardware interrupts come from events changing the state of the system, e.g., external signals triggering that they need attention from the RTOS, watchdog timers triggering an interrupt at set time intervals, or spurious interrupts (electrical anomalies)~\cite{Drepper:2003}.}
 Attached to the interrupt is generally an \emph{interrupt service routine} (ISR), i.e., a callback function to execute when the specific interrupt is triggered.
 For instance, in the context of the scheduler's tick interrupt, the ISR may be responsible for switching out the currently active task before switching in a new task and its relevant context.
-The ISR connected to the RTOS clock tick is also one of the major culprits behind release jitter in RTOS, i.e., the time it takes to put the suspended task into the ready queue before picking a new candidate to execute varies between invocations.
-Since the RTOS suspends the execution of the active task whenever an interrupt is triggered (even if it happens in the middle of a time slice), it is crucial that the ISR is quick to execute to avoid stalling the processor.
+The ISR connected to the RTOS clock tick is also one of the major causes for release jitter in RTOS, i.e., the time it takes to put the suspended task into the ready queue before picking a new candidate to execute varies between invocations.
+Since the RTOS suspends the execution of the active task whenever an interrupt is triggered (even if it happens in the middle of a time slice), it is crucial that the ISR is fast to avoid stalling the processor.
 Hence, if the callback function takes too long to execute or if the ISR is triggered too often, it can cause significant time delays in the schedule execution.
 
 Employing a scheduler for single-core processors follow the described paradigm, however, for multi-core systems additional design choices have to be made.
@@ -201,22 +201,22 @@ Respectively, if the job completes before its deadline, it \emph{meets} its dead
 Computational overruns are present in generally all real-time domains from avionics and defence to consumer electronics~\cite{Akesson:2020}, thus highlighting the importance of analysing their impact on the systems' functional correctness.
 
 % task models -> soft, hard, weakly-hard
-Every real-time system behave differently in the presence of deadline overruns.
+Every real-time system behaves differently in the presence of deadline overruns.
 Depending on the application, some systems crash while others experience a degraded efficiency.
 Due to this individuality, most real-time systems were historically divided into two classes describing how the systems were affected by computational overruns.
 %
 \begin{itemize}
-    \item \emph{Hard real-time systems} -- It is imperative that the deadlines are met in order to prevent critical system failure.
+    \item \emph{Hard real-time systems} -- It is imperative that all deadlines are met in order to prevent critical system failure.
 
     \item \emph{Soft real-time systems} -- The perceived quality of the system is degraded with the number of overrun deadlines, but it is unlikely that it will impact system safety.
 \end{itemize}
 %
 Soft real-time systems typically do not crash catastrophically when they experience a finite number of deadline overruns.
 To analyse these systems, their deadline overruns are typically modelled using stochastic processes.
-For instance, the simplest models assume that jobs' deadline outcomes are independent and identically distributed random variables, i.e., that the outcome of each job depend only on the probability that this specific job overruns its deadline.
+For instance, the most basic models assume that jobs' deadline outcomes are independent and identically distributed random variables, i.e., that the outcome of each job depend only on the probability that this specific job overruns its deadline.
 Intuitively, this assumption is too simplistic for real systems and instead stochastic models for the task execution were developed based on, for instance, Markov chains~\cite{Liu:2005, Friebe:2022, Abeni:2017, Lincoln:2002} and task chains~\cite{Manolache:2004, Liu:2010}, where the transitions between states are probabilistic.
 Despite the hard and soft classes covering many real-time systems, they do not cover all cases.
-In particular, embedded controllers are typically better described using the \emph{firm real-time systems} model, characterised by being able to overrun a few, but not too many, deadlines before causing critical system failure.
+In particular, embedded controllers are typically better described using the \emph{firm real-time system} model, characterised by being able to overrun a few, but not too many, deadlines before causing critical system failure.
 
 Arguably the most recognised firm model is the \emph{weakly-hard} task model~\cite{Bernat:2001}.
 These models were originally devised to provide formal guarantees to tasks that can tolerate occasional deadline overruns, e.g., control tasks where decreasing the sampling time would improve the overall performance whilst introducing intermittent computational overruns.
@@ -265,7 +265,7 @@ Consider for instance the constraint $\lambda_1 = \binom{1}{1}$, which requires 
 The constraint is extremely restrictive in what sequences it permits; in fact, the satisfaction set of this constraint only contains one sequence, $\sset{N}{\lambda_1} = \{ 1^N \}$.
 On the other hand, the constraint $\lambda_2 = \binom{0}{1}$ requires no job deadlines to be met to be satisfied; thus, all sequences satisfy this constraint, $\sset{N}{\lambda_2} = \Sigma^N$.
 Intuitively, since $\lambda_1$ is more restrictive than $\lambda_2$, we say that $\lambda_1$ \emph{dominates} $\lambda_2$.
-We formalise the partial ordering in the following definition:
+We formalise this partial ordering in the following definition:
 %
 \begin{definition}[Constraint Dominance]%
     \label{def:kappa:dominance}%
@@ -338,7 +338,7 @@ However, as described in~\cite{Cervin:2004b}, three of the simplest overrun hand
 %
 A framework for switching between \tK{} and \tS{} to drop delayed packets in arbitrated networked control systems is presented in~\cite{Soudbakhsh:2018}.
 The authors of~\cite{Pazzaglia:2018} discuss the performance of real-time control systems subject to the \tAM{} constraints with respect to both the \tK{} and \tS{} strategies; additionally, the authors discuss how the overrun handling strategy affect the freshness of the control signal, i.e., the age of the actuated control signal.
-In~\cite{Ernst:2019} the authors extend an existing method for computing weakly-hard guarantees in multi-component systems where deadlines outcomes are considered binary events, i.e., adhering to the \tK{} strategy.
+In~\cite{Ernst:2019} the authors extend an existing method for computing weakly-hard guarantees in multi-component systems where deadline outcomes are considered binary events, i.e., adhering to the \tK{} strategy.
 
 Separately from the scheduler's overrun strategy, it is important to analyse what happens when the actuators do not receive a fresh control command due to, for instance, a deadline overrun or a packet loss on the network.
 The actuators typically employ an \emph{actuator mode} to decide which command to enact on the plant if no new control command has been received.
@@ -361,7 +361,7 @@ One of the more prominent methods to capture the task execution's expressiveness
 In fact, both graphs and \emph{finite state machines} (FSM) are frequently used to monitor task execution and verify system safety~\cite{Kumar:2012, Dai:2020, Hertneck:2020}
 
 The use of finite state machines (also referred to as \emph{finite state automata}) have moreover been applied to the research of deadline overrun modelling.
-For a task's jobs, the computational overrun process have been modelled using finite state machines for both soft and firm real-time systems.
+In fact, for a task's jobs the computational overrun process have been modelled using finite state machines for both soft and firm real-time systems.
 In~\cite{Horssen:2016} the authors model the \tAM{} weakly-hard constraint using an automaton where the transition events between states are represented by the job outcomes.
 A \emph{Markov chain} (MC) model was used in~\cite{Ling:2003} to model the dropout rate of sensor packets in a soft networked control system.
 \cite{Kwak:2001} utilise a Markov chain to select optimal time points for memory checkpointing in real-time systems where tasks may experience transient faults.
@@ -369,14 +369,14 @@ Henceforth, we will sloppily refer to finite state machines as \emph{automata}.\
 
 % Introduce notation for the FSM
 Both automata and Markov chains are constructed from directed graphs, with the main difference that the automata transitions are deterministic by nature whilst the Markov chain requires a distribution of probabilities to model the transitions between states.
-In this thesis, both the automata and MC denotes the underlying graph $\GG{} = (\VV{}, \EE{})$, where $\VV{}$ is the set of \emph{vertices} (or \emph{states}) and $\EE{}$ is the set of \emph{edges} (or \emph{transitions}).
+In this thesis, both automata and MC are represented by an underlying graph $\GG{} = (\VV{}, \EE{})$, where $\VV{}$ is the set of \emph{vertices} (or \emph{states}) and $\EE{}$ is the set of \emph{edges} (or \emph{transitions}).
 However, the vertices and transitions symbolise different deadline overrun models for respectively the automata and Markov chain.
 
 The automaton model is used to represent the feasible sequences of deadline hits and misses for the weakly-hard constraints.\footnote{The automaton model is derived in Paper III and utilised in Paper IV.}
 Here, the underlying graph depend on the chosen constraint, i.e., $\GG{\lambda} = (\VV{\lambda}, \EE{\lambda})$.
 Each vertex $v_i \in \VV{\lambda}$ represents a word $w_i \in \sset{k}{\lambda}$, where $k$ is the window length of $\lambda$.
 A transition $e_{i, j} = (v_i, v_j, c_{i,j}) \in \EE{\lambda}$ is a triplet describing the transition condition $c_{i,j} \in \Sigma$ to get from vertex $v_i$ to $v_j$.
-In other words, if there exists a permissible sequence of deadline hits and misses $w_i$ which still satisfies the constraint $\lambda$ if followed by a deadline miss (i.e., $c_{i,j} = 0$) and the resulting sequence can be represented by $w_j$, there exists a transition $e_{i,j} = (v_i, v_j, 0)$ between $v_i$ and $v_j$.
+For instance, there exists a transition $e_{i,j} = (v_i, v_j, 0)$ between $v_i$ and $v_j$ if the sequence of deadline hits and misses $w_i$ still satisfies the constraint $\lambda$ if followed by a deadline miss (i.e., $c_{i,j} = 0$) and the resulting sequence can be represented by $w_j$.
 
 When modelling stochastic computational overruns, the Markov chain models are naturally better-suited than the automaton model.\footnote{The Markov chain is utilised in Papers~II and V.}
 The MC is represented by a set of states $v_i \in \VV{}$ where the transitions between states is again a triplet $e_{i, j} = (v_i, v_j, p_{i, j}) \in \EE{}$.
@@ -423,7 +423,6 @@ This is a deterministic transition (no probabilities involved) in the automaton,
 %
 By omitting the implementation details, such as the real-time system's hardware layer and operating system, the remaining components are the mathematical models of the plant and controllers.
 Figure~\ref{fig:control-structure-abstraction} highlights how these models relate to the relevant system architecture.
-It is the purpose of computer-controlled systems theory to model and control continuous-time systems via digital components and discrete-time models~\cite{Astrom:1997}.
 The mathematical models characterise the system's behaviour in time, typically via a dynamical system of differential (or difference) equations written on \emph{state-space} form
 %
 \begin{equation}%
@@ -471,9 +470,8 @@ The resulting discrete-time, LTI model of the plant $\plant$ is then
 where the variable subscripts counts the discrete time samples since system startup, i.e., $x_k = x(k\cdot \Ts)$ and $x_{k+1} = x(k\cdot \Ts + \Ts)$.
 Note that the process' stochastic disturbance process $w_k \in \R^{n_w}$ and dynamic matrix $\Wp \in \R^{n_x \times n_w}$ have been added.
 The disturbance process $w_k$ is typically a stochastic process with (assumed) known statistical properties, modelling the unknown plant dynamics and exogenous signals.
-\nv{Mention why we add it here? It is simple to remove the problem of discretising the continuous process disturbance. It could be added to the continuous plant as well and then discretise it (and be sad because of all the extra work we have to do).} \mm{IMHO, leave it as it is.}
 
-Similarly to how the plant is described using a dynamical system on state-space form, controllers are typically also defined on the same format (denoted the controller's \emph{control law}).
+Similarly to how the plant is described using a dynamical system on state-space form, controllers are typically defined on the same format (denoted the controller's \emph{control law}).
 Section~\ref{sec:background:rts} described how the control algorithm is implemented as a function governed by a task executing in the RTOS; modern controllers are hence unlikely to be continuous.
 Therefore, the discrete, time-invariant state-space representation of a general control law is
 %
@@ -485,7 +483,7 @@ Therefore, the discrete, time-invariant state-space representation of a general 
     \end{aligned}\right.
 \end{equation}
 %
-Here, the \emph{control state vector} $z_k \in \R^{n_z}$ represent the controller's dynamics, the \emph{control signals} $u_k \in \R^{n_u}$ are also the inputs to the plant, and the functions $p$ and $q$ govern the dynamical behaviour of the controller.
+Here, the \emph{control state vector} $z_k \in \R^{n_z}$ represent the controller's dynamics, the \emph{control signals} $u_k \in \R^{n_u}$ are inputs to the plant, and the functions $p$ and $q$ govern the dynamical behaviour of the controller.
 Intuitively, each time step $k$ corresponds to one job activation of the control task.
 Similar to the plant, if $p$ and $q$ can be expressed as linear combinations of their arguments, i.e., $p(z_k,\, y_k) = \Ac\,z_k+\Bc\,y_k$ and $q(z_k,\, y_k) = \Cc\,z_k+\Dc\,y_k$, then the controller $\ctrler$ is linear
 %
@@ -571,7 +569,7 @@ As an example, if the drone system from Chapter~\ref{ch:intro} was unstable, und
 
 In practice, these vague notions of stability are formalised in rigorous mathematical definitions.
 Two of the classic definitions of stability for \emph{linear} dynamical systems are the Routh-Hurwitz stability criterion for continuous systems~\cite{Astrom:2008} and the Schur stability criterion for discrete systems~\cite{Astrom:1997}.
-Very simplified, the criteria could be summarised by:
+The criteria could be summarised by:
 %
 \begin{itemize}
     \item A continuous-time linear system is said to be \emph{Hurwitz stable} if all its characteristic polynomial's roots lie in the open left half-plane.
@@ -601,7 +599,7 @@ Denoting the spectral radius of a square matrix $\clmat \in \R^{n \times n}$ wit
 %
 The classical notions of linear systems stability do not hold when the closed-loop dynamics is time-variant.
 Instead, more powerful mathematical tools are needed, dependent on the definition of the switching process $\theta_k$, i.e., whether the system is subject to \emph{deterministic} or \emph{stochastic} switching.
-By deterministic switching we mean systems where the switching process $\theta_k$ is a deterministic constraint, such as the weakly-hard constraints; in other words, a switching system where stability is independent of the probability of transitioning between different execution modes (vertices in the graph representation).
+By deterministic switching we mean systems where the switching process $\theta_k$ is a deterministic constraint, such as the weakly-hard constraints; in other words, a switching system where stability is independent of the probability of transitioning between different execution modes.
 On the other hand, stochastic switching refer to systems where $\theta_k$ is governed by an entirely stochastic process, e.g., a Markov chain, and the switching stability is hence highly dependent on the transition probabilities.
 In this thesis, emphasis has been to analyse switching stability from the deterministic framework, using methods introduced next.
 
@@ -680,7 +678,7 @@ Here $\R_{2d} \left[ x \right]$ is the set of homogeneous polynomials of degree 
 Additionally, the authors show how the upper bound on the JSR achieved by the SOS approach in Equation~\eqref{eq:sos} is never weaker than the one obtained with a common quadratic Lyapunov function.
 
 Trivially, since $\rho^{LB}\funof{\Aa} \leq \rho\funof{\Aa} \leq \rho^{UB}\funof{\Aa}$, if an approximation method provides an upper bound $\rho^{UB}\funof{\Aa}$ that is below one for the switched dynamical system, it is confirmed to be stable; conversely, if the lower bound $\rho^{LB}\funof{\Aa}$ is above one, the system is guaranteed unstable.
-The active research in this field continues to enhance the bounds as well as algorithmic complexities, thus constantly improving the applicability of the JSR notion.
+The active research in this field continues to enhance both the bounds and algorithmic complexities, thus constantly improving the applicability of the JSR notion.
 
 \subsubsection*{Stochastic Switching Stability}%
 %
@@ -727,12 +725,12 @@ This is one of the advantages with the stochastic certificate received by the MS
 %
 % Talk about performance on a high level: Why performance analysis? What is its relation to stability analysis?
 Stability analysis, such as the one discussed in Section~\ref{sec:background:stability} is undeniably a black and white concept.
-A control system can for instance neither be 90\% nor 10\% stable, the system is either stable or it is not.
+A control system can for instance neither be 90\% nor 10\% stable; the system is either stable or it is not.
 This stands in contrast to the notion of \emph{control system performance} which is a more ambivalent and fluctuating concept.
 Performance as a metric to be measured exists in many differing domains, however, we will unequivocally use the notion of \emph{performance} in place of \emph{control system performance}, unless otherwise stated.
 
 Evaluating the performance of a control system involves first defining what is important for the application in focus.
-As mentioned in Section~\ref{sec:background:ctrl}, the objective of controller synthesis is to design the functions $p$ and $q$ from Equation~\eqref{eq:discrete-state-space} such that some predetermined requirements are met.
+As mentioned in Section~\ref{sec:background:ctrl}, the objective of control synthesis is to design the functions $p$ and $q$ from Equation~\eqref{eq:discrete-state-space} such that some predetermined requirements are met.
 Aside from the obvious stability necessity, the requirements typically involve (but are not limited to):
 %
 \begin{enumerate*}[label=(\roman*)]
@@ -743,10 +741,10 @@ Aside from the obvious stability necessity, the requirements typically involve (
     \item estimating or predicting the system state by eliminating inaccuracies and measurement errors.
 \end{enumerate*}
 %
-Ideally, any controller's ultimate goal is to track the desired system trajectory perfectly whilst also rejecting all disturbances and keeping the control effort to a minimum.
+How the different control objectives are valued is dependent on the specific application.
+Ideally, any controller's ultimate goal is to satisfy these objectives perfectly.
 Unfortunately, there exists a trade-off between the controller's \emph{robustness} and \emph{tracking performance}, i.e., how well it handles respectively disturbances and setpoint changes.
 The trade-off expresses itself implicitly as a limit on how efficiently the desired setpoint can be tracked if disturbances and unmodeled dynamics are also to be effectively rejected.
-Conclusively, how the different control objectives are valued is dependent on the particular application.
 
 To judge how well the synthesised controller performs, a \emph{performance analysis} is frequently employed.
 The analysis method uses a \emph{performance metric} to qualitatively measure the performance of the controller, i.e., the performance metric produces a descriptive value for the specific controller.
@@ -825,7 +823,7 @@ Recalling that $\tilde{x}_k$ and $w_k$ are independent, evolving the covariance 
 \end{equation}
 %
 Equations~\eqref{eq:tr-cost} and~\eqref{eq:cov} establish the foundation for the performance analysis on a nominally executing dynamical system, such as the one in~\eqref{eq:clsys}.
-When the control task starts experiencing deadline overruns, the switching dynamics alters the performance analysis accordingly, i.e., swapping $\clmat$ for $\clmat_{\theta_k}$ in Equation~\eqref{eq:cov}.\footnote{In Papers I and II we make additional alterations to the performance analysis to properly facilitate it under the specific system conditions.}
+When the control task starts experiencing deadline overruns, the switching dynamics alters the performance analysis accordingly, i.e., switching $\clmat$ for $\clmat_{\theta_k}$ in Equation~\eqref{eq:cov}.\footnote{In Papers I and II we make additional alterations to the performance analysis to properly facilitate it under the specific system conditions.}
 
 % Mention some tools to analyse performance
 The research community developed multiple different tools to simplify the performance analysis of real-time embedded (or networked) control systems~\cite{Ohlin:2006}.

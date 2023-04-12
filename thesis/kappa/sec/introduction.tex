@@ -25,7 +25,7 @@ These problems are neither easy to detect nor troubleshoot; particularly since t
 
 %%% WHY
 % Costs
-The effects of such errors can be extremely expensive and in the worst case cause companies to lose billions of dollars.
+The effects of such errors can be extremely expensive and cause companies to lose billions of dollars.
 Typically the outcome of system faults is that the normal operation of the device (or machine) is degraded.
 The degradation can accumulate over time and either wear down the device or affect the end product.
 Obviously, there is a lot of money to be gained by extending the devices' lifetime through proper fault analysis.
@@ -33,7 +33,7 @@ Furthermore, if the end product is inferior to the promised product, the consume
 
 % Safety and security
 Arguably more important than the economic consequences are the risks to personal safety, security, and privacy.
-One of the modern era's most famous examples are the Boeing's 737 MAX crashes, killing 346 people in two subsequent crashes.\footnote{\url{https://en.wikipedia.org/wiki/Boeing_737_MAX_groundings}}
+One of the modern era's most devastating examples caused by system failurs are the Boeing's 737 MAX crashes, killing 346 people in two subsequent crashes.\footnote{\url{https://en.wikipedia.org/wiki/Boeing_737_MAX_groundings}}
 The crashes were caused by erroneous sensor readings being misinterpreted by the flight control system, resulting in the planes nosediving into the ground.
 Another relevant (although less lethal) example is the infamous Stuxnet worm.\footnote{\url{https://en.wikipedia.org/wiki/Stuxnet}}
 Stuxnet infiltrated the system controlling the gas centrifuges in multiple Iranian nuclear plants, significantly damaging them whilst also collecting critical information. 
@@ -45,7 +45,7 @@ It is therefore crucial to develop easy-to-use, powerful tools to simplify the a
 %%% STATEMENT & CONSEQUENCES
 % Concluding paragraph summarising what the thesis is tackling and what the consequences of this might be
 The purpose of this thesis is to provide tools and methods for analysing systems experiencing faults.
-In particular, the focus is to analyse software integrated systems where the faults are occurring in the interconnection between software and hardware.
+In particular, the focus is to analyse software integrated systems where the faults occur in the interconnection between software and hardware.
 By treating accessibility, clarity, and generalisability as first-class citizens we aim to lower the threshold for using the powerful tools provided.
 More specifically, we provide tools to analyse real-time control system performance and stability when the real-time tasks governing the control computations are subject to deadline overruns.
 The following subsection introduces the basic context for the real-time control system constituting this thesis' principal theme.
@@ -87,7 +87,7 @@ Next, the individual components seen in the figure are introduced.
 %
 The right part of the figure depict the process we are trying to control (denoted the \emph{plant}).
 This could be anything from flight control of a drone (as in the figure), indoor heating systems, or the load on a server in a data centre.
-In this and following chapters, the drone flight control system will be used as a recurring example to illustrate the different concepts.
+In this and following chapters, the drone's flight control system will be used as a recurring example to illustrate the different concepts.
 The arrows going to and from the plant indicate the flow of data; actuation data goes into the plant and sensor data is collected from the plant.
 Actuation data refers to the commands sent to the components responsible for movement or change in the plant, i.e., the actuators.
 Similarly, the sensor data is all information collected by the sensors, e.g., the drone's acceleration in different directions or its angular velocity.
@@ -123,7 +123,7 @@ Additionally, the inconsistencies between different clocks is a difficult proble
 \subsubsection{Real-Time Operating System}% RTOS, Tasks, and control task
 %
 Commonly, real-time control systems rely on a real-time operating system to schedule and constraint the temporal execution of a set of \emph{tasks}.
-Each task is assigned a \emph{priority} (i.e., a value to describe how important the task is), a dedicated function to execute (e.g., compute a value, transmit data, or log data), and a \emph{deadline} before which the function is supposed to complete its execution.
+Each task is assigned a \emph{priority} (a value to describe how important the task is), a dedicated function to execute (e.g., compute a value, transmit data, or log data), and a \emph{deadline} before which the function is supposed to complete its execution.
 Typically there exists more than one task executing in the RTOS.
 To guarantee that each task is assigned the correct amount of processor time, a \emph{scheduler} is used to orchestrate the tasks' execution.
 Specifically, the scheduler
@@ -185,7 +185,7 @@ The following list include some of the most general timing irregularities analys
 
     \item \emph{Communication losses} -- If data packets transmitted over a network are either lost along their route or too delayed to be useful, they are considered \emph{lost}.
         Another case when the packets are dropped is when the network is shut down or overloaded, either by too much traffic or an attack.
-        The packet loss can occur both on the way to and from the hardware.
+        Packet losses can occur both on the way to and from the hardware.
 \end{itemize}
 %
 Conceptually, it may be natural to view some of the timing irregularities as equivalent from a system-wide perspective.

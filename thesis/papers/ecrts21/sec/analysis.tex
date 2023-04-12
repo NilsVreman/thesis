@@ -119,7 +119,7 @@ However, no subsequent job of the control task is released until the current job
 If the currently active job terminates during period $k$, the next control job is released at the start of the $k+1$-th period.
 We can then write the evolution of the system where the control job experiences $\nummisses$ misses before completing its execution, meaning that there is a subsequent hit that uses old information for the error measurements.
 While the controller executed only once to completion, the plant evolved for $\nummisses+1$ steps.
-The resulting closed-loop state-space form can be seen in~\eqref{eq:SZ}, where $\clmat{}_{SZ}\funof{\nummisses}$ is used to represent the system matrix under the \tSZ{} strategy for $\nummisses$ misses and one completion using old measurements.
+The resulting closed-loop state-space form can be seen in~\eqref{eq:SZ}, where $\clmat{}_{\Skip\Zero}\funof{\nummisses}$ is used to represent the system matrix under the \tSZ{} strategy for $\nummisses$ misses and one completion using old measurements.
 %
 \begin{equation}
 \setlength\arraycolsep{2pt}
