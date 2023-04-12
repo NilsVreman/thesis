@@ -172,9 +172,8 @@ A Markov chain is a mathematical model for a stochastic process that describes a
 
 \begin{definition}[Markov Chain]
     A Markov chain is defined by:
-    \nv{should $\Theta$ be $\VV{}$ from kappa?}
     \begin{enumerate}[label=(\roman*)]
-        \item A set $\Theta$ of $N$ possible states, $\Theta = \{ v_1, v_2, \dots, v_N \}$,
+        \item A set $\VV{}$ of $N$ possible states, $\VV{} = \{ v_1, v_2, \dots, v_N \}$,
         \item A transition probability matrix $\Pi$, where the element $\Pi_{i, j}$ is the probability of transitioning from state $v_i$ to state $v_j$, for all $i,j \in \{ 1,2, \dots ,N \}$,
         \item The Markov property, which states that the probability of transitioning to a future state depends only on the current state and not on any past states.
     \end{enumerate}
@@ -217,7 +216,7 @@ The Markov chain for the \tK{} strategy is encoded in the transition probability
 In $\Pi^{\Kill}$, the rows correspond to the dynamical system matrices: $\clmat^{\Kill}_{\cT\cH\cT}$, $\clmat^{\Kill}_{\cF\cH\cT}$, $\clmat^{\Kill}_{\cT\cH\cF}$, $\clmat^{\Kill}_{\cF\cH\cF}$, $\clmat^{\Kill}_{\cF\cM\cX}$, $\clmat^{\Kill}_{\cT\cM\cX}$.
 The transition matrix is fully connected, as from each state it is possible to reach any other state.
 Also, given the nature of the \tK{} action, every iteration of the control loop is independent.
-Therefore, the probability to reach any state in the Markov chain is the same, regardless of the current state.
+Therefore, the probability to reach any state in the Markov chain is the same, regardless of the current state. \mm{Even though I know and understand what you mean, I think this could be confusing for some readers because they may think that the probability is then the same for every state.}
 
 \subsubsection*{\tS{}:}
 In the \tS{} case, the transition matrix is not fully connected.
@@ -314,9 +313,9 @@ We analyse the mean square stability of the system by constructing the operator 
 The calculation of $\rho\,(\Psi)$ is not demanding for small- and medium-scale systems.
 The time-consuming part of analysing the mean square stability comes from the eigenvalue decomposition.%
 \footnote{%
-Eigenvalue decomposition has a computational complexity of $O(n^{2.376})$ using the Coppersmith and Winograd algorithm.
+The computational complexity of eigenvalue decomposition using the Coppersmith and Winograd algorithm is $O(n^{2.376})$.
 For mean square stability, we compute the eigenvalues of a matrix with dimension $n^2\,m$, where $m$ is the dimension of transition matrix $\Pi$.
 The complexity is thus $O(n^{4.752}m^{2.376}) \approx O(n^{4.752})$ (since $m$ is a constant).
-Based on empirical tests, for $n=8$ dimensional systems the analysis takes at most $1$ second.
+Based on empirical tests, for eight-dimensional systems (i.e., systems in which $n=8$) the analysis takes at most $1$ second.
 }
 We emphasise that the Markov Jump Linear Systems covariance matrix $\Psi$ is sparse, implying that a speedup could be achieved if this sparsity is taken into account, for instance by utilising the Lanczsos algorithm for computing the largest magnitude eigenvalues~\cite{Golub:1996}.
