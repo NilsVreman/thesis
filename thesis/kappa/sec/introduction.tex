@@ -153,7 +153,7 @@ The control tasks are all the tasks responsible for controlling the plant, while
 Taking the drone as an example, the control tasks can be two tasks where one is making sure that the rotational velocity of each propeller is following the desired setpoint whilst the other is controlling the motors' relative speeds to propel the drone forwards.
 Additionally, there are other tasks communicating sensor data (e.g., barometric pressure, MCU temperature, acceleration, etc.) to the central processing unit.
 
-As is elaborated upon in Chapter~\ref{ch:background}, we partition the tasks in these two categories because we are specifically interested in analysing the control tasks' effect on the real-time control system when their temporal execution is unreliable.
+As elaborated upon in Chapter~\ref{ch:background}, we partition the tasks in these two categories because we are specifically interested in analysing the control tasks' effect on the real-time control system when their temporal execution is unreliable.
 In particular, the aim of the thesis is to investigate the control system's behaviour when the control tasks overrun their respective deadlines.
 This is particularly relevant for control systems, because enforcing that the control task's WCRT is shorter than its deadline (i.e., that the task \emph{never} overruns its deadline) would involve postponing the deadline.
 Holding off the deadline results in fewer control updates, hence severely degrading the control system's performance.
