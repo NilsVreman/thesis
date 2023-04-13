@@ -159,7 +159,7 @@ Interrupts can come from both hardware and software, but the RTOS ticks are trig
 Attached to the interrupt is generally an \emph{interrupt service routine} (ISR), i.e., a callback function to execute when the specific interrupt is triggered.
 For instance, in the context of the scheduler's tick interrupt, the ISR may be responsible for switching out the currently active task before switching in a new task and its relevant context.
 The ISR connected to the RTOS clock tick is also one of the major causes for release jitter in RTOS, i.e., the time it takes to put the suspended task into the ready queue before picking a new candidate to execute varies between invocations.
-Since the RTOS suspends the execution of the active task whenever an interrupt is triggered (even if it happens in the middle of a time slice), it is crucial that the ISR is fast to avoid stalling the processor.
+Since the RTOS suspends the execution of the active task whenever an interrupt is triggered (even if it happens in the middle of a time slice), it is crucial that the ISR is fast, to avoid stalling the processor.
 Hence, if the callback function takes too long to execute or if the ISR is triggered too often, it can cause significant time delays in the schedule execution.
 
 Employing a scheduler for single-core processors follow the described paradigm, however, for multi-core systems additional design choices have to be made.
@@ -711,13 +711,13 @@ The following theorem then holds~\cite{Costa:2005}.
     where
     %
     \begin{equation*}%
-        \Psi = \left( \Pi^\T{} \otimes I_{n^2} \right) \cdot \blkdiag{ \left\{ \clmat_i \otimes \clmat_i \, \mid \, i \in 1, 2, \ldots, N \right\} }.
+        \Psi = \left( \Pi^\T{} \otimes I_{n^2} \right) \cdot \blkdiag{ \left\{ \clmat_i^\T{} \otimes \clmat_i \right\}_{i \in \{1, 2, \ldots, N \}} }.
     \end{equation*}
 \end{theorem}
 %
 In practice, Theorem~\ref{thm:mss} simplifies the MSS testing and implies almost sure stability of the expected dynamics.
 Finding the spectral radius of a matrix is intuitively much faster than, for instance, the joint spectral radius (which has already been discussed to be undecidable).
-This is one of the advantages with the stochastic certificate received by the MSS in comparison to the deterministic one received by computing the JSR.
+This is one of the main advantages with the stochastic certificate received by the MSS in comparison to the deterministic one received by computing the JSR.
 
 
 \subsection{Control System Performance}%
@@ -765,7 +765,7 @@ This thesis facilitates a performance analysis of real-time control systems subj
 \end{equation}
 %
 Here, $J_k$ is the closed-loop state's cost increment in the $k$-th period and $Q$ is a positive semidefinite weight matrix penalising large closed-loop state deviations.
-The model is based on well-known theory for linear stochastic systems~\cite{Astrom:1970, Astrom:1997, Cervin:2019}.
+The model is based on well-known theory for linear stochastic systems~\cite{Astrom:1970, Astrom:1997, Nilsson:1998b, Cervin:2019}.
 
 We assume that the desired reference point for the closed-loop state $\tilde{x}_k$ is zero and that the disturbance $w_k$ is an independent, discrete-time, zero mean, Gaussian white noise process with covariance $\E{w_k\,w_k^\T{}} = R_1$.
 The assumptions may seem overly restrictive, but we emphasise that more elaborate and advanced disturbance processes (and reference trajectories) can be realised by augmenting the closed-loop system with additional states describing the exogenous dynamics.\footnote{In both Paper I and II we augment the system state to model respectively brown noise (integrated white noise) and reference trajectories.}
@@ -793,8 +793,6 @@ From~\eqref{eq:cl-def} it then follows that~\eqref{eq:cost} can equivalently be 
     \begin{aligned}
         J_k &= \E{\tilde{x}_k^\T{}\, Q\, \tilde{x}_k} \\
         &= \trace{\E{\tilde{x}_k^\T{}\, Q\, \tilde{x}_k}} \\
-        &= \E{\trace{\tilde{x}_k^\T{}\, Q\, \tilde{x}_k}} \\
-        &= \E{\trace{Q\, \tilde{x}_k\, \tilde{x}_k^\T{}}} \\
         &= \trace{Q\, \E{\tilde{x}_k\,\tilde{x}_k^\T{}}} \\
         &= \trace{Q\, \left( P_k + m_k\,m_k^\T{} \right)} \\
         &= \trace{Q\, P_k} + m_k^\T{}\, Q\, m_k.
@@ -812,12 +810,9 @@ Recalling that $\tilde{x}_k$ and $w_k$ are independent, evolving the covariance 
     \begin{aligned}
         P_{k+1} &= \cov{\tilde{x}_{k+1}} \\
         &= \E{\tilde{x}_{k+1}\,\tilde{x}_{k+1}^\T{}} - \E{\tilde{x}_{k+1}}\,\E{\tilde{x}_{k+1}}^\T{} \\
-        &= \E{\tilde{x}_{k+1}\,\tilde{x}_{k+1}^\T{}} - m_{k+1}\,m_{k+1}^\T{} \\
-        &= \E{\tilde{x}_{k+1}\,\tilde{x}_{k+1}^\T{}} - \clmat\, m_{k}\,m_{k}^\T{}\,\clmat^\T{} \\
         &= \E{ \left( \clmat\,\tilde{x}_k + \clinp_w\, w_k \right)\left( \clmat\,\tilde{x}_k + \clinp_w\, w_k \right)^\T{} } - \clmat\, m_{k}\,m_{k}^\T{}\,\clmat^\T{} \\
         &= \clmat\,\E{ \tilde{x}_k\,\tilde{x}_k^\T{} }\,\clmat^\T{} + \clinp_w\,\E{ w_k\,w_k^\T{} }\,\clinp_w^\T{} - \clmat\, m_{k}\,m_{k}^\T{}\,\clmat^\T{} \\
         &= \clmat\,\left( \cov{\tilde{x}_k} + m_k\,m_k^\T{} \right)\,\clmat^\T{} + \clinp_w\,\E{ w_k\,w_k^\T{} }\,\clinp_w^\T{} - \clmat\, m_k\,m_{k}^\T{}\,\clmat^\T{} \\
-        &= \clmat\,\cov{\tilde{x}_k}\,\clmat^\T{} + \clinp_w\,\E{ w_k\,w_k^\T{} }\,\clinp_w^\T{} \\
         &= \clmat\,P_k\,\clmat^\T{} + \clinp_w\,R_1\,\clinp_w^\T{}.
     \end{aligned}
 \end{equation}
