@@ -765,7 +765,7 @@ This thesis facilitates a performance analysis of real-time control systems subj
 \end{equation}
 %
 Here, $J_k$ is the closed-loop state's cost increment in the $k$-th period and $Q$ is a positive semidefinite weight matrix penalising large closed-loop state deviations.
-The model is based on well-known theory for linear stochastic systems~\cite{Astrom:1970, Astrom:1997, Nilsson:1998b, Cervin:2019}.
+The model is based on well-known theory for linear stochastic systems~\cite{Astrom:1970, Astrom:1997, Nilsson:1998, Cervin:2019}.
 
 We assume that the desired reference point for the closed-loop state $\tilde{x}_k$ is zero and that the disturbance $w_k$ is an independent, discrete-time, zero mean, Gaussian white noise process with covariance $\E{w_k\,w_k^\T{}} = R_1$.
 The assumptions may seem overly restrictive, but we emphasise that more elaborate and advanced disturbance processes (and reference trajectories) can be realised by augmenting the closed-loop system with additional states describing the exogenous dynamics.\footnote{In both Paper I and II we augment the system state to model respectively brown noise (integrated white noise) and reference trajectories.}
