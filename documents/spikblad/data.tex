@@ -1,0 +1,65 @@
+% Dokumentdatablad för doktorsavhandlingar
+% ==============================
+% Uppgifterna fylls i på engelska inom {}.
+% övriga uppgifter är beroende av rapportens art.
+%
+% \name          Ex: FINAL REPORT , MASTER THESIS , INTERNAL REPORT
+% \date          Månad och årtal, ex: October 1985
+% \num           Nummer (av Mika), dvs endast siffrorna.
+% \author        Namn på författare
+% \supervisor    Handledare
+% \title         Rapportens titel (ev med engelsk övers.)
+% \keywords      Eventuella nyckelord
+% \language      Det språk rapporten är skriven på
+% \pages         Totalt antal sidor
+% \begin{abstract}...\end{abstract} Abstract på engelska
+%
+%------------------------------------------------------------------------------
+%
+\documentclass{docdataphd}
+\usepackage[utf8]{inputenc}
+\usepackage{schoolbook} % använd samma som i avhandlingen
+
+\begin{document}
+\name{DOCTORAL DISSERTATION}
+\date{June 2023}
+\num{1141}
+\author{Nils Vreman}
+\supervisor{Martina Maggio}
+\sponsor{}
+\title{Analysis of Embedded Controllers Subject to Computational Overruns}
+\keywords{Real-time systems, Embedded systems, Microcontroller, Fault-tolerance}
+\classification{}
+\supplement{}
+\isbn{978-91-8039-688-2 (print), 978-91-8039-687-5 (web)}  
+\lang{English}
+\pages{1--200}
+\security{}
+\recipient{}
+\begin{abstract}
+    \vspace{-4mm}
+    \normalsize
+% Setting the context
+Microcontrollers have become an integral part of modern everyday embedded systems, such as smart bikes, cars, and drones.
+Typically, microcontrollers operate under real-time constraints, which require the timely execution of programs on the resource-constrained hardware.
+As embedded systems are becoming increasingly more complex, microcontrollers run the risk of violating their timing constraints, i.e., overrunning the program deadlines.
+Breaking these constraints can cause severe damage to both the embedded system and the humans interacting with the device.
+% What is missing from the context
+Therefore, it is crucial to analyse embedded systems properly to ensure that they do not pose any significant danger if the microcontroller overruns a few deadlines.
+
+% What methods have I used to fill this hole
+However, there are very few tools available for assessing the safety and performance of embedded control systems when considering the implementation of the microcontroller.
+This thesis aims to fill this gap in the literature by presenting five papers on the analysis of embedded controllers subject to computational overruns.
+Details about the real-time operating system's implementation are included into the analysis, such as what happens to the controller's internal state representation when the timing constraints are violated.
+The contribution includes theoretical and computational tools for analysing the embedded system's stability, performance, and real-time properties.
+
+% What are the main results of the thesis
+The embedded controller is analysed under three different types of timing violations: blackout events (when no control computation is completed during long periods), weakly-hard constraints (when the number of deadline overruns is constrained over a window), and stochastic overruns (when violations of timing constraints are governed by a probabilistic process).
+These scenarios are combined with different implementation policies to reduce the gap between the analysis and its practical applicability.
+The analyses are further validated with a comprehensive experimental campaign performed on both a set of physical processes and multiple simulations.
+
+% What is the impact of this thesis?
+In conclusion, the findings of this thesis reveal that the effect deadline overruns have on the embedded system heavily depends the implementation details and the system's dynamics.
+Additionally, the stability analysis of embedded controllers subject to deadline overruns is typically conservative, implying that additional insights can be gained by also analysing the system's performance.
+\end{abstract}
+\end{document}
