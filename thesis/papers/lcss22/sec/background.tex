@@ -95,10 +95,10 @@ A few handling strategies for periodic controllers have been proposed in literat
 In~\cite{Maggio:2020}, the authors identify a set of subsequences of hit and missed deadlines, which can be arbitrarily combined to obtain all possible sequences in $\sset{}{\lcssrowmiss{}}$.
 The stability analysis of the resulting arbitrary switching system is then obtained by leveraging the \emph{Joint Spectral Radius} (JSR)~\cite{rota}.
 
-Given $N \in \N_{>}$ and a set of matrices $\Aa = \{\clmat_1, \ldots, \clmat_N \} \subseteq \R^{n\times n}$, under the hypothesis of arbitrary switching over any sequence $s=\seq{a_1,a_2,\dots}$ of indices of matrices in $\Aa$, the JSR of $\Aa$ is defined by:
+Given $m \in \N_{>}$ and a set of matrices $\Aa = \{\clmat_1, \ldots, \clmat_m \} \subseteq \R^{n\times n}$, under the hypothesis of arbitrary switching over any sequence $s=\seq{a_1,a_2,\dots}$ of indices of matrices in $\Aa$, the JSR of $\Aa$ is defined by:
 \begin{equation}%
     \label{jsr}
-    \rho\funof{\Aa} = \lim_{k\rightarrow\infty} \max_{s \in \{1,\ldots,N\}^k} \norm{\clmat_{a_k} \cdots \clmat_{a_2}\clmat_{a_1}}^{\frac{1}{k}}.
+    \rho\funof{\Aa} = \lim_{N\rightarrow\infty} \max_{s \in \{1,\ldots,m\}^N} \norm{\clmat_{a_N} \cdots \clmat_{a_2}\clmat_{a_1}}^{\frac{1}{N}}.
 \end{equation}
 The number $\rho\left(\Aa\right)$ characterizes the maximal asymptotic growth rate of matrix products from $\Aa$ (thus $\rho(\Aa) < 1$ means that the system is asymptotically stable), and is independent of the norm $\norm{\cdot}$ used in \eqref{jsr}.
 Existing practical tools such as the JSR Matlab toolbox~\cite{vankeerberghen2014jsr} include multiple algorithms to compute both upper and lower bounds on $\rho\left(\Aa\right)$.
