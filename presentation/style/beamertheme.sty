@@ -1,0 +1,146 @@
+\NeedsTeXFormat{LaTeX2e}
+
+% Define style directory
+\def\styledir{./style}
+
+% colours as defined on <http://www3.lu.se/LUinternt/grafiskprofil/hjalp/vanligafragor.html>
+\DefineNamedColor{named}{LUblue}{cmyk}{1,0.85,0.05,0.22}
+\DefineNamedColor{named}{LUbronze}{cmyk}{0.09,0.57,1,0.41}
+\DefineNamedColor{named}{LuPastelle}{cmyk}{0,0.15,0.05,0.0}
+\DefineNamedColor{named}{LuPastelle2}{cmyk}{0.29,0.02,0.24,0.03}
+\DefineNamedColor{named}{LuPastelle3}{cmyk}{0.24,0.03,0.07,0.02}
+\DefineNamedColor{named}{gentledark}{gray}{.15}
+\colorlet{darkblue}{LUblue!60!black}
+
+\DeclareOptionBeamer{authorwidth}[.25]{\def\lundauthorwidth{#1}}
+\DeclareOptionBeamer{titlewidth}[.5]{\def\lundtitlewidth{#1}}
+\DeclareOptionBeamer{datewidth}[.25]{\def\lunddatewidth{#1}}
+\ExecuteOptionsBeamer{authorwidth}
+\ExecuteOptionsBeamer{titlewidth}
+\ExecuteOptionsBeamer{datewidth}
+\ProcessOptionsBeamer
+
+\usetheme{Madrid}
+%\usecolortheme{orchid}
+%\usecolortheme{whale}
+
+\setbeamercolor*{palette primary}{fg=LUbronze,bg=LuPastelle3}
+\setbeamercolor*{palette secondary}{fg=LUbronze,bg=LuPastelle3}
+\setbeamercolor*{palette tertiary}{fg=LUbronze,bg=LuPastelle3}
+\setbeamercolor*{palette quaternary}{fg=white,bg=gentledark} % not used?
+
+\setbeamercolor{section in head/foot}{bg=LuPastelle,fg = LUbronze}
+\setbeamercolor{structure}{fg=LUbronze} % itemize, enumerate, etc
+\setbeamercolor{section in toc}{fg=LUbronze} % TOC section
+
+%\setbeamercolor{frametitle right}{bg=black} % to get the title in white on black:
+\setbeamercolor{frametitle}{fg=LUbronze, bg=white}
+
+\setbeamertemplate{sections/subsections in toc}[square]
+\setbeamertemplate{mini frames}[box] % shows small rectangles as mini frames.
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{itemize item}{\color{LUbronze}$\blacktriangleright$}
+\setbeamertemplate{itemize subitem}{\color{LuPastelle3}$\blacktriangleright$}
+
+% more space on the left and right
+\setbeamersize{text margin left=3em}
+\setbeamersize{text margin right=3em}
+
+% footpage inspired by the `infolines` outer theme
+\defbeamertemplate*{footline}{mc theme}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=\lundauthorwidth\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+    \usebeamerfont{author in head/foot}\insertshortauthor
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=\lundtitlewidth\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+    \usebeamerfont{title in head/foot}\insertshorttitle
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=\lunddatewidth\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+    \usebeamerfont{date in head/foot}\insertshortdate{}\hspace*{2em}
+    \insertframenumber{} / \inserttotalframenumber\hspace*{2ex} 
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+
+% the various university logos come from <http://www3.lu.se/LUinternt/grafiskprofil/nedladdning/logotyper/logolu.html>
+
+% Control of corner logo
+\newif\ifcornerlogo
+\newcommand{\logoon}{\cornerlogotrue}
+\newcommand{\logooff}{\cornerlogofalse}
+\newcommand{\nologo}{\setbeamertemplate{logo}{}}
+\logoon
+\logo{\ifcornerlogo{\vspace{-7.5mm}{\includegraphics[height=18mm]{\styledir/logoonly}}\hspace*{-4.7mm}}\fi}
+
+% Control of title logo
+\newif\iftitlelogo
+\titlelogotrue
+\newcommand{\notitlelogo}{\titlelogofalse}
+\newif\iftitlelogosigilonly
+\titlelogosigilonlytrue
+\newcommand{\titlefulllogo}{\titlelogotrue\titlelogosigilonlyfalse}
+\titlegraphic{
+	\iftitlelogo{
+		\iftitlelogosigilonly{
+			\includegraphics[height=25mm,trim=0mm 55mm 0mm 0mm, clip=true]{\styledir/logotexten}\vspace{1mm}
+		}\else{
+			\includegraphics[height=30mm]{\styledir/logotexten}
+		}\fi
+	}\fi
+}
+
+% Command to add extra frames to end without them showing in total count
+\newcommand{\extraframesbegin}{
+   \newcounter{finalframe}
+   \setcounter{finalframe}{\value{framenumber}}
+}
+\newcommand{\extraframesend}{
+   \setcounter{framenumber}{\value{finalframe}}
+}
+
+
+% Set Fonts
+\usepackage{fontspec}
+\newfontfamily{\AGaramond}{AGaramondPro-Semibold}[
+Path            =   \styledir/,
+Extension       =   .otf
+]
+\newfontfamily{\Fruit}{FrutigerLTStd}[
+Path            =   \styledir/frut/,
+Extension       =   .otf,
+UprightFont     =   *-light,
+BoldFont        =   *-Bold,
+ItalicFont      =   *-LightItalic,
+BoldItalicFont  =   *-Italic
+]
+\setbeamerfont{normal text}{family=\Fruit}
+\setbeamerfont{frametitle}{family=\AGaramond}
+\setbeamerfont{title}{family=\AGaramond}
+\usefonttheme[onlymath]{serif}
+
+% Better Title Page
+\usepackage{parskip}
+\defbeamertemplate*{title page}{customized}[1][]
+{
+\centering{
+ 	\usebeamerfont{title}{{\LARGE\color{LUbronze}\inserttitle\par}}
+ 	\vspace{1mm}
+
+ 	\usebeamerfont{author}{{\Large\color{LUblue}\insertauthor\par}}
+ 	
+ 	\iftitlelogo{
+ 		\usebeamerfont{date}{{\large\color{LUblue}\insertdate\par}}
+		\vspace{-1mm} 		
+ 		\begin{center}
+ 			\inserttitlegraphic
+ 		\end{center}
+ 		\vspace{-1mm}
+ 	}\else{
+	 	\usebeamerfont{date}{{\large\color{LUbronze}\insertdate\par}}
+	 	\vspace{3mm}
+ 	}\fi
+  \usebeamerfont{institute}{\color{LUblue}\insertinstitute\par}
+  }
+}

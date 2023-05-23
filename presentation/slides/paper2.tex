@@ -1,0 +1,161 @@
+\section{Paper 2}
+
+\title[Preperatory Seminar]{
+    {\Huge Paper 2} \\
+    \vspace{2mm}
+    {\Large Deadline-Miss-Adaptive Controller Implementation} \\
+    {\Large for Real-Time Control Systems}
+}
+\author[Nils Vreman]{
+    Nils Vreman \\
+    \vspace{3mm}
+    {\large Claudio Mandrioli, Anton Cervin}
+}
+\date[RTAS 2022]{
+    Real-Time and Embedded Technology and Applications Symposium, 2022\\
+    {\large RTAS Artifact Evaluation - Passed}
+}
+\notitlelogo
+\frame[plain,noframenumbering]{\titlepage}
+
+\begin{frame}
+    \frametitle{CPS Structure}
+    \begin{figure}[h]
+        \only<1>{\hspace{-1.5cm}\resizebox{1.05\textwidth}{!}{\input{figs/rtas22a/cps-structure-9}}}%
+        \only<2>{\hspace{-1.5cm}\resizebox{1.05\textwidth}{!}{\input{figs/rtas22a/cps-structure-10}}}%
+        \only<3>{\hspace{-1.5cm}\resizebox{1.05\textwidth}{!}{\input{figs/rtas22a/cps-structure-11}}}%
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Limitation 1 - Complex \& Conservative Design}
+    \vspace{5mm}
+    \begin{figure}
+        \centerline{\input{figs/rtas22a/co-design-flow}}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Limitation 2 - Increased Runtime}
+    \vspace{5mm}
+    \begin{figure}
+        \centerline{\input{figs/rtas22a/increased-runtime}}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Limitation 3 - Static Controllers}
+    \vspace{5mm}
+    \begin{figure}
+        \centerline{%
+            \begin{tikzpicture}
+            \node[align=center,] at (0,1) {Static Controllers:};
+            \node[align=center,] at (0,0) {$\mathcal{C}^s : \begin{cases} u_{k+1}=K(r_k-y_k) \end{cases}$};
+            \node[align=center,] at (6,1) {Dynamic Controllers:};
+            \node[align=center,] at (6,0) {$\mathcal{C}^d :
+                                            \begin{cases}
+                                                z_{k+1} &= A z_k + B (r_k-y_k)\\
+                                                u_{k+1} &= C z_{k} + D (r_k-y_k)
+                                            \end{cases}$ };
+            \end{tikzpicture}}
+    \end{figure}
+
+    \begin{figure}
+        \centerline{\input{figs/rtas22a/dynamic-controllers}}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Problem Statement}
+
+    \textbf{Main Assumptions:}
+    \begin{itemize}
+        \item Deadline miss count $q$ available at run-time
+        \item Kill overrun handling strategy (memory check-pointing)
+    \end{itemize}
+
+    \textbf{Objective:}
+    \begin{itemize}
+        \item Increase robustness to overruns
+        \item Minimal real-time/control design overhead
+        \item Minimal computational overhead
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Implementation-Level Approach}
+    \begin{figure}
+        \centerline{\input{figs/rtas22a/implementation-approach}}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Approach - Ideal Behaviour}
+    \begin{itemize}
+        \item Three consecutive deadline hits
+    \end{itemize}
+
+    \begin{figure}[h]
+        \centerline{\input{figs/rtas22a/ideal-1}}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Approach - Ideal Behaviour}
+    \begin{itemize}
+        \item Three consecutive deadline hits
+    \end{itemize}
+
+    \begin{figure}[h]
+        \centerline{\input{figs/rtas22a/ideal-2}}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Approach - One Overrun}
+    \begin{itemize}
+        \item One overrun at $k=1$ (Kill \& Hold)
+        \item Information of $y_1$ is lost!
+    \end{itemize}
+
+    \begin{figure}[h]
+        \centerline{\input{figs/rtas22a/miss-2}}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Approach - Adaptation Idea}
+    \begin{itemize}
+        \item One overrun at $k=1$ (Kill \& Hold)
+        \item Extend controller's state with old measurement
+    \end{itemize}
+
+    \begin{figure}[h]
+        \centerline{\input{figs/rtas22a/adapt}}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Approach - Resulting Controller}
+    \begin{itemize}
+        \item Controller now adapts to overruns
+            \begin{itemize}
+                \item Independent of overrun model!
+            \end{itemize}
+%        \item Need to store old measurement $y_{k-1}$
+%        \item Matrices - offline vs. online
+    \end{itemize}
+
+    \begin{equation*}
+        \mathcal{C}_a\left(q\right):
+        \,\,
+        \begin{cases}
+            z_{k+q+1} &= A_z(q) z_{k} + A_y(q) y_{k-1} + B(q) y_{k+q} \\
+            u_{k+q+1} &= C_z(q) z_{k} + C_y(q) y_{k-1} + D(q) y_{k+q},
+        \end{cases}
+    \end{equation*}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Experimental Results}
+    \centering
+    \textcolor{blue}{\texttt{https://youtu.be/6y\_C7NIzXto}}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Performance Batch Processes}
+    \begin{figure}[h]
+        \centering
+        \resizebox{0.9\textwidth}{!}{\input{figs/rtas22a/batch-processes}}
+    \end{figure}
+\end{frame}

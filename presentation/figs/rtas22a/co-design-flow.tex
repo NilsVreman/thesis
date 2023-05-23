@@ -1,0 +1,39 @@
+\begin{tikzpicture}
+\tikzstyle{eng-step} = [draw, thick, align=center]
+
+
+%%% REQUIREMENTS %%%
+
+\node[align=center] (c-req)  at (-3, 2) {Control\\Requirements};
+\node[align=center] (rt-req) at ( 3, 2) {Real-Time\\Requirements};
+
+%%% DESIGN %%%
+
+\node[eng-step] (c-des)  at (-3, 0) {Control\\Law\\Design};
+\node[eng-step] (rt-des) at ( 3, 0) {Real-Time\\System\\Design};
+
+%%% IMPLEMENTATION %%%
+
+\node[eng-step] (imp)    at ( 0,-2.7) {Control System\\Implementation};
+\coordinate[] (above-imp)at ( 0,-1.7) ;
+\node[align=center] (out)at ( 0,-4.2) {Software and Hardware\\Product};
+
+%%%%%%%%%%%%%%
+%%% ARROWS %%%
+%%%%%%%%%%%%%%
+
+\draw[-latex,thick] (c-req)  to (c-des);
+\draw[-latex,thick] (rt-req) to (rt-des);
+\draw[-latex,thick] (c-des)  to node[above, align=center] (crt-req) {Real-Time Control\\Requirements} (rt-des);
+
+\draw[-latex,thick] (c-des.south)  |- ([xshift=-5mm]above-imp) -- ([xshift=-5mm]imp.north);
+\draw[-latex,thick] (rt-des.south) |- ([xshift= 5mm]above-imp) -- ([xshift= 5mm]imp.north);
+
+\draw[-latex,thick] (imp) to (out);
+
+%%% CO_DESIGN %%%
+
+\node[eng-step,dashed,lqgcolour,fit=(crt-req)(c-des)(rt-des)] (co-des) {};
+\node[rotate =90, below right, lqgcolour] at (co-des.south east) {Co-Design}; 
+
+\end{tikzpicture}

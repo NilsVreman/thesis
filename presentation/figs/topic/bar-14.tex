@@ -1,0 +1,29 @@
+\resizebox{0.9\textwidth}{!}{%
+\begin{tikzpicture}
+\begin{axis}[
+xbar, xmin=0,
+xlabel={Percentage \%},
+symbolic y coords={%
+    {I do not know},
+    {Never},
+    {$1$ in $1$ million to $1$ in $1$ billion},
+    {$1$ in $10\,000$ to $1$ in $1$ million},
+    {$1$ in $100$ to $1$ in $10\,000$},
+    {$1$ in $10$ to $1$ in $100$},
+    {More often than $1$ in $10$},
+    {Not a concern}},
+ytick=data,
+nodes near coords,
+nodes near coords align={horizontal},
+]
+\addplot coordinates {
+    (35,{I do not know})
+    (15,{Never})
+    (9,{$1$ in $1$ million to $1$ in $1$ billion})
+    (8,{$1$ in $10\,000$ to $1$ in $1$ million})
+    (6,{$1$ in $100$ to $1$ in $10\,000$})
+    (17,{$1$ in $10$ to $1$ in $100$})
+    (3,{More often than $1$ in $10$})
+    (7,{Not a concern})};
+\end{axis}
+\end{tikzpicture}}

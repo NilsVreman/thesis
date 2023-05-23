@@ -1,0 +1,180 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% In this file, only packages are allowed. These packages should be explained to
+% greatest possible extent.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Document encodings
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc} % This can slightly change font appearance
+\usepackage{xcolor} 
+
+% Beamer theme
+\usepackage{style/beamertheme} % Needes XeLaTeX
+
+% Math related
+\usepackage{amsmath, amssymb, amsthm, mathtools}
+\usepackage{xfrac} %for nice inline fractions
+
+% Char. related 
+\usepackage{microtype}
+
+% Bibliography related
+\usepackage{cite}
+
+\usepackage{multirow} % For multirow tables
+\usepackage{colortbl} % For coloured tables
+
+% Colordefinitions
+\definecolor{misscolour}{RGB}{255, 0, 0}
+\definecolor{lqrcolour}{RGB}{0,28,255}
+\definecolor{lqrnomcolour}{RGB}{0,28,255}
+\definecolor{lqgcolour}{RGB}{0,139,0}
+\definecolor{lqgnomcolour}{RGB}{0,139,0}
+\definecolor{adacolour}{RGB}{239,133,16}
+
+\definecolor{baselinecolor}{rgb}{0.9, 0.78, 0.07}
+\definecolor{markcolor}{rgb}{0.6, 0.64, 0.69}
+
+% Tikz packages and related
+\usepackage{tikz} 
+\usepackage{pgfplots, pgfplotstable} 
+\usepackage{fontawesome5} 
+
+% Tikz Libraries
+\usepgfplotslibrary{external}
+    \tikzexternalize[prefix=tikz/]
+    \tikzset{external/system call={xelatex \tikzexternalcheckshellescape
+        -halt-on-error -interaction=batchmode -jobname "\image" "\texsource"}
+    } % to let pdflatex work
+
+\usepgfplotslibrary{groupplots}
+%\usepgfplotslibrary{fillbetween}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{shapes}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{fit}
+
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{patterns}
+\usetikzlibrary{shapes.misc}
+%\pgfplotsset{compat=1.16}
+
+%\usepgfplotslibrary{fillbetween}
+\usetikzlibrary{positioning}
+%\usepackage{makecell} 
+
+%%% RTAS22B
+\tikzset{Dom Node/.style={draw,
+                        thick,
+                        circle,
+                        inner sep=0pt,
+                        minimum size=12mm}%
+}%
+\tikzset{
+    old inner xsep/.estore in=\oldinnerxsep,
+    old inner ysep/.estore in=\oldinnerysep,
+    Init Node/.style 2 args={draw,
+                    thick,
+                    circle,
+                    minimum size=12mm,
+                    old inner xsep=\pgfkeysvalueof{/pgf/inner xsep},
+                    old inner ysep=\pgfkeysvalueof{/pgf/inner ysep},
+                    /pgf/inner xsep=\oldinnerxsep+#1,
+                    /pgf/inner ysep=\oldinnerysep+#1,
+                    alias=sourcenode,
+                    append after command={
+                    let     \p1 = (sourcenode.center),
+                            \p2 = (sourcenode.east),
+                            \n1 = {\x2-\x1-#1-0.5*\pgflinewidth}
+                    in
+                        node [inner sep=0pt, draw, circle, minimum width=2*\n1,at=(\p1),#2] {}
+                    }
+    },
+    Init Node/.default={2pt}{black}%
+}%
+
+%%% Comparison figure related
+\def\xstart{1}
+\def\xend{10} % change according to how many plots you have
+
+% this is the list of styles
+% define as many colours as the number of lines
+% you could also change the marker etc
+\pgfplotscreateplotcyclelist{blue10}{
+    {blue!95!black, mark=*, mark size=2pt,mark options={fill=white}},
+    {blue!85!black, mark=*, mark size=2pt},
+    {blue!75!black, mark=*, mark size=2pt},
+    {blue!65!black, mark=*, mark size=2pt},
+    {blue!55!black, mark=*, mark size=2pt},
+    {blue!45!black, mark=*, mark size=2pt},
+    {blue!35!black, mark=*, mark size=2pt},
+    {blue!25!black, mark=*, mark size=2pt},
+    {blue!15!black, mark=*, mark size=2pt},
+    {blue! 5!black, mark=*, mark size=2pt},
+}
+
+% argument #1: any options
+\makeatletter
+\newenvironment{customlegend}[1][]{%
+    \begingroup
+    % inits/clears the lists (which might be populated from previous
+    % axes):
+    \pgfplots@init@cleared@structures
+    \pgfplotsset{#1}%
+}{%
+    % draws the legend:
+    \pgfplots@createlegend
+    \endgroup
+}%
+
+% makes \addlegendimage available (typically only available within an
+% axis environment):
+\def\addlegendimage{\pgfplots@addlegendimage}
+\makeatother
+
+%%% ECRTS 
+\tikzset{cross/.style={%
+    cross out,
+    draw,
+    minimum size=2*(#1-\pgflinewidth),
+    inner sep=0pt, outer sep=0pt}}
+
+\makeatletter
+\pgfplotsset{
+    every axis plot/.append style =
+    {mark=none, mark options={fill=white}},
+    mark max/.style={
+        scatter/@pre marker code/.code={%
+            \ifx\pgfplotspointmeta\pgfplots@metamax
+                \def\markopts{}%
+                \node [anchor=south, xshift=1mm, yshift=-0.4mm] { \pgfmathprintnumber[precision=1, fixed zerofill]{\pgfplotspointmeta} };
+            \else
+                \def\markopts{mark=none}
+            \fi
+                \expandafter\scope\expandafter[\markopts]
+        },%
+        scatter/@post marker code/.code={ \endscope },
+        scatter
+    }
+}
+% Style to select only points from #1 to #2 (inclusive)
+\pgfplotsset{select coords between index/.style 2 args={
+    x filter/.code={
+        \ifnum\coordindex<#1\def\pgfmathresult{}\fi
+        \ifnum\coordindex>#2\def\pgfmathresult{}\fi
+    }
+}}
+\makeatother
+
+\newcommand{\findmax}[1]{
+    \pgfmathsetmacro\buffer{0.0}
+    \pgfplotstableforeachcolumnelement{#1}\of\extdata\as\cellValue{%
+        \pgfmathsetmacro{\buffer}{max(\buffer,\cellValue)}}
+}
+\newcommand*{\ReadOutElement}[4]{%
+    \pgfplotstablegetelem{#2}{[index]#3}\of{#1}%
+    \let#4\pgfplotsretval
+}

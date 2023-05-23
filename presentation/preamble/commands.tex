@@ -1,0 +1,57 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% In this file, only commands are allowed. These commands should be explained to
+% greatest possible extent.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Blame commands
+\newcommand{\pointout}[1]{\color{red}#1\color{black}} 
+
+% Simplifying commands
+\newcommand{\tool}{\texttt{\textbf{WeaklyHard.jl}}}
+\newcommand{\toolL}{\texttt{\textbf{WHRTgraph}}}
+
+% Maths general
+\newcommand{\funof}[1]{\left( #1 \right)}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\argmin}{argmin}
+\newcommand{\nequiv}{\not\equiv}
+\newcommand{\ourmod}[1]{\ \mathrm{mod}\ #1}
+\newcommand{\tr}[1]{\mathrm{tr}\left(#1\right)} 
+
+% Constraint names
+\newcommand{\tAH}{\texttt{\textbf{AnyHit}}}
+\newcommand{\tAM}{\texttt{\textbf{AnyMiss}}}
+\newcommand{\tRH}{\texttt{\textbf{RowHit}}}
+\newcommand{\tRM}{\texttt{\textbf{RowMiss}}}
+
+% Constraints related
+\newcommand{\anyhit}[1]{\binom{x_{#1}}{k_{#1}}}
+\newcommand{\anymiss}[1]{\overline{\binom{x_{#1}}{k_{#1}}}}
+\newcommand{\rowhit}[1]{\genfrac{<}{>}{0pt}{}{x_{#1}}{k_{#1}}}
+\newcommand{\rowmiss}[1]{\overline{\genfrac{<}{>}{0pt}{}{x_{#1}}{k_{#1}}}}
+\newcommand{\sset}[2]{\mathcal{S}_{#1}\funof{#2}}
+\newcommand{\lweak}{\underline{\lambda}}
+\newcommand{\lhard}{\overline{\lambda}}
+
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\left\lfloor}{\right\rfloor}
+
+% Aliases in general
+\newcommand{\strat}{\mathcal{H}} 
+\newcommand{\LL}[1]{\mathcal{L}_{#1}} 
+\newcommand{\overbar}[1]{\mkern 1.5mu\overline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}
+
+% Automaton related
+\newcommand{\GG}[1]{\mathcal{G}_{#1}}                               % Automaton
+\newcommand{\VV}[1]{V_{#1}}                                         % Nodes
+\newcommand{\EE}[1]{E_{#1}}                                         % Edges
+\newcommand*\BitAnd{\mathbin{\&}}
+\newcommand*\BitOr{\mathbin{|}}
+\newcommand*\ShiftLeft{\ll}
+\newcommand*\ShiftRight{\gg}
+\newcommand*\BitNeg{\ensuremath{\mathord{\sim}}}
+
+% Figure related
+\newcommand{\binsaggregatedhist}[0]{65}

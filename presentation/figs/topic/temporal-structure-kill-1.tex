@@ -1,0 +1,88 @@
+\begin{tikzpicture}[>=Triangle, scale=1.4]
+
+\tikzset{cross/.style={cross out, draw,
+         minimum size=2*(#1-\pgflinewidth),
+         inner sep=0pt, outer sep=0pt}}
+
+\node at (-0.4,2.5) {$y(t)$};
+\node at (-0.4,1.5) {$\mathcal{C}$};
+\node at (-0.4,0.5) {$u(t)$};
+
+\draw[dotted, black!50] (2,0) -- (2,3);
+\draw[dotted, black!50] (4,0) -- (4,3);
+\draw[dotted, black!50] (6,0) -- (6,3);
+
+\draw[<->] (2,3.05) -- node[above] {$h$} (4,3.05);
+
+% <defining relevant points -----------------------------
+\coordinate (y1) at (0,2.20);
+\coordinate (y2) at (2,2.80);
+\coordinate (y3) at (4,2.30);
+\coordinate (y4) at (6,2.60);
+\coordinate (e1start) at (0.23,1);
+\coordinate (e2start) at (2.13,1);
+\coordinate (e3start) at (4.33,1);
+\coordinate (e1end) at (1.87,1);
+\coordinate (e2end) at (3.47,1);
+\coordinate (e3end) at (5.30,1);
+\coordinate (u1) at (0, 0.1);
+\coordinate (u2) at (2, 0.3);
+\coordinate (u3) at (4, 0.2);
+\coordinate (u4) at (6, 0.1);
+% defining relevant points> -----------------------------
+
+%%% Top plot
+% Graph
+\draw[baselinecolor, ultra thick] plot [smooth] coordinates
+  {(y1) (0.25,2.55) (0.5,2.70) (0.75,2.75) (1,2.80)
+        (1.25,2.82) (1.5,2.70) (1.75,2.85) (y2)
+        (2.25,2.56) (2.5,2.60) (2.75,2.45) (3,2.30)
+        (3.25,2.36) (3.5,2.42) (3.75,2.35) (y3)
+        (4.25,2.29) (4.5,2.45) (4.75,2.49) (5,2.50)
+        (5.25,2.52) (5.5,2.50) (5.75,2.55) (y4)};
+
+% Markers
+\filldraw[markcolor] (y1) circle (0.075);
+\filldraw[markcolor] (y2) circle (0.075);
+\filldraw[markcolor] (y3) circle (0.075);
+\filldraw[markcolor] (y4) circle (0.075);
+
+% Node names
+\node[right] at (y1) {$y_{k}$};
+\node[right] at (y2) {$y_{k+1}$};
+\node[above] at (y3) {$y_{k+2}$};
+\node[right] at (y4) {$y_{k+3}$};
+
+%%% Middle plot
+% Execution traces
+\draw[black, fill=baselinecolor!40!red] (e1start) -- ($(e1start)+(0,0.25)$) -- (2,1.25) node[above] {\textcolor{baselinecolor!40!red}{Kill}} -- (2,1);
+\draw[black, fill=baselinecolor] (e2start) -- ($(e2start)+(0,0.25)$) -- ($(e2end)+(0,0.25)$) -- (e2end);
+\draw[black, fill=baselinecolor] (e3start) -- ($(e3start)+(0,0.25)$) -- ($(e3end)+(0,0.25)$) -- (e3end);
+
+%%% Bottom plot
+% Graph
+\draw[baselinecolor, ultra thick] (u1) -- ($(u1)+(2,0)$) -- ($(u2)+(0,-0.2)$) -- ($(u2)+(2,-0.2)$) -- (u3) -- ($(u3)+(2,0)$) -- (u4);
+
+% Node names
+\node[above, xshift=0.3cm] at (u1) {$u_{k}$};
+\node[above, xshift=0.4cm, baselinecolor!40!red] at ($(u2)+(0,-0.2)$) {Hold};
+\node[above, xshift=0.4cm] at (u3) {$u_{k+2}$};
+\node[above, xshift=0.3cm] at (u4) {$u_{k+3}$};
+
+%%% Arrows between plots
+% Top -> Middle
+\draw[->, markcolor] (y1) -- (e1start); % arrow
+\draw[->, markcolor] (y2) -- (e2start);
+\draw[->, markcolor] (y3) -- (e3start);
+
+% Middle -> Bottom
+\draw[->, markcolor] (e2end) -- ($(u3)+(0,0.04)$);
+\draw[->, markcolor] (e3end) -- ($(u3)+(2,0.04)$);
+
+%%% Main axes
+\draw[->] (0,0) -- (6.25,0) node[right] {$t$}; % x axis level 0
+\draw[->] (0,1) -- (6.25,1); % x axis level 1
+\draw[->] (0,2) -- (6.25,2); % x axis level 2
+\draw[->] (0,0) -- (0,3.25); % y axis
+
+\end{tikzpicture}

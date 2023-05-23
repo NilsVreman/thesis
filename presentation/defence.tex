@@ -1,0 +1,49 @@
+\documentclass[aspectratio=169]{beamer}
+
+% Preamble
+\input{preamble/packages.tex}
+\input{preamble/commands.tex}
+
+% automatic table of contents at every section
+\AtBeginSection[]{\frame{\tableofcontents[currentsection]}}
+
+
+%%% Title information
+\title[PhD Defence]{%
+    \Huge PhD Defence Presentation
+}
+\author[Nils Vreman]{%
+    \vspace{1cm}
+    \LARGE Nils Vreman
+}
+\date[June 9]{%
+    \vspace{5mm}
+    June 9, 2023
+}
+
+\begin{document}
+
+\notitlelogo{}
+\frame[plain,noframenumbering]{\titlepage}
+ 
+\logooff{}
+\input{slides/introduction.tex}
+
+\input{slides/topic.tex}
+
+\input{slides/paper1.tex}
+
+\input{slides/paper2.tex}
+
+\input{slides/paper3.tex}
+
+\input{slides/paper4.tex}
+
+\input{slides/paper5.tex}
+
+\extraframesbegin{}
+\input{slides/references.tex}
+\extraframesend{}
+\logoon{}
+
+\end{document}

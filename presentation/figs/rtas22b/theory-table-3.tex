@@ -1,0 +1,38 @@
+\begin{tikzpicture}
+    \draw[dashed, thick, gray] (1,0) grid[xstep=2, ystep=1.25] (10,6);
+
+    \node[anchor=east] at (1.75, 4.375) {\tAH\, $\binom{a}{b}$};
+    \node[anchor=east] at (1.75, 3.125) {\tAM\, $\overline{\binom{a}{b}}$};
+    \node[anchor=east] at (1.75, 1.875) {\tRH\, $\genfrac{<}{>}{0pt}{}{a}{b}$};
+    \node[anchor=east] at (1.75, 0.625) {\tRM\, $\overline{\genfrac{<}{>}{0pt}{}{a}{b}}$};
+
+    \node[anchor=south] at (3, 5.25) {$\binom{c}{d}$};
+    \node[anchor=south] at (5, 5.25) {$\overline{\binom{c}{d}}$};
+    \node[anchor=south] at (7, 5.25) {$\genfrac{<}{>}{0pt}{}{c}{d}$};
+    \node[anchor=south] at (9, 5.25) {$\overline{\genfrac{<}{>}{0pt}{}{c}{d}}$};
+
+    % AnyHit
+    \node at (3, 4.375) {\footnotesize $\preceq$};
+    \node at (5, 4.375) {\footnotesize $\binom{a}{b} \equiv \overline{\binom{b-a}{b}}$};
+    \node at (7, 4.375) {\footnotesize \textcolor{blue}{$\binom{a}{b} \stackrel{!}{\preceq} \genfrac{<}{>}{0pt}{}{c}{d}$}};
+    \node at (9, 4.375) {\footnotesize $\overline{\genfrac{<}{>}{0pt}{}{c}{d}} \equiv \binom{1}{c+1}$};
+
+    % AnyMiss
+    \node at (3, 3.125) {\footnotesize $\overline{\binom{a}{b}} \equiv \binom{b-a}{b}$};
+    \node at (5, 3.125) {\footnotesize $\preceq$};
+    \node at (7, 3.125) {\footnotesize $\cdot$};
+    \node at (9, 3.125) {\footnotesize $\overline{\genfrac{<}{>}{0pt}{}{c}{d}} \equiv \overline{\binom{c}{c+1}}$};
+
+    % RowHit
+    \node at (3, 1.875) {\footnotesize \textcolor{blue}{$\genfrac{<}{>}{0pt}{}{a}{b} \stackrel{!}{\preceq} \binom{c}{d}$}};
+    \node at (5, 1.875) {\footnotesize $\cdot$};
+    \node at (7, 1.875) {\footnotesize $\preceq$};
+    \node at (9, 1.875) {\footnotesize $\cdot$};
+
+    % RowMiss
+    \node at (3, 0.625) {\footnotesize $\overline{\genfrac{<}{>}{0pt}{}{a}{b}} \equiv \binom{1}{a+1}$};
+    \node at (5, 0.625) {\footnotesize $\overline{\genfrac{<}{>}{0pt}{}{a}{b}} \equiv \overline{\binom{a}{a+1}}$};
+    \node at (7, 0.625) {\footnotesize $\cdot$};
+    \node at (9, 0.625) {\footnotesize $\preceq$};
+
+\end{tikzpicture}

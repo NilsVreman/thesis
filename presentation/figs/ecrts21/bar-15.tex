@@ -1,0 +1,27 @@
+\resizebox{0.9\textwidth}{!}{%
+\begin{tikzpicture}
+\begin{axis}[
+xbar, xmin=0,
+xlabel={Percentage \%},
+symbolic y coords={%
+    {I do not know},
+    {No time-critical functionality},
+    {More than $10$},
+    {$5-10$},
+    {$2-4$},
+    {$1$},
+    {None}},
+ytick=data,
+nodes near coords,
+nodes near coords align={horizontal},
+]
+\addplot coordinates {
+    (40,{I do not know})
+    (4,{No time-critical functionality})
+    (7,{More than $10$})
+    (4,{$5-10$})
+    (13,{$2-4$})
+    (10,{$1$})
+    (22,{None})};
+\end{axis}
+\end{tikzpicture}}

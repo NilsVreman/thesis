@@ -1,0 +1,119 @@
+\begin{tabular}{|c|clll|clll|}
+%\scriptsize
+%\setlength{\tabcolsep}{3.7pt}
+%\renewcommand{\arraystretch}{1.06}
+\hline
+% \rowcolor{gray!50}
+% &&\multicolumn{3}{c}{Dense $d=1$}&\multicolumn{3}{c}{Sparse $d=1$} &\multicolumn{2}{c}{JSR\_toolbox}\\
+% \rowcolor{gray!50}
+% \multirow{-2}*{$m$}&\multirow{-2}*{$k$}&$ub$&time&$mb$&$ub$&time&$mb$&$lb$&$ub$\\
+\rowcolor{gray!50}
+&{JSR\cite{vankeerberghen2014jsr}} &{Dense} & \multicolumn{2}{c|}{Sparse}
+&{JSR\cite{vankeerberghen2014jsr}} &{Dense} & \multicolumn{2}{c|}{Sparse}\\
+\rowcolor{gray!50}
+\multirow{-2}{*}{$\overbar{\binom{m}{k}}^{\strat}$} 
+% kill and zero
+&{LB} &{UB} &{UB} & \multicolumn{1}{c|}{$\times$}
+% kill and hold
+&{LB} &{UB} &{UB} & \multicolumn{1}{c|}{$\times$}\\
+\rowcolor{gray!15}
+$x,$ $k$ & \multicolumn{4}{c|}{\textbf{Kill and Zero}} & \multicolumn{4}{c|}{\textbf{Kill and Hold}} \\
+\hline
+1, 2
+& 0.960 &  1.070 & 1.070 & 0.86
+& 0.926 &  1.029 & 1.029 & 0.83\\
+\rowcolor{gray!15}
+1, 3
+& 0.920 & \textbf{0.995} & \textbf{0.995} & 0.83
+& 0.894 & \textbf{0.971} & \textbf{0.971} & 0.77\\
+1, 4
+& 0.890 & \textbf{0.945} & \textbf{0.996} & 1.06
+& 0.894 & \textbf{0.957} & 1.025$\mathbf{^*}$ & 1.25\\
+\rowcolor{gray!15}
+1, 5
+& 0.890 & \textbf{0.922} & \textbf{0.983} & 1.96
+& 0.894 & \textbf{0.948} & 1.008$\mathbf{^*}$ & 2.25\\
+1, 6
+& 0.890 & \textbf{0.920} & \textbf{0.975} & 4.36
+& 0.894 & \textbf{0.942} & \textbf{0.995} & 3.68\\
+\hline
+\rowcolor{gray!15}
+2, 3
+& 0.983 & 1.124 & 1.124 & 0.67
+& 0.956 & 1.085 & 1.085 & 0.80\\
+2, 4
+& 0.960 & 1.079 & 1.079 & 0.74
+& 0.927 & 1.039 & 1.039 & 0.86\\
+\rowcolor{gray!15}
+2, 5
+& 0.939 & 1.039 & 1.142 & 2.09
+& 0.905 & 1.002 & 1.105 & 1.58\\
+2, 6
+& 0.920 & 1.007 & 1.096 & 12.3
+& 0.903 & \textbf{0.974} & 1.080 & 19.2\\
+%\hline
+%3, 4
+%& 0.990 & 1.133 & 1.133 & 0.76
+%& 0.967 & 1.098 & 1.098 & 1.69
+%& 0.967 & 1.072 & 1.082 & 6.59
+%& 0.990 & 1.106 & 1.117 & 5.02\\
+%3, 5
+%& 0.975 & 1.109 & 1.109 & 0.77
+%& 0.946 & 1.071 & 1.071 & 1.74
+%& 0.942 & 1.071 & 1.080 & 34.3
+%& 0.975 & 1.116 & 1.125 & 35.2\\
+%3, 6
+%& 0.960 & 1.082 & 1.227 & 2.61
+%& 0.928 & 1.043 & 1.182 & 3.25
+%& 0.921 &{--} & 1.118 & \multicolumn{1}{c|}{--}
+%& 0.959 &{--} & 1.072 & \multicolumn{1}{c|}{--}\\
+%\hline
+%4, 5
+%& 0.994 & 1.130 & 1.130 & 1.06
+%& 0.976 & 1.099 & 1.099 & 0.82
+%& 0.974 & 1.122 & 1.134 & 5.43
+%& 0.993 & 1.088 & 1.100 & 5.16\\
+%4, 6
+%& 0.983 & 1.120 & 1.120 & 0.68
+%& 0.957 & 1.084 & 1.084 & 0.64
+%& 0.953 &{--} & 1.143 & \multicolumn{1}{c|}{--}
+%& 0.983 &{--} & 1.100 & \multicolumn{1}{c|}{--}\\
+\rowcolor{gray!15}
+\hline
+$x,$ $k$ & \multicolumn{4}{c|}{\textbf{Skip-Next and Zero}} & \multicolumn{4}{c|}{\textbf{Skip-Next and Hold}} \\
+\hline
+1, 2
+& 0.922 &  \textbf{0.924} & \textbf{0.924} & 5.40
+& 0.958 &  \textbf{0.958} & \textbf{0.958} & 4.43\\
+\rowcolor{gray!15}
+1, 3
+& 0.898 & \textbf{0.974} & \textbf{0.974} & 10.5
+& 0.917 & \textbf{0.988} & \textbf{0.988} & 10.4\\
+1, 4
+& 0.898 & \textbf{0.963} & \textbf{0.963} & 18.2
+& 0.890 & \textbf{0.940} & \textbf{0.940} & 15.9\\
+\rowcolor{gray!15}
+1, 5
+& 0.898 & \textbf{0.954} & \textbf{0.954} & 17.6
+& 0.890 & \textbf{0.929} & \textbf{0.929} & 20.8\\
+1, 6
+& 0.898 & \textbf{0.946} & \textbf{0.947} & 20.9
+& 0.890 & \textbf{0.927} & \textbf{0.927} & 25.8\\
+\hline
+\rowcolor{gray!15}
+2, 3
+& 0.953 & 1.034 & 1.039 & 4.45
+& 0.982 & 1.070 & 1.076 & 5.91\\
+2, 4
+& 0.922 & 1.033 & 1.040 & 23.9
+& 0.958 & 1.079 & 1.086 & 24.2\\
+\rowcolor{gray!15}
+2, 5
+& 0.898 & \textbf{0.999} & 1.005 & 77.8
+& 0.937 & 1.038 & 1.043 & 58.1\\
+2, 6
+& 0.907 &{--$\mathbf{^*}$} & 1.007 & \multicolumn{1}{c|}{--}
+& 0.917 &{--} & \textbf{0.991} & \multicolumn{1}{c|}{--}\\
+\hline
+
+\end{tabular}

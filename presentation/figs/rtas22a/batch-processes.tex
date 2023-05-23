@@ -1,0 +1,113 @@
+% Set number of bins for histograms in commands file
+
+\begin{tikzpicture}
+\begin{groupplot}[group style = {group size = 1 by 4,
+                                 vertical sep=0.4cm},
+                  width=\textwidth,
+                  grid=both,
+                  grid style={dashed,black!20},
+                  height=2.8cm,
+                  width=\columnwidth,
+                  xmin=-5, xmax=2.2,
+                  ymin=0, ymax=165,
+                  tick align=inside,
+                 ]
+
+    %%%%%%%%%%%%%%%
+    %%% p = 0.1 %%%
+    %%%%%%%%%%%%%%%
+    \nextgroupplot[xticklabels = {},
+                   legend style = {at = {(0.5,1.1)},
+                                   anchor = south,
+                                   /tikz/every even column/.append style = {column sep=0.2cm}},
+                   legend columns = 3
+                  ]
+        \addplot[ybar, ybar legend,
+                 fill=lqgcolour,
+                ] coordinates {(0,0)};
+        \addlegendentry{Nominal}
+        \addplot[ybar,
+                 hist={bins=\binsaggregatedhist},
+                 fill=lqgcolour,
+                 forget plot,
+                ] 
+                table [y index=0, col sep=comma] 
+                {figs/rtas22a/data/batch-results-10-log.csv};
+        \addplot[ybar, ybar legend,
+                 fill=adacolour,
+                ] coordinates {(0,0)};
+        \addlegendentry{Adaptive}
+        \addplot[ybar, ybar legend,
+                 hist={bins=\binsaggregatedhist},
+                 fill=adacolour,
+                 forget plot,
+                ]
+                table [y index=1, col sep=comma] 
+                {figs/rtas22a/data/batch-results-10-log.csv};
+        % \addlegendentry{$\mathcal{C}^{a}$}
+        \addplot[red, dashed, ultra thick] coordinates {(2,0) (2,200)};
+        \addlegendentry{Instability threshold}
+        \node[draw, fill=white] at (axis cs:1, 115) {$\rho=10\%$};
+    
+    %%%%%%%%%%%%%%%
+    %%% p = 0.3 %%%
+    %%%%%%%%%%%%%%%
+    \nextgroupplot[xticklabels= {},
+                  ]
+        \addplot[ybar, hist={bins=\binsaggregatedhist},
+                 fill=lqgcolour,
+                ] 
+                table [y index=0, col sep=comma] 
+                {figs/rtas22a/data/batch-results-30-log.csv};
+        \addplot[ybar, hist={bins=\binsaggregatedhist},
+                 fill=adacolour,
+                ]
+                table [y index=1, col sep=comma] 
+                {figs/rtas22a/data/batch-results-30-log.csv};
+        \draw[red,ultra thick, dashed] (axis cs:2,0)--(axis cs:2,200);
+        \node[draw, fill=white] at (axis cs:1, 115) {$\rho=30\%$};
+
+    %%%%%%%%%%%%%%%
+    %%% p = 0.5 %%%
+    %%%%%%%%%%%%%%%
+    \nextgroupplot[xticklabels= {},
+                   ylabel = {Number of systems},
+                   ylabel near ticks,
+                   ylabel style = {xshift=1cm},
+                  ]
+        \addplot[ybar, hist = {bins=\binsaggregatedhist},
+                 fill = lqgcolour,
+                ] 
+                table [y index = 0, col sep = comma] 
+                {figs/rtas22a/data/batch-results-50-log.csv};
+        \addplot[ybar, hist={bins=\binsaggregatedhist},
+                 fill=adacolour,
+                ]
+                table [y index=1, col sep=comma] 
+                {figs/rtas22a/data/batch-results-50-log.csv};
+        \draw[red,ultra thick, dashed] (axis cs:2,0)--(axis cs:2,200);
+        \node[draw, fill=white] at (axis cs:1, 115) {$\rho=50\%$};
+
+    %%%%%%%%%%%%%%%
+    %%% p = 0.7 %%%
+    %%%%%%%%%%%%%%%
+    \nextgroupplot[
+                   xlabel = {\large$\sfrac{\Delta J}{J}$},
+                   xlabel near ticks,
+                  xticklabels = {, $10^{-5}$, $10^{-4}$, $10^{-3}$, $10^{-2}$, $10^{-1}$, $10^{0}$, $10^{1}$, $\infty$,},
+                  ]
+        \addplot[ybar, hist = {bins=\binsaggregatedhist},
+                 fill = lqgcolour,
+                ] 
+                table [y index = 0, col sep = comma] 
+                {figs/rtas22a/data/batch-results-70-log.csv};
+        \addplot[ybar, hist={bins=\binsaggregatedhist},
+                 fill=adacolour,
+                ]
+                table [y index=1, col sep=comma] 
+                {figs/rtas22a/data/batch-results-70-log.csv};
+        \draw[red,ultra thick, dashed] (axis cs:2,0)--(axis cs:2,200);
+        \node[draw, fill=white] at (axis cs:1, 115) {$\rho=70\%$};
+
+\end{groupplot}
+\end{tikzpicture}

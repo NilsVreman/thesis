@@ -1,0 +1,33 @@
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}
+\begin{axis}[%
+thick,
+xlabel={Time},
+xtick={1,2,3,5,...,20},
+xlabel near ticks,
+yticklabels={,,},
+ymin=0.9, ymax=1.2,
+xmin=0.5,
+width=12cm, height=4.5cm,
+enlarge x limits=0]
+
+\fill[red!15] (axis cs:0.01,0.901) rectangle (axis cs:3,1.2);
+\fill[green!15] (axis cs:3,0.901) rectangle (axis cs:10,1.2);
+\addplot table [col sep=comma, x=T, y=J] {figs/ecrts21/data/definitions.csv};
+
+\draw[<->, red, thick] (axis cs:0.5,1.1) -- node[above] {} (axis cs:3,1.1);
+\draw[<->, green!70!black, thick] (axis cs:3,1.1) -- node[above, yshift=-2pt] {} (axis cs:10,1.1);
+
+% Crosses
+\draw[thick] (axis cs:1, 1.03) node[cross=4.5pt, red] {};
+\draw[thick] (axis cs:2, 1.03) node[cross=4.5pt, red] {};
+\draw[thick] (axis cs:3, 1.03) node[cross=4.5pt, red] {};
+
+% Checkmark
+\draw[thick] (axis cs:13.03, 1.04) node[minimum size=2*(6pt-\pgflinewidth),
+    inner sep=0pt, outer sep=0pt, green!70!black] {{\LARGE\checkmark}};
+
+\end{axis}
+
+\end{tikzpicture}
+}%

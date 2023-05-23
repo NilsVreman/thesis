@@ -1,0 +1,25 @@
+\begin{tikzpicture}
+
+\node[] (e1) at (0,6) {
+    $k=0 : \begin{cases}
+        z_{1} &= A z_0 + B y_0\\
+        u_{1} &= C z_0 + C y_0
+    \end{cases}$
+};
+
+\node[red] (e2) at (0,4) {
+    $k=1 : \begin{cases}
+        z_{2} &= z_1 \\
+        u_{2} &= u_1 
+    \end{cases}$
+};
+
+\node[] (e3) at (0,2) {
+    $k=2 : \begin{cases}
+        z_{3} &= A z_2 + B y_2 = A (A z_0 + B y_0) + B y_2 \\
+        u_{3} &= C z_2 + C y_2 = C (A z_0 + B y_0) + C y_2 
+    \end{cases}$
+};
+
+\end{tikzpicture}
+

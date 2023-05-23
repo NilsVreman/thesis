@@ -1,0 +1,129 @@
+\section{Paper 1}
+
+\title[Preperatory Seminar]{
+    {\Huge Paper 1} \\
+    \vspace{2mm}
+    {\Large Stability and Performance Analysis of Control} \\
+    {\Large Systems Subject to Bursts of Deadline Misses}
+}
+\author[Nils Vreman]{
+    Nils Vreman \\
+    \vspace{3mm}
+    {\large Anton Cervin, Martina Maggio}
+}
+\date[ECRTS 2021]{
+    Euromicro Conference on Real-Time Systems, 2021\\
+    {\large ECRTS Best Paper Award}
+}
+\notitlelogo
+\frame[plain,noframenumbering]{\titlepage}
+
+\begin{frame}
+    \frametitle{Motivation}
+    What is the largest number of consecutive deadline misses tolerable (\alert<2>{assuming a similar burst does not reoccur for a very long time})?~\cite{Akesson:2020}
+    \begin{figure}[h]
+        \centering
+        \input{figs/ecrts21/bar-15} 
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Burst analysis}
+    \vspace{-1mm}
+    \begin{itemize} \setlength\itemsep{-1mm}
+        \item (\tikz{%
+                \fill[white] (0,0) rectangle (0.3, 0.3);%
+                \draw[blue, ultra thick] (0,0.1) -- (0.3,0.1);%
+                \fill[blue] (0.15, 0.1) circle (0.075);}) Periodic task activations $\leftarrow$ Control deadlines.
+        \item (\textcolor{red}{$\mathbf{\times}$}) Fault $\leftarrow$ Deadline miss.
+        \item (\colorbox{red!15}{\phantom{i}}) Burst interval $\leftarrow$ Consecutive deadline misses.
+        \item (\colorbox{green!15}{\phantom{i}}) Recovery interval $\leftarrow$ Consecutive deadline hits.
+        \item (\textcolor{green!70!black}{\checkmark}) System recovered $\leftarrow$ A similar burst can occur.
+    \end{itemize}
+    \vspace{-2mm}
+    \begin{figure}[h]
+        \centering
+        \only<1>{\resizebox{0.9\textwidth}{!}{\input{figs/ecrts21/burst-recovery-1}}}%
+        \only<2>{\resizebox{0.9\textwidth}{!}{\input{figs/ecrts21/burst-recovery-2}}}%
+        \only<3>{\resizebox{0.9\textwidth}{!}{\input{figs/ecrts21/burst-recovery-3}}}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \frametitle{New Weakly-hard Model}
+    \begin{equation*}
+        \begin{matrix}
+            \left\{\begin{matrix}
+                x \\
+                k
+            \end{matrix}\,\right\} \\
+                                 \\
+            \texttt{\textbf{BurstHit}}
+        \end{matrix}
+    \end{equation*}
+
+    \vspace{1cm}
+
+    \begin{center}
+        \emph{There are at most $x$ consecutive deadline misses,} \\
+        \emph{followed by $k-x$ consecutive deadline hits for every $k$ jobs} 
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Stability Analysis}
+    \begin{definition}[Miss-Constrained Stability Analysis]
+        A system is \emph{miss-constrained stable} iff it is stable under arbitrary switching between all the possible $x$ realisations
+        \[
+            \left\{\begin{matrix} x_{\subset} \\ k \end{matrix}\,\right\},\, x_{\subset} \in \left\{ 1,\ldots,x \right\}
+        \]
+        and the realisation where no deadline miss occur.
+    \end{definition}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Performance Analysis}
+    \begin{definition}[Recovery Interval]
+        The \emph{recovery interval} $n^*$ is defined as the smallest $n$ such that
+        \begin{equation*}
+            \abs{\frac{J_{\infty} - J_k}{J_{\infty}} < \varepsilon}
+        \end{equation*}
+        for all $k \geq n$.
+    \end{definition}
+    \begin{equation*}
+        \begin{aligned}
+            J_{k} &= \tr{ P_k Q } \\
+            J_{\infty} &= \lim_{k \rightarrow \infty} J_k
+        \end{aligned}
+    \end{equation*}
+    The system state's covariance matrix's ($P_k$) evolution vary depending on the strategy.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Performance Analysis}
+    \begin{figure}[h]
+        \centering
+        \input{figs/ecrts21/performance-example}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Experimental Results}
+    \centering
+    \textcolor{blue}{\texttt{youtu.be/watch?v=0P0K\_7lvKVU}}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Experimental Results}
+    \begin{figure}[h]
+        \hspace{-3mm}\centerline{\input{figs/ecrts21/stability-extended}}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Experimental Results}
+    \begin{figure}[h]
+        \centering
+        \resizebox{0.85\textwidth}{!}{\input{figs/ecrts21/sim-vs-real}}
+    \end{figure}
+\end{frame}

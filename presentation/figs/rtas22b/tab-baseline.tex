@@ -1,0 +1,15 @@
+\begin{tikzpicture}
+    \draw[dashed, thick, gray] (0.5,0) grid[xstep=2, ystep=1.25] (6,3.25);
+
+    \node[anchor=east] at (1.75, 1.875) {\tool{}};
+    \node[anchor=east] at (1.75, 0.625) {\toolL{}};
+
+    \node[anchor=south] at (3, 2.65) {\tAH{}};
+    \node[anchor=south] at (5, 2.75) {\tRH{}};
+
+    \node at (3, 1.875) {\footnotesize $3.7\,\mu$s}; % any hit WH
+    \node at (5, 1.875) {\footnotesize $3.2\,\mu$s}; % row hit WH
+
+    \node at (3, 0.625) {\footnotesize $32.4\,$ms}; % any hit L
+    \node at (5, 0.625) {\footnotesize $17.7\,$ms}; % any hit L
+\end{tikzpicture}

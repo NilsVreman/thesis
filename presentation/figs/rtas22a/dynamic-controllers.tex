@@ -1,0 +1,67 @@
+\def \lqr {figs/rtas22a/data/lqr.csv}
+\def \lqg {figs/rtas22a/data/lqg.csv}
+\def \lqrnom {figs/rtas22a/data/lqr-nominal.csv}
+\def \lqgnom {figs/rtas22a/data/lqg-nominal.csv}
+
+\begin{tikzpicture}
+    \footnotesize
+
+    %Main axes
+    \begin{axis}[%
+            height=4.9cm,
+            width=\columnwidth,
+            xmin=0,
+            xmax=5,
+            ymin=-0.4,
+            ymax=1.1,
+            xlabel={Time (s)}, 
+            ylabel={Output},
+            ytick={-0.4,-0.2,0,0.2,0.4,0.6,0.8,1.0,1.2},
+            yticklabels={-0.4,-0.2,0,0.2,0.4,0.6,0.8,1.0,1.2},
+            ylabel near ticks,
+            grid=major,
+            grid style={dashed,black!20},
+            legend cell align=left,
+            scatter/classes={a={mark=x, mark size=3, color=misscolour}},
+            % legend columns = 2
+            ]
+        
+        % LQR-nominal x
+        \addplot[lqrnomcolour, very thick ]
+                table [x=T, y=X, col sep=comma] {\lqrnom};
+        
+        % LQR x
+        \addplot[lqrcolour, dash pattern={on 3pt off 3pt}, very thick ]
+                table [x=T, y=X, col sep=comma] {\lqr};
+        
+        % LQG-nominal x
+        \addplot[lqgnomcolour, very thick ]
+                table [x=T, y=X, col sep=comma] {\lqgnom};
+                
+        % LQG x
+        \addplot[lqgcolour, dash pattern={on 3pt off 3pt}, very thick ]
+                table [x=T, y=X, col sep=comma] {\lqg};
+        
+        % Misses
+        % scatter src=explicit symbolic gets the scatter definition in axis options.
+        \addplot+[scatter, only marks, scatter src=explicit symbolic,thick] coordinates{
+            (0.3, -0.4) [a]
+            (0.7, -0.4) [a]
+            (0.9, -0.4) [a]
+            (1.6, -0.4) [a]
+            (2.1, -0.4) [a]
+            (2.2, -0.4) [a]
+            (2.3, -0.4) [a]
+            (2.9, -0.4) [a]
+            (3.2, -0.4) [a]
+            (3.5, -0.4) [a]
+            (3.8, -0.4) [a]
+            (4.1, -0.4) [a]
+            (5.0, -0.4) [a]
+        };
+
+        % Legend
+        \legend{ Static -- ideal,  Static -- with misses,  Dynamic -- ideal,  Dynamic -- with misses, Overrun};
+    \end{axis}
+
+\end{tikzpicture}
