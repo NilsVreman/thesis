@@ -20,7 +20,7 @@
 
 \begin{frame}
     \frametitle{Motivation}
-    What is the largest number of consecutive deadline misses tolerable (\alert<2>{assuming a similar burst does not reoccur for a very long time})?~\cite{Akesson:2020}
+    What is the largest number of consecutive deadline misses tolerable (\textcolor<2>{lqgcolour}{assuming a similar burst does not reoccur for a very long time})?~\parencite{Akesson:2020}
     \begin{figure}[h]
         \centering
         \input{figs/ecrts21/bar-15} 
@@ -40,12 +40,12 @@
         \item (\colorbox{green!15}{\phantom{i}}) Recovery interval $\leftarrow$ Consecutive deadline hits.
         \item (\textcolor{green!70!black}{\checkmark}) System recovered $\leftarrow$ A similar burst can occur.
     \end{itemize}
-    \vspace{-2mm}
+
     \begin{figure}[h]
         \centering
-        \only<1>{\resizebox{0.9\textwidth}{!}{\input{figs/ecrts21/burst-recovery-1}}}%
-        \only<2>{\resizebox{0.9\textwidth}{!}{\input{figs/ecrts21/burst-recovery-2}}}%
-        \only<3>{\resizebox{0.9\textwidth}{!}{\input{figs/ecrts21/burst-recovery-3}}}
+        \only<1>{\resizebox{0.8\textwidth}{!}{\input{figs/ecrts21/burst-recovery-1}}}%
+        \only<2>{\resizebox{0.8\textwidth}{!}{\input{figs/ecrts21/burst-recovery-2}}}%
+        \only<3>{\resizebox{0.8\textwidth}{!}{\input{figs/ecrts21/burst-recovery-3}}}
     \end{figure}
 \end{frame}
 
@@ -71,33 +71,19 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Stability Analysis}
-    \begin{definition}[Miss-Constrained Stability Analysis]
-        A system is \emph{miss-constrained stable} iff it is stable under arbitrary switching between all the possible $x$ realisations
-        \[
-            \left\{\begin{matrix} x_{\subset} \\ k \end{matrix}\,\right\},\, x_{\subset} \in \left\{ 1,\ldots,x \right\}
-        \]
-        and the realisation where no deadline miss occur.
-    \end{definition}
+    \frametitle{Analysis}
+    \begin{itemize}
+        \item Stability
+            \begin{itemize}
+                \item 
+            \end{itemize}
+        \item Performance
+            \begin{itemize}
+                \item 
+            \end{itemize}
+    \end{itemize}
 \end{frame}
 
-\begin{frame}
-    \frametitle{Performance Analysis}
-    \begin{definition}[Recovery Interval]
-        The \emph{recovery interval} $n^*$ is defined as the smallest $n$ such that
-        \begin{equation*}
-            \abs{\frac{J_{\infty} - J_k}{J_{\infty}} < \varepsilon}
-        \end{equation*}
-        for all $k \geq n$.
-    \end{definition}
-    \begin{equation*}
-        \begin{aligned}
-            J_{k} &= \tr{ P_k Q } \\
-            J_{\infty} &= \lim_{k \rightarrow \infty} J_k
-        \end{aligned}
-    \end{equation*}
-    The system state's covariance matrix's ($P_k$) evolution vary depending on the strategy.
-\end{frame}
 
 \begin{frame}
     \frametitle{Performance Analysis}
@@ -105,20 +91,30 @@
         \centering
         \input{figs/ecrts21/performance-example}
     \end{figure}
+
+    \centering
+    \begin{tabular}{l l}
+        $\mathcal{H}:$ & Strategy (e.g., Kill \& Hold)\\
+        $J_{k,\mathcal{H}}/J_\infty$: & Normalised cost \\
+    \end{tabular}
 \end{frame}
+
+
+%\begin{frame}
+%    \frametitle{Experimental Results}
+%    \begin{figure}[h]
+%        \hspace{-3mm}\centerline{\input{figs/ecrts21/stability-extended}}
+%    \end{figure}
+%\end{frame}
+
 
 \begin{frame}
     \frametitle{Experimental Results}
     \centering
-    \textcolor{blue}{\texttt{youtu.be/watch?v=0P0K\_7lvKVU}}
+    \LARGE
+    \textcolor{blue}{\url{youtu.be/watch?v=0P0K\_7lvKVU}}
 \end{frame}
 
-\begin{frame}
-    \frametitle{Experimental Results}
-    \begin{figure}[h]
-        \hspace{-3mm}\centerline{\input{figs/ecrts21/stability-extended}}
-    \end{figure}
-\end{frame}
 
 \begin{frame}
     \frametitle{Experimental Results}

@@ -4,7 +4,7 @@
 \begin{axis}[%clip=false,
 thick, 
 xlabel={Time},
-xtick={1,2,3,5,...,20},
+xtick={1,2,3,5,...,17},
 ylabel={Normalised Cost},
 ylabel near ticks,
 xlabel near ticks,
@@ -17,23 +17,20 @@ enlarge x limits=0]
 \fill[green!15] (axis cs:3,0) rectangle (axis cs:13,6.25);
 \fill[blue!30] (axis cs:0,0.9) rectangle (axis cs:20,1.1);
 
-%\draw[dashed, black!20, step=1.0] (axis cs:0,0) grid (axis cs:20,6.25);
-
-\node[rectangle, draw, fill=white, align=center] at (axis cs:15,4.5) {$\mathcal{H}
-    = KZ$ {\footnotesize (Kill \& Zero)}\\%
+\node[rectangle, draw, fill=white, align=center] at (axis cs:14.5,4.5) {%
     \tikz{%
         \fill[white] (0,0) rectangle (5,50);%
         \draw[blue, ultra thick] (0,25) -- (5,25);%
         \fill[blue] (2.5,25) ellipse (1 and 12.5);}%
-        $\,\,J_{k,\mathcal{H}}/J_\infty=J_{k,KZ}/J_\infty$};
-\draw[black] (axis cs:0,0) rectangle (axis cs:20,6.25);
+        $\,\,J_{k,\mathcal{H}}/J_\infty$};
+\draw[black] (axis cs:0,0) rectangle (axis cs:17,6.25);
 
 \addplot table [col sep=comma, x=T, y=J] {figs/ecrts21/data/example-data.csv};
-\draw[dashed, black] (axis cs:0,5.4692) -- (axis cs:5,5.4692) node[right, xshift=1mm, blue] {$J_{M,\mathcal{H}} = J_{M,KZ}$};
+\draw[dashed, black] (axis cs:0,5.4692) -- (axis cs:5,5.4692) node[right, xshift=1mm, blue] {$J_{M,\mathcal{H}}$};
 
 \draw[<->, blue, thick] (axis cs:5,0) -- (axis cs:5,5.46921);
 \draw[<->, red, thick] (axis cs:0.5,3) -- node[above] {$m$} (axis cs:3,3);
-\draw[<->, green!70!black, thick] (axis cs:3,3) -- node[above] {$n^*_{\mathcal{H}} = n^*_{KZ}$} (axis cs:13,3);
+\draw[<->, green!70!black, thick] (axis cs:3,3) -- node[above] {$n^*_{\mathcal{H}}$} (axis cs:13,3);
 
 \end{axis}
 
