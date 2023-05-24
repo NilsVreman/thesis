@@ -1,43 +1,186 @@
-%\begin{frame}
-%    \frametitle{Outline}
-%    \begin{itemize}
-%        \item Published papers
-%        \item Thesis topic
-%        \item Thesis structure
-%            \begin{itemize}
-%                \item \textbf{Paper 1:} Stability and Performance Analysis of Control Systems subject to Bursts of Deadline Misses
-%                \item \textbf{Paper 2:} Deadline-Miss-Adaptive Controller Implementation for Real-Time Control Systems
-%                \item \textbf{Paper 3:} \texttt{WeaklyHard.jl:} Scalable analysis of Weakly-Hard Constraints
-%                \item \textbf{Paper 4:} Stability of Linear Systems under Extended Weakly-Hard Constraints
-%            \end{itemize}
-%        \item Plan for remaining time
-%    \end{itemize}
-%\end{frame}
+\section{Introduction}%
 
-\section{Published Papers}
+
+\subsection{Overview}%
+
 
 \begin{frame}
-    \frametitle{List of Papers by Topic}
-    \textbf{Real-Time Control Systems Security} 
-    \begin{itemize}
-        \item \textcolor<2>{black!25!white}{Minimizing Side-Channel Attack Vulnerability via Schedule Randomization (CDC,~2019)}
-        \item \textcolor<2>{black!25!white}{Multilayer Distributed Control over 5G Networks: Challenges and Security Threats (Fog-IoT,~2019)}
-        \item \textcolor<2>{black!25!white}{Randomization as Mitigation of Directed Timing Inference Based Attacks on Time-Triggered Real-Time systems with Task Replication (LITES,~2021)}
-        \item \textcolor<2>{black!25!white}{Trusted Execution of Periodic Tasks for Cyber-Physical Systems (\alert<1>{to be submitted to}: TII,~2022)}
-    \end{itemize}
-    \alert<2>{Real-Time Control Systems Security will \underline{not} be included in the thesis.}
+    \frametitle{ToDo}
+    \centering
+    \Huge
+    Here we should have a few PPTisch slides on what an embedded device is, and how they change the world
+\end{frame}
+
+
+\subsection{Thesis Topic}%
+
+
+\begin{frame}
+    \frametitle{Embedded Real-Time Control System}
+    \begin{figure}[h]
+        \centering
+        \only<1>{\input{figs/topic/cps-structure-1}}%
+        \only<2>{\input{figs/topic/cps-structure-2}}%
+        \only<3>{\input{figs/topic/cps-structure-3}}%
+        \only<4>{\input{figs/topic/cps-structure-4}}%
+        \only<5>{\input{figs/topic/cps-structure-5}}%
+        \only<6>{\input{figs/topic/os-structure-1}}%
+        \only<7>{\includegraphics[width=0.8\textwidth]{figs/topic/schedule.png}}%
+        \only<8>{\input{figs/topic/cps-structure-6}}%
+        \only<9>{\input{figs/topic/cps-structure-7}}%
+        \only<10>{\input{figs/topic/cps-structure-8}}
+    \end{figure}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Computational Flow}
+    \begin{figure}[h]
+        \centering
+        \only<1>{\input{figs/topic/temporal-structure-normal-1}}%
+        \only<2>{\input{figs/topic/temporal-structure-normal-2}}
+    \end{figure}
 \end{frame}
 
 \begin{frame}
-    \frametitle{List of Paper by Topic}
-    \textbf{Real-Time Control Systems subject to Computational Overruns}
+    \frametitle{Computational Flow}
+    \begin{figure}[h]
+        \centering
+        \only<1>{\input{figs/topic/temporal-structure-kill-1}}%
+        \only<2>{\input{figs/topic/temporal-structure-kill-2}}
+        \caption{See~\parencite{Cervin:2005} for Computational Overrun strategies and~\parencite{Schenato:2009} for Actuation Mode policies.}
+    \end{figure}
+\end{frame}
 
+\begin{frame}
+    \frametitle{Computational Flow}
+    \begin{figure}[h]
+        \centering
+        \only<1>{\input{figs/topic/temporal-structure-skip-1}}%
+        \only<2>{\input{figs/topic/temporal-structure-skip-2}}
+        \caption{See~\parencite{Cervin:2005} for Computational Overrun strategies and~\parencite{Schenato:2009} for Actuation Mode policies.}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Computational Overrun Models}
+    \textbf{Mathematical models of deadline overruns:}
+    \setbeamercovered{transparent}
     \begin{itemize}
-        \item \textcolor<2>{black!25!white}{Evaluation of Burst Failure Robustness of Control Systems in the Fog (Fog-IoT,~2020)}
-        \item Stability and Performance Analysis of Control Systems subject to Bursts of Deadline Misses (ECRTS,~2021 -- \emph{ECRTS Best Paper Award 2021})
-        \item \texttt{WeaklyHard.jl:} Scalable analysis of Weakly-Hard Constraints (RTAS,~2022)
-        \item Stability of Linear Systems under Extended Weakly-Hard Constraints (CDC+LCSS,~2022)
-        \item Deadline-Miss-Adaptive Controller Implementation for Real-Time Control Systems (RTAS,~2022)
-        \item On Clairvoyant LQG Controllers Subject to Computational Overruns (\pointout{to be submitted to}: IFAC,~2023)
+        \item \textcolor<2>{lqgcolour!50!white}{Soft -- \emph{Probabilistic}~\parencite{Buttazzo:2005, Manolache:2004, vonderBrueggen:2021}}
+        \item \textcolor<2>{lqgcolour}{Firm -- \emph{Constrained}~\parencite{Koren:1995, Bernat:2001}}
+        \item<1> Hard -- \emph{Infallible}~\parencite{Liu:1973}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Computational Overrun Models - The Weakly-Hard Model(s)}
+    \begin{minipage}[c]{0.24\textwidth}
+        \centering
+        \begin{equation*}
+            \begin{matrix}
+                {\Large \anyhit{}}   \\
+                            \\
+                \tAH{}
+            \end{matrix}
+        \end{equation*}
+    \end{minipage}\hfill
+    \begin{minipage}[c]{0.24\textwidth}
+        \centering
+        \begin{equation*}
+            \begin{matrix}
+                {\Large \anymiss{}}   \\
+                            \\
+                \tAM{}
+            \end{matrix}
+        \end{equation*}
+    \end{minipage}\hfill
+    \begin{minipage}[c]{0.24\textwidth}
+        \centering
+        \begin{equation*}
+            \begin{matrix}
+                {\Large \rowhit{}}   \\
+                            \\
+                \tRH{}
+            \end{matrix}
+        \end{equation*}
+    \end{minipage}\hfill
+    \begin{minipage}[c]{0.24\textwidth}
+        \centering
+        \begin{equation*}
+            \begin{matrix}
+                {\Large \rowmiss{}}   \\
+                            \\
+                \tRM{}
+            \end{matrix}
+        \end{equation*}
+    \end{minipage}
+
+    \vspace{1cm}
+
+    {\only<1>{\begin{equation*}
+        \ldots\, 0\, 1\, 1\, 1\, 0\, 1\, 0\, 1\, 1\, 1\, 0\, 0\, 1\, 1\, 1\, 0\, 1\, 0\, 1\, 1\, 0\, 0\, 1\, 1\, 0\, 1\, 1\, 0\, 1\, 1\, 1\, 1\, 1\, 0\, \ldots
+    \end{equation*}}}
+    %
+    \only<2>{\begin{equation*}
+        \ldots\, 0\, \textcolor{lqgcolour}{1\, 1\, 1\, }0\, \textcolor{lqgcolour}{1\, }0\, \textcolor{lqgcolour}{1\, 1\, 1\, }0\, 0\, \textcolor{lqgcolour}{1\, 1\, 1\, }0\, \textcolor{lqgcolour}{1\, }0\, \textcolor{lqgcolour}{1\, 1\, }0\, 0\, \textcolor{lqgcolour}{1\, 1\, }0\, \textcolor{lqgcolour}{1\, 1\, }0\, \textcolor{lqgcolour}{1\, 1\, 1\, 1\, 1\, }0\, \ldots
+    \end{equation*}
+    \centering
+    \vspace{1em}
+    \textcolor{lqgcolour}{$1$} = Meeting the deadline}%
+    %
+    \only<3>{\begin{equation*}
+        \ldots\, \textcolor{red!80!black}{0\, }1\, 1\, 1\, \textcolor{red!80!black}{0\, }1\, \textcolor{red!80!black}{0\, }1\, 1\, 1\, \textcolor{red!80!black}{0\, 0\, }1\, 1\, 1\, \textcolor{red!80!black}{0\, }1\, \textcolor{red!80!black}{0\, }1\, 1\, \textcolor{red!80!black}{0\, 0\, }1\, 1\, \textcolor{red!80!black}{0\, }1\, 1\, \textcolor{red!80!black}{0\, }1\, 1\, 1\, 1\, 1\, \textcolor{red!80!black}{0\,} \ldots
+    \end{equation*}
+    \vspace{1em}
+    \centering
+    \textcolor{red!80!black}{$0$} = Overrunning the deadline}%
+    %
+    \only<4>{\begin{equation*}
+        \ldots\, 0\, 1\, 1\, 1\, 0\, 1\, 0\, 1\, 1\, 1\, 0\, \underbracket{0\, 1\, 1\, 1\, 0\, 1\, 0\, 1\, 1}\, 0\, 0\, 1\, 1\, 0\, 1\, 1\, 0\, 1\, 1\, 1\, 1\, 1\, 0\, \ldots
+    \end{equation*}}%
+    \only<5>{\begin{equation*}
+        \ldots\, 0\, 1\, 1\, 1\, 0\, 1\, 0\, 1\, 1\, 1\, 0\, 0\, \underbracket{1\, 1\, 1\, 0\, 1\, 0\, 1\, 1\, 0}\, 0\, 1\, 1\, 0\, 1\, 1\, 0\, 1\, 1\, 1\, 1\, 1\, 0\, \ldots
+    \end{equation*}}%
+    \only<6>{\begin{equation*}
+        \ldots\, 0\, 1\, 1\, 1\, 0\, 1\, 0\, 1\, 1\, 1\, 0\, 0\, 1\, \underbracket{1\, 1\, 0\, 1\, 0\, 1\, 1\, 0\, 0}\, 1\, 1\, 0\, 1\, 1\, 0\, 1\, 1\, 1\, 1\, 1\, 0\, \ldots
+    \end{equation*}}%
+    \only<7>{\begin{equation*}
+        \ldots\, 0\, 1\, 1\, 1\, 0\, 1\, 0\, 1\, 1\, 1\, 0\, 0\, 1\, 1\, \underbracket{1\, 0\, 1\, 0\, 1\, 1\, 0\, 0\, 1}\, 1\, 0\, 1\, 1\, 0\, 1\, 1\, 1\, 1\, 1\, 0\, \ldots
+    \end{equation*}}%
+\end{frame}
+
+\begin{frame}
+    \frametitle{How do deadline misses occur?}
+    \begin{itemize}\setlength\itemsep{1em}
+        \item Preemption~\parencite{Stankovic:1995, Bernat:2001}
+        \item Cache Misses~\parencite{Milligan:1996, Wang:2012, Altmeyer:2014, Davis:2013}
+        \item CPU overloads~\parencite{Baruah:1997, Xu:2015, Ernst:2014}
+        \item Security attacks~\parencite{hashemi2018comparison, sabaliauskaite2017comparison, Knorn:2019}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Why should we care?}
+    For the most time-critical functions, roughly how frequently can deadlines be missed without causing system failure?~\parencite{Akesson:2020}
+    \begin{figure}[h]
+        \centering
+        \input{figs/topic/bar-14}
+    \end{figure}
+\end{frame}
+
+
+% A frame listing the thesis contribution, i.e., the 5 paper titles following this slide
+\begin{frame}
+    \frametitle{Thesis Contributions}
+    \begin{itemize}
+        \item Five papers in thesis
+            \begin{itemize}
+                \item Stability and Performance Analysis of Control Systems Subject to Bursts of Deadline Misses
+                \item Deadline-Miss-Adaptive Controller Implementation for Real-Time Control Systems
+                \item \textbf{\tt WeaklyHard.jl}: Scalable Analysis of Weakly-Hard Constraints
+                \item Stability of Linear Systems under Extended Weakly-Hard Constraints
+                \item Stochastic Analysis of Control Systems Subject to Communication and Computation Faults
+            \end{itemize}
     \end{itemize}
 \end{frame}

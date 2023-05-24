@@ -1,8 +1,8 @@
 \documentclass[aspectratio=169]{beamer}
 
 % Preamble
-\input{preamble/packages.tex}
-\input{preamble/commands.tex}
+\input{preamble/packages}
+\input{preamble/commands}
 
 % automatic table of contents at every section
 \AtBeginSection[]{\frame{\tableofcontents[currentsection]}}
@@ -23,26 +23,27 @@
 
 \begin{document}
 
-\notitlelogo{}
+%\notitlelogo{}
 \frame[plain,noframenumbering]{\titlepage}
  
 \logooff{}
-\input{slides/introduction.tex}
 
-\input{slides/topic.tex}
+\input{slides/introduction}
 
-\input{slides/paper1.tex}
+\input{slides/topic}
 
-\input{slides/paper2.tex}
+\input{slides/paper1}
 
-\input{slides/paper3.tex}
+\input{slides/paper2}
 
-\input{slides/paper4.tex}
+\input{slides/paper3}
 
-\input{slides/paper5.tex}
+\input{slides/paper4}
+
+\input{slides/paper5}
 
 \extraframesbegin{}
-\input{slides/references.tex}
+\input{slides/references}
 \extraframesend{}
 \logoon{}
 

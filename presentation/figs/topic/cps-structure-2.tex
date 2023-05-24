@@ -1,40 +1,83 @@
 \def \delta {0.15}
+\def \circlesizecm {0.5cm}
+\def \circleshiftcm {0.125cm}
+\def \armlength {0.625}
+\def \armwidthcm {0.1cm}
+\def \bodywidthcm {0.5cm}
 
 \begin{tikzpicture}
-\tikzstyle{task} = [draw, fill=white,align=center]
-
-%%%%%%%%%%%
-%%% CPS %%%
-%%%%%%%%%%%
+\tikzstyle{task} = [draw,thick,fill=white,align=center]
+\tikzstyle{turbine} = [circle,ultra thick,draw,fill=white,minimum size=\circlesizecm,inner sep=0pt,outer sep=0pt]
 
 %%% TASKS %%%
 
-\node[task,] (t1) at (-2+0*\delta,1.6-0*\delta) {Task $\#1$ \\\faFileCode[regular]};
-\node[task,] (t2) at (-2+1*\delta,1.6-1*\delta) {Task $\#2$ \\\faFileCode[regular]};
-\node[task,] (t3) at (-2+2*\delta,1.6-2*\delta) {Task $\#3$ \\\faFileCode[regular]};
+\node[task,opacity=0.3] (t1) at (-1.5+0*\delta,1.6-0*\delta) {\textcolor{white}{Task $\#3$} \\\textcolor{white}{\faFileCode[regular]}};
+\node[task,opacity=0.6] (t2) at (-1.5+1*\delta,1.6-1*\delta) {\textcolor{white}{Task $\#2$} \\\textcolor{white}{\faFileCode[regular]}};
+\node[task,opacity=1.0] (t3) at (-1.5+2*\delta,1.6-2*\delta) {Task $\#1$ \\\faFileCode[regular]};
 
-\node[task,] (ct1) at (1+0*\delta,1.6-0*\delta) {Control-Task $\#1$ \\\faFileCode[regular]};
-\node[task,] (ct2) at (1+1*\delta,1.6-1*\delta) {Control-Task $\#2$ \\\faFileCode[regular]};
-\node[task,] (ct3) at (1+2*\delta,1.6-2*\delta) {Control-Task $\#3$ \\\faFileCode[regular]};
+\node[task,opacity=0.3] (ct1) at (1.5+0*\delta,1.6-0*\delta) {\textcolor{white}{Control Task $\#3$} \\\textcolor{white}{\faFileCode[regular]}};
+\node[task,opacity=0.6] (ct2) at (1.5+1*\delta,1.6-1*\delta) {\textcolor{white}{Control Task $\#2$} \\\textcolor{white}{\faFileCode[regular]}};
+\node[task,opacity=1.0] (ct3) at (1.5+2*\delta,1.6-2*\delta) {Control Task $\#1$ \\\faFileCode[regular]};
 
 %%% CYBER %%%
 
-\node[align=center] (rtos) at (-0.2,0.15)  {Real-Time Operating System};
-\node[draw, align=center, rotate=90, text width=3.0cm] (hw)   at (3.35,0.775) {HW interfaces};
-\node[fit=(rtos)(t1)(ct1)(ct3),draw,yshift=1.5mm] (sw) {};
-\node[draw, above left] (clock) at (sw.south east)  {\faClock[regular]};
-\node[thick, fit=(sw)(hw),draw] (board) {};
-\node[above left, xshift=1.8cm] (borad-label) at (board.south west) {Board};
-\node[draw, above right] (clockboard) at (board.south west)  {\faClock[regular]};
+\node[thick, align=center] (rtos) at (-0.1,0.25) {Real-Time Operating System};
+\node[thick, draw, align=center, rotate=90, text width=2.75cm] (hwi) at (4.1,0.87) {HW Interfaces};
+\node[thick, fit=(rtos)(t1)(ct1)(ct3),draw,yshift=1.5mm,xshift=0.75mm] (sw) {};
+\node[thick, draw, above left] (clock) at (sw.south east) {\faClock[regular]};
+\node[thick, fit=(sw)(hwi), inner sep=7pt, draw] (hw) {};
+\node[thick, above left, xshift=2.40cm, yshift=0.5mm] (hw-label) at (hw.south west) {Hardware};
+\node[thick, draw, above right] (hwclock) at (hw.south west)  {\faClock[regular]};
 
 %%% PHYSICAL %%%
 
-{\color{lqgcolour}\node[thick, draw ,align=center] (phys) at (6,0.775) {\includegraphics[scale=0.4]{figs/topic/crazyflie.jpg}};}
-{\color{lqgcolour}\node[draw, above left] (time) at (phys.south east)  {\faClock[regular]};}
+\node[task, minimum width=2.125cm, minimum height=2.125cm, draw=lqgcolour] (phys) at (7.0,0.875) {};
+
+% body
+\node[
+    draw,
+    rounded corners=3pt,
+    fill=black,
+    minimum width=\bodywidthcm,
+    minimum height=\bodywidthcm,
+    name path=B] (body) at (phys) {};
+
+% upper left turbine
+\node[turbine, anchor=south east] (dronenw) at ([xshift=-\circleshiftcm, yshift=\circleshiftcm]body.north west) {};
+\draw[name path=NW] ([yshift=-\armwidthcm]body.north west)..controls($(phys) + (-\armlength, \armlength)$)..([xshift=\armwidthcm]body.north west);
+\tikzfillbetween [of=NW and B] {};
+\draw[fill=black, rotate=75] (dronenw) ellipse (0.175cm and 0.025cm);
+\draw[fill=black, rotate=165] (dronenw) ellipse (0.175cm and 0.025cm);
+        
+% upper right turbine
+\node[turbine, anchor=south west] (dronene) at ([xshift=\circleshiftcm, yshift=\circleshiftcm]body.north east) {};
+\draw[name path=NE] ([xshift=-\armwidthcm]body.north east)..controls($(phys) + (\armlength, \armlength)$)..([yshift=-\armwidthcm]body.north east);
+\tikzfillbetween [of=NE and B] {};
+\draw[fill=black, rotate=75] (dronene) ellipse (0.175cm and 0.025cm);
+\draw[fill=black, rotate=165] (dronene) ellipse (0.175cm and 0.025cm);
+
+% lower right turbine
+\node[turbine, anchor=north west] (dronese) at ([xshift=\circleshiftcm, yshift=-\circleshiftcm]body.south east) {};
+\draw[name path=SE] ([yshift=\armwidthcm]body.south east)..controls($(phys) + (\armlength, -\armlength)$)..([xshift=-\armwidthcm]body.south east);
+\tikzfillbetween [of=SE and B] {};
+\draw[fill=black, rotate=75] (dronese) ellipse (0.175cm and 0.025cm);
+\draw[fill=black, rotate=165] (dronese) ellipse (0.175cm and 0.025cm);
+
+% lower left turbine
+\node[turbine, anchor=north east] (dronesw) at ([xshift=-\circleshiftcm, yshift=-\circleshiftcm]body.south west) {};
+\draw[name path=SW] ([xshift=\armwidthcm]body.south west)..controls($(phys) + (-\armlength, -\armlength)$)..([yshift=\armwidthcm]body.south west);
+\tikzfillbetween [of=SW and B] {};
+\draw[fill=black, rotate=75] (dronesw) ellipse (0.175cm and 0.025cm);
+\draw[fill=black, rotate=165] (dronesw) ellipse (0.175cm and 0.025cm);
+
+% Clock
+{\color{lqgcolour}\node[task, above left] (time) at (phys.south east) {\faClock[regular]};}
+
+{\color{lqgcolour}\node[] (phystmp) at ([yshift=-0.25cm]phys.south) {Plant};}
 
 %%% ARROWS %%%
 
-\draw[-latex] ([yshift=0.65cm]hw.south) to node[yshift=0.85cm,rotate=90]{actuation} ([yshift=0.65cm]phys.west);
-\draw[-latex] ([yshift=-0.65cm]phys.west) to node[yshift=-0.85cm, rotate=90]{sensing} ([yshift=-0.65cm]hw.south);
+\draw[thick, -latex] ([yshift=0.65cm]hwi.south) to node[yshift=0.85cm,xshift=1mm,rotate=90] {Actuation} ([yshift=0.65cm]phys.west);
+\draw[thick, -latex] ([yshift=-0.65cm]phys.west) to node[yshift=-0.75cm,xshift=1mm,rotate=90] {Sensing} ([yshift=-0.65cm]hwi.south);
 
 \end{tikzpicture}

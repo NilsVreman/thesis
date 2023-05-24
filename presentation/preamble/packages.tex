@@ -20,7 +20,10 @@
 \usepackage{microtype}
 
 % Bibliography related
-\usepackage{cite}
+\usepackage[backend=biber, style=authoryear]{biblatex}
+\addbibresource{defence.bib}
+\renewcommand*{\nameyeardelim}{\addcomma\space}
+\AtBeginBibliography{\scriptsize}
 
 \usepackage{multirow} % For multirow tables
 \usepackage{colortbl} % For coloured tables
@@ -44,12 +47,12 @@
 % Tikz Libraries
 \usepgfplotslibrary{external}
     \tikzexternalize[prefix=tikz/]
-    \tikzset{external/system call={xelatex \tikzexternalcheckshellescape
+    \tikzset{external/system call={lualatex \tikzexternalcheckshellescape
         -halt-on-error -interaction=batchmode -jobname "\image" "\texsource"}
     } % to let pdflatex work
 
 \usepgfplotslibrary{groupplots}
-%\usepgfplotslibrary{fillbetween}
+\usepgfplotslibrary{fillbetween}
 \usetikzlibrary{decorations.markings}
 \usetikzlibrary{shapes}
 \usetikzlibrary{backgrounds}
@@ -58,7 +61,7 @@
 \usetikzlibrary{calc}
 \usetikzlibrary{arrows}
 \usetikzlibrary{arrows.meta}
-\usetikzlibrary{patterns}
+\usetikzlibrary{patterns, patterns.meta}
 \usetikzlibrary{shapes.misc}
 %\pgfplotsset{compat=1.16}
 
