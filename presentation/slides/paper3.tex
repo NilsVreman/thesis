@@ -3,7 +3,7 @@
 \title[PhD Defence]{
     {\Huge Paper 3} \\
     \vspace{2mm}
-    {\Large {\tt WeaklyHard.jl}: Scalable Analysis of Weakly-Hard Constraints} \\
+    {\Large \tool{}: Scalable Analysis of Weakly-Hard Constraints} \\
 }
 \author[Nils Vreman]{
     Nils Vreman \\
@@ -17,21 +17,22 @@
 \notitlelogo
 \frame[plain,noframenumbering]{\titlepage}
 
+
 \begin{frame}
     \frametitle{The Weakly-Hard Model}
     \textbf{Recall:}
 
-    \begin{minipage}[c]{0.23\textwidth}
+    \begin{minipage}[c]{0.24\textwidth}
         \centering
         \begin{equation*}
             \begin{matrix}
-                {\Large \anyhit{}} \\
+                {\Large \anyhit{}}   \\
                             \\
                 \tAH{}
             \end{matrix}
-        \end{equation*}\newline
+        \end{equation*}
     \end{minipage}\hfill
-    \begin{minipage}[c]{0.23\textwidth}
+    \begin{minipage}[c]{0.24\textwidth}
         \centering
         \begin{equation*}
             \begin{matrix}
@@ -39,9 +40,9 @@
                             \\
                 \tAM{}
             \end{matrix}
-        \end{equation*}\newline
+        \end{equation*}
     \end{minipage}\hfill
-    \begin{minipage}[c]{0.23\textwidth}
+    \begin{minipage}[c]{0.24\textwidth}
         \centering
         \begin{equation*}
             \begin{matrix}
@@ -49,9 +50,9 @@
                             \\
                 \tRH{}
             \end{matrix}
-        \end{equation*}\newline
+        \end{equation*}
     \end{minipage}\hfill
-    \begin{minipage}[c]{0.23\textwidth}
+    \begin{minipage}[c]{0.24\textwidth}
         \centering
         \begin{equation*}
             \begin{matrix}
@@ -59,66 +60,45 @@
                             \\
                 \tRM{}
             \end{matrix}
-        \end{equation*}\newline
+        \end{equation*}
     \end{minipage}
 
-    \begin{minipage}[c]{0.23\textwidth}
-        \centering
-        In \emph{any} window of $k$ consecutive jobs, the minimum number of hits is $x$
-    \end{minipage}\hfill
-    \begin{minipage}[c]{0.23\textwidth}
-        \centering
-        In \emph{any} window of $k$ consecutive jobs, the minimum number of consecutive hits is $x$
-    \end{minipage}\hfill
-    \begin{minipage}[c]{0.23\textwidth}
-        \centering
-        In \emph{any} window of $k$ consecutive jobs, the maximum number of misses is $x$
-    \end{minipage}\hfill
-    \begin{minipage}[c]{0.23\textwidth}
-        \centering
-        In \emph{any} window of $k$ consecutive jobs, the maximum number of consecutive misses is $x$
-    \end{minipage}
+    \vspace{1cm}
+
+    \begin{equation*}
+        \ldots\, 0\, 1\, 1\, 1\, 0\, 1\, 0\, 1\, 1\, 1\, 0\, 0\, 1\, 1\, 1\, 0\, 1\, 0\, 1\, 1\, 0\, 0\, 1\, 1\, 0\, 1\, 1\, 0\, 1\, 1\, 1\, 1\, 1\, 0\, \ldots
+    \end{equation*}
 \end{frame}
+
 
 \begin{frame}
     \frametitle{The Weakly-Hard Model}
 
-    \vspace{0.5cm}
-
-    \begin{itemize}
-        \item A lot of the research focus has been on the $\tAM{}$ model -- $\anymiss{}$
-        \item The $\tRH{}$ model -- $\rowhit{}$ -- is better motivated by control problems~\cite{Linsenmayer:2021,Vreman:2021}
+    \begin{itemize}\setlength\itemsep{1em}
+        \item Historically: Focus on $\tAM{}$ $\anymiss{}$
+        \item $\tRH{}$ $\rowhit{}$ better motivated by control problems~\parencite{Linsenmayer:2021,Vreman:2021}
             \begin{itemize}
-                \item Two new theorems
+                \item \textbf{Paper 3}: Two new theorems
             \end{itemize}
         \item No joint framework for analysing the weakly-hard models
             \begin{itemize}
-                \item \tool{}
+                \item \textbf{Paper 3}: \tool{}
             \end{itemize}
     \end{itemize}
-
-    \textbf{Notation:} 
-
-    \begin{center}
-        \begin{tabular}{lll}
-            Weakly-Hard Constraint & $\leftarrow$ & $\lambda$ \\
-             & & \\
-            Satisfaction Set & $\leftarrow$ & $\sset{N}{\lambda} = \left\{ \; \text{All sequences that satisfy } \lambda \;\right\}$ \\
-             & & \\
-            Dominance & $\leftarrow$ & $\lambda_1 \preceq \lambda_2 \Leftrightarrow \sset{}{\lambda_1} \subseteq \sset{}{\lambda_2}$
-        \end{tabular}
-    \end{center}
 \end{frame}
+
 
 \begin{frame}
     \frametitle{Weakly-Hard Relations}
     \begin{figure}[h]
         \centering
         \only<1>{\input{figs/rtas22b/theory-table-1}}%
-        \only<2>{\input{figs/rtas22b/theory-table-2}}%
-        \only<3>{\input{figs/rtas22b/theory-table-3}}
+        \only<2>{\input{figs/rtas22b/theory-table-4}}%
+        \only<3>{\input{figs/rtas22b/theory-table-2}}%
+        \only<4>{\input{figs/rtas22b/theory-table-3}}
     \end{figure}
 \end{frame}
+
 
 \begin{frame}
     \frametitle{\tool{} - Automata}
@@ -132,11 +112,11 @@
         \vspace{2cm}
 
         \visible<2->{\alert<2>{$\dots 0$}}
-        \visible<3->{\alert<3>{$1$}}
+        \visible<3->{\textcolor<3>{lqgcolour}{$1$}}
         \visible<4->{\alert<4>{$0$}}
         \visible<5->{\alert<5>{$0$}}
-        \visible<6->{\alert<6>{$1$}}
-        \visible<7->{\alert<7>{$1$}}
+        \visible<6->{\textcolor<6>{lqgcolour}{$1$}}
+        \visible<7->{\textcolor<7>{lqgcolour}{$1$}}
         \visible<8->{\alert<8>{$0\dots$}}
         }
     \end{minipage}
@@ -152,21 +132,24 @@
                 \invisible<3>{\draw[->] (b) edge [bend left=50] node[right] {$1$} (a);}
                 \invisible<5>{\draw[->] (b) edge [bend left=67.5] node[right] {$0$} (c);}
                 \invisible<6>{\draw[->] (c) edge [bend left=57.5] node[left] {$1$} (a);}
-                \only<7>{\draw[->, thick, red] (a) edge [loop above] node[above] {$1$} (a);}
+                
+                \only<7>{\draw[->, thick, lqgcolour] (a) edge [loop above] node[above] {$1$} (a);}
                 \only<2,4,8>{\draw[->, thick, red] (a) edge [bend left=67.5] node[right] {$0$} (b);}
-                \only<3>{\draw[->, thick, red] (b) edge [bend left=50] node[right] {$1$} (a);}
+                \only<3>{\draw[->, thick, lqgcolour] (b) edge [bend left=50] node[right] {$1$} (a);}
                 \only<5>{\draw[->, thick, red] (b) edge [bend left=67.5] node[right] {$0$} (c);}
-                \only<6>{\draw[->, thick, red] (c) edge [bend left=57.5] node[left] {$1$} (a);}
+                \only<6>{\draw[->, thick, lqgcolour] (c) edge [bend left=57.5] node[left] {$1$} (a);}
                 \draw[white] (0,-3.5) rectangle (0.1,-4.5);
             \end{tikzpicture}
         \end{figure}
     \end{minipage}
 \end{frame}
 
+
 \begin{frame}
     \frametitle{\tool{}}
     \begin{center}
-        \textcolor{blue}{\texttt{https://github.com/NilsVreman/WeaklyHard.jl}}
+        \Large
+        \textcolor{blue}{\url{https://github.com/NilsVreman/WeaklyHard.jl}}
     \end{center}
 
     \vspace{1cm}
@@ -185,27 +168,10 @@
 \begin{frame}
     \frametitle{\tool{} Evaluation}
 
-    \begin{minipage}[c]{0.49\textwidth}
-        \textbf{Unlike previous tools, \tool{} can:} 
-        \begin{itemize}
-            \item Handle \emph{all} WH Constraints
-            \item Handle \emph{sets} of WH Constraints
-            \item Efficiently handle constraints with large windows $k$
-        \end{itemize}
-    \end{minipage}\hfill
-    \begin{minipage}[c]{0.49\textwidth}
-        \centering
-        \input{figs/rtas22b/tab-baseline.tex}
-    \end{minipage}
+    \textbf{Unlike previous tools, \tool{} can:} 
+    \begin{itemize}\setlength\itemsep{1em}
+        \item Handle \emph{all} WH Constraints
+        \item Handle \emph{sets} of WH Constraints
+        \item Efficiently handle constraints with large windows $k$
+    \end{itemize}
 \end{frame}
-
-\begin{frame}
-    \frametitle{\tool{} Evaluation - \tAH{}}
-    \input{figs/rtas22b/comp-eval-ah.tex}
-\end{frame}
-
-\begin{frame}
-    \frametitle{\tool{} Evaluation - \tRH{}}
-    \input{figs/rtas22b/comp-eval-rh.tex}
-\end{frame}
-
