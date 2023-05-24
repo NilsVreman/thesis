@@ -13,9 +13,20 @@
 
 %%% Controllers %%%
 
-{\color{red!80!black}\node[eng-step, opacity=0.7] (c2) at (-1.10-1*\delta, 1*\delta) {\textcolor{white}{\Huge$\mathcal{C}$}};}
-{\color{lqgcolour}\node[eng-step] (c1) at (-1.10-0*\delta, 0*\delta) {\Huge$\mathcal{C}$};}
-\coordinate (c) at (-2.75, 0);
+\node[scale=1.0] (c1) at (-1.10, 0) {%
+    \begin{tikzpicture}[>=latex]
+        \node[Init Node] (a) at (0,0) {$1$};
+        \node[Dom Node] (b) at (0,-1.75) {$10$};
+        \node[Dom Node] (c) at (0,-3.5) {$100$};
+        \draw[->] (a) edge [loop above] node[above]     {\Large\textcolor{lqgcolour}{$\mathcal{C}$}} (a);
+        \draw[->] (a) edge [bend left=67.5] node[right] {\Large\textcolor{red!80!black}{$\mathcal{C}$}} (b);
+        \draw[->] (b) edge [bend left=50] node[right]   {\Large\textcolor{lqgcolour}{$\mathcal{C}$}} (a);
+        \draw[->] (b) edge [bend left=67.5] node[right] {\Large\textcolor{red!80!black}{$\mathcal{C}$}} (c);
+        \draw[->] (c) edge [bend left=57.5] node[left]  {\Large\textcolor{lqgcolour}{$\mathcal{C}$}} (a);
+    \end{tikzpicture}%
+};
+
+\coordinate (c) at (-3.25, 0);
 
 %%%% Plant %%%
 \node[task, minimum width=2.125cm, minimum height=2.125cm] (phys) at (2.5,0) {};
@@ -56,7 +67,7 @@
 \draw[fill=black, rotate=75] (dronesw) ellipse (0.175cm and 0.025cm);
 \draw[fill=black, rotate=165] (dronesw) ellipse (0.175cm and 0.025cm);
 
-\coordinate (p2) at (4.0, -1.5);
+\coordinate (p2) at (4.0, -3.5);
 
 %%%%%%%%%%%%%%%
 %%%% ARROWS %%%

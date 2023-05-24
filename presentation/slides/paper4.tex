@@ -16,15 +16,6 @@
 \notitlelogo
 \frame[plain,noframenumbering]{\titlepage}
 
-\begin{frame}
-    \frametitle{So far...}
-    \begin{itemize}
-        \item Performance Analysis (ECRTS~2021)
-        \item Controller Synthesis (RTAS~2022)
-        \item Real-Time Analysis (RTAS~2022)
-        \item<2> \textcolor{lqgcolour}{Stability Analysis (LCSS~2022)}
-    \end{itemize}
-\end{frame}
 
 \begin{frame}
     \frametitle{Extended Weakly-Hard Model}
@@ -82,35 +73,15 @@
         \end{equation*}\newline
     \end{minipage}
 
-    \begin{minipage}[c]{0.23\textwidth}
-        \centering
-        \only<1>{In \emph{any} window of $k$ consecutive jobs, the minimum number of \textcolor{red}{hits} is $x$}%
-        \only<2>{In \emph{any} window of $k$ consecutive jobs, at least $x$ \textcolor{lqgcolour}{intervals} have a \textcolor{lqgcolour}{job completion}}
-    \end{minipage}\hfill
-    \begin{minipage}[c]{0.23\textwidth}
-        \centering
-        \only<1>{In \emph{any} window of $k$ consecutive jobs, the minimum number of consecutive \textcolor{red}{hits} is $x$}%
-        \only<2>{In \emph{any} window of $k$ consecutive jobs, at most $x$ \textcolor{lqgcolour}{intervals} lack a \textcolor{lqgcolour}{job completion}}
-    \end{minipage}\hfill
-    \begin{minipage}[c]{0.23\textwidth}
-        \centering
-        \only<1>{In \emph{any} window of $k$ consecutive jobs, the maximum number of \textcolor{red}{misses} is $x$}%
-        \only<2>{In \emph{any} window of $k$ consecutive jobs, at least $x$ consecutive \textcolor{lqgcolour}{intervals} have a \textcolor{lqgcolour}{job completion}}
-    \end{minipage}\hfill
-    \begin{minipage}[c]{0.23\textwidth}
-        \centering
-        \only<1>{In \emph{any} window of $k$ consecutive jobs, the maximum number of consecutive \textcolor{red}{misses} is $x$}%
-        \only<2>{In \emph{any} window of $k$ consecutive jobs, at most $x$ consecutive \textcolor{lqgcolour}{intervals} lack a \textcolor{lqgcolour}{job completion}}
-    \end{minipage}
+    \centering
+    \only<1>{%
+        \textcolor{red}{Deadline hits/misses}
+    }%
+    \only<2>{%
+        \textcolor{lqgcolour}{Job completions/overruns}
+    }%
 \end{frame}
 
-\begin{frame}
-    \frametitle{Discrete Switched Linear Systems}
-    \begin{figure}[h]
-        \centering
-        \input{figs/lcss22/switched-system} 
-    \end{figure}
-\end{frame}
 
 \begin{frame}
     \frametitle{Discrete Switched Linear Systems}
@@ -123,72 +94,69 @@
     \end{figure}
 \end{frame}
 
+
 \begin{frame}
     \frametitle{Discrete Switched Linear Systems - Stability}
-    \begin{itemize}
-        \item Lyapunov Theory~\cite{Liberzon:2003, Linsenmayer:2021, Hertneck:2021}
-        \item Joint Spectral Radius (JSR)~\cite{Maggio:2020, Ogura:2013}
-        \item Constrained Joint Spectral Radius (CJSR)~\cite{Dai:2012}
+    \begin{itemize}\setlength\itemsep{1em}
+        \item Lyapunov Theory~\parencite{Liberzon:2003, Linsenmayer:2021, Hertneck:2021}
+        \item Joint Spectral Radius (JSR)~\parencite{Maggio:2020, Ogura:2013}
+        \item Constrained Joint Spectral Radius (CJSR)~\parencite{Dai:2012}
     \end{itemize}
 \end{frame}
+
 
 \begin{frame}
     \frametitle{Discrete Switched Linear Systems - JSR}
-    \begin{minipage}[c]{\textwidth}
+    \begin{minipage}{0.59\textwidth}
         \begin{figure}[h]
             \centering
-            \only<1>{\input{figs/lcss22/switched-system-dl-3}}%
-            \only<2>{\input{figs/lcss22/switched-system-dl-1}}
+            \input{figs/lcss22/switched-system-dl-3}
         \end{figure}
-    \end{minipage}\vfill
-    \begin{minipage}[c]{\textwidth}
-        \begin{itemize}
-            \item CL matrices: $\mathcal{A} = \left\{ \;\textcolor<1>{red!80!black}{A_{\texttt{M}}}, \,\textcolor<1>{lqgcolour}{A_{\texttt{H}}}\; \right\}$
-            \item JSR: $\rho(\mathcal{A})$% = \lim_{k\rightarrow \infty} \max_{w \in \left\{ \texttt{M},\texttt{H} \right\}^k} \norm{A_{c_k} \cdots A_{c_2}A_{c_1}}^{\sfrac{1}{k}}$$\color{black}
-            \item<2> \textcolor{lqgcolour}{The JSR is the maximal asymptotic growth rate of matrices in the set $\mathcal{A}$}
-        \end{itemize}
+    \end{minipage}\hfill
+    \begin{minipage}{0.39\textwidth}
+        \begin{figure}[h]
+            \centering
+            \begin{tikzpicture}[>=latex]
+                \node[Init Node] (a) at (0,0) {$1$};
+                \node[Dom Node] (b) at (0,-1.75) {$10$};
+                \node[Dom Node] (c) at (0,-3.5) {$100$};
+                \draw[->] (a) edge [loop above] node[above] {$1$} (a);
+                \draw[->] (a) edge [bend left=67.5] node[right] {$0$} (b);
+                \draw[->] (b) edge [bend left=50] node[right] {$1$} (a);
+                \draw[->] (b) edge [bend left=67.5] node[right] {$0$} (c);
+                \draw[->] (c) edge [bend left=57.5] node[left] {$1$} (a);
+            \end{tikzpicture}
+        \end{figure}
+    \end{minipage}
+
+    \begin{minipage}{0.59\textwidth}
+        \centering
+        \large
+        $\mathcal{A} = \left\{ \;\textcolor{red!80!black}{A_{\texttt{M}}}, \,\textcolor{lqgcolour}{A_{\texttt{H}}}\; \right\}$
+    \end{minipage}\hfill
+    \begin{minipage}{0.39\textwidth}
+        \centering
+        \large
+        Ex.: $\dots \,\textcolor{red!80!black}{0} \, \textcolor{lqgcolour}{1} \, \textcolor{red!80!black}{0} \, \textcolor{red!80!black}{0} \, \textcolor{lqgcolour}{1} \, \textcolor{lqgcolour}{1}\, \textcolor{red!80!black}{0} \,\dots$
     \end{minipage}
 \end{frame}
 
+
 \begin{frame}
-    \frametitle{Stability Analysis}
-    \textbf{Contribution} 
-    \begin{itemize}
-        \item Extended weakly-hard model with strategy dependence
+    \frametitle{Discrete Switched Linear Systems - JSR}
+    \begin{figure}[h]
+        \centering
+        \input{figs/lcss22/switched-system-dl-5}
+    \end{figure}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Contribution}
+    \begin{itemize}\setlength\itemsep{1em}
+        \item Extended weakly-hard model with strategy dependence (EWHC)
         \item Extended automaton model from Paper 3 with EWHC
-        \item Analysed switched system stability using JSR on a lifted system
+        \item Analysed switched system stability using JSR on the extended system
+        \item Two novel theorems on JSR dominance
     \end{itemize}
-
-    \textbf{Brief Overview:}
-    \begin{itemize}
-        \item $\lambda^\strat$: Extended weakly-hard constraint
-        \item $\GG{\lambda^\strat}$: Extended automaton
-        \item $A_{\alpha}^\strat$: Closed loop matrix for strategy $\strat$ and outcome $\alpha$, e.g., $\alpha$ = \texttt{H}\newline
-            $\LL{\lambda^\strat}$: Set of lifted dynamical matrices, i.e.,
-            $$\LL{\lambda^\strat} = \left\{ \; \GG{\lambda^\strat} \otimes A_{\alpha}^\strat \; | \; \alpha \in \{\text{Alphabet of strategy }\strat\} \;\right\}$$
-    \end{itemize}
-
-\end{frame}
-
-\begin{frame}
-    \frametitle{Stability Analysis}
-    \begin{theorem}[JSR Dominance]
-        Given two \emph{arbitrary} extended weakly-hard constraints, $\lambda^\strat_1$ and $\lambda^\strat_2$.\newline
-        Then 
-        \begin{equation*}
-            \lambda^\strat_1 \preceq \lambda^\strat_2 \; \implies \; \rho(\LL{\lambda^\strat_1}) \leq \rho(\LL{\lambda^\strat_2}).
-        \end{equation*}
-    \end{theorem}%
-    \visible<2->{\textbf{Implications:}}%
-    \begin{itemize}
-        \item<2-> Notion of \emph{JSR Dominance} (stability dominance)%
-        \item<3-> Strategy independence%
-        \item<4-> Decoupled analysis, real-time vs. control%
-    \end{itemize}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Evaluation}
-    \centering
-    \resizebox{0.6\textwidth}{!}{\input{figs/lcss22/evaluation-stable-1.tex}}
 \end{frame}
