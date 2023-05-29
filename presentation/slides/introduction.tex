@@ -47,29 +47,20 @@
     \begin{figure}[h]
         \centering
         \only<1>{\input{figs/topic/temporal-structure-kill-1}}%
-        \only<2>{\input{figs/topic/temporal-structure-kill-2}}
-        \caption{See~\parencite{Cervin:2005} for Computational Overrun strategies and~\parencite{Schenato:2009} for Actuation Mode policies.}
-    \end{figure}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Computational Flow}
-    \begin{figure}[h]
-        \centering
-        \only<1>{\input{figs/topic/temporal-structure-skip-1}}%
-        \only<2>{\input{figs/topic/temporal-structure-skip-2}}
-        \caption{See~\parencite{Cervin:2005} for Computational Overrun strategies and~\parencite{Schenato:2009} for Actuation Mode policies.}
+        \only<2>{\input{figs/topic/temporal-structure-kill-2}}%
+        \only<3>{\input{figs/topic/temporal-structure-skip-1}}%
+        \only<4>{\input{figs/topic/temporal-structure-skip-2}}
+        \caption{Overrun Strategies~\parencite{Cervin:2005}, Actuation Modes~\parencite{Schenato:2009}.}
     \end{figure}
 \end{frame}
 
 \begin{frame}
     \frametitle{Computational Overrun Models}
-    \textbf{Mathematical models of deadline overruns:}
     \setbeamercovered{transparent}
-    \begin{itemize}
-        \item \textcolor<2>{lqgcolour!50!white}{Soft -- \emph{Probabilistic}~\parencite{Buttazzo:2005, Manolache:2004, vonderBrueggen:2021}}
-        \item \textcolor<2>{lqgcolour}{Firm -- \emph{Constrained}~\parencite{Koren:1995, Bernat:2001}}
-        \item<1> Hard -- \emph{Infallible}~\parencite{Liu:1973}
+    \begin{itemize}\setlength\itemsep{1em}
+        \item \textcolor<2>{lqgcolour!50!white}{Soft -- \emph{Probabilistic}\footnote{\cite{Buttazzo:2005, Manolache:2004, vonderBrueggen:2021}}}
+        \item \textcolor<2>{lqgcolour}{Firm -- \emph{Constrained}\footnote{\cite{Koren:1995, Bernat:2001}}}
+        \item<1> Hard -- \emph{Infallible}\footnote{\cite{Liu:1973}}
     \end{itemize}
 \end{frame}
 
@@ -118,10 +109,13 @@
 
     \vspace{1cm}
 
-    {\only<1>{\begin{equation*}
+    \only<1>{\begin{equation*}
         \ldots\, 0\, 1\, 1\, 1\, 0\, 1\, 0\, 1\, 1\, 1\, 0\, 0\, 1\, 1\, 1\, 0\, 1\, 0\, 1\, 1\, 0\, 0\, 1\, 1\, 0\, 1\, 1\, 0\, 1\, 1\, 1\, 1\, 1\, 0\, \ldots
-    \end{equation*}}}
-    %
+    \end{equation*}
+    \vspace{1em}
+    \centering
+    \phantom{\textcolor{red!80!black}{$0$} = Overrunning the deadline}
+    }%
     \only<2>{\begin{equation*}
         \ldots\, 0\, \textcolor{lqgcolour}{1\, 1\, 1\, }0\, \textcolor{lqgcolour}{1\, }0\, \textcolor{lqgcolour}{1\, 1\, 1\, }0\, 0\, \textcolor{lqgcolour}{1\, 1\, 1\, }0\, \textcolor{lqgcolour}{1\, }0\, \textcolor{lqgcolour}{1\, 1\, }0\, 0\, \textcolor{lqgcolour}{1\, 1\, }0\, \textcolor{lqgcolour}{1\, 1\, }0\, \textcolor{lqgcolour}{1\, 1\, 1\, 1\, 1\, }0\, \ldots
     \end{equation*}
@@ -153,10 +147,10 @@
 \begin{frame}
     \frametitle{How do deadline misses occur?}
     \begin{itemize}\setlength\itemsep{1em}
-        \item Preemption~\parencite{Stankovic:1995, Bernat:2001}
-        \item Cache Misses~\parencite{Milligan:1996, Wang:2012, Altmeyer:2014, Davis:2013}
-        \item CPU overloads~\parencite{Baruah:1997, Xu:2015, Ernst:2014}
-        \item Security attacks~\parencite{hashemi2018comparison, sabaliauskaite2017comparison, Knorn:2019}
+        \item Preemption\footnote{\cite{Stankovic:1995, Bernat:2001}}
+        \item Cache Misses\footnote{\cite{Milligan:1996, Wang:2012, Altmeyer:2014, Davis:2013}}
+        \item CPU overloads\footnote{\cite{Baruah:1997, Xu:2015, Ernst:2014}}
+        \item Security attacks\footnote{\cite{hashemi2018comparison, sabaliauskaite2017comparison, Knorn:2019}}
     \end{itemize}
 \end{frame}
 

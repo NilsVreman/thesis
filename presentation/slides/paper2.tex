@@ -20,10 +20,10 @@
 
 \begin{frame}
     \frametitle{CPS Structure}
+    \vspace{-1.5cm}%
     \begin{figure}[h]
-        \only<1>{\hspace{-1.5cm}\resizebox{1.05\textwidth}{!}{\input{figs/rtas22a/cps-structure-9}}}%
-        \only<2>{\hspace{-1.5cm}\resizebox{1.05\textwidth}{!}{\input{figs/rtas22a/cps-structure-10}}}%
-        \only<3>{\hspace{-1.5cm}\resizebox{1.05\textwidth}{!}{\input{figs/rtas22a/cps-structure-11}}}%
+        \only<1>{\hspace{-2.0cm}\input{figs/rtas22a/cps-structure-9}}%
+        \only<2>{\hspace{-2.0cm}\input{figs/rtas22a/cps-structure-11}}%
     \end{figure}
 \end{frame}
 
@@ -68,14 +68,17 @@
 
     \textbf{Main Assumptions:}
     \begin{itemize}
-        \item Deadline miss count $q$ available at run-time
-        \item Kill overrun handling strategy (memory check-pointing)
+        \item Deadline miss counter $q$
+        \item Kill strategy
+            \begin{itemize}
+                \item Memory check-pointing
+            \end{itemize}
     \end{itemize}
 
     \textbf{Objective:}
     \begin{itemize}
         \item Increase robustness to overruns
-        \item Minimal real-time/control design overhead
+        \item Minimal system design complexity
         \item Minimal computational overhead
     \end{itemize}
 \end{frame}

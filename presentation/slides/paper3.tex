@@ -20,8 +20,6 @@
 
 \begin{frame}
     \frametitle{The Weakly-Hard Model}
-    \textbf{Recall:}
-
     \begin{minipage}[c]{0.24\textwidth}
         \centering
         \begin{equation*}
@@ -76,7 +74,7 @@
 
     \begin{itemize}\setlength\itemsep{1em}
         \item Historically: Focus on $\tAM{}$ $\anymiss{}$
-        \item $\tRH{}$ $\rowhit{}$ better motivated by control problems~\parencite{Linsenmayer:2021,Vreman:2021}
+        \item $\tRH{}$ $\rowhit{}$ better motivated by control problems\footnote{\cite{Linsenmayer:2021,Vreman:2021}}
             \begin{itemize}
                 \item \textbf{Paper 3}: Two new theorems
             \end{itemize}
@@ -146,29 +144,21 @@
 
 
 \begin{frame}
-    \frametitle{\tool{}}
+    \frametitle{\tool{}\footnote{Published to \texttt{JuliaRegistries}.}}
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.7\textwidth]{figs/rtas22b/git.png}
+    \end{figure}
+
     \begin{center}
         \Large
         \textcolor{blue}{\url{https://github.com/NilsVreman/WeaklyHard.jl}}
     \end{center}
-
-    \vspace{1cm}
-    \texttt{julia> using Pkg}\\
-    \texttt{julia> Pkg.add("WeaklyHard")}
 \end{frame}
 
 \begin{frame}
     \frametitle{\tool{}}
-    \begin{figure}[h]
-        \centering
-        \includegraphics[width=0.9\textwidth]{figs/rtas22b/git.png}
-    \end{figure}
-\end{frame}
 
-\begin{frame}
-    \frametitle{\tool{} Evaluation}
-
-    \textbf{Unlike previous tools, \tool{} can:} 
     \begin{itemize}\setlength\itemsep{1em}
         \item Handle \emph{all} WH Constraints
         \item Handle \emph{sets} of WH Constraints
