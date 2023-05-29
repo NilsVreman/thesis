@@ -12,84 +12,25 @@
     {\large Martina Maggio}
 }
 \date[EMSOFT 2023]{
-    Submitted to ACM SIGBED International Conference on Embedded Software (EMSOFT), 2023\\
+    Submitted to the International Conference on Embedded Software (EMSOFT), 2023\\
 }
 \notitlelogo
 \frame[plain,noframenumbering]{\titlepage}
 
+
+% a frame with figures using \only to show them one by one
 \begin{frame}
-    \frametitle{Admin}
-    \begin{itemize}
-        \item Courses: 
-            \begin{itemize}
-                \item Taken: 80 HP
-                \item To be added: 5 HP (MSc)
-                \item Taking: 5 HP (\texttt{Rust} study circle)
-            \end{itemize} 
-        \item Teaching: 
-            \begin{itemize}
-                \item FRTN55: Labs + Exam
-                \item FRTN01: Course Development?
-            \end{itemize}
-    \end{itemize}
+    \frametitle{Fault Models}
+    \begin{figure}
+        \centering
+        \only<1>{\input{figs/emsoft23/cps-structure-1}}%
+        \only<2>{\input{figs/emsoft23/cps-structure-2}}%
+        \only<3>{\input{figs/emsoft23/cps-structure-3}}%
+    \end{figure}
 \end{frame}
 
-\begin{frame}
-    \frametitle{Dissertation}
-    \textbf{Suggested Dissertation Date:}
-    \begin{itemize}
-        \item May 2023
-    \end{itemize}
 
-    \textbf{Suggested Opponent:}
-    \begin{itemize}
-        \item Samarjit Chakraborty (University of North Carolina at Chapel Hill)
-    \end{itemize}
 
-    \textbf{Suggested Committee Members:} 
-    \begin{itemize}
-        \item Frank Allg{\"o}wer
-        \item Alessandro Biondi
-        \item Michelle Cheong
-        \item \dots ?
-    \end{itemize}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Improvements to Thesis}
-    Papers 1--4 gave us ideas for how to
-    \begin{itemize}
-        \item connect the WH constraints and robust control;
-        \item analyse control performance of systems subject to WH constraints; and
-        \item motivate the differences between packet drops, time-delays, and controller overruns. 
-    \end{itemize}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Work in Progress}
-    \begin{itemize}
-        \item Clairvoyant LQG Controllers Subject to Computational Overrun (\pointout{IFAC~2023})
-            \begin{itemize}
-                \item Almost complete
-            \end{itemize}
-        \item Exploring:
-            \begin{itemize}
-                \item Game-Theoretical Approach to Performance and Stability Analysis for Control Systems subject to Overruns
-                    \begin{itemize}
-                        \item \emph{Satya Prakash Nayak}, Anne-Kathrin Schmuck, and Martina Maggio
-                    \end{itemize}
-                \item A Markov Approach to Differentiating between Sensors Dropouts, Controller Overruns, and Actuation Dropouts
-                    \begin{itemize}
-                        \item Martina Maggio
-                    \end{itemize}
-                \item Optimising Controllers for Mixed Continuous-/Discrete-Time Linear Systems using Automatic Differentiation
-                    \begin{itemize}
-                        \item Anton Cervin and Martina Maggio
-                    \end{itemize}
-            \end{itemize}
-    \end{itemize}
-    With some confidence: there will be at least one additional contribution
-\end{frame}
 
 \title[Preperatory Seminar]{%
     {\Huge Thank you for listening}
@@ -98,5 +39,3 @@
 \date[]{}
 \notitlelogo{}
 \frame[plain,noframenumbering]{\titlepage}
-%There are a few research ideas we are exploring, there might be another contribution, but we don't know if it'll be enough or not.
-%I have some confidence that there will be at least one additional contribution
