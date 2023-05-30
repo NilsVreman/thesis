@@ -17,7 +17,7 @@
 
 \node[task,opacity=0.3] (ct1) at (1.5+0*\delta,1.6-0*\delta) {\textcolor{white}{Control Task $\#3$} \\\textcolor{white}{\faFileCode[regular]}};
 \node[task,opacity=0.6] (ct2) at (1.5+1*\delta,1.6-1*\delta) {\textcolor{white}{Control Task $\#2$} \\\textcolor{white}{\faFileCode[regular]}};
-\node[task,opacity=1.0] (ct3) at (1.5+2*\delta,1.6-2*\delta) {\textcolor{blue}{Control Task $\#1$} \\\textcolor{blue}{\faFileCode[regular]}};
+\node[task,opacity=1.0] (ct3) at (1.5+2*\delta,1.6-2*\delta) {\textcolor{hicolour}{Control Task $\#1$} \\\textcolor{hicolour}{\faFileCode[regular]}};
 
 %%% CYBER %%%
 
@@ -74,7 +74,7 @@
 
 %%% ARROWS %%%
 
-\draw[thick, -latex] ([yshift=0.65cm]hwi.south) to node[yshift=0.85cm,xshift=1mm,rotate=90] {\textcolor{blue}{Actuation}} ([yshift=0.65cm]phys.west);
-\draw[thick, -latex] ([yshift=-0.65cm]phys.west) to node[yshift=-0.75cm,xshift=1mm,rotate=90] {\textcolor{blue}{Sensing}} ([yshift=-0.65cm]hwi.south);
+\draw[thick, -latex] ([yshift=0.65cm]hwi.south) to node[yshift=0.85cm,xshift=1mm,rotate=90] {\textcolor{hicolour}{Actuation}} ([yshift=0.65cm]phys.west);
+\draw[thick, -latex] ([yshift=-0.65cm]phys.west) to node[yshift=-0.75cm,xshift=1mm,rotate=90] {\textcolor{hicolour}{Sensing}} ([yshift=-0.65cm]hwi.south);
 
 \end{tikzpicture}

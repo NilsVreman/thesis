@@ -31,7 +31,7 @@
 
 %%% PHYSICAL %%%
 
-\node[task, minimum width=2.125cm, minimum height=2.125cm, draw=lqgcolour] (phys) at (7.0,0.875) {};
+\node[task, minimum width=2.125cm, minimum height=2.125cm, draw=hicolour] (phys) at (7.0,0.875) {};
 
 % body
 \node[
@@ -71,9 +71,9 @@
 \draw[fill=black, rotate=165] (dronesw) ellipse (0.175cm and 0.025cm);
 
 % Clock
-{\color{lqgcolour}\node[task, above left] (time) at (phys.south east) {\faClock[regular]};}
+{\color{hicolour}\node[task, above left] (time) at (phys.south east) {\faClock[regular]};}
 
-{\color{lqgcolour}\node[] (phystmp) at ([yshift=-0.25cm]phys.south) {Plant};}
+{\color{hicolour}\node[] (phystmp) at ([yshift=-0.25cm]phys.south) {Plant};}
 
 %%% ARROWS %%%
 

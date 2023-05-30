@@ -17,7 +17,7 @@
 
 \node[task,opacity=0.3] (ct1) at (1.5+0*\delta,1.6-0*\delta) {\textcolor{white}{Control Task $\#3$} \\\textcolor{white}{\faFileCode[regular]}};
 \node[task,opacity=0.6] (ct2) at (1.5+1*\delta,1.6-1*\delta) {\textcolor{white}{Control Task $\#2$} \\\textcolor{white}{\faFileCode[regular]}};
-\node[task,opacity=1.0] (ct3) at (1.5+2*\delta,1.6-2*\delta) {\textcolor{blue}{Control Task $\#1$} \\\textcolor{blue}{\faFileCode[regular]}};
+\node[task,opacity=1.0] (ct3) at (1.5+2*\delta,1.6-2*\delta) {\textcolor{hicolour}{Control Task $\#1$} \\\textcolor{hicolour}{\faFileCode[regular]}};
 
 %%% CYBER %%%
 
@@ -78,9 +78,9 @@
 \draw[thick, -latex] ([yshift=-0.65cm]phys.west) to node[yshift=-0.75cm,xshift=1mm,rotate=90] {\phantom{Sensing}} ([yshift=-0.65cm]hwi.south);
 
 %%% Packets
-\node[xscale=-1] (packetS) at ([xshift=-0.25cm, yshift=-0.40cm]phys.west) {\textcolor{blue}{\faComment[regular]}};
+\node[xscale=-1] (packetS) at ([xshift=-0.25cm, yshift=-0.40cm]phys.west) {\textcolor{hicolour!85!white}{\faComment[regular]}};
 
-\node (packetA) at ([xshift=0.5cm, yshift=0.90cm]hwi.south) {\textcolor{blue}{\faComment[regular]}};
+\node (packetA) at ([xshift=0.5cm, yshift=0.90cm]hwi.south) {\textcolor{hicolour!85!white}{\faComment[regular]}};
 
 
 \end{tikzpicture}

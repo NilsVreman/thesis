@@ -20,7 +20,7 @@
 
 \begin{frame}
     \frametitle{Motivation}
-    What is the largest number of consecutive deadline misses tolerable (\textcolor<2>{lqgcolour}{assuming a similar burst does not reoccur for a very long time})?~\parencite{Akesson:2020}
+    What is the largest number of consecutive deadline misses tolerable (\textcolor<2>{hicolour}{assuming a similar burst does not reoccur for a very long time})?~\parencite{Akesson:2020}
     \begin{figure}[h]
         \centering
         \input{figs/ecrts21/bar-15} 
@@ -33,8 +33,8 @@
     \begin{itemize} \setlength\itemsep{-1mm}
         \item (\tikz{%
                 \fill[white] (0,0) rectangle (0.3, 0.3);%
-                \draw[blue, ultra thick] (0,0.1) -- (0.3,0.1);%
-                \fill[blue] (0.15, 0.1) circle (0.075);}) Periodic task activations $\leftarrow$ Control deadlines.
+                \draw[hicolour, ultra thick] (0,0.1) -- (0.3,0.1);%
+                \fill[hicolour] (0.15, 0.1) circle (0.075);}) Periodic task activations $\leftarrow$ Control deadlines.
         \item (\textcolor{red}{$\mathbf{\times}$}) Fault $\leftarrow$ Deadline miss.
         \item (\colorbox{red!15}{\phantom{i}}) Burst interval $\leftarrow$ Consecutive deadline misses.
         \item (\colorbox{green!15}{\phantom{i}}) Recovery interval $\leftarrow$ Consecutive deadline hits.
@@ -138,7 +138,7 @@
     \frametitle{Experimental Results}
     \centering
     \LARGE
-    \textcolor{blue}{\url{youtu.be/watch?v=0P0K\_7lvKVU}}
+    \textcolor{hicolour}{\url{youtu.be/watch?v=0P0K\_7lvKVU}}
 \end{frame}
 
 

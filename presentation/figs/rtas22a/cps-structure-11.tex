@@ -78,16 +78,16 @@
 \draw[thick, -latex] ([yshift=-0.65cm]phys.west) to node[yshift=-0.75cm,xshift=1mm,rotate=90] {Sensing} ([yshift=-0.65cm]hwi.south);
 
 % Requirement
-%\node[align=center, lqgcolour] (req) at (3,3.5) {Requirements dependant\\on the system};
-%\draw[-latex, thick, lqgcolour] (req) to (ct3);
+%\node[align=center, hicolour] (req) at (3,3.5) {Requirements dependant\\on the system};
+%\draw[-latex, thick, hicolour] (req) to (ct3);
 
 %%% CODESIGN %%%
 
 \begin{scope}
     \clip (-5,-1) rectangle (5, 4);
-    \node[ellipse, draw, thick, lqgcolour, fit=(ct3)] (el-ct3) {};
-    \node[ellipse, draw, thick, lqgcolour, fit=(rtos)] (el-rtos) {};
-    \draw[latex-latex, lqgcolour, in=180,out=90, thick] (el-ct3.north) to node[left, xshift=-1cm, yshift=-5mm] {Co-Design!} (el-rtos.west);
+    \node[ellipse, draw, thick, hicolour, fit=(ct3)] (el-ct3) {};
+    \node[ellipse, draw, thick, hicolour, fit=(rtos)] (el-rtos) {};
+    \draw[latex-latex, hicolour, in=180,out=90, thick] (el-ct3.north) to node[left, xshift=-1cm, yshift=-5mm] {Co-Design!} (el-rtos.west);
 \end{scope}
 
 \end{tikzpicture}

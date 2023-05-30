@@ -21,10 +21,10 @@
 
 %%% CYBER %%%
 
-{\color{lqgcolour}\node[thick, align=center] (rtos) at (-0.1,0.25) {Real-Time Operating System};}
+{\color{hicolour}\node[thick, align=center] (rtos) at (-0.1,0.25) {Real-Time Operating System};}
 \node[thick, draw, align=center, rotate=90, text width=2.75cm] (hwi) at (4.1,0.87) {HW Interfaces};
-{\color{lqgcolour}\node[thick, fit=(rtos)(t1)(ct1)(ct3),draw,yshift=1.5mm,xshift=0.75mm] (sw) {};}
-{\color{lqgcolour}\node[thick, draw, above left] (clock) at (sw.south east) {\faClock[regular]};}
+{\color{hicolour}\node[thick, fit=(rtos)(t1)(ct1)(ct3),draw,yshift=1.5mm,xshift=0.75mm] (sw) {};}
+{\color{hicolour}\node[thick, draw, above left] (clock) at (sw.south east) {\faClock[regular]};}
 \node[thick, fit=(sw)(hwi), inner sep=7pt, draw] (hw) {};
 \node[thick, above left, xshift=2.40cm, yshift=0.5mm] (hw-label) at (hw.south west) {Hardware};
 \node[thick, draw, above right] (hwclock) at (hw.south west)  {\faClock[regular]};
