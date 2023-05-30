@@ -1,0 +1,53 @@
+\begin{tikzpicture}
+    \begin{groupplot}[group style={group size= 4 by 1},
+        height=0.285\textwidth,
+        width=0.28\textwidth,
+        xlabel = {$p_x$},
+        xtick = {0,0.3,0.6,0.9},
+        ymax=1.4,
+        ymin=0.8,
+        xmax=1,
+        xmin=0,
+        legend pos=north west,
+        legend columns=1,
+        legend style={align=center,font=\footnotesize},
+        grid=major,
+        grid style={black!20, dashed}]
+        \nextgroupplot[title={Kill and Zero}, title style={yshift=-0.5em}]
+        \addplot[red, thick, forget plot] {1};
+        \addplot[ultra thick, blue, densely dotted] table[x index=0, y index=1, col sep=comma] {figs/emsoft23/data/cs1_exp1_kz_rs.csv};
+        \addlegendentry{$p_s$};
+        \addplot[ultra thick, green!70!black] table[x index=0, y index=1, col sep=comma] {figs/emsoft23/data/cs1_exp1_kz_rc.csv};
+        \addlegendentry{$p_c$};
+        \addplot[ultra thick, orange!70!black, densely dashed] table[x index=0, y index=1, col sep=comma] {figs/emsoft23/data/cs1_exp1_kz_ra.csv};
+        \addlegendentry{$p_a$};
+
+        \nextgroupplot[title={Kill and Hold}, title style={yshift=-0.5em}]
+        \addplot[red, thick, forget plot] {1};
+        \addplot[ultra thick, blue, densely dotted] table[x index=0, y index=1, col sep=comma] {figs/emsoft23/data/cs1_exp1_kh_rs.csv};
+        \addlegendentry{$p_s$};
+        \addplot[ultra thick, green!70!black] table[x index=0, y index=1, col sep=comma] {figs/emsoft23/data/cs1_exp1_kh_rc.csv};
+        \addlegendentry{$p_c$};
+        \addplot[ultra thick, orange!70!black, densely dashed] table[x index=0, y index=1, col sep=comma] {figs/emsoft23/data/cs1_exp1_kh_ra.csv};
+        \addlegendentry{$p_a$};
+
+        \nextgroupplot[title={Skip and Zero}, title style={yshift=-0.7em}]
+        \addplot[red, thick, forget plot] {1};
+        \addplot[ultra thick, blue, densely dotted] table[x index=0, y index=1, col sep=comma] {figs/emsoft23/data/cs1_exp1_sz_rs.csv};
+        \addlegendentry{$p_s$};
+        \addplot[ultra thick, green!70!black] table[x index=0, y index=1, col sep=comma] {figs/emsoft23/data/cs1_exp1_sz_rc.csv};
+        \addlegendentry{$p_c$};
+        \addplot[ultra thick, orange!70!black, densely dashed] table[x index=0, y index=1, col sep=comma] {figs/emsoft23/data/cs1_exp1_sz_ra.csv};
+        \addlegendentry{$p_a$};
+
+        \nextgroupplot[title={Skip and Hold}, title style={yshift=-0.7em}]
+        \addplot[red, thick, forget plot] {1};
+        \addplot[ultra thick, blue, densely dotted] table[x index=0, y index=1, col sep=comma] {figs/emsoft23/data/cs1_exp1_sh_rs.csv};
+        \addlegendentry{$p_s$};
+        \addplot[ultra thick, green!70!black] table[x index=0, y index=1, col sep=comma] {figs/emsoft23/data/cs1_exp1_sh_rc.csv};
+        \addlegendentry{$p_c$};
+        \addplot[ultra thick, orange!70!black, densely dashed] table[x index=0, y index=1, col sep=comma] {figs/emsoft23/data/cs1_exp1_sh_ra.csv};
+        \addlegendentry{$p_a$};
+
+    \end{groupplot}
+\end{tikzpicture}

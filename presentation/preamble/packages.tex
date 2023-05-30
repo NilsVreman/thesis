@@ -25,8 +25,8 @@
 \renewcommand*{\nameyeardelim}{\addcomma\space}
 \AtBeginBibliography{\scriptsize}
 
-\usepackage{multirow} % For multirow tables
-\usepackage{colortbl} % For coloured tables
+%\usepackage{multirow} % For multirow tables
+%\usepackage{colortbl} % For coloured tables
 
 % Colordefinitions
 \definecolor{misscolour}{RGB}{255, 0, 0}
@@ -55,6 +55,8 @@
 
 \usepgfplotslibrary{groupplots}
 \usepgfplotslibrary{fillbetween}
+\pgfplotsset{colormap/viridis}
+\pgfplotsset{compat=newest}
 \usetikzlibrary{decorations.markings}
 \usetikzlibrary{shapes}
 \usetikzlibrary{backgrounds}

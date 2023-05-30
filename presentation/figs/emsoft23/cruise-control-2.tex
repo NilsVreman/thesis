@@ -1,0 +1,12 @@
+\begin{tikzpicture}
+    \begin{axis}[view={-30}{30}, mesh/ordering=y varies, mesh/cols=100, colorbar, height=7cm, width=8.75cm,
+        grid=major,
+        grid style={black!20, dashed},
+        xlabel={$p_s$},
+        ylabel={$p_c$},
+        zlabel={}]
+
+        \addplot3[surf] table [col sep=comma] {figs/emsoft23/data/cs1_exp2_sh_rsrc.csv};
+    \end{axis}
+\end{tikzpicture}
+

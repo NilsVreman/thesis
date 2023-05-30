@@ -1,0 +1,45 @@
+\def \dist {2.75}
+
+\begin{tikzpicture}
+
+\tikzset{Markov Node/.style={%
+draw,
+thick,
+circle,
+inner sep=0pt,
+minimum size=1.5cm
+}}
+
+\node[Markov Node] (THT) at (0, 0) {\textcolor{hicolour}{\faBox}\,\textcolor{hicolour}{\faFileCode[regular]}\,\textcolor{hicolour}{\faBox}};
+\node[Markov Node] (FHT) at (\dist, 0) {\textcolor{red}{\faBox}\,\textcolor{hicolour}{\faFileCode[regular]}\,\textcolor{hicolour}{\faBox}};
+\node[Markov Node] (THF) at (2*\dist, 0) {\textcolor{hicolour}{\faBox}\,\textcolor{hicolour}{\faFileCode[regular]}\,\textcolor{red}{\faBox}};
+\node[Markov Node, ultra thick, hicolour] (FHF) at (3*\dist, 0) {\textcolor{red}{\faBox}\,\textcolor{hicolour}{\faFileCode[regular]}\,\textcolor{red}{\faBox}};
+\node[Markov Node] (TMX) at (\dist, -1.5*\dist) {\textcolor{hicolour}{\faBox}\,\textcolor{red}{\faFileCode[regular]}\,\textcolor{black}{\faBox}};
+\node[Markov Node] (FMX) at (2*\dist, -1.5*\dist) {\textcolor{red}{\faBox}\,\textcolor{red}{\faFileCode[regular]}\,\textcolor{black}{\faBox}};
+
+% straight arrows
+\draw[latex-latex, thick] (THT) -- (FHT);
+\draw[latex-latex, thick] (FHT) -- (THF);
+\draw[latex-latex, thick] (THF) -- (FHF);
+\draw[latex-latex, thick] (FHT) -- (TMX);
+\draw[latex-latex, thick] (THF) -- (FMX);
+\draw[latex-latex, thick] (FMX) -- (TMX);
+
+% Bent arrows starting in THT
+\draw[latex-latex, thick] (THT) to [bend left=30] (THF);
+\draw[latex-latex, thick] (THT) to [bend left=37.5] (FHF);
+\draw[latex-latex, thick] (THT) to [bend right=15] (TMX);
+\draw[latex-latex, thick] (THT) to [bend right=5] (FMX);
+
+% Bent arrows starting in FHT
+\draw[latex-latex, thick] (FHT) to [bend left=30] (FHF);
+\draw[latex-latex, thick] (FHT) to [bend right=10] (FMX);
+
+% Bent arrows starting in THF
+\draw[latex-latex, thick] (THF) to [bend left=10] (TMX);
+
+% Bent arrows starting in FHF
+\draw[latex-latex, ultra thick, hicolour] (FHF) to [bend left=15] (FMX);
+\draw[latex-latex, thick] (FHF) to [bend left=5] (TMX);
+
+\end{tikzpicture}
