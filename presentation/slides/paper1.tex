@@ -33,12 +33,12 @@
     \begin{itemize} \setlength\itemsep{-1mm}
         \item (\tikz{%
                 \fill[white] (0,0) rectangle (0.3, 0.3);%
-                \draw[hicolour, ultra thick] (0,0.1) -- (0.3,0.1);%
-                \fill[hicolour] (0.15, 0.1) circle (0.075);}) Periodic task activations $\leftarrow$ Control deadlines.
-        \item (\textcolor{red}{$\mathbf{\times}$}) Fault $\leftarrow$ Deadline miss.
-        \item (\colorbox{red!15}{\phantom{i}}) Burst interval $\leftarrow$ Consecutive deadline misses.
-        \item (\colorbox{green!15}{\phantom{i}}) Recovery interval $\leftarrow$ Consecutive deadline hits.
-        \item (\textcolor{green!70!black}{\checkmark}) System recovered $\leftarrow$ A similar burst can occur.
+                \draw[hicolour, thick] (0,0.1) -- (0.3,0.1);%
+                \fill[hicolour] (0.15, 0.1) circle (0.075);}) Control deadlines
+        \item (\textcolor{red}{\textbf{$\mathbf{\times}$}}) Deadline overrun
+        \item (\colorbox{red!15}{\phantom{i}}) Burst interval
+        \item (\colorbox{green!15}{\phantom{i}}) Recovery interval
+        \item (\textcolor{green!70!black}{\checkmark}) System recovered
     \end{itemize}
 
     \begin{figure}[h]
@@ -138,7 +138,7 @@
     \frametitle{Experimental Results}
     \centering
     \LARGE
-    \textcolor{hicolour}{\url{youtu.be/watch?v=0P0K\_7lvKVU}}
+    \textcolor{hicolour}{\url{https://youtu.be/0P0K_7lvKVU}}
 \end{frame}
 
 

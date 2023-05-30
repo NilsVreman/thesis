@@ -30,18 +30,16 @@
 \begin{frame}
     \frametitle{Limitations}
     \framesubtitle{Complex \& Conservative Design}
-    \vspace{5mm}
     \begin{figure}
-        \centerline{\input{figs/rtas22a/co-design-flow}}
+        \centerline{\resizebox{0.65\textwidth}{!}{\input{figs/rtas22a/co-design-flow}}}
     \end{figure}
 \end{frame}
 
 \begin{frame}
     \frametitle{Limitations}
     \framesubtitle{Increased Runtime}
-    \vspace{5mm}
     \begin{figure}
-        \centerline{\input{figs/rtas22a/increased-runtime}}
+        \centerline{\resizebox{0.55\textwidth}{!}{\input{figs/rtas22a/increased-runtime}}}
     \end{figure}
 \end{frame}
 
@@ -49,7 +47,6 @@
 \begin{frame}
     \frametitle{Limitations}
     \framesubtitle{Static Controllers}
-    \vspace{5mm}
     \begin{figure}
         \centerline{%
             \begin{tikzpicture}
@@ -70,30 +67,28 @@
 \end{frame}
 
 
-\begin{frame}{Problem Statement}
-
-    \textbf{Main Assumptions:}
-    \begin{itemize}
-        \item Deadline miss counter $q$
-        \item Kill strategy
-            \begin{itemize}
-                \item Memory check-pointing
-            \end{itemize}
-    \end{itemize}
-
-    \textbf{Objective:}
-    \begin{itemize}
-        \item Increase robustness to overruns
-        \item Minimal system design complexity
-        \item Minimal computational overhead
-    \end{itemize}
-\end{frame}
-
-
 \begin{frame}{Implementation-Level Approach}
-    \begin{figure}
-        \centerline{\input{figs/rtas22a/implementation-approach}}
-    \end{figure}
+    \begin{minipage}{0.30\textwidth}
+        \textbf{Main Assumptions:}
+        \begin{itemize}
+            \item Deadline miss counter $q$
+            \item Kill strategy
+        \end{itemize}
+
+        \vspace{1em}
+
+        \textbf{Objective:}
+        \begin{itemize}
+            \item Increased robustness
+            \item Minimal complexity
+            \item Minimal overhead
+        \end{itemize}
+    \end{minipage}\hfill
+    \begin{minipage}{0.69\textwidth}
+        \begin{figure}
+            \centerline{\input{figs/rtas22a/implementation-approach}}
+        \end{figure}
+    \end{minipage}
 \end{frame}
 
 

@@ -74,8 +74,8 @@
 
 %%% ARROWS %%%
 
-\draw[thick, -latex] ([yshift=0.65cm]hwi.south) to node[yshift=0.85cm,xshift=1mm,rotate=90] {\phantom{Actuation}} ([yshift=0.65cm]phys.west);
-\draw[thick, -latex] ([yshift=-0.65cm]phys.west) to node[yshift=-0.75cm,xshift=1mm,rotate=90] {\phantom{Sensing}} ([yshift=-0.65cm]hwi.south);
+{\color{hicolour}\draw[thick, -latex] ([yshift=0.65cm]hwi.south) to node[yshift=0.85cm,xshift=1mm,rotate=90] {\phantom{Actuation}} ([yshift=0.65cm]phys.west);}
+{\color{hicolour}\draw[thick, -latex] ([yshift=-0.65cm]phys.west) to node[yshift=-0.75cm,xshift=1mm,rotate=90] {\phantom{Sensing}} ([yshift=-0.65cm]hwi.south);}
 
 %%% Packets
 \node[xscale=-1] (packetS) at ([xshift=-0.25cm, yshift=-0.40cm]phys.west) {\textcolor{hicolour!85!white}{\faComment[regular]}};

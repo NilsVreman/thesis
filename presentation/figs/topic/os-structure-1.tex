@@ -146,7 +146,7 @@
 \draw[thick, dashed] (hw.north east) to (vhw.north east);
 
 % Scheduler
-\node[task, minimum width=4cm, minimum height=0.6cm] (sched) at (-0.9+1.5*10*\delta,-0.85) {Scheduler};
+{\color{hicolour}\node[task, minimum width=4cm, minimum height=0.6cm] (sched) at (-0.9+1.5*10*\delta,-0.85) {Scheduler};}
 \node[circleconn] (csched) at ($(sched)+(0,0.55)$) {};
 \draw[thick] (csched.south) to (sched.north);
 
