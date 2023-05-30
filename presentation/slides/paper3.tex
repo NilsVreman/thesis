@@ -112,11 +112,11 @@
         \vspace{2cm}
 
         \visible<2->{\alert<2>{$\dots 0$}}
-        \visible<3->{\textcolor<3>{lqgcolour}{$1$}}
+        \visible<3->{\textcolor<3>{hicolour}{$1$}}
         \visible<4->{\alert<4>{$0$}}
         \visible<5->{\alert<5>{$0$}}
-        \visible<6->{\textcolor<6>{lqgcolour}{$1$}}
-        \visible<7->{\textcolor<7>{lqgcolour}{$1$}}
+        \visible<6->{\textcolor<6>{hicolour}{$1$}}
+        \visible<7->{\textcolor<7>{hicolour}{$1$}}
         \visible<8->{\alert<8>{$0\dots$}}
         }
     \end{minipage}
@@ -133,11 +133,11 @@
                 \invisible<5>{\draw[->] (b) edge [bend left=67.5] node[right] {$0$} (c);}
                 \invisible<6>{\draw[->] (c) edge [bend left=57.5] node[left] {$1$} (a);}
                 
-                \only<7>{\draw[->, thick, lqgcolour] (a) edge [loop above] node[above] {$1$} (a);}
+                \only<7>{\draw[->, thick, hicolour] (a) edge [loop above] node[above] {$1$} (a);}
                 \only<2,4,8>{\draw[->, thick, red] (a) edge [bend left=67.5] node[right] {$0$} (b);}
-                \only<3>{\draw[->, thick, lqgcolour] (b) edge [bend left=50] node[right] {$1$} (a);}
+                \only<3>{\draw[->, thick, hicolour] (b) edge [bend left=50] node[right] {$1$} (a);}
                 \only<5>{\draw[->, thick, red] (b) edge [bend left=67.5] node[right] {$0$} (c);}
-                \only<6>{\draw[->, thick, lqgcolour] (c) edge [bend left=57.5] node[left] {$1$} (a);}
+                \only<6>{\draw[->, thick, hicolour] (c) edge [bend left=57.5] node[left] {$1$} (a);}
                 \draw[white] (0,-3.5) rectangle (0.1,-4.5);
             \end{tikzpicture}
         \end{figure}
