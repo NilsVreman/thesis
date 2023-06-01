@@ -15,14 +15,10 @@
         \only<7>{\includegraphics[width=1.0\textwidth]{figs/topic/schedule.png}}%
         \only<8>{\input{figs/topic/cps-structure-6}}%
         \only<9>{\input{figs/topic/cps-structure-7}}%
-        \only<10>{\input{figs/topic/cps-structure-8}}
+        \only<10>{\input{figs/topic/cps-structure-with-code-1}}%
+        \only<11>{\input{figs/topic/cps-structure-8}}%
+        \only<12>{\input{figs/topic/cps-structure-with-code-2}}%
     \end{figure}
-\end{frame}
-
-\begin{frame}
-    Add a code listing that says how we execute it.
-    Mention that the first 4 papers treat one line failing,
-    the last paper take into consideration all lines failing.
 \end{frame}
 
 
@@ -41,11 +37,19 @@
     \frametitle{Computational Flow}%
     \framesubtitle<1-2>{Kill}%
     \framesubtitle<3-4>{Skip}%
-    \begin{figure}[h]
-        \centering
-        \only<1-2>{\includegraphics[width=0.25\textwidth]{figs/topic/small-schedule-kill.png}}%
-        \only<3-4>{\includegraphics[width=0.25\textwidth]{figs/topic/small-schedule-skip.png}}
-    \end{figure}
+    \begin{minipage}{0.49\textwidth}
+        \only<1>{To Do}%
+        \only<2>{Done}%
+        \only<3>{To Do}%
+        \only<4>{Done}%
+    \end{minipage}\hfill
+    \begin{minipage}{0.49\textwidth}
+        \begin{figure}[h]
+            \centering
+            \only<1-2>{\includegraphics[width=0.5\textwidth]{figs/topic/small-schedule-kill.png}}%
+            \only<3-4>{\includegraphics[width=0.5\textwidth]{figs/topic/small-schedule-skip.png}}
+        \end{figure}
+    \end{minipage}
 \end{frame}
 
 \begin{frame}
