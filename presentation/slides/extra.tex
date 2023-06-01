@@ -1,0 +1,47 @@
+\title[PhD Defence]{%
+    {\Huge Extra}
+}
+\author[Nils Vreman]{}
+\date[]{}
+\notitlelogo{}
+\frame[plain,noframenumbering]{\titlepage}
+
+\begin{frame}
+    \begin{figure}
+        \only<1>{\input{figs/topic/temporal-structure-normal-1}}%
+        \only<2>{\input{figs/topic/temporal-structure-normal-2}}%
+        \only<3>{\input{figs/topic/temporal-structure-kill-1}}%
+        \only<4>{\input{figs/topic/temporal-structure-kill-2}}%
+        \only<5>{\input{figs/topic/temporal-structure-skip-1}}%
+        \only<6>{\input{figs/topic/temporal-structure-skip-2}}%
+    \end{figure}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Experimental Results}
+    \begin{figure}[h]
+        \centering
+        \resizebox{0.85\textwidth}{!}{\input{figs/ecrts21/sim-vs-real}}
+    \end{figure}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Experimental Results}
+    \begin{figure}[h]
+        \centering
+        \resizebox{0.9\textwidth}{!}{\input{figs/rtas22a/batch-processes}}
+    \end{figure}
+    \hspace{2.3cm}\tikz{\draw[-Latex, ultra thick] (10, -0.25) node[below left] {\faThumbsDown[regular]} -- (0, -0.25) node[below right] {\faThumbsUp[regular]};}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Markov Jump Linear System}%
+    \framesubtitle{Cruise Control Example}
+    \begin{figure}
+        \centering
+        \input{figs/emsoft23/cruise-control-2}
+    \end{figure}
+\end{frame}

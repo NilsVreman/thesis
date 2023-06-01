@@ -113,16 +113,16 @@
 
 \begin{frame}
     \frametitle{Performance Analysis}
-    \begin{figure}[h]
-        \centering
-        \input{figs/ecrts21/performance-example}
-    \end{figure}
-
-    \centering
-    \begin{tabular}{l l}
-        $\mathcal{H}:$ & Strategy (e.g., Kill \& Hold)\\
-        $J_{k,\mathcal{H}}/J_\infty$: & Normalised cost \\
-    \end{tabular}
+    \begin{minipage}[c]{0.09\textwidth}
+        \tikz{\draw[-Latex, thick] (0,0) node[left] {\faThumbsUp[regular]} -- (0,3) node[left] {\faThumbsDown[regular]};}
+        \vspace{0.9cm}
+    \end{minipage}
+    \begin{minipage}[c]{0.89\textwidth}
+        \begin{figure}[h]
+            \centering
+            \input{figs/ecrts21/performance-example}
+        \end{figure}
+    \end{minipage}
 \end{frame}
 
 
@@ -139,13 +139,4 @@
     \centering
     \LARGE
     \textcolor{hicolour}{\url{https://youtu.be/0P0K_7lvKVU}}
-\end{frame}
-
-
-\begin{frame}
-    \frametitle{Experimental Results}
-    \begin{figure}[h]
-        \centering
-        \resizebox{0.85\textwidth}{!}{\input{figs/ecrts21/sim-vs-real}}
-    \end{figure}
 \end{frame}
