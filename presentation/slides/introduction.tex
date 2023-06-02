@@ -35,13 +35,38 @@
 
 \begin{frame}
     \frametitle{Computational Flow}%
-    \framesubtitle<1-2>{Kill}%
+    \framesubtitle<1>{Kill + Zero}%
+    \framesubtitle<2>{Kill + Hold}%
     \framesubtitle<3-4>{Skip}%
     \begin{minipage}{0.49\textwidth}
-        \only<1>{To Do}%
-        \only<2>{Done}%
-        \only<3>{To Do}%
-        \only<4>{Done}%
+        \only<1>{%
+            \begin{tabular}{l l}
+                Kill: & Job termination; Revert all progress\\
+                & \\
+                Zero: & No output
+            \end{tabular}
+        }%
+        \only<2>{%
+            \begin{tabular}{l l}
+                Kill: & Job termination; Revert all progress\\
+                & \\
+                Hold: & Same output as previous job
+            \end{tabular}
+        }%
+        \only<3>{%
+            \begin{tabular}{l l}
+                Skip: & Terminate next job\\
+                & \\
+                Zero: & No output
+            \end{tabular}
+        }%
+        \only<4>{%
+            \begin{tabular}{l l}
+                Skip: & Terminate next job\\
+                & \\
+                Hold: & Same output as previous job
+            \end{tabular}
+        }%
     \end{minipage}\hfill
     \begin{minipage}{0.49\textwidth}
         \begin{figure}[h]
