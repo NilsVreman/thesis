@@ -50,9 +50,6 @@ while True:
 
     \node[task, minimum width=2.125cm, minimum height=2.125cm] (phys) at (7.0,0.875) {};
 
-    \draw[thick, -latex] ([yshift=0.65cm]hwi.south) to node[yshift=0.85cm,xshift=1mm,rotate=90] {} ([yshift=0.65cm]phys.west);
-    \draw[thick, -latex] ([yshift=-0.65cm]phys.west) to node[yshift=-0.75cm,xshift=1mm,rotate=90] {} ([yshift=-0.65cm]hwi.south);
-
 \end{scope}
 
 % A node for writing out the code snippet in \mycodeA
@@ -104,5 +101,9 @@ while True:
 
 % Clock
 \node[task, above left] (time) at (phys.south east) {\faClock[regular]};
+
+% Arrows
+\draw[thick, -latex] ([yshift=0.65cm]hwi.south) to node[yshift=0.85cm,xshift=1mm,rotate=90] {} ([yshift=0.65cm]phys.west);
+\draw[thick] ([yshift=-0.65cm]phys.west) to node[yshift=-0.75cm,xshift=1mm,rotate=90] {} ([yshift=0.725cm]code.east);
 
 \end{tikzpicture}

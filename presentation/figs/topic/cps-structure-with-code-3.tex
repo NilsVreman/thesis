@@ -50,9 +50,6 @@ while True:
 
     \node[task, minimum width=2.125cm, minimum height=2.125cm] (phys) at (7.0,0.875) {};
 
-    \draw[thick, -latex] ([yshift=0.65cm]hwi.south) to node[yshift=0.85cm,xshift=1mm,rotate=90] {} ([yshift=0.65cm]phys.west);
-    \draw[thick, -latex] ([yshift=-0.65cm]phys.west) to node[yshift=-0.75cm,xshift=1mm,rotate=90] {} ([yshift=-0.65cm]hwi.south);
-
 \end{scope}
 
 % A node for writing out the code snippet in \mycodeC
@@ -109,5 +106,8 @@ while True:
 \draw[ultra thick, -latex, red] ([xshift=-1cm, yshift=-0.1cm]code.west) to ([xshift=0.5cm, yshift=-0.1cm]code.west);
 \draw[ultra thick, -latex, red] ([xshift=-1cm, yshift=0.35cm]code.west) to ([xshift=0.5cm, yshift=0.35cm]code.west);
 \draw[ultra thick, -latex, red] ([xshift=-1cm, yshift=-0.95cm]code.west) to ([xshift=0.5cm, yshift=-0.95cm]code.west);
+
+\draw[thick, -latex] ([yshift=0.65cm]hwi.south) to node[yshift=0.85cm,xshift=1mm,rotate=90] {} ([yshift=0.65cm]phys.west);
+\draw[thick] ([yshift=-0.65cm]phys.west) to node[yshift=-0.75cm,xshift=1mm,rotate=90] {} ([yshift=0.725cm]code.east);
 
 \end{tikzpicture}
