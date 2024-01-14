@@ -1,7 +1,7 @@
 # Thesis
 The repository for the PhD Thesis of Nils Vreman, titled:
 
-__Analysis of Emedded Real-Time Control Systems Subject to Computational Overruns__
+[__Analysis of Embedded Controllers Subject to Computational Overruns__](https://lucris.lub.lu.se/ws/portalfiles/portal/146169840/merge.pdf)
 
 ## File Structure
 
@@ -146,4 +146,4 @@ root/
 * ~~Kappa: Write Chapter 3~~
 * ~~Kappa: Write nomenclature~~
 * ~~Unify sequences throughout thesis (langle and rangle)~~
-* Write popular science article
+* ~~Write popular science article~~
